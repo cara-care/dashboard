@@ -21,6 +21,6 @@ jobs:
           path-To-cladocument: 'https://github.com/cara-care/dashboard/blob/master/cla.md'
           # branch should not be protected
           branch: 'cla-signatures'
-          whitelist: bot*
+          whitelist: mikeger,pavelsof,dbilgin,ishan2788,bot*
           empty-commit-flag: false
           blockchain-storage-flag: false
