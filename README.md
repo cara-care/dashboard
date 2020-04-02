@@ -13,12 +13,6 @@ Cara Care is a mobile app that allows people with chronic stomach disorders to t
 
 This repository is an open source web-app bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app) that allows Cara Care users and nutritionists to view and share the tracking data entered in the app.
 
-## Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Can I help?](#can-i-help)
-- [License](#license)
-
 ## Can I help?
 
 Of course!
