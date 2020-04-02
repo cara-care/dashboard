@@ -81,13 +81,11 @@ const NavBar: React.FC = () => {
             </Hidden>
           </div>
           <nav className={classes.nav}>
-            {/* {isAuthenticated && (
-              <>
-                <Hidden mdDown>
-                  // TODO: Add a button to unselect patient
-                </Hidden>
-              </>
-            )} */}
+            {isAuthenticated && (
+              <Hidden mdDown>
+                {/* TODO: Add a button to unselect patient */}
+              </Hidden>
+            )}
           </nav>
         </div>
       </Toolbar>

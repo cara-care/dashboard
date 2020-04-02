@@ -8,6 +8,7 @@ Here are some guidelines to help you with the contribution:
     - [Available Scripts](#available-scripts)
       - [`yarn start`](#yarn-start)
       - [`yarn test`](#yarn-test)
+    - [Internationalization](#internationalization)
   - [Found a Bug?](#found-a-bug)
   - [First Pull Request](#first-pull-request)
 
@@ -34,6 +35,39 @@ You will also see any lint errors in the console.
 #### `yarn test`
 
 Launches the test runner in the interactive watch mode.
+
+### Internationalization
+
+This project uses [react-intl](https://github.com/formatjs/react-intl) library for Internationalization. Check out the repos documentation for more information of how it works. In a nutshell - all the localized strings are in `src/locale` directory and you have access to them via either intl prop or "Formated" components. In case you would like to add some text, please add a new key(s) to `<locale>.json`.
+
+A sample scenario for adding a new key:
+
+1. Add a key(s) to `src/locale/en.json`. The naming convetion for the keys are <module/location>. (camelCased) e.g.:
+
+   ```
+   // src/locale/en.json
+   {
+     ...
+     "example.helloWorld": "Hello, world!"
+   }
+   ```
+
+2. Use `<FormattedMessage />` component from react-intl to display the text
+
+   ```
+   import React from 'react';
+   import { FormattedMessage } from 'react-intl';
+
+   const Example = () => {
+     return (
+       <div>
+         <FormattedMessage id="example.helloWorld" defaultMessage="Hello, world!" />
+       </div>
+     )
+   }
+
+   export default Example;
+   ```
 
 ## Found a Bug?
 
