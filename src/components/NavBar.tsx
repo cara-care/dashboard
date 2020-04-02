@@ -10,7 +10,7 @@ import {
   isAuthenticated as isAuthenticatedSelector,
   getPatientNickname,
 } from '../auth';
-import Logo from '../assets/img/logo-cara-green-no-text.png';
+import Logo from '../assets/images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {

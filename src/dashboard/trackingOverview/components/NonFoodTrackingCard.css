@@ -1,202 +1,202 @@
 .bg-iCNAdditionalSymptoms {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -78px -10px;
+  background: url('../../../assets/images/css_sprites.png') -78px -10px;
   transform: scale(0.5);
 }
 
 .bg-iCNBloating {
   width: 48px;
   height: 50px;
-  background: url('../../../assets/img/css_sprites.png') -10px -10px;
+  background: url('../../../assets/images/css_sprites.png') -10px -10px;
   transform: scale(0.5);
 }
 
 .bg-iCNFood {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -146px -10px;
+  background: url('../../../assets/images/css_sprites.png') -146px -10px;
   transform: scale(0.5);
 }
 
 .bg-iCNHeadache {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -10px -80px;
+  background: url('../../../assets/images/css_sprites.png') -10px -80px;
   transform: scale(0.5);
 }
 
 .bg-iCNMedication {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -78px -80px;
+  background: url('../../../assets/images/css_sprites.png') -78px -80px;
   transform: scale(0.5);
 }
 
 .bg-iCNMoodAwful {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -146px -80px;
+  background: url('../../../assets/images/css_sprites.png') -146px -80px;
   transform: scale(0.5);
 }
 
 .bg-iCNMoodEmpty {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -214px -10px;
+  background: url('../../../assets/images/css_sprites.png') -214px -10px;
   transform: scale(0.5);
 }
 
 .bg-iCNMoodGood {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -214px -78px;
+  background: url('../../../assets/images/css_sprites.png') -214px -78px;
   transform: scale(0.5);
 }
 
 .bg-iCNMoodOkay {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -10px -148px;
+  background: url('../../../assets/images/css_sprites.png') -10px -148px;
   transform: scale(0.5);
 }
 
 .bg-iCNMoodNotGood {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -78px -148px;
+  background: url('../../../assets/images/css_sprites.png') -78px -148px;
   transform: scale(0.5);
 }
 
 .bg-iCNMoodVeryGood {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -146px -148px;
+  background: url('../../../assets/images/css_sprites.png') -146px -148px;
   transform: scale(0.5);
 }
 
 .bg-iCNNotes {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -214px -148px;
+  background: url('../../../assets/images/css_sprites.png') -214px -148px;
   transform: scale(0.5);
 }
 
 .bg-iCNOtherPain {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -282px -10px;
+  background: url('../../../assets/images/css_sprites.png') -282px -10px;
   transform: scale(0.5);
 }
 
 .bg-iCNPeriod {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -282px -78px;
+  background: url('../../../assets/images/css_sprites.png') -282px -78px;
   transform: scale(0.5);
 }
 
 .bg-iCNSkin {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -282px -146px;
+  background: url('../../../assets/images/css_sprites.png') -282px -146px;
   transform: scale(0.5);
 }
 
 .bg-iCNSleep {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -10px -216px;
+  background: url('../../../assets/images/css_sprites.png') -10px -216px;
   transform: scale(0.5);
 }
 
 .bg-iCNStress {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -78px -216px;
+  background: url('../../../assets/images/css_sprites.png') -78px -216px;
   transform: scale(0.5);
 }
 
 .bg-iCNTummypain {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -146px -216px;
+  background: url('../../../assets/images/css_sprites.png') -146px -216px;
   transform: scale(0.5);
 }
 
 .bg-iCNWater {
   width: 44px;
   height: 50px;
-  background: url('../../../assets/img/css_sprites.png') -350px -10px;
+  background: url('../../../assets/images/css_sprites.png') -350px -10px;
   transform: scale(0.5);
 }
 
 .bg-iCNWorkout {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/css_sprites.png') -214px -216px;
+  background: url('../../../assets/images/css_sprites.png') -214px -216px;
   transform: scale(0.5);
 }
 
 .bg-poop0 {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/stool_css_sprites.png') -248px -10px;
+  background: url('../../../assets/images/stool_css_sprites.png') -248px -10px;
   transform: scale(0.5);
 }
 
 .bg-poop1 {
   width: 48px;
   height: 48px;
-  background: url('../../../assets/img/stool_css_sprites.png') -248px -78px;
+  background: url('../../../assets/images/stool_css_sprites.png') -248px -78px;
   transform: scale(0.5);
 }
 
 .bg-poop2 {
   width: 40px;
   height: 60px;
-  background: url('../../../assets/img/stool_css_sprites.png') -186px -94px;
+  background: url('../../../assets/images/stool_css_sprites.png') -186px -94px;
   transform: scale(0.5);
 }
 
 .bg-poop3 {
   width: 32px;
   height: 84px;
-  background: url('../../../assets/img/stool_css_sprites.png') -10px -108px;
+  background: url('../../../assets/images/stool_css_sprites.png') -10px -108px;
   transform: scale(0.5);
 }
 
 .bg-poop4 {
   width: 32px;
   height: 84px;
-  background: url('../../../assets/img/stool_css_sprites.png') -62px -108px;
+  background: url('../../../assets/images/stool_css_sprites.png') -62px -108px;
   transform: scale(0.5);
 }
 
 .bg-poop5 {
   width: 32px;
   height: 84px;
-  background: url('../../../assets/img/stool_css_sprites.png') -134px -10px;
+  background: url('../../../assets/images/stool_css_sprites.png') -134px -10px;
   transform: scale(0.5);
 }
 
 .bg-poop7 {
   width: 40px;
   height: 74px;
-  background: url('../../../assets/img/stool_css_sprites.png') -74px -10px;
+  background: url('../../../assets/images/stool_css_sprites.png') -74px -10px;
   transform: scale(0.5);
 }
 
 .bg-poop6 {
   width: 44px;
   height: 78px;
-  background: url('../../../assets/img/stool_css_sprites.png') -10px -10px;
+  background: url('../../../assets/images/stool_css_sprites.png') -10px -10px;
   transform: scale(0.5);
 }
 
 .bg-poop8 {
   width: 42px;
   height: 64px;
-  background: url('../../../assets/img/stool_css_sprites.png') -186px -10px;
+  background: url('../../../assets/images/stool_css_sprites.png') -186px -10px;
   transform: scale(0.5);
 }

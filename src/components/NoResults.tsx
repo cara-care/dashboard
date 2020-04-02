@@ -7,8 +7,8 @@ import {
   Theme,
   StyleRules,
 } from '@material-ui/core/styles';
-import NotFoundIMG from '../assets/img/NotFound.png';
-import NotDataIMG from '../assets/img/NoData.png';
+import NotFoundIMG from '../assets/images/not-found.png';
+import NotDataIMG from '../assets/images/no-data.png';
 
 const styles = (theme: Theme): StyleRules => ({
   root: {
