@@ -5,6 +5,7 @@ export enum AuthActionTypes {
   SELECT_PATIENT_INIT = 'auth/SELECT_PATIENT_INIT',
   SELECT_PATIENT_SUCCESS = 'auth/SELECT_PATIENT_SUCCESS',
   SELECT_PATIENT_FAILED = 'auth/SELECT_PATIENT_FAILED',
+  UNSELECT_PATIENT = 'auth/UNSELECT_PATIENT',
   RESET_ERROR = 'auth/RESET_ERROR',
   TRY_AUTO_LOGIN = 'auth/TRY_AUTO_LOGIN',
   TRY_AUTO_LOGIN_FAILED = 'auth/TRY_AUTO_LOGIN_FAILED',
@@ -92,6 +93,14 @@ export const selectPatientFailedAction = (
   error,
 });
 
+export interface UnselectPatientAction {
+  type: AuthActionTypes.UNSELECT_PATIENT;
+}
+
+export const unselectPatientAction = (): UnselectPatientAction => ({
+  type: AuthActionTypes.UNSELECT_PATIENT,
+});
+
 export interface ResetErrorAction {
   type: AuthActionTypes.RESET_ERROR;
 }
@@ -123,6 +132,7 @@ export type AuthActions =
   | SelectPatientInitAction
   | SelectPatientSuccessAction
   | SelectPatientFailedAction
+  | UnselectPatientAction
   | ResetErrorAction
   | TryAutoLoginAction
   | TryAutoLoginFailedAction;

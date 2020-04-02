@@ -73,6 +73,12 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         isSelectingPatient: false,
         error: action.error,
       };
+    case AuthActionTypes.UNSELECT_PATIENT:
+      return {
+        ...state,
+        patientId: null,
+        patientNickname: null,
+      };
     case AuthActionTypes.RESET_ERROR:
       return {
         ...state,

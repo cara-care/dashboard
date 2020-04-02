@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   isAuthenticated as isAuthenticatedSelector,
   getPatientNickname,
+  unselectPatientAction,
 } from '../auth';
 import Logo from '../assets/images/logo.png';
 
@@ -47,8 +48,12 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar: React.FC = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const patientNickname = useSelector(getPatientNickname);
+  const unselectPatient = useCallback(() => {
+    dispatch(unselectPatientAction());
+  }, [dispatch]);
 
   return (
     <AppBar elevation={0} color="default" className={classes.appBar}>
@@ -79,12 +84,7 @@ const NavBar: React.FC = () => {
             {/* {isAuthenticated && (
               <>
                 <Hidden mdDown>
-                  <Typography variant="body2" className={classes.button}>
-                    {patientPhone}
-                  </Typography>
-                  <Typography variant="body2" className={classes.button}>
-                    {patientEmail}
-                  </Typography>
+                  // TODO: Add a button to unselect patient
                 </Hidden>
               </>
             )} */}
