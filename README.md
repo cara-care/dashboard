@@ -19,7 +19,7 @@ Of course!
 
 Check out [**Contributing Guide**](./CONTRIBUTING.md) for ideas on contributing and setup steps for getting the repository running on your local machine.
 
-**If you know a language other then English**, you can help us to [translate the app](./TRANSLATIONS.md)!
+**If you know a language other then English**, you can help us to [translate the app](https://github.com/cara-care/dashboard/wiki/How-to-contribute-a-new-language)!
 
 ## License
 
