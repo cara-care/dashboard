@@ -20,7 +20,7 @@ jobs:
           path-to-signatures: 'signatures/version1/cla.json'
           path-To-cladocument: 'https://github.com/cara-care/dashboard/blob/master/cla.md'
           # branch should not be protected
-          branch: 'master'
-          whitelist: user1,user2,bot*
+          branch: 'cla-signatures'
+          whitelist: bot*
           empty-commit-flag: false
           blockchain-storage-flag: false
