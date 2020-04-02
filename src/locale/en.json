@@ -405,5 +405,6 @@
   "search.noResults": "No Results",
   "search.sorryNoResultsFor": "Sorry, there are no results for {phrase}. Please try another phrase.",
   "timePicker.CANCEL": "CANCEL",
-  "_.common.error": "Error"
+  "_.common.error": "Error",
+  "test": "test"
 }
