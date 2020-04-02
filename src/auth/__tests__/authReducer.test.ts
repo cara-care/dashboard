@@ -82,6 +82,23 @@ describe('authReducer', () => {
     );
   });
 
+  it('should handle auth/UNSELECT_PATIENT', () => {
+    expect(authReducer(undefined, actions.unselectPatientAction())).toEqual(
+      Object.assign(
+        {},
+        {
+          ...authInitialState,
+          patientId: patientDataMock.id,
+          patientNickname: patientDataMock.nickname,
+        },
+        {
+          patientId: null,
+          patientNickname: null,
+        }
+      )
+    );
+  });
+
   it('should handle auth/RESET_ERROR', () => {
     expect(
       authReducer(
