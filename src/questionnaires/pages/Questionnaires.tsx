@@ -1,0 +1,140 @@
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import moment from 'moment';
+import NutriNavigation from '../../components/NutriNavigation';
+import Placeholder from '../../components/Placeholder';
+import ErrorMessage from '../components/ErrorMessage';
+import Pagination from '../../components/Pagination';
+import NoResults from '../../components/NoResults';
+import { fetchSubmissionsPageInit } from '../questionnairesActions';
+import { Submission, getSubmissions } from '../questionnairesReducer';
+import { RootState } from '../../utils/store';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: theme.spacing(3),
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    // 100vh - (header height + container padding + nuriNavigation Height)px
+    height: `calc(100vh - ${theme.spacing(8) + theme.spacing(3) + 67}px)`,
+  },
+  card: {
+    padding: theme.spacing(2),
+    height: '100%',
+    boxShadow: '0 2px 13px 0 rgba(0,0,0,0.10)',
+  },
+  link: {
+    textDecoration: 'none',
+  },
+}));
+
+const Questionnaires = () => {
+  const classes = useStyles();
+  const [page, setPage] = useState(0);
+  const match = useRouteMatch();
+  const isFetching = useSelector<RootState, boolean>(
+    (state) => state.questionnaires.isFetching
+  );
+  const submissions = useSelector<RootState, Submission[]>(getSubmissions);
+  const count = useSelector<RootState, number>(
+    (state) => state.questionnaires.count
+  );
+  const limit = useSelector<RootState, number>(
+    (state) => state.questionnaires.limit
+  );
+  const error = useSelector<RootState, Error | null>(
+    (state) => state.questionnaires.error
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchSubmissionsPageInit(page));
+  }, [dispatch, page]);
+
+  const handleOnClickPrev = () => {
+    setPage(page - 1);
+  };
+
+  const handleOnClickNext = () => {
+    setPage(page + 1);
+  };
+
+  return (
+    <>
+      <NutriNavigation />
+      <Container className={classes.container}>
+        {isFetching ? (
+          <div className={classes.content}>
+            <Placeholder />
+          </div>
+        ) : error ? (
+          <ErrorMessage message={error.message} />
+        ) : (
+          <Grid container spacing={2}>
+            {submissions.length ? (
+              <>
+                {submissions.map((submission) => (
+                  <Grid key={submission.id} item xs={12} md={6} lg={4}>
+                    <Link
+                      to={`${match ? match.path : ''}/${submission.id}`}
+                      className={classes.link}
+                    >
+                      <Paper elevation={0} className={classes.card}>
+                        <Typography variant="h6">{submission.name}</Typography>
+                        <Typography variant="body2">
+                          <FormattedMessage
+                            id="questionnaires.started"
+                            defaultMessage="Started: {date}"
+                            values={{
+                              date: moment(submission.started).format('LLL'),
+                            }}
+                          />
+                        </Typography>
+                        <Typography variant="body2">
+                          <FormattedMessage
+                            id="questionnaires.completed"
+                            defaultMessage="Completed: {date}"
+                            values={{
+                              date: moment(submission.completed).format('LLL'),
+                            }}
+                          />
+                        </Typography>
+                      </Paper>
+                    </Link>
+                  </Grid>
+                ))}
+                {count > submissions.length && (
+                  <Grid item xs={12}>
+                    <Pagination
+                      count={count}
+                      page={page}
+                      limit={limit}
+                      onClickPrev={handleOnClickPrev}
+                      onClickNext={handleOnClickNext}
+                    />
+                  </Grid>
+                )}
+              </>
+            ) : (
+              <NoResults />
+            )}
+          </Grid>
+        )}
+      </Container>
+    </>
+  );
+};
+
+export default Questionnaires;
