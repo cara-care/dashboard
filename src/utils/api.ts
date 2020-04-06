@@ -6,7 +6,7 @@ import axios from 'axios';
 // https://create-react-app.dev/docs/proxying-api-requests-in-development#docsNav
 const api = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? '/api/' : '/',
-  timeout: 2000,
+  timeout: 5500,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
