@@ -21,6 +21,10 @@ Check out [**Contributing Guide**](./CONTRIBUTING.md) for ideas on contributing 
 
 **If you know a language other then English**, you can help us to [translate the app](https://github.com/cara-care/dashboard/wiki/How-to-contribute-a-new-language)!
 
+## Code of conduct
+
+Cara Care has adopted a Code of Conduct that we expect project participants to adhere to. Please read [the full text](./CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
+
 ## License
 
 Licensed under the [GPL](./LICENSE), which guarantees end users the freedom to study, share, and modify the software.
