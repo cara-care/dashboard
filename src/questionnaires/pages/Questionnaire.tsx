@@ -13,6 +13,7 @@ import NutriNavigation from '../../components/NutriNavigation';
 import ErrorMessage from '../components/ErrorMessage';
 import Placeholder from '../../components/Placeholder';
 import GroupCard from '../components/GroupCard';
+import Score from '../components/Score';
 import Link from '../../components/Link';
 import { getPatientId } from '../../auth';
 import { getQuestionnaire } from '../../utils/api';
@@ -31,6 +32,8 @@ interface QuestionnaireState {
   isFetching: boolean;
   name: string;
   groups: any[];
+  scoreQOL: number | null;
+  scoreSSS: number | null;
   started: Date | null;
   completed: Date | null;
   error: Error | null;
@@ -39,6 +42,8 @@ interface QuestionnaireState {
 const initialState = {
   isFetching: false,
   name: '',
+  scoreQOL: null,
+  scoreSSS: null,
   groups: [],
   started: null,
   completed: null,
@@ -73,6 +78,8 @@ function reducer(state: QuestionnaireState, action: SumbissionAction) {
         ...state,
         isFetching: false,
         name: action.payload.name,
+        scoreQOL: action.payload.scoreQOL,
+        scoreSSS: action.payload.scoreSSS,
         groups: action.payload.groups,
         started: action.payload.started,
         completed: action.payload.completed,
@@ -152,6 +159,50 @@ const Questionnaire = () => {
                 />
               </Typography>
             </Grid>
+            {(state.scoreQOL !== null || state.scoreSSS !== null) && (
+              <>
+                {state.scoreSSS !== null && (
+                  <Grid item xs={12} md={6} lg={4}>
+                    <Score
+                      title={
+                        <FormattedMessage
+                          id="questionnaires.symptomSeverityIBS-SSS"
+                          defaultMessage="Score IBS-SSS"
+                        />
+                      }
+                      subtitle={
+                        <FormattedMessage
+                          id="irritableBowelSyndromeSeverityScoringSystem-SSS"
+                          defaultMessage="(Irritable Bowel Syndrome Severity Scoring System)"
+                        />
+                      }
+                      score={state.scoreSSS}
+                      total={500}
+                    />
+                  </Grid>
+                )}
+                {state.scoreQOL !== null && (
+                  <Grid item xs={12} md={6} lg={4}>
+                    <Score
+                      title={
+                        <FormattedMessage
+                          id="questionnaires.qualityOfLife-IBS-QOL"
+                          defaultMessage="Score QOL (Quality of Life)"
+                        />
+                      }
+                      subtitle={
+                        <FormattedMessage
+                          id="questionnaires.qualityOfLife"
+                          defaultMessage="(Quality of Life)"
+                        />
+                      }
+                      score={state.scoreQOL}
+                      total={100}
+                    />
+                  </Grid>
+                )}
+              </>
+            )}
             {state.groups.map((group: any) => (
               <Grid key={v1()} item xs={12} md={6} lg={4}>
                 <GroupCard name={group.name} fields={group.fields} />
