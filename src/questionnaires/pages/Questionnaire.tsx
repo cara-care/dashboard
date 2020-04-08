@@ -178,6 +178,7 @@ const Questionnaire = () => {
                       }
                       score={state.scoreSSS}
                       total={500}
+                      inverted
                     />
                   </Grid>
                 )}

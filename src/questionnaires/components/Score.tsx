@@ -30,6 +30,7 @@ interface Props {
   subtitle?: React.ReactNode;
   score: number;
   total: number;
+  inverted?: boolean; // true if lower score is better, false by default
 }
 
 const BorderLinearProgress = withStyles({
@@ -50,18 +51,24 @@ const BorderLinearProgress = withStyles({
   },
 })(LinearProgress);
 
-const Score: React.FC<Props> = ({ title, subtitle, score, total }) => {
+const Score: React.FC<Props> = ({
+  title,
+  subtitle,
+  score,
+  total,
+  inverted = false,
+}) => {
   const classes = useStyles();
   const percentage = (score / total) * 100;
   const getColor = useCallback(() => {
     if (percentage < 34) {
-      return 'error';
+      return inverted ? 'default' : 'error';
     } else if (percentage < 67) {
       return 'warning';
     } else {
-      return 'default';
+      return inverted ? 'error' : 'default';
     }
-  }, [percentage]);
+  }, [percentage, inverted]);
 
   return (
     <Paper elevation={0} className={classes.card}>
