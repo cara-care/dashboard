@@ -8,7 +8,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
+    "lint": "eslint . --cache",
     "type-check": "tsc --noEmit",
     "format": "prettier --config .prettierrc --write 'src/**/*.{js,jsx,ts,tsx}'"
   },
@@ -66,6 +66,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
     "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-eslint-comments": "^3.1.2",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^2.0.2",
     "react-test-renderer": "^16.13.1",
