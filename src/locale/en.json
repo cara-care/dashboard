@@ -35,6 +35,7 @@
   "navbar.nutri.followUpSession": "Follow-up Session",
   "navbar.nutri.session": "Session",
   "navbar.nutriMenuButton": "Nutri menu",
+  "navbar.selectDifferentPatient": "Select different patient",
   "navbar.share.addMorePatientsButtonTitle": "Add More Patients",
   "navbar.share.dialogCloseButton": "Close",
   "navbar.share.dialogContent": "If you want to grant someone, e. g. your HCP, access to your past and future data tracked within Cara, go ahead and share the following link with them.\n\nPlease do not share your personal link as shown in your browser's address bar as this link includes access to your personal chat history.\n\n{exportLink}",
@@ -409,5 +410,6 @@
   "search.noResults": "No Results",
   "search.sorryNoResultsFor": "Sorry, there are no results for {phrase}. Please try another phrase.",
   "timePicker.CANCEL": "CANCEL",
-  "_.common.error": "Error"
+  "_.common.error": "Error",
+  "_.common.logout": "Logout"
 }
