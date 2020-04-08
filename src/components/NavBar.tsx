@@ -5,11 +5,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   isAuthenticated as isAuthenticatedSelector,
+  hasPatientId,
   getPatientNickname,
   unselectPatientAction,
+  logoutInitAction,
 } from '../auth';
 import Logo from '../assets/images/logo.png';
 
@@ -42,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
   },
   button: {
-    marginLeft: 20,
+    marginRight: 20,
   },
 }));
 
@@ -50,12 +56,13 @@ const NavBar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const isPatientSelected = useSelector(hasPatientId);
   const patientNickname = useSelector(getPatientNickname);
-  // TODO: Remove the comments after adding a button
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const unselectPatient = useCallback(() => {
     dispatch(unselectPatientAction());
+  }, [dispatch]);
+  const handleLogout = useCallback(() => {
+    dispatch(logoutInitAction());
   }, [dispatch]);
 
   return (
@@ -85,9 +92,36 @@ const NavBar: React.FC = () => {
           </div>
           <nav className={classes.nav}>
             {isAuthenticated && (
-              <Hidden mdDown>
-                {/* TODO: Add a button to unselect patient */}
-              </Hidden>
+              <>
+                <Hidden mdDown>
+                  {isPatientSelected && (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={unselectPatient}
+                    >
+                      <FormattedMessage
+                        id="navbar.selectDifferentPatient"
+                        defaultMessage="Select different patient"
+                      />
+                    </Button>
+                  )}
+                </Hidden>
+                <Tooltip
+                  title={
+                    <FormattedMessage
+                      id="_.common.logout"
+                      defaultMessage="Logout"
+                    />
+                  }
+                  aria-label="logout"
+                >
+                  <IconButton onClick={handleLogout}>
+                    <ExitToApp />
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
           </nav>
         </div>

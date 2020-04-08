@@ -32,6 +32,7 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
 ) => {
   switch (action.type) {
     case AuthActionTypes.LOGIN_INIT:
+    case AuthActionTypes.LOGOUT_INIT:
     case AuthActionTypes.TRY_AUTO_LOGIN:
       return {
         ...state,
@@ -49,11 +50,14 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         status: AuthStatus.AUTHENTICATED,
       };
     case AuthActionTypes.LOGIN_FAILED:
+    case AuthActionTypes.LOGOUT_FAILED:
       return {
         ...state,
         status: AuthStatus.ERROR,
         error: action.error,
       };
+    case AuthActionTypes.LOGOUT_SUCCESS:
+      return authInitialState;
     case AuthActionTypes.SELECT_PATIENT_INIT:
       return {
         ...state,

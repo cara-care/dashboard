@@ -406,5 +406,6 @@
   "search.noResults": "Keine Ergebnisse",
   "search.sorryNoResultsFor": "Entschuldigung, es gibt keine Ergebnisse für {phrase}. Bitte probiere einen anderen Suchbegriff. ",
   "timePicker.CANCEL": "Abbrechen",
-  "_.common.error": "Fehler"
+  "_.common.error": "Fehler",
+  "_.common.logout": "Ausloggen"
 }

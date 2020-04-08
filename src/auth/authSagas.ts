@@ -5,16 +5,19 @@ import {
   loginFailedAction,
   selectPatientSuccessAction,
   selectPatientFailedAction,
+  logoutSuccessAction,
+  logoutFailedAction,
   AuthActionTypes,
   LoginInitAction,
   SelectPatientInitAction,
 } from './authActions';
-import { getMe, login, getUserByEmail } from '../utils/api';
+import { getMe, login, logout, getUserByEmail } from '../utils/api';
 
 export function* rootAuthSaga() {
   yield takeLatest(AuthActionTypes.TRY_AUTO_LOGIN, autoLoginSaga);
   yield takeLatest(AuthActionTypes.LOGIN_INIT, loginSaga);
   yield takeLatest(AuthActionTypes.SELECT_PATIENT_INIT, fetchPatientSaga);
+  yield takeLatest(AuthActionTypes.LOGOUT_INIT, logoutSaga);
 }
 
 export function* autoLoginSaga() {
@@ -32,6 +35,15 @@ export function* loginSaga({ username, password }: LoginInitAction) {
     yield put(loginSuccessAction());
   } catch (err) {
     yield put(loginFailedAction(err));
+  }
+}
+
+export function* logoutSaga() {
+  try {
+    yield call(logout);
+    yield put(logoutSuccessAction());
+  } catch (err) {
+    yield put(logoutFailedAction(err));
   }
 }
 

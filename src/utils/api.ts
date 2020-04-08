@@ -51,6 +51,10 @@ export const login = ({
   password: string;
 }) => api.post<{}>('/dashboard/login/', { username, password });
 
+export const logout = () => {
+  return api.delete('/dashboard/logout/');
+};
+
 export const getMe = () => {
   return api.get('/dashboard/me/');
 };

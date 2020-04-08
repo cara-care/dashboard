@@ -2,6 +2,9 @@ export enum AuthActionTypes {
   LOGIN_INIT = 'auth/LOGIN_INIT',
   LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
   LOGIN_FAILED = 'auth/LOGIN_FAILED',
+  LOGOUT_INIT = 'auth/LOGOUT_INIT',
+  LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS',
+  LOGOUT_FAILED = 'auth/LOGOUT_FAILED',
   SELECT_PATIENT_INIT = 'auth/SELECT_PATIENT_INIT',
   SELECT_PATIENT_SUCCESS = 'auth/SELECT_PATIENT_SUCCESS',
   SELECT_PATIENT_FAILED = 'auth/SELECT_PATIENT_FAILED',
@@ -44,6 +47,32 @@ export interface LoginFailedAction {
 
 export const loginFailedAction = (error: Error): LoginFailedAction => ({
   type: AuthActionTypes.LOGIN_FAILED,
+  error,
+});
+
+export interface LogoutInitAction {
+  type: AuthActionTypes.LOGOUT_INIT;
+}
+
+export const logoutInitAction = (): LogoutInitAction => ({
+  type: AuthActionTypes.LOGOUT_INIT,
+});
+
+export interface LogoutSuccessAction {
+  type: AuthActionTypes.LOGOUT_SUCCESS;
+}
+
+export const logoutSuccessAction = (): LogoutSuccessAction => ({
+  type: AuthActionTypes.LOGOUT_SUCCESS,
+});
+
+export interface LogoutFailedAction {
+  type: AuthActionTypes.LOGOUT_FAILED;
+  error: Error;
+}
+
+export const logoutFailedAction = (error: Error): LogoutFailedAction => ({
+  type: AuthActionTypes.LOGOUT_FAILED,
   error,
 });
 
@@ -129,6 +158,9 @@ export type AuthActions =
   | LoginInitAction
   | LoginSuccessAction
   | LoginFailedAction
+  | LogoutInitAction
+  | LogoutSuccessAction
+  | LogoutFailedAction
   | SelectPatientInitAction
   | SelectPatientSuccessAction
   | SelectPatientFailedAction
