@@ -51,6 +51,9 @@ const NavBar: React.FC = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const patientNickname = useSelector(getPatientNickname);
+  // TODO: Remove the comments after adding a button
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const unselectPatient = useCallback(() => {
     dispatch(unselectPatientAction());
   }, [dispatch]);

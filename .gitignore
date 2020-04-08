@@ -34,3 +34,6 @@ package-lock.json
 
 # phraseapp
 .phraseapp.yml
+
+# eslint cache
+.eslintcache
