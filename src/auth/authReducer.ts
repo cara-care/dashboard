@@ -16,6 +16,20 @@ export interface AuthState {
   patientId: number | null;
   isSelectingPatient: boolean;
   patientNickname: string | null;
+  patientTimezone: string | null;
+  patientEnrolledPrograms: EnrolledProgram[];
+}
+
+export interface EnrolledProgram {
+  id: number;
+  type: 'programme';
+  title: string;
+  image: string;
+  duration: string;
+  started: string;
+  video: string;
+  videoDuration: number;
+  videoCaptions: string;
 }
 
 export const authInitialState = {
@@ -23,6 +37,8 @@ export const authInitialState = {
   isSelectingPatient: false,
   patientId: null,
   patientNickname: null,
+  patientTimezone: null,
+  patientEnrolledPrograms: [],
   error: null,
 };
 
@@ -70,6 +86,8 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         isSelectingPatient: false,
         patientId: action.id,
         patientNickname: action.nickname,
+        patientTimezone: action.timezone,
+        patientEnrolledPrograms: action.enrolledProgrammes,
       };
     case AuthActionTypes.SELECT_PATIENT_FAILED:
       return {
@@ -82,6 +100,8 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         ...state,
         patientId: null,
         patientNickname: null,
+        patientTimezone: null,
+        patientEnrolledPrograms: [],
       };
     case AuthActionTypes.RESET_ERROR:
       return {
@@ -110,3 +130,9 @@ export const hasError = (state: RootState) => !!state.auth.error;
 
 export const getPatientNickname = (state: RootState) =>
   state.auth.patientNickname;
+
+export const getPatientTimezone = (state: RootState) =>
+  state.auth.patientTimezone;
+
+export const getPatientEnrolledPrograms = (state: RootState) =>
+  state.auth.patientEnrolledPrograms;

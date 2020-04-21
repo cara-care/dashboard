@@ -63,6 +63,17 @@ const NutriNavigation: React.FC = () => {
   return (
     <nav className={classes.root}>
       <NavLink
+        to="/nutri/programs"
+        exact
+        className={classes.link}
+        activeClassName={classes.activeLink}
+      >
+        <FormattedMessage
+          id="nutriNavigation.enrolledPrograms"
+          defaultMessage="Enrolled programs"
+        />
+      </NavLink>
+      <NavLink
         to="/nutri/questionnaires"
         exact
         className={classes.link}
