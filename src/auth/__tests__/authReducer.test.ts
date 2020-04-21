@@ -5,6 +5,7 @@ const patientDataMock = {
   id: 1,
   nickname: 'test',
   timezone: 'Europe/Berlin',
+  enrolledProgrammes: [],
 };
 const errorMock = { name: 'Error', message: 'Failed' };
 
