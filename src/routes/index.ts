@@ -9,6 +9,7 @@ const Questionnaires = React.lazy(() =>
 const Questionnaire = React.lazy(() =>
   import('../questionnaires/pages/Questionnaire')
 );
+const Programs = React.lazy(() => import('../programs/pages/Programs'));
 
 export default [
   {
@@ -44,6 +45,12 @@ export default [
   {
     path: '/nutri/questionnaires/:id',
     component: Questionnaire,
+    exact: false,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/programs',
+    component: Programs,
     exact: false,
     authRequired: true,
   },

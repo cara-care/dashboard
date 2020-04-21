@@ -1,3 +1,5 @@
+import { EnrolledProgram } from './authReducer';
+
 export enum AuthActionTypes {
   LOGIN_INIT = 'auth/LOGIN_INIT',
   LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
@@ -93,21 +95,25 @@ export interface SelectPatientSuccessAction {
   id: number;
   nickname: string;
   timezone: string;
+  enrolledProgrammes: EnrolledProgram[];
 }
 
 export const selectPatientSuccessAction = ({
   id,
   nickname,
   timezone,
+  enrolledProgrammes,
 }: {
   id: number;
   nickname: string;
   timezone: string;
+  enrolledProgrammes: EnrolledProgram[];
 }): SelectPatientSuccessAction => ({
   type: AuthActionTypes.SELECT_PATIENT_SUCCESS,
   id,
   nickname,
   timezone,
+  enrolledProgrammes,
 });
 
 export interface SelectPatientFailedAction {

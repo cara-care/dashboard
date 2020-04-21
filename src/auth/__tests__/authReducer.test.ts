@@ -5,6 +5,7 @@ const patientDataMock = {
   id: 1,
   nickname: 'test',
   timezone: 'Europe/Berlin',
+  enrolledProgrammes: [],
 };
 const errorMock = { name: 'Error', message: 'Failed' };
 
@@ -66,6 +67,8 @@ describe('authReducer', () => {
           isSelectingPatient: false,
           patientId: patientDataMock.id,
           patientNickname: patientDataMock.nickname,
+          patientTimezone: patientDataMock.timezone,
+          patientEnrolledPrograms: patientDataMock.enrolledProgrammes,
         })
       )
     );
