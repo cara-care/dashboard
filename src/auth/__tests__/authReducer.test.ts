@@ -67,6 +67,8 @@ describe('authReducer', () => {
           isSelectingPatient: false,
           patientId: patientDataMock.id,
           patientNickname: patientDataMock.nickname,
+          patientTimezone: patientDataMock.timezone,
+          patientEnrolledPrograms: patientDataMock.enrolledProgrammes,
         })
       )
     );
