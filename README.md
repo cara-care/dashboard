@@ -1,5 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/49d853bc-ac5a-4a14-9288-f968a0f6dd5f/deploy-status)](https://app.netlify.com/sites/nutri-dashboard/deploys)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![codecov](https://codecov.io/gh/cara-care/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/cara-care/dashboard)
 
 <p align="center">
   <h1 align="center">🍱 💩 Cara Care 🧠 😌</h1>
