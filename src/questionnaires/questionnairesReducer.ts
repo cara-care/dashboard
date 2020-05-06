@@ -1,5 +1,8 @@
 import { Reducer } from 'redux';
-import { QuestionnairesActions } from './questionnairesActions';
+import {
+  QuestionnairesActions,
+  QuestionnairesActionTypes,
+} from './questionnairesActions';
 import { RootState } from '../utils/store';
 
 export interface Submission {
@@ -28,12 +31,6 @@ export const questionnairesInitialState = {
   nextPage: null,
   previousPage: null,
 };
-
-export enum QuestionnairesActionTypes {
-  FETCH_SUBMISSIONS_PAGE_INIT = '[questionnaires] FETCH_SUBMISSIONS_PAGE_INIT',
-  FETCH_SUBMISSIONS_PAGE_SUCCESS = '[questionnaires] FETCH_SUBMISSIONS_PAGE_SUCCESS',
-  FETCH_SUBMISSIONS_PAGE_FAILED = '[questionnaires] FETCH_SUBMISSIONS_PAGE_FAILED',
-}
 
 export const questionnairesReducer: Reducer<
   QuestionnairesState,

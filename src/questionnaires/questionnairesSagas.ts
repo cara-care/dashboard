@@ -1,12 +1,10 @@
 import { takeLatest, put, select, call } from 'redux-saga/effects';
-import {
-  QuestionnairesActionTypes,
-  getSumbissionsLimit,
-} from './questionnairesReducer';
+import { getSumbissionsLimit } from './questionnairesReducer';
 import {
   FetchSubmissionsPageInitAction,
   fetchSubmissionsPageSuccess,
   fetchSubmissionsPageFailed,
+  QuestionnairesActionTypes,
 } from './questionnairesActions';
 import { getPatientId } from '../auth';
 import { getQuestionnaires } from '../utils/api';
