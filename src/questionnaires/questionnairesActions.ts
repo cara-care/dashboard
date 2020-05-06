@@ -1,9 +1,22 @@
-import { QuestionnairesActionTypes, Submission } from './questionnairesReducer';
+import { Submission } from './questionnairesReducer';
+
+export enum QuestionnairesActionTypes {
+  FETCH_SUBMISSIONS_PAGE_INIT = '[questionnaires] FETCH_SUBMISSIONS_PAGE_INIT',
+  FETCH_SUBMISSIONS_PAGE_SUCCESS = '[questionnaires] FETCH_SUBMISSIONS_PAGE_SUCCESS',
+  FETCH_SUBMISSIONS_PAGE_FAILED = '[questionnaires] FETCH_SUBMISSIONS_PAGE_FAILED',
+}
 
 export interface FetchSubmissionsPageInitAction {
   type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_INIT;
   page: number;
 }
+
+export const fetchSubmissionsPageInit = (
+  page: number
+): FetchSubmissionsPageInitAction => ({
+  type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_INIT,
+  page,
+});
 
 export interface FetchSumbissionsPageSuccessAction {
   type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_SUCCESS;
@@ -12,23 +25,6 @@ export interface FetchSumbissionsPageSuccessAction {
   previous: string | null;
   next: string | null;
 }
-
-export interface FetchSubmissionsPageFailedAction {
-  type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_FAILED;
-  error: Error;
-}
-
-export type QuestionnairesActions =
-  | FetchSubmissionsPageInitAction
-  | FetchSumbissionsPageSuccessAction
-  | FetchSubmissionsPageFailedAction;
-
-export const fetchSubmissionsPageInit = (
-  page: number
-): FetchSubmissionsPageInitAction => ({
-  type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_INIT,
-  page,
-});
 
 export const fetchSubmissionsPageSuccess = ({
   submissions,
@@ -48,9 +44,19 @@ export const fetchSubmissionsPageSuccess = ({
   next,
 });
 
+export interface FetchSubmissionsPageFailedAction {
+  type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_FAILED;
+  error: Error;
+}
+
 export const fetchSubmissionsPageFailed = (
   error: Error
 ): FetchSubmissionsPageFailedAction => ({
   type: QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_FAILED,
   error,
 });
+
+export type QuestionnairesActions =
+  | FetchSubmissionsPageInitAction
+  | FetchSumbissionsPageSuccessAction
+  | FetchSubmissionsPageFailedAction;
