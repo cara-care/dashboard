@@ -14,7 +14,6 @@ import {
 import { loginInitAction, tryAutoLoginAction } from '../authActions';
 import AuthLayout from '../components/AuthLayout';
 import { RootState } from '../../utils/store';
-// import { RootState, RootActions } from '../../utils/Store';
 
 interface FormData {
   username: string;

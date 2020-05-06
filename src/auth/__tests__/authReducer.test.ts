@@ -102,6 +102,24 @@ describe('authReducer', () => {
     );
   });
 
+  it('should handle auth/TRY_AUTO_LOGIN_FAILED', () => {
+    expect(
+      authReducer(
+        { ...authInitialState, status: AuthStatus.FETCHING },
+        actions.tryAutoLoginFailedAction()
+      )
+    ).toEqual(authInitialState);
+  });
+
+  it('should handle auth/LOGOUT_SUCCESS', () => {
+    expect(
+      authReducer(
+        { ...authInitialState, status: AuthStatus.FETCHING },
+        actions.logoutSuccessAction()
+      )
+    ).toEqual(authInitialState);
+  });
+
   it('should handle auth/RESET_ERROR', () => {
     expect(
       authReducer(

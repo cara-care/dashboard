@@ -55,11 +55,6 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         status: AuthStatus.FETCHING,
         error: null,
       };
-    case AuthActionTypes.TRY_AUTO_LOGIN_FAILED:
-      return {
-        ...state,
-        status: AuthStatus.IDLE,
-      };
     case AuthActionTypes.LOGIN_SUCCESS:
       return {
         ...state,
@@ -72,6 +67,7 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         status: AuthStatus.ERROR,
         error: action.error,
       };
+    case AuthActionTypes.TRY_AUTO_LOGIN_FAILED:
     case AuthActionTypes.LOGOUT_SUCCESS:
       return authInitialState;
     case AuthActionTypes.SELECT_PATIENT_INIT:
