@@ -75,4 +75,34 @@ describe('authSagas', () => {
     mockAxios.mockError(err);
     expect(dispatched).toContainEqual(actions.logoutFailedAction(err));
   });
+
+  it('[fetchPatientSaga] - dispatches auth/SELECT_PATIENT_SUCCESS on successful response', () => {
+    const user = {
+      id: 1,
+      nickname: 'tester',
+      timezone: 'Europe/Berlin',
+      enrolledProgrammes: [],
+    };
+    runSaga(
+      { dispatch, getState },
+      authSagas.fetchPatientSaga,
+      actions.selectPatientInitAction('user@example.com')
+    ).toPromise();
+    mockAxios.mockResponse({
+      ...successResponse,
+      data: user,
+    });
+    expect(dispatched).toContainEqual(actions.selectPatientSuccessAction(user));
+  });
+
+  it('[fetchPatientSaga] - dispatches auth/SELECT_PATIENT_FAILED on error', () => {
+    runSaga(
+      { dispatch, getState },
+      authSagas.fetchPatientSaga,
+      actions.selectPatientInitAction('user@example.com')
+    ).toPromise();
+    const err = { name: 'Error', message: 'user not found' };
+    mockAxios.mockError(err);
+    expect(dispatched).toContainEqual(actions.selectPatientFailedAction(err));
+  });
 });
