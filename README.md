@@ -1,6 +1,7 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/49d853bc-ac5a-4a14-9288-f968a0f6dd5f/deploy-status)](https://app.netlify.com/sites/nutri-dashboard/deploys)
+![Netlify](https://img.shields.io/netlify/49d853bc-ac5a-4a14-9288-f968a0f6dd5f.svg?style=flat-square)
+[![codecov](https://img.shields.io/codecov/c/github/cara-care/dashboard.svg?style=flat-square)](https://codecov.io/gh/cara-care/dashboard)
+[![GPL-3.0 License](https://img.shields.io/github/license/cara-care/dashboard.svg?style=flat-square)](https://github.com/cara-care/dashboard/blob/master/LICENSE)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![codecov](https://codecov.io/gh/cara-care/dashboard/branch/master/graph/badge.svg)](https://codecov.io/gh/cara-care/dashboard)
 
 <p align="center">
   <h1 align="center">🍱 💩 Cara Care 🧠 😌</h1>
