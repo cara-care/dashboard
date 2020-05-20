@@ -1,7 +1,7 @@
 import React from 'react';
 import FormGroup from '@material-ui/core/FormGroup';
 import Typography from '@material-ui/core/Typography';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { getIntlContentForChartTrackingType } from './chartOverviewUtils';
 import ChartCheckbox from './ChartCheckbox';
 
@@ -17,7 +17,7 @@ interface OwnProps {
   row?: boolean;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps & WrappedComponentProps;
 
 const ChartCheckboxes: React.FC<Props> = ({
   intl,

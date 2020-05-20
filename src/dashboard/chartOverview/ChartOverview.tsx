@@ -1,7 +1,11 @@
 import React, { useCallback } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -76,7 +80,7 @@ interface DispatchProps {
 
 type Props = StateProps &
   DispatchProps &
-  InjectedIntlProps &
+  WrappedComponentProps &
   WithStyles<typeof styles>;
 
 const ChartOverviewPresenter: React.FC<Props> = ({

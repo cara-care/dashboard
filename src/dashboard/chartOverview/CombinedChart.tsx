@@ -1,7 +1,7 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import moment from 'moment';
 import { ChartTrackingTypes, DataSet } from './chartOverviewUtils';
 
@@ -12,7 +12,7 @@ interface OwnProps {
   endDate: Date;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps & WrappedComponentProps;
 
 class CombinedChart extends React.Component<Props> {
   render() {

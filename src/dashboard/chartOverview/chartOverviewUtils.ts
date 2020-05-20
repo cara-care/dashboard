@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { MessageDescriptor } from 'react-intl';
 
 export enum ChartTrackingTypes {
   bloating = 'bloating',
@@ -157,7 +157,7 @@ export const getCategoryTypeForChartTrackingType = (
 
 export const getIntlContentForChartTrackingType = (
   chartTrackingType: string
-): FormattedMessage.MessageDescriptor => {
+): MessageDescriptor => {
   switch (chartTrackingType) {
     case ChartTrackingTypes.bloating:
       return {

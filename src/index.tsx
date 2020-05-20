@@ -11,26 +11,33 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-if (!window.Intl) {
-  import('intl')
-    .then(() =>
-      Promise.all([
-        // @ts-ignore
-        import('intl/locale-data/jsonp/en.js'),
-        // @ts-ignore
-        import('intl/locale-data/jsonp/de.js'),
-      ])
-    )
-    .then(() => {
-      runApp();
-    })
-    .catch((err) => {
-      Sentry.captureException(err);
-      runApp();
-    });
-} else {
+(async function start() {
+  try {
+    if (!Intl.PluralRules) {
+      // @ts-ignore
+      await import('@formatjs/intl-pluralrules/polyfill');
+      // @ts-ignore
+      await import('@formatjs/intl-pluralrules/dist/locale-data/en');
+      // @ts-ignore
+      await import('@formatjs/intl-pluralrules/dist/locale-data/de');
+    }
+
+    // https://github.com/microsoft/TypeScript/pull/36084
+    // @ts-ignore
+    if (!Intl.RelativeTimeFormat) {
+      // @ts-ignore
+      await import('@formatjs/intl-relativetimeformat/polyfill');
+      // @ts-ignore
+      await import('@formatjs/intl-relativetimeformat/dist/locale-data/en');
+      // @ts-ignore
+      await import('@formatjs/intl-relativetimeformat/dist/locale-data/de');
+    }
+  } catch (err) {
+    Sentry.captureException(err);
+  }
+
   runApp();
-}
+})();
 
 function runApp() {
   ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);

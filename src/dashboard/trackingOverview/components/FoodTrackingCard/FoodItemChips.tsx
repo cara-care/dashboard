@@ -1,5 +1,5 @@
 import React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import Chip from '@material-ui/core/Chip';
 import {
   withStyles,
@@ -31,7 +31,7 @@ interface OwnProps {
   }[];
 }
 
-type Props = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
+type Props = OwnProps & WrappedComponentProps & WithStyles<typeof styles>;
 
 const FoodItemChips: React.FC<Props> = ({
   foodItems,

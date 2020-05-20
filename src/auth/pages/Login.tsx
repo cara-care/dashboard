@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import { useForm } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -20,7 +24,7 @@ interface FormData {
   password: string;
 }
 
-type Props = InjectedIntlProps;
+type Props = WrappedComponentProps;
 
 const useStyles = makeStyles((theme) => ({
   form: {

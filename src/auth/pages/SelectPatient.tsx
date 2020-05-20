@@ -1,7 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -12,7 +16,7 @@ import AuthLayout from '../components/AuthLayout';
 import Modal from '../../components/Modal';
 import getIntercomLink from '../../utils/getIntercomLink';
 
-type Props = InjectedIntlProps;
+type Props = WrappedComponentProps;
 
 const useStyles = makeStyles((theme) => ({
   form: {

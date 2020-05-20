@@ -6,7 +6,7 @@ import {
   StyleRules,
   WithStyles,
 } from '@material-ui/core/styles';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 const styles = (theme: Theme): StyleRules => ({
@@ -27,7 +27,7 @@ interface OwnProps {
   disablePickers: boolean;
 }
 
-type Props = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
+type Props = OwnProps & WrappedComponentProps & WithStyles<typeof styles>;
 
 class DoubleDatePicker extends React.PureComponent<Props> {
   handleChangeStartDate = (date: MaterialUiPickersDate) => {
