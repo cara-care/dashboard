@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import { injectIntl, WrappedComponentProps } from 'react-intl';
 import { DatePicker } from '@material-ui/pickers';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
@@ -27,7 +27,7 @@ interface OwnProps {
   disabled: boolean;
 }
 
-type Props = OwnProps & InjectedIntlProps;
+type Props = OwnProps & WrappedComponentProps;
 
 const TrackingOverviewHeader: React.FC<Props> = ({
   currentDate,

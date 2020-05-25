@@ -1,5 +1,9 @@
 import React from 'react';
-import { FormattedMessage, injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps,
+} from 'react-intl';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import {
@@ -54,7 +58,7 @@ interface OwnProps {
   trackingDataPoint: TrackingDataPoint;
 }
 
-type Props = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
+type Props = OwnProps & WrappedComponentProps & WithStyles<typeof styles>;
 
 const NonFoodTrackingCard: React.FC<Props> = ({
   classes,

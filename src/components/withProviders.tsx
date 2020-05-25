@@ -4,9 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-import { addLocaleData, IntlProvider } from 'react-intl';
-import * as en from 'react-intl/locale-data/en';
-import * as de from 'react-intl/locale-data/de';
+import { IntlProvider } from 'react-intl';
 import moment from 'moment';
 import 'moment/locale/de';
 import configureStore from '../utils/store';
@@ -25,10 +23,6 @@ const messages = {
   en: require('../locale/en.json'),
   de: require('../locale/de.json'),
 };
-
-if (process.env.NODE_ENV !== 'test') {
-  addLocaleData([...en, ...de]);
-}
 
 const store = configureStore();
 
