@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
@@ -69,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
 const NavBar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const intl = useIntl();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const isPatientSelected = useSelector(hasPatientId);
   const patientNickname = useSelector(getPatientNickname);
@@ -126,7 +127,12 @@ const NavBar: React.FC = () => {
             </Hidden>
           </div>
           <nav className={classes.nav}>
-            <Tooltip title={'Change language'}>
+            <Tooltip
+              title={intl.formatMessage({
+                id: 'common.changeLanguage',
+                defaultMessage: 'Change Language',
+              })}
+            >
               <Button
                 aria-controls="language-menu"
                 aria-haspopup="true"
@@ -135,7 +141,10 @@ const NavBar: React.FC = () => {
                 <Translate />
                 <span className={classes.language}>
                   {LOCALES.find((el) => el.code === currentLocale)?.locale ||
-                    'Language'}
+                    intl.formatMessage({
+                      id: 'common.language',
+                      defaultMessage: 'Language',
+                    })}
                 </span>
                 <ExpandMore fontSize="small" />
               </Button>
