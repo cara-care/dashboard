@@ -4,6 +4,7 @@ import {
   combineReducers,
   compose,
   Middleware,
+  PreloadedState,
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
@@ -27,8 +28,10 @@ import {
 import { authReducer, rootAuthSaga, AuthState, AuthActions } from '../auth';
 import * as TrackingOverviewSagas from '../dashboard/trackingOverview/redux/trackingOverviewSagas';
 import * as ChartOverviewSagas from '../dashboard/chartOverview/redux/chartSagas';
+import { localeReducer, LocaleState, LocaleActions } from '../locale';
 
 export interface RootState {
+  locale: LocaleState;
   auth: AuthState;
   chartOverview: ChartOverviewState;
   trackingOverview: TrackingOverviewState;
@@ -36,13 +39,17 @@ export interface RootState {
 }
 
 export type RootActions =
+  | LocaleActions
   | AuthActions
   | ChartOverviewActions
   | TrackingOverviewActions
   | QuestionnairesActions;
 
-export default function configureStore(preloadedState?: RootState) {
+export default function configureStore(
+  preloadedState?: PreloadedState<RootState>
+) {
   const rootReducer = combineReducers<RootState, RootActions>({
+    locale: localeReducer,
     auth: authReducer,
     chartOverview,
     trackingOverview: trackingOverviewReducer,

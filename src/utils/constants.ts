@@ -3,3 +3,7 @@ export const BACKEND_HOST =
     ? 'https://backend.gohidoc.com'
     : 'https://backend-staging.gohidoc.com';
 export const INTERCOM_APP_ID = process.env.REACT_APP_INTERCOM_APP_ID;
+export const LOCALES = [
+  { code: 'en', locale: 'English' },
+  { code: 'de', locale: 'Deutsch' },
+];

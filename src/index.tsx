@@ -1,9 +1,19 @@
 import 'react-app-polyfill/ie11';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import throttle from 'lodash/throttle';
 import * as Sentry from '@sentry/browser';
+// @ts-ignore
+import browserLocale from 'browser-locale';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { loadLocale, saveLocale } from './locale';
+import configureStore from './utils/store';
+import { authInitialState } from './auth';
+import { chartOverviewInitialState } from './dashboard/chartOverview/redux/chartOverview';
+import { questionnairesInitialState } from './questionnaires';
+import { trackingOverviewInitalState } from './dashboard/trackingOverview/redux/trackingOverview';
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
@@ -12,6 +22,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 (async function start() {
+  const locale = browserLocale() || 'en';
+
   try {
     if (!Intl.PluralRules) {
       // @ts-ignore
@@ -36,11 +48,35 @@ if (process.env.NODE_ENV === 'production') {
     Sentry.captureException(err);
   }
 
-  runApp();
+  runApp(locale);
 })();
 
-function runApp() {
-  ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+function runApp(browserLanguage: string) {
+  const persistedLocale = loadLocale();
+  let intlLocale = browserLanguage.substr(0, 2);
+  if (intlLocale !== 'en' && intlLocale !== 'de') {
+    intlLocale = 'en';
+  }
+
+  const store = configureStore({
+    locale: { locale: persistedLocale || intlLocale },
+    auth: authInitialState,
+    chartOverview: chartOverviewInitialState,
+    questionnaires: questionnairesInitialState,
+    trackingOverview: trackingOverviewInitalState,
+  });
+  store.subscribe(
+    throttle(() => {
+      saveLocale(store.getState().locale.locale);
+    }, 3500)
+  );
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root') as HTMLElement
+  );
   // If you want your app to work offline and load faster, you can change
   // unregister() to register() below. Note this comes with some pitfalls.
   // Learn more about service workers: https://bit.ly/CRA-PWA
