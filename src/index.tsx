@@ -10,10 +10,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { loadLocale, saveLocale } from './locale';
 import configureStore from './utils/store';
-import { authInitialState } from './auth';
-import { chartOverviewInitialState } from './dashboard/chartOverview/redux/chartOverview';
-import { questionnairesInitialState } from './questionnaires';
-import { trackingOverviewInitalState } from './dashboard/trackingOverview/redux/trackingOverview';
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
@@ -53,18 +49,13 @@ if (process.env.NODE_ENV === 'production') {
 
 function runApp(browserLanguage: string) {
   const persistedLocale = loadLocale();
-  let intlLocale = browserLanguage.substr(0, 2);
-  if (intlLocale !== 'en' && intlLocale !== 'de') {
-    intlLocale = 'en';
+  let initalLocale = browserLanguage.substr(0, 2);
+  if (initalLocale !== 'en' && initalLocale !== 'de') {
+    initalLocale = 'en';
   }
 
-  const store = configureStore({
-    locale: { locale: persistedLocale || intlLocale },
-    auth: authInitialState,
-    chartOverview: chartOverviewInitialState,
-    questionnaires: questionnairesInitialState,
-    trackingOverview: trackingOverviewInitalState,
-  });
+  const store = configureStore(persistedLocale || initalLocale);
+
   store.subscribe(
     throttle(() => {
       saveLocale(store.getState().locale.locale);
