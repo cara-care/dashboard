@@ -15,7 +15,7 @@ export interface TrackingOverviewState {
   data: TrackingDataPoint[];
 }
 
-const initialState = {
+export const trackingOverviewInitalState = {
   date: newDate(0),
   isFetching: false,
   invalidToken: false,
@@ -27,7 +27,7 @@ const initialState = {
 export const trackingOverviewReducer: Reducer<
   TrackingOverviewState,
   TrackingOverviewActions
-> = (state = initialState, action) => {
+> = (state = trackingOverviewInitalState, action) => {
   switch (action.type) {
     case TrackingOverviewActionTypes.FETCH_TRACKING_DATA_INIT:
       return {

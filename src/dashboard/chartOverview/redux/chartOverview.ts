@@ -55,7 +55,7 @@ export const getInitialFiltersChartsFilters = () => {
     }));
 };
 
-const initialState: ChartOverviewState = {
+export const chartOverviewInitialState: ChartOverviewState = {
   startDate: newDate(-6, new Date()),
   endDate: newDate(0, new Date()),
   isFetching: false,
@@ -70,7 +70,7 @@ const initialState: ChartOverviewState = {
 export const chartOverview: Reducer<
   ChartOverviewState,
   ChartOverviewActions
-> = (state = initialState, action) => {
+> = (state = chartOverviewInitialState, action) => {
   let startDate, endDate;
   switch (action.type) {
     case ChartOverviewActionTypes.FETCH_CHART_DATA_INIT:

@@ -1,9 +1,15 @@
 import 'react-app-polyfill/ie11';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import throttle from 'lodash/throttle';
 import * as Sentry from '@sentry/browser';
+// @ts-ignore
+import browserLocale from 'browser-locale';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { loadLocale, saveLocale } from './locale';
+import configureStore from './utils/store';
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
@@ -12,6 +18,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 (async function start() {
+  const locale = browserLocale() || 'en';
+
   try {
     if (!Intl.PluralRules) {
       // @ts-ignore
@@ -36,11 +44,30 @@ if (process.env.NODE_ENV === 'production') {
     Sentry.captureException(err);
   }
 
-  runApp();
+  runApp(locale);
 })();
 
-function runApp() {
-  ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+function runApp(browserLanguage: string) {
+  const persistedLocale = loadLocale();
+  let initalLocale = browserLanguage.substr(0, 2);
+  if (initalLocale !== 'en' && initalLocale !== 'de') {
+    initalLocale = 'en';
+  }
+
+  const store = configureStore(persistedLocale || initalLocale);
+
+  store.subscribe(
+    throttle(() => {
+      saveLocale(store.getState().locale.locale);
+    }, 3500)
+  );
+
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root') as HTMLElement
+  );
   // If you want your app to work offline and load faster, you can change
   // unregister() to register() below. Note this comes with some pitfalls.
   // Learn more about service workers: https://bit.ly/CRA-PWA

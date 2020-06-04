@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
@@ -8,7 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import Translate from '@material-ui/icons/Translate';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import Tooltip from '@material-ui/core/Tooltip';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   isAuthenticated as isAuthenticatedSelector,
@@ -17,7 +21,9 @@ import {
   unselectPatientAction,
   logoutInitAction,
 } from '../auth';
+import { getCurrentLocale, setLocale } from '../locale';
 import Logo from '../assets/images/logo.png';
+import { LOCALES } from '../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -47,7 +53,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  language: {
+    margin: theme.spacing(0, 0.5, 0, 1),
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+    },
+  },
   button: {
+    marginLeft: 20,
     marginRight: 20,
   },
 }));
@@ -55,15 +69,37 @@ const useStyles = makeStyles((theme) => ({
 const NavBar: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const intl = useIntl();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const isPatientSelected = useSelector(hasPatientId);
   const patientNickname = useSelector(getPatientNickname);
+  const currentLocale = useSelector(getCurrentLocale);
+  const [languageMenu, setLanguageMenu] = React.useState<
+    (EventTarget & HTMLButtonElement) | null
+  >(null);
   const unselectPatient = useCallback(() => {
     dispatch(unselectPatientAction());
   }, [dispatch]);
   const handleLogout = useCallback(() => {
     dispatch(logoutInitAction());
   }, [dispatch]);
+  const handleLocaleChange = useCallback(
+    (locale: string) => {
+      dispatch(setLocale(locale));
+    },
+    [dispatch]
+  );
+  const handleLanguageMenuOpen = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    setLanguageMenu(event.currentTarget);
+  };
+  const handleLanguageMenuClose = (localeCode?: string) => {
+    if (localeCode) {
+      handleLocaleChange(localeCode);
+    }
+    setLanguageMenu(null);
+  };
 
   return (
     <AppBar elevation={0} color="default" className={classes.appBar}>
@@ -91,6 +127,45 @@ const NavBar: React.FC = () => {
             </Hidden>
           </div>
           <nav className={classes.nav}>
+            <Tooltip
+              title={intl.formatMessage({
+                id: 'common.changeLanguage',
+                defaultMessage: 'Change Language',
+              })}
+            >
+              <Button
+                aria-controls="language-menu"
+                aria-haspopup="true"
+                onClick={handleLanguageMenuOpen}
+              >
+                <Translate />
+                <span className={classes.language}>
+                  {LOCALES.find((el) => el.code === currentLocale)?.locale ||
+                    intl.formatMessage({
+                      id: 'common.language',
+                      defaultMessage: 'Language',
+                    })}
+                </span>
+                <ExpandMore fontSize="small" />
+              </Button>
+            </Tooltip>
+            <Menu
+              id="language-menu"
+              anchorEl={languageMenu}
+              open={Boolean(languageMenu)}
+              onClose={() => handleLanguageMenuClose()}
+            >
+              {LOCALES.map(({ code, locale }) => (
+                <MenuItem
+                  key={code}
+                  lang={code}
+                  selected={currentLocale === locale}
+                  onClick={() => handleLanguageMenuClose(code)}
+                >
+                  {locale}
+                </MenuItem>
+              ))}
+            </Menu>
             {isAuthenticated && (
               <>
                 <Hidden mdDown>
