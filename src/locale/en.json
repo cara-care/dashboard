@@ -422,5 +422,12 @@
   "forgotPassword.resetInstructionsSent": "Reset password instructions sent!",
   "forgotPassword.failedToSendResetInstructions": "Failed to send reset password instructions!",
   "forgotPassword.sendResetInstructions": "Send reset password instructions",
-  "forgotPassword.returnToLogin": "Return to login"
+  "forgotPassword.returnToLogin": "Return to login",
+  "resetPassword.resetPassword": "Reset Password",
+  "resetPassword.newPassword": "New password",
+  "resetPassword.confirmNewPassword": "Confirm new password",
+  "common.minimumCharaters": "Minimum {num} characters",
+  "resetPassword.yourPasswordHasBeenUpdated": "Your password has been updated. You can now sign in with your updated password.",
+  "resetPassword.passwordsDontMatch": "Passwords don't match",
+  "resetPassword.tokenIsInvalidOrExpired": "Failed to reset password, you token is either invalid or expired."
 }

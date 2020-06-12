@@ -132,4 +132,14 @@ export const requestResetPassword = (username: string) => {
   return api.post('/dashboard/request-reset-password/', { username });
 };
 
+export const resetPassword = ({
+  password,
+  token,
+}: {
+  password: string;
+  token: string;
+}) => {
+  return api.post('/dashboard/reset-password/', { password, token });
+};
+
 export default api;
