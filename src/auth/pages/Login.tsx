@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   FormattedMessage,
@@ -11,6 +11,10 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { makeStyles } from '@material-ui/core/styles';
 import { isAuthenticating } from '../authReducer';
 import { loginInitAction } from '../authActions';
@@ -48,6 +52,7 @@ const Login: React.FC<Props> = ({ intl }) => {
   const classes = useStyles();
   const { register, handleSubmit } = useForm<FormData>();
   const isFetching = useSelector(isAuthenticating);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const authenticationErrorMessage = useSelector<RootState, string>(
     (state) => state.auth.error?.message || ''
   );
@@ -58,6 +63,9 @@ const Login: React.FC<Props> = ({ intl }) => {
     },
     [dispatch]
   );
+  const toggleIsPasswordVisible = useCallback(() => {
+    setIsPasswordVisible((isVisible) => !isVisible);
+  }, []);
 
   useAutoLogin();
 
@@ -87,10 +95,22 @@ const Login: React.FC<Props> = ({ intl }) => {
           label={intl.formatMessage({
             id: 'nutri.login.password',
           })}
-          type="password"
+          type={isPasswordVisible ? 'text' : 'password'}
           margin="normal"
           required
           fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleIsPasswordVisible}
+                >
+                  {isPasswordVisible ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Button
           disabled={isFetching}
