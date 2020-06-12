@@ -128,4 +128,8 @@ export const getQuestionnaire = ({
   return api.get(`/dashboard/${userId}/questionnaires/${submissionId}/`);
 };
 
+export const requestResetPassword = (username: string) => {
+  return api.post('/dashboard/request-reset-password/', { username });
+};
+
 export default api;

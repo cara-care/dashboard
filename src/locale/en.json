@@ -416,5 +416,11 @@
   "search.sorryNoResultsFor": "Sorry, there are no results for {phrase}. Please try another phrase.",
   "timePicker.CANCEL": "CANCEL",
   "_.common.error": "Error",
-  "_.common.logout": "Logout"
+  "_.common.logout": "Logout",
+  "forgotPassword.forgotPassword?": "Forgot Password?",
+  "forgotPassword.enterYourUsernameWeWillSendEmail": "Enter your username and we’ll send you an email with instructions to reset your password.",
+  "forgotPassword.resetInstructionsSent": "Reset password instructions sent!",
+  "forgotPassword.failedToSendResetInstructions": "Failed to send reset password instructions!",
+  "forgotPassword.sendResetInstructions": "Send reset password instructions",
+  "forgotPassword.returnToLogin": "Return to login"
 }
