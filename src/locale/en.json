@@ -429,5 +429,10 @@
   "common.minimumCharaters": "Minimum {num} characters",
   "resetPassword.yourPasswordHasBeenUpdated": "Your password has been updated. You can now sign in with your updated password.",
   "resetPassword.passwordsDontMatch": "Passwords don't match",
-  "resetPassword.tokenIsInvalidOrExpired": "Failed to reset password, you token is either invalid or expired."
+  "resetPassword.tokenIsInvalidOrExpired": "Failed to reset password, you token is either invalid or expired.",
+  "changePassword.changePassword": "Change Password",
+  "changePassword.currentPassword": "Current password",
+  "changePassword.goBack": "Go back",
+  "changePassword.yourPasswordHasBeenUpdated": "Your password has been updated",
+  "changePassword.failedToChangePassword": "Failed to change your password, make sure you entered your current password correctly."
 }

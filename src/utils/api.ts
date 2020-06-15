@@ -142,4 +142,17 @@ export const resetPassword = ({
   return api.post('/dashboard/reset-password/', { password, token });
 };
 
+export const changePassword = ({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string;
+  newPassword: string;
+}) => {
+  return api.post('/dashboard/change-password/', {
+    current: currentPassword,
+    new: newPassword,
+  });
+};
+
 export default api;

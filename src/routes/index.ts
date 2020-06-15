@@ -1,5 +1,11 @@
 import React from 'react';
-import { Login, SelectPatient, ForgotPassword, ResetPassword } from '../auth';
+import {
+  Login,
+  SelectPatient,
+  ForgotPassword,
+  ResetPassword,
+  ChangePassword,
+} from '../auth';
 import NotFound from './NotFound';
 
 const Dashboard = React.lazy(() => import('../dashboard/Dashboard'));
@@ -39,6 +45,12 @@ export default [
   {
     path: '/nutri/reset-password',
     component: ResetPassword,
+    exact: false,
+    authRequired: false,
+  },
+  {
+    path: '/nutri/change-password',
+    component: ChangePassword,
     exact: false,
     authRequired: false,
   },
