@@ -46,7 +46,7 @@ export default [
     path: '/nutri/select-patient',
     component: SelectPatient,
     exact: false,
-    authRequired: true,
+    authRequired: false,
   },
   {
     path: '/nutri/questionnaires',
