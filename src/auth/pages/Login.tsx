@@ -1,10 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  FormattedMessage,
-  injectIntl,
-  WrappedComponentProps,
-} from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -28,8 +24,6 @@ interface FormData {
   password: string;
 }
 
-type Props = WrappedComponentProps;
-
 const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
@@ -48,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login: React.FC<Props> = ({ intl }) => {
+const Login: React.FC = () => {
   const classes = useStyles();
+  const intl = useIntl();
   const { register, handleSubmit } = useForm<FormData>();
   const isFetching = useSelector(isAuthenticating);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -130,4 +125,4 @@ const Login: React.FC<Props> = ({ intl }) => {
   );
 };
 
-export default injectIntl(Login);
+export default Login;
