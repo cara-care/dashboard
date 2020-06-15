@@ -10,7 +10,12 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { hasPatientId, isSelectingPatient, hasError } from '../authReducer';
+import {
+  hasPatientId,
+  isSelectingPatient,
+  hasError,
+  isAuthenticated as isAuthenticatedSelector,
+} from '../authReducer';
 import { selectPatientInitAction, resetErrorAction } from '../authActions';
 import AuthLayout from '../components/AuthLayout';
 import Modal from '../../components/Modal';
@@ -40,6 +45,7 @@ const SelectPatient: React.FC<Props> = ({ intl }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const isPatientSelected = useSelector(hasPatientId);
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
   const isFetching = useSelector(isSelectingPatient);
   const isErrorDialogOpen = useSelector(hasError);
   const selectPatient = useCallback(
@@ -58,6 +64,10 @@ const SelectPatient: React.FC<Props> = ({ intl }) => {
     e.preventDefault();
     selectPatient(email);
   };
+
+  if (!isAuthenticated) {
+    return <Redirect to="/nutri/login" />;
+  }
 
   if (isPatientSelected) {
     return <Redirect to="/nutri" />;

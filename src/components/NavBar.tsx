@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Translate from '@material-ui/icons/Translate';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -22,6 +23,7 @@ import {
   logoutInitAction,
 } from '../auth';
 import { getCurrentLocale, setLocale } from '../locale';
+import Link from '../components/Link';
 import Logo from '../assets/images/logo.png';
 import { LOCALES } from '../utils/constants';
 
@@ -183,6 +185,19 @@ const NavBar: React.FC = () => {
                     </Button>
                   )}
                 </Hidden>
+                <Tooltip
+                  title={
+                    <FormattedMessage
+                      id="changePassword.changePassword"
+                      defaultMessage="Change Password"
+                    />
+                  }
+                  aria-label="change password"
+                >
+                  <IconButton to="/nutri/change-password" component={Link}>
+                    <VpnKeyIcon />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip
                   title={
                     <FormattedMessage

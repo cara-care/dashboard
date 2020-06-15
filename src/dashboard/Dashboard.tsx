@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TrackingOverview from './trackingOverview/TrackingOverview';
@@ -23,7 +23,6 @@ const Dashboard: React.FC<RouteComponentProps<{
 }>> = ({ match }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const isPatientSelected = useSelector(hasPatientId);
   const isAuthenticated = useSelector(hasPatientId);
   const { token } = match.params;
   const fetchTrackingData = useCallback(() => {
@@ -42,10 +41,6 @@ const Dashboard: React.FC<RouteComponentProps<{
     fetchTrackingData();
     fetchChartData();
   }, [token, fetchTrackingData, fetchChartData]);
-
-  if (!token && !isPatientSelected) {
-    return <Redirect to="/nutri/select-patient" />;
-  }
 
   return (
     <>
