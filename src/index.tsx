@@ -9,6 +9,7 @@ import browserLocale from 'browser-locale';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { loadLocale, saveLocale } from './locale';
+import { loadTheme, saveTheme } from './theme';
 import configureStore from './utils/store';
 
 if (process.env.NODE_ENV === 'production') {
@@ -49,16 +50,24 @@ if (process.env.NODE_ENV === 'production') {
 
 function runApp(browserLanguage: string) {
   const persistedLocale = loadLocale();
+  const persistedTheme = loadTheme();
   let initalLocale = browserLanguage.substr(0, 2);
   if (initalLocale !== 'en' && initalLocale !== 'de') {
     initalLocale = 'en';
   }
 
-  const store = configureStore(persistedLocale || initalLocale);
+  const store = configureStore({
+    preloadedLocale: persistedLocale || initalLocale,
+    preloadedTheme: persistedTheme,
+  });
 
   store.subscribe(
     throttle(() => {
-      saveLocale(store.getState().locale.locale);
+      const state = store.getState();
+      saveLocale(state.locale.locale);
+      if (state.theme.theme) {
+        saveTheme(state.theme.theme);
+      }
     }, 3500)
   );
 

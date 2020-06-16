@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -7,8 +7,9 @@ import MomentUtils from '@date-io/moment';
 import { IntlProvider } from 'react-intl';
 import moment from 'moment';
 import 'moment/locale/de';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { RootState } from '../utils/store';
-import { theme } from '../utils/theme';
+import { lightTheme, darkTheme } from '../theme';
 
 const messages = {
   en: require('../locale/en.json'),
@@ -17,10 +18,26 @@ const messages = {
 
 const withProviders = (Component: React.ComponentType) => {
   const WithProviders = (props: any) => {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const locale = useSelector<RootState, string>(
       (state) => state.locale.locale
     );
-    moment.locale(locale);
+    const preferedTheme = useSelector<
+      RootState,
+      'dark' | 'light' | null | undefined
+    >((state) => state.theme.theme);
+    const theme = useMemo(() => {
+      if (preferedTheme) {
+        return preferedTheme === 'dark' ? darkTheme : lightTheme;
+      } else {
+        return prefersDarkMode ? darkTheme : lightTheme;
+      }
+    }, [preferedTheme, prefersDarkMode]);
+
+    useEffect(() => {
+      moment.locale(locale);
+    }, [locale]);
+
     return (
       <IntlProvider locale={locale} messages={messages[locale]}>
         <MuiThemeProvider theme={theme}>

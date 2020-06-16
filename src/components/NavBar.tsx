@@ -14,6 +14,8 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   isAuthenticated as isAuthenticatedSelector,
@@ -23,6 +25,7 @@ import {
   logoutInitAction,
 } from '../auth';
 import { getCurrentLocale, setLocale } from '../locale';
+import { useIsDarkMode, setTheme } from '../theme';
 import Link from '../components/Link';
 import Logo from '../assets/images/logo.png';
 import { LOCALES } from '../utils/constants';
@@ -76,6 +79,7 @@ const NavBar: React.FC = () => {
   const isPatientSelected = useSelector(hasPatientId);
   const patientNickname = useSelector(getPatientNickname);
   const currentLocale = useSelector(getCurrentLocale);
+  const isDarkMode = useIsDarkMode();
   const [languageMenu, setLanguageMenu] = React.useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
@@ -91,6 +95,12 @@ const NavBar: React.FC = () => {
     },
     [dispatch]
   );
+  const handleThemeChange = useCallback(
+    (nextTheme: 'dark' | 'light') => {
+      dispatch(setTheme(nextTheme));
+    },
+    [dispatch]
+  );
   const handleLanguageMenuOpen = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -102,6 +112,9 @@ const NavBar: React.FC = () => {
     }
     setLanguageMenu(null);
   };
+  const toggleTheme = useCallback(() => {
+    handleThemeChange(isDarkMode ? 'light' : 'dark');
+  }, [handleThemeChange, isDarkMode]);
 
   return (
     <AppBar elevation={0} color="default" className={classes.appBar}>
@@ -168,6 +181,20 @@ const NavBar: React.FC = () => {
                 </MenuItem>
               ))}
             </Menu>
+            <Tooltip
+              title={intl.formatMessage({
+                id: 'navbar.toggleTheme',
+                defaultMessage: 'Toggle light/dark theme',
+              })}
+              aria-label={intl.formatMessage({
+                id: 'navbar.toggleTheme',
+                defaultMessage: 'Toggle light/dark theme',
+              })}
+            >
+              <IconButton onClick={toggleTheme}>
+                {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </Tooltip>
             {isAuthenticated && (
               <>
                 <Hidden mdDown>

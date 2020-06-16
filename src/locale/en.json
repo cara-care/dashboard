@@ -434,5 +434,6 @@
   "changePassword.currentPassword": "Current password",
   "changePassword.goBack": "Go back",
   "changePassword.yourPasswordHasBeenUpdated": "Your password has been updated",
-  "changePassword.failedToChangePassword": "Failed to change your password, make sure you entered your current password correctly."
+  "changePassword.failedToChangePassword": "Failed to change your password, make sure you entered your current password correctly.",
+  "navbar.toggleTheme": "Toggle light/dark theme"
 }

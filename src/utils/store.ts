@@ -37,6 +37,7 @@ import {
 import * as TrackingOverviewSagas from '../dashboard/trackingOverview/redux/trackingOverviewSagas';
 import * as ChartOverviewSagas from '../dashboard/chartOverview/redux/chartSagas';
 import { localeReducer, LocaleState, LocaleActions } from '../locale';
+import { themeReducer, ThemeState, ThemeActions } from '../theme';
 
 export interface RootState {
   locale: LocaleState;
@@ -44,6 +45,7 @@ export interface RootState {
   chartOverview: ChartOverviewState;
   trackingOverview: TrackingOverviewState;
   questionnaires: QuestionnairesState;
+  theme: ThemeState;
 }
 
 export type RootActions =
@@ -51,15 +53,23 @@ export type RootActions =
   | AuthActions
   | ChartOverviewActions
   | TrackingOverviewActions
-  | QuestionnairesActions;
+  | QuestionnairesActions
+  | ThemeActions;
 
-export default function configureStore(preloadedLocale: string) {
+export default function configureStore({
+  preloadedLocale,
+  preloadedTheme,
+}: {
+  preloadedLocale: string;
+  preloadedTheme: 'dark' | 'light' | undefined | null;
+}) {
   const rootReducer = combineReducers<RootState, RootActions>({
     locale: localeReducer,
     auth: authReducer,
     chartOverview,
     trackingOverview: trackingOverviewReducer,
     questionnaires: questionnairesReducer,
+    theme: themeReducer,
   });
 
   function* rootSaga() {
@@ -95,6 +105,7 @@ export default function configureStore(preloadedLocale: string) {
       chartOverview: chartOverviewInitialState,
       questionnaires: questionnairesInitialState,
       trackingOverview: trackingOverviewInitalState,
+      theme: { theme: preloadedTheme },
     },
     composeEnhancers(applyMiddleware(...middlewares))
   );
