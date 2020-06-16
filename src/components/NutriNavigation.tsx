@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   link: {
     margin: `0 ${theme.spacing(4)}px`,
     textDecoration: 'none',
-    color: '#fff',
+    color: theme.palette.primary.contrastText,
     fontWeight: 500,
     letterSpacing: '0.02857em',
     opacity: 0.7,
