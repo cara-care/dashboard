@@ -25,7 +25,7 @@ import {
 } from '../trackingOverviewUtils';
 import { TrackingDataPoint, TrackingTypes } from '../../types';
 import { getTime } from '../../../utils/dateUtils';
-import { useIsDarkMode } from '../../../utils/theme';
+import { useIsDarkMode } from '../../../theme';
 import './NonFoodTrackingCard.css';
 
 const styles = (theme: Theme): StyleRules => ({
