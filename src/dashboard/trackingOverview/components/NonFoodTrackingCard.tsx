@@ -13,6 +13,7 @@ import {
   WithStyles,
 } from '@material-ui/core/styles';
 import { v4 } from 'uuid';
+import cx from 'classnames';
 import TrackingOverviewCardHeader from './TrackingOverviewCardHeader';
 import {
   getIntlLabelForTrackingType,
@@ -24,7 +25,7 @@ import {
 } from '../trackingOverviewUtils';
 import { TrackingDataPoint, TrackingTypes } from '../../types';
 import { getTime } from '../../../utils/dateUtils';
-
+import { useIsDarkMode } from '../../../utils/theme';
 import './NonFoodTrackingCard.css';
 
 const styles = (theme: Theme): StyleRules => ({
@@ -35,6 +36,10 @@ const styles = (theme: Theme): StyleRules => ({
   body: {
     margin: `${theme.spacing()}px auto`,
     width: '80%',
+  },
+  bodyInner: {
+    display: 'flex',
+    alignItems: 'center',
   },
   footer: {
     margin: '0 auto',
@@ -52,6 +57,9 @@ const styles = (theme: Theme): StyleRules => ({
     maxWidth: '100%',
     height: 'auto',
   },
+  whiteFilter: {
+    filter: 'brightness(0) invert(1)',
+  },
 });
 
 interface OwnProps {
@@ -66,7 +74,7 @@ const NonFoodTrackingCard: React.FC<Props> = ({
   trackingDataPoint,
 }) => {
   const { type, timestampTracking, tags } = trackingDataPoint;
-
+  const isDarkMode = useIsDarkMode();
   let textContent = null;
   let textValue = getTranslatedTextIdForTrackingDataValue(trackingDataPoint);
 
@@ -101,13 +109,13 @@ const NonFoodTrackingCard: React.FC<Props> = ({
         }
       />
       <div className={classes.body}>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <div className={getTrackingIconClassName(trackingDataPoint)} />
+        <div className={classes.bodyInner}>
+          <div
+            className={cx(
+              getTrackingIconClassName(trackingDataPoint),
+              isDarkMode ? classes.whiteFilter : undefined
+            )}
+          />
           <Typography>{textContent}</Typography>
         </div>
       </div>
