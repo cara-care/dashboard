@@ -1,6 +1,6 @@
 describe('smoke test', () => {
-  it("doesn't catch crash on open 🔥", () => {
-    cy.visit('https://localhost:3000/')
+  it("doesn't crash on open 🔥", () => {
+    cy.visit('/')
       .get('.NotFound-root-20 > .MuiTypography-root')
       .should(
         'have.text',

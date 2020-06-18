@@ -33,6 +33,8 @@ jobs:
         run: yarn test --coverage --no-watch --watch=false --watchAll=false --no-watchman --forceExit
         env:
           CI: true
+      - name: test e2e
+        run: yarn test:e2e
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
