@@ -39,7 +39,7 @@ Cypress.Commands.add('setDatePickerDateTo', ({ year, month, day }) => {
   const currentMonth = new Date().getMonth() + 1;
   if (currentMonth !== month) {
     if (currentMonth < month) {
-      // click ">" button until it's June
+      // click ">" button until it's the target month
       _.times(month - currentMonth, async () => {
         cy.get(
           '.MuiPickersCalendarHeader-switchHeader > :nth-child(3) > .MuiIconButton-label > .MuiSvgIcon-root'
@@ -48,7 +48,7 @@ Cypress.Commands.add('setDatePickerDateTo', ({ year, month, day }) => {
           .click();
       });
     } else {
-      // click "<" button until it's June
+      // click "<" button until it's the target month
       _.times(currentMonth - month, async () => {
         cy.get(
           '.MuiPickersCalendarHeader-switchHeader > :nth-child(1) > .MuiIconButton-label > .MuiSvgIcon-root'
