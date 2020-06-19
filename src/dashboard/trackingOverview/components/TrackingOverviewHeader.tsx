@@ -7,6 +7,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight';
 import grey from '@material-ui/core/colors/grey';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles } from '@material-ui/core/styles';
+import { TRACKING_OVERVIEW_DATEPICKER } from '../../../utils/test-helpers';
 
 const useStyles = makeStyles((_) => ({
   wrapper: {
@@ -61,6 +62,7 @@ const TrackingOverviewHeader: React.FC<Props> = ({
         style={{ width: '85px' }}
         onChange={onChangeDate}
         format="L"
+        data-testid={TRACKING_OVERVIEW_DATEPICKER}
         autoOk={true}
         value={currentDate}
         cancelLabel={intl.formatMessage({ id: 'timePicker.CANCEL' })}
