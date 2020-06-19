@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "https://backend-staging.gohidoc.com",
+  "resolutions": {
+    "cypress": "4.3.0"
+  },
   "scripts": {
     "cy:open": "cypress open",
     "cy:run": "cypress run",
