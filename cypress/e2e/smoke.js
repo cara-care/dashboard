@@ -1,10 +1,8 @@
+import { NOT_FOUND_TEXT_ID } from '../../src/utils/test-helpers';
+
 describe('smoke test', () => {
   it("doesn't crash on open 🔥", () => {
-    cy.visit('/')
-      .get('.NotFound-root-20 > .MuiTypography-root')
-      .should(
-        'have.text',
-        "Oops, it looks like this is not a valid link. To get a valid link, go to the Cara app and request sharing access via Cara's desktop web interface."
-      );
+    cy.visit('/');
+    cy.findByTestId(NOT_FOUND_TEXT_ID).should('be.visible');
   });
 });
