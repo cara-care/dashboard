@@ -34,6 +34,7 @@ import {
 } from './redux/chartOverviewActions';
 import { RootState, RootActions } from '../../utils/store';
 import { ChartTrackingType, ChartFilter } from './chartOverviewUtils';
+import { EXPORT_TOKEN_INVALID } from '../../utils/test-helpers';
 
 const styles = (theme: Theme): StyleRules => ({
   chartPaper: {
@@ -128,7 +129,10 @@ const ChartOverviewPresenter: React.FC<Props> = ({
       <Grid item xs={12}>
         <Paper className={classes.chartPaper}>
           {invalidToken ? (
-            <div className={classes.errorRoot}>
+            <div
+              data-testid={EXPORT_TOKEN_INVALID}
+              className={classes.errorRoot}
+            >
               <Warning color="error" className={classes.errorIcon} />
               <Typography variant="h6" component="h6">
                 <FormattedMessage id="_.common.error" defaultMessage="Error" />

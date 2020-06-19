@@ -29,6 +29,7 @@ import { useIsDarkMode, setTheme } from '../theme';
 import Link from '../components/Link';
 import Logo from '../assets/images/logo.png';
 import { LOCALES } from '../utils/constants';
+import { LANGUAGE_MENU_BUTTON } from '../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -151,6 +152,7 @@ const NavBar: React.FC = () => {
               <Button
                 aria-controls="language-menu"
                 aria-haspopup="true"
+                data-testid={LANGUAGE_MENU_BUTTON}
                 onClick={handleLanguageMenuOpen}
               >
                 <Translate />

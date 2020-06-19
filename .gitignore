@@ -37,3 +37,7 @@ package-lock.json
 
 # eslint cache
 .eslintcache
+
+# cypress
+cypress/videos
+cypress/screenshots

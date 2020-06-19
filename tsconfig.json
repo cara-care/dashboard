@@ -21,7 +21,8 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "types": ["cypress", "@types/testing-library__cypress"]
   },
   "include": ["src"]
 }

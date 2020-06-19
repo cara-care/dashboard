@@ -8,6 +8,7 @@ import {
   WithStyles,
 } from '@material-ui/core/styles';
 import isMobileDevice from '../utils/IsMobileDevice';
+import { NOT_FOUND_TEXT_ID } from '../utils/test-helpers';
 
 const styles = (theme: Theme): StyleRules => ({
   root: {
@@ -29,7 +30,7 @@ class NotFound extends React.Component<Props> {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <Typography>
+        <Typography data-testid={NOT_FOUND_TEXT_ID}>
           {isMobileDevice() ? (
             <FormattedMessage id="404.onlyAvailableOnComputer" />
           ) : (
