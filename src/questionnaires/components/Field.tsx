@@ -86,7 +86,7 @@ const Field: React.FC<Props> = ({ type, value }) => {
             value.map((val: any) => (
               <a
                 key={val.id}
-                href={getHost() + val.url}
+                href={getHost() + '/api' + val.url}
                 target="_blank"
                 rel="nofollow noreferrer noopener"
                 className={classes.link}
