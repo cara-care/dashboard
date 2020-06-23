@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { v1 } from 'uuid';
 import GetApp from '@material-ui/icons/GetApp';
 import moment from 'moment';
-import { BACKEND_HOST } from '../../utils/constants';
+import { getHost } from '../../utils/constants';
 
 export enum FieldTypes {
   char = 'char',
@@ -86,7 +86,7 @@ const Field: React.FC<Props> = ({ type, value }) => {
             value.map((val: any) => (
               <a
                 key={val.id}
-                href={BACKEND_HOST + val.url}
+                href={getHost() + '/api' + val.url}
                 target="_blank"
                 rel="nofollow noreferrer noopener"
                 className={classes.link}
