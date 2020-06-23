@@ -75,6 +75,7 @@ const Login: React.FC = () => {
       <form className={classes.form} onSubmit={handleSubmit(login)}>
         <Typography>{authenticationErrorMessage}</Typography>
         <TextField
+          id="username"
           name="username"
           inputRef={register}
           label={intl.formatMessage({
@@ -85,6 +86,7 @@ const Login: React.FC = () => {
           fullWidth
         />
         <TextField
+          id="password"
           name="password"
           inputRef={register}
           label={intl.formatMessage({
