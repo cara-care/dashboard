@@ -41,3 +41,4 @@ package-lock.json
 # cypress
 cypress/videos
 cypress/screenshots
+cypress.env.json
