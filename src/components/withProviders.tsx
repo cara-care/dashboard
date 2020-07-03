@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
@@ -16,7 +16,10 @@ const messages = {
   de: require('../locale/de.json'),
 };
 
-const withProviders = (Component: React.ComponentType) => {
+const withProviders = (
+  Component: React.ComponentType,
+  Router = BrowserRouter
+) => {
   const WithProviders = (props: any) => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
     const locale = useSelector<RootState, string>(

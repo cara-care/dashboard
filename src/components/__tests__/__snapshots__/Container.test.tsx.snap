@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Container /> renders correctly 1`] = `
+<div>
+  <div
+    class="makeStyles-root-1"
+  >
+    <span>
+      Test
+    </span>
+  </div>
+</div>
+`;

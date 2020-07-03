@@ -221,7 +221,10 @@ const NavBar: React.FC = () => {
                       defaultMessage="Change Password"
                     />
                   }
-                  aria-label="change password"
+                  aria-label={intl.formatMessage({
+                    id: 'changePassword.changePassword',
+                    defaultMessage: 'Change Password',
+                  })}
                 >
                   <IconButton to="/nutri/change-password" component={Link}>
                     <VpnKeyIcon />
@@ -234,7 +237,10 @@ const NavBar: React.FC = () => {
                       defaultMessage="Logout"
                     />
                   }
-                  aria-label="logout"
+                  aria-label={intl.formatMessage({
+                    id: '_.common.logout',
+                    defaultMessage: 'Logout',
+                  })}
                 >
                   <IconButton onClick={handleLogout}>
                     <ExitToApp />

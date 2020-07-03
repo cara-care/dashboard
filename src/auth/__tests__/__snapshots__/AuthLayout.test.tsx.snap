@@ -1,11 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AuthLayout /> should render correctly 1`] = `
-<div
-  className="makeStyles-wrapper-1"
->
-  <WithStyles(ForwardRef(Paper))
-    className="makeStyles-paper-2"
-  />
+<div>
+  <div
+    class="makeStyles-wrapper-1"
+  >
+    <div
+      class="MuiPaper-root makeStyles-paper-2 MuiPaper-elevation1 MuiPaper-rounded"
+    />
+  </div>
 </div>
 `;
