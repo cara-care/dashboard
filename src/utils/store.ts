@@ -59,9 +59,11 @@ export type RootActions =
 export default function configureStore({
   preloadedLocale,
   preloadedTheme,
+  preloadedState = {},
 }: {
   preloadedLocale: string;
   preloadedTheme: 'dark' | 'light' | undefined | null;
+  preloadedState?: Partial<RootState>;
 }) {
   const rootReducer = combineReducers<RootState, RootActions>({
     locale: localeReducer,
@@ -85,7 +87,7 @@ export default function configureStore({
   const composeEnhancers =
     typeof window === 'object' &&
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-    process.env.NODE_ENV !== 'production'
+    process.env.NODE_ENV === 'development'
       ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       : compose;
 
@@ -93,7 +95,7 @@ export default function configureStore({
 
   const middlewares: Middleware[] = [sagaMiddleware];
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'development') {
     middlewares.push(logger);
   }
 
@@ -106,6 +108,7 @@ export default function configureStore({
       questionnaires: questionnairesInitialState,
       trackingOverview: trackingOverviewInitalState,
       theme: { theme: preloadedTheme },
+      ...preloadedState,
     },
     composeEnhancers(applyMiddleware(...middlewares))
   );

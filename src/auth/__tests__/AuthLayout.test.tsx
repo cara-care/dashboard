@@ -1,9 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import AuthLayout from '../components/AuthLayout';
 
 describe('<AuthLayout />', () => {
   it('should render correctly', () => {
-    expect(shallow(<AuthLayout />)).toMatchSnapshot();
+    const { container } = render(<AuthLayout />);
+    expect(container).toMatchSnapshot();
   });
 });

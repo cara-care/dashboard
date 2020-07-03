@@ -58,7 +58,7 @@ const ChangePassword: React.FC<RouteComponentProps> = () => {
     setIsSnackbarOpen(false);
   }, []);
   const goBack = useCallback(() => {
-    history.goBack();
+    history.go(-1);
   }, [history]);
   const handleChangePassword = useCallback(
     async ({ currentPassword, newPassword }: FormData) => {
