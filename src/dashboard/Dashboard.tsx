@@ -14,7 +14,7 @@ import api from '../utils/api';
 
 const useStyles = makeStyles({
   trackingOverview: {
-    marginTop: 72,
+    marginTop: 64,
   },
 });
 
