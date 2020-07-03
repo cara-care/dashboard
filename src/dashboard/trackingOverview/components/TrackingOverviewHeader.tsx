@@ -21,7 +21,7 @@ const useStyles = makeStyles((_) => ({
 }));
 
 interface OwnProps {
-  currentDate?: any;
+  currentDate: Date;
   updateDate: (date: Date) => void;
   handleLeftArrowClick: () => void;
   handleRightArrowClick: () => void;

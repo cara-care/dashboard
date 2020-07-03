@@ -106,6 +106,7 @@ const ForgotPassword = () => {
       </Snackbar>
       <form className={classes.form} onSubmit={handleSubmit(forgotPassword)}>
         <TextField
+          id="username"
           name="username"
           inputRef={register}
           label={intl.formatMessage({
