@@ -118,6 +118,7 @@ const ChangePassword: React.FC<RouteComponentProps> = () => {
         onSubmit={handleSubmit(handleChangePassword)}
       >
         <TextField
+          id="currentPassword"
           name="currentPassword"
           inputRef={register({ required: true, minLength: 8, maxLength: 200 })}
           label={intl.formatMessage({
@@ -141,6 +142,7 @@ const ChangePassword: React.FC<RouteComponentProps> = () => {
           }
         />
         <TextField
+          id="newPassword"
           name="newPassword"
           inputRef={register({ required: true, minLength: 8, maxLength: 200 })}
           label={intl.formatMessage({
