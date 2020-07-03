@@ -17,9 +17,11 @@ const useAutoLogin = () => {
     tryAutoLogin();
   }, [tryAutoLogin]);
 
-  if (isAuthenticated) {
-    history.push('/nutri/select-patient');
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/nutri/select-patient');
+    }
+  }, [isAuthenticated, history]);
 };
 
 export default useAutoLogin;
