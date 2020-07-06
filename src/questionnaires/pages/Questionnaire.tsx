@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -17,6 +17,7 @@ import Score from '../components/Score';
 import Link from '../../components/Link';
 import { getPatientId } from '../../auth';
 import { getQuestionnaire } from '../../utils/api';
+import { QUESTIONNAIRE_NAME } from '../../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -100,25 +101,39 @@ const Questionnaire = () => {
   const patientId = useSelector(getPatientId);
   const { id } = useParams();
   const classes = useStyles();
+  const fetchQuestionnaire = useCallback(
+    async ({
+      submissionId,
+      userId,
+    }: {
+      submissionId: string;
+      userId: number;
+    }) => {
+      dispatch({ type: QuestionnaireActionType.INIT_FETCH });
+      try {
+        const res = await getQuestionnaire({
+          userId,
+          submissionId,
+        });
+        dispatch({
+          type: QuestionnaireActionType.FETCH_SUCCESS,
+          payload: res.data,
+        });
+      } catch (err) {
+        dispatch({
+          type: QuestionnaireActionType.FETCH_FAILED,
+          payload: err,
+        });
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (id && patientId) {
-      dispatch({ type: QuestionnaireActionType.INIT_FETCH });
-      getQuestionnaire({ userId: patientId, submissionId: id })
-        .then((res) => {
-          dispatch({
-            type: QuestionnaireActionType.FETCH_SUCCESS,
-            payload: res.data,
-          });
-        })
-        .catch((err) => {
-          dispatch({
-            type: QuestionnaireActionType.FETCH_FAILED,
-            payload: err,
-          });
-        });
+      fetchQuestionnaire({ submissionId: id, userId: patientId });
     }
-  }, [id, patientId]);
+  }, [id, patientId, fetchQuestionnaire]);
 
   return (
     <>
@@ -139,7 +154,9 @@ const Questionnaire = () => {
               </Link>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6">{state.name}</Typography>
+              <Typography data-testid={QUESTIONNAIRE_NAME} variant="h6">
+                {state.name}
+              </Typography>
               <Typography variant="body2">
                 <FormattedMessage
                   id="questionnaires.started"
