@@ -27,9 +27,7 @@ describe('<NavBar />', () => {
         },
       },
     });
-    // @ts-ignore
     expect(getByLabelText(en['changePassword.changePassword'])).toBeVisible();
-    // @ts-ignore
     expect(getByLabelText(en['_.common.logout'])).toBeVisible();
   });
 
@@ -47,7 +45,6 @@ describe('<NavBar />', () => {
     });
     expect(
       getByText(new RegExp(en['navbar.selectDifferentPatient'], 'i'))
-      // @ts-ignore
     ).toBeVisible();
   });
 });

@@ -22,7 +22,6 @@ describe('<NotFound />', () => {
     const { getByTestId } = renderWithReactIntl(<NotFound />);
     const text = getByTestId(NOT_FOUND_TEXT_ID);
     expect(isMobileDevice).toHaveBeenCalledTimes(1);
-    // @ts-ignore
     expect(text).toHaveTextContent(en['404.invalidUrlGoToCara']);
   });
 
@@ -36,7 +35,6 @@ describe('<NotFound />', () => {
     const { getByTestId } = renderWithReactIntl(<NotFound />);
     const text = getByTestId(NOT_FOUND_TEXT_ID);
     expect(isMobileDevice).toHaveBeenCalledTimes(1);
-    // @ts-ignore
     expect(text).toHaveTextContent(en['404.onlyAvailableOnComputer']);
   });
 });

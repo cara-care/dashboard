@@ -7,7 +7,6 @@ import TrackingOverviewHeader from '../components/TrackingOverviewHeader';
 describe('<TrackingOverviewHeader/>', () => {
   it.skip('works', () => {
     const TrackingOverviewHeaderWithProviders = withProviders(
-      // @ts-ignore
       TrackingOverviewHeader,
       MemoryRouter
     );

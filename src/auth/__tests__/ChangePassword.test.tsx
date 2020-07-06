@@ -53,9 +53,7 @@ describe('<ChangePassword />', () => {
       expect(mockChangePassword).toHaveBeenCalledTimes(1);
     });
     expect(mockChangePassword).toBeCalledWith(testData);
-    // @ts-ignore
     expect(getByRole('alert')).toBeVisible();
-    // @ts-ignore
     expect(getByText(/your password has been updated/i)).toBeVisible();
     user.click(getByLabelText(/close/i));
     await waitFor(() => {

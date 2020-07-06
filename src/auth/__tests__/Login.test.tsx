@@ -13,15 +13,12 @@ describe('<Login />', () => {
     const togglePasswordVisibilityButton = getByLabelText(
       /toggle password visibility/i
     );
-    // @ts-ignore
     expect(passwordInput).toHaveAttribute('type', 'password');
 
     user.click(togglePasswordVisibilityButton);
-    // @ts-ignore
     expect(passwordInput).toHaveAttribute('type', 'text');
 
     user.click(togglePasswordVisibilityButton);
-    // @ts-ignore
     expect(passwordInput).toHaveAttribute('type', 'password');
   });
 });
