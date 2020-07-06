@@ -30,6 +30,7 @@ import Link from '../components/Link';
 import Logo from '../assets/images/logo.png';
 import { LOCALES } from '../utils/constants';
 import { LANGUAGE_MENU_BUTTON } from '../utils/test-helpers';
+import { DARK_MODE_ICON, LIGHT_MODE_ICON } from '../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -194,7 +195,11 @@ const NavBar: React.FC = () => {
               })}
             >
               <IconButton onClick={toggleTheme}>
-                {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                {isDarkMode ? (
+                  <Brightness7Icon data-testid={DARK_MODE_ICON} />
+                ) : (
+                  <Brightness4Icon data-testid={LIGHT_MODE_ICON} />
+                )}
               </IconButton>
             </Tooltip>
             {isAuthenticated && (

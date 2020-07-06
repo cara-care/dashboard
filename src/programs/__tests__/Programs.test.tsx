@@ -35,8 +35,6 @@ describe('<Programs />', () => {
   it('shows a message when patient is not enrolled in programs', () => {
     const ProgramWithProviders = withProviders(Programs);
     const { getByText } = renderWithRedux(<ProgramWithProviders />);
-    // TODO: Figure out how to tell TypeScript about extended jest matchers
-    // @ts-ignore
     expect(getByText(/not enrolled in any programs/i)).toHaveTextContent(
       'Patient is not enrolled in any programs.'
     );
@@ -57,10 +55,8 @@ describe('<Programs />', () => {
       }
     );
     mockPrograms.forEach((program) => {
-      // @ts-ignore
       expect(getByText(program.title)).toBeVisible();
     });
-    // @ts-ignore
     expect(getAllByText(new RegExp(timezone, 'i'))).toHaveLength(2);
   });
 });

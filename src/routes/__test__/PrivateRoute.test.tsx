@@ -56,7 +56,6 @@ describe('<PrivateRoute />', () => {
       }
     );
     expect(history.location.pathname).toBe('/');
-    // @ts-ignore
     expect(getByText(/test/i)).toHaveTextContent('test');
   });
 });

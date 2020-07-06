@@ -14,7 +14,7 @@ Here are some guidelines to help you with the contribution:
 
 ## Project setup
 
-**You’ll need to have Node >= 8.10 on your local development machine**
+**You’ll need to have Node >= 10.13 on your local development machine**
 
 1. Fork and clone the repository
 2. run `yarn` to install the dependencies

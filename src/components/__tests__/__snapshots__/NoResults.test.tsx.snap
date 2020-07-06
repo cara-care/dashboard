@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NoResults /> renders correctly with default props 1`] = `
+<div>
+  <div
+    class="NoResults-root-1"
+  >
+    <img
+      alt="No Data"
+      class="NoResults-illustration-2"
+      src="no-data.png"
+    />
+    <h5
+      class="MuiTypography-root NoResults-heading-3 MuiTypography-h5"
+    >
+      No Data
+    </h5>
+    <p
+      class="MuiTypography-root MuiTypography-body1"
+    >
+      It looks like your patient didn't provide his/her medical history
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<NoResults /> renders correctly with query prop 1`] = `
+<div>
+  <div
+    class="NoResults-root-4"
+  >
+    <img
+      alt="No Results"
+      class="NoResults-illustration-5"
+      src="not-found.png"
+    />
+    <h5
+      class="MuiTypography-root NoResults-heading-6 MuiTypography-h5"
+    >
+      No Results
+    </h5>
+    <p
+      class="MuiTypography-root MuiTypography-body1"
+    >
+      Sorry, there are no results for Test. Please try another phrase.
+    </p>
+  </div>
+</div>
+`;

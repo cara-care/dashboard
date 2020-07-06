@@ -32,9 +32,7 @@ describe('<ForgotPassword />', () => {
       expect(mockRequestResetPassword).toHaveBeenCalledTimes(1);
     });
     expect(mockRequestResetPassword).toBeCalledWith(testData.username);
-    // @ts-ignore
     expect(getByRole('alert')).toBeVisible();
-    // @ts-ignore
     expect(getByText(/reset password instructions sent/i)).toBeVisible();
     user.click(getByLabelText(/close/i));
     await waitFor(() => {

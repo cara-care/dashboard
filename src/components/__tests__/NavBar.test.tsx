@@ -1,10 +1,16 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import user from '@testing-library/user-event';
 import NavBar from '../NavBar';
 import withProviders from '../withProviders';
 import { authInitialState, AuthStatus } from '../../auth';
 import en from '../../locale/en.json';
 import { renderWithRedux } from '../../utils/test-utils';
+import {
+  LANGUAGE_MENU_BUTTON,
+  DARK_MODE_ICON,
+  LIGHT_MODE_ICON,
+} from '../../utils/test-helpers';
 
 describe('<NavBar />', () => {
   const NavBarWithProviders = withProviders(NavBar, MemoryRouter);
@@ -27,9 +33,7 @@ describe('<NavBar />', () => {
         },
       },
     });
-    // @ts-ignore
     expect(getByLabelText(en['changePassword.changePassword'])).toBeVisible();
-    // @ts-ignore
     expect(getByLabelText(en['_.common.logout'])).toBeVisible();
   });
 
@@ -47,7 +51,26 @@ describe('<NavBar />', () => {
     });
     expect(
       getByText(new RegExp(en['navbar.selectDifferentPatient'], 'i'))
-      // @ts-ignore
     ).toBeVisible();
+  });
+
+  it('changes language when selecting a diffrent language in menu', () => {
+    const { getByTestId, getByText } = renderWithRedux(<NavBarWithProviders />);
+    const languageMenuButton = getByTestId(LANGUAGE_MENU_BUTTON);
+    user.click(languageMenuButton);
+    user.click(getByText(/deutsch/i));
+    expect(languageMenuButton).toHaveTextContent(/deutsch/i);
+  });
+
+  it('toggles dark / light mode', () => {
+    const { getByLabelText, getByTestId } = renderWithRedux(
+      <NavBarWithProviders />
+    );
+    const toggleThemeButton = getByLabelText(en['navbar.toggleTheme']);
+    expect(getByTestId(LIGHT_MODE_ICON)).toBeVisible();
+    user.click(toggleThemeButton);
+    expect(getByTestId(DARK_MODE_ICON)).toBeVisible();
+    user.click(toggleThemeButton);
+    expect(getByTestId(LIGHT_MODE_ICON)).toBeVisible();
   });
 });
