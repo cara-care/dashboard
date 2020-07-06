@@ -67,10 +67,10 @@ describe('<NavBar />', () => {
       <NavBarWithProviders />
     );
     const toggleThemeButton = getByLabelText(en['navbar.toggleTheme']);
-    expect(getByTestId(LIGHT_MODE_ICON)).toBeValid();
+    expect(getByTestId(LIGHT_MODE_ICON)).toBeVisible();
     user.click(toggleThemeButton);
-    expect(getByTestId(DARK_MODE_ICON)).toBeValid();
+    expect(getByTestId(DARK_MODE_ICON)).toBeVisible();
     user.click(toggleThemeButton);
-    expect(getByTestId(LIGHT_MODE_ICON)).toBeValid();
+    expect(getByTestId(LIGHT_MODE_ICON)).toBeVisible();
   });
 });
