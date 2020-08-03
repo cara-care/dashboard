@@ -2,7 +2,7 @@
   "name": "cara-dashboard",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://backend-staging.gohidoc.com",
+  "proxy": "https://staging.cara.care",
   "resolutions": {
     "cypress": "4.3.0"
   },
