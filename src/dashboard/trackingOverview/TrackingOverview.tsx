@@ -15,8 +15,8 @@ import { setDate as setDateAction } from './redux/trackingOverviewActions';
 import { getTrackingDataPointsByTimeDescendingSorted } from './redux/trackingOverviewSelectors';
 import Spinner from '../../components/Spinner';
 import { TrackingDataPoint } from '../types';
-import { addDays } from '../../utils/dateUtils';
 import { RootState, RootActions } from '../../utils/store';
+import { subDays, addDays } from 'date-fns';
 
 const styles = (): StyleRules => ({
   placeholderRow: {
@@ -68,7 +68,7 @@ const TrackingOverview: React.FC<Props> = ({
   setDate,
 }) => {
   const showPreviousDay = () => {
-    setDate(addDays(date, -1));
+    setDate(subDays(date, 1));
   };
 
   const showNextDay = () => {

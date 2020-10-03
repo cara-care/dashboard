@@ -16,7 +16,6 @@ import {
   withStyles,
   WithStyles,
 } from '@material-ui/core/styles';
-import moment from 'moment';
 import DoubleDatePicker from './DoubleDatePicker';
 import CombinedChart from './CombinedChart';
 import ChartCheckboxes from './ChartCheckboxes';
@@ -35,6 +34,7 @@ import {
 import { RootState, RootActions } from '../../utils/store';
 import { ChartTrackingType, ChartFilter } from './chartOverviewUtils';
 import { EXPORT_TOKEN_INVALID } from '../../utils/test-helpers';
+import { addDays } from 'date-fns';
 
 const styles = (theme: Theme): StyleRules => ({
   chartPaper: {
@@ -193,7 +193,7 @@ const mapStateToProps = (state: RootState): StateProps => {
       getActiveChartTrackingTypes(state.chartOverview.filters),
       state.chartOverview.dataSets,
       state.chartOverview.startDate,
-      moment(state.chartOverview.endDate).add(1, 'd').toDate()
+      addDays(state.chartOverview.endDate, 1)
     ),
     symptomsCheckboxes: getSymptomsCheckboxes(state.chartOverview.filters),
     factorsCheckboxes: getFactorsCheckboxes(state.chartOverview.filters),

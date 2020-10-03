@@ -7,8 +7,7 @@ import { Typography } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { useParams } from 'react-router-dom';
 import { v1 } from 'uuid';
-import moment from 'moment';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import NutriNavigation from '../../components/NutriNavigation';
 import ErrorMessage from '../components/ErrorMessage';
 import Placeholder from '../../components/Placeholder';
@@ -18,6 +17,7 @@ import Link from '../../components/Link';
 import { getPatientId } from '../../auth';
 import { getQuestionnaire } from '../../utils/api';
 import { QUESTIONNAIRE_NAME } from '../../utils/test-helpers';
+import { formatDate } from '../../utils/dateUtils';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -97,6 +97,7 @@ function reducer(state: QuestionnaireState, action: SumbissionAction) {
 }
 
 const Questionnaire = () => {
+  const { locale } = useIntl();
   const [state, dispatch] = useReducer(reducer, initialState);
   const patientId = useSelector(getPatientId);
   const { id } = useParams();
@@ -162,7 +163,11 @@ const Questionnaire = () => {
                   id="questionnaires.started"
                   defaultMessage="Started: {date}"
                   values={{
-                    date: moment(state.started).format('LLL'),
+                    date: formatDate(
+                      state.started ?? new Date(),
+                      'LLL',
+                      locale
+                    ),
                   }}
                 />
               </Typography>
@@ -171,7 +176,11 @@ const Questionnaire = () => {
                   id="questionnaires.completed"
                   defaultMessage="Completed: {date}"
                   values={{
-                    date: moment(state.completed).format('LLL'),
+                    date: formatDate(
+                      state.completed ?? new Date(),
+                      'LLL',
+                      locale
+                    ),
                   }}
                 />
               </Typography>

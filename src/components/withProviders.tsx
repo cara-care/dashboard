@@ -1,15 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
+import DateFnsAdapter from '@date-io/date-fns';
 import { IntlProvider } from 'react-intl';
-import moment from 'moment';
-import 'moment/locale/de';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { RootState } from '../utils/store';
 import { lightTheme, darkTheme } from '../theme';
+import { getLocale } from '../utils/dateUtils';
 
 const messages = {
   en: require('../locale/en.json'),
@@ -37,17 +36,12 @@ const withProviders = (
       }
     }, [preferedTheme, prefersDarkMode]);
 
-    useEffect(() => {
-      moment.locale(locale);
-    }, [locale]);
-
     return (
       <IntlProvider locale={locale} messages={messages[locale]}>
         <MuiThemeProvider theme={theme}>
           <MuiPickersUtilsProvider
-            libInstance={moment}
-            utils={MomentUtils}
-            locale={locale}
+            utils={DateFnsAdapter}
+            locale={getLocale(locale)}
           >
             <Router>
               <Component {...props} />

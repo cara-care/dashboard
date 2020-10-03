@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -9,9 +9,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Warning } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import moment from 'moment';
 import { getPatientTimezone, getPatientEnrolledPrograms } from '../../auth';
 import NutriNavigation from '../../components/NutriNavigation';
+import { formatDate } from '../../utils/dateUtils';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,6 +32,7 @@ const Programs = () => {
   const classes = useStyles();
   const timezone = useSelector(getPatientTimezone);
   const programs = useSelector(getPatientEnrolledPrograms);
+  const { locale } = useIntl();
 
   return (
     <>
@@ -52,7 +53,7 @@ const Programs = () => {
                         id="programs.programStarted"
                         defaultMessage="Program started: {date}"
                         values={{
-                          date: moment(program.started).format('LLL'),
+                          date: formatDate(program.started, 'LLL', locale),
                           timezone,
                         }}
                       />

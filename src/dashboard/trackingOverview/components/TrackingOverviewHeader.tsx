@@ -45,7 +45,7 @@ const TrackingOverviewHeader: React.FC<Props> = ({
   const onChangeDate = useCallback(
     (date: MaterialUiPickersDate) => {
       if (date) {
-        updateDate(date.toDate());
+        updateDate(date);
       }
     },
     [updateDate]
@@ -61,7 +61,7 @@ const TrackingOverviewHeader: React.FC<Props> = ({
       <DatePicker
         style={{ width: '85px' }}
         onChange={onChangeDate}
-        format="L"
+        format="MM/dd/yyyy"
         data-testid={TRACKING_OVERVIEW_DATEPICKER}
         autoOk={true}
         value={currentDate}

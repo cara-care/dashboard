@@ -1,5 +1,4 @@
 import { Reducer } from 'redux';
-import moment from 'moment';
 import {
   ChartOverviewActionTypes,
   ChartOverviewActions,
@@ -14,10 +13,15 @@ import {
   ChartFilter,
   DataSet,
 } from '../chartOverviewUtils';
-import { newDate, addDays } from '../../../utils/dateUtils';
+import {
+  newDate,
+  isSameOrAfter,
+  isSameOrBefore,
+} from '../../../utils/dateUtils';
 import { RootState } from '../../../utils/store';
 import TrackingDatasetCreator from '../ChartTrackingDatasetCreator';
 import { getSymptomScoresPerDay } from '../getSymptomScore';
+import { addDays, subDays } from 'date-fns';
 
 export interface ChartOverviewState {
   startDate: Date;
@@ -120,7 +124,7 @@ export const chartOverview: Reducer<
     case ChartOverviewActionTypes.UPDATE_START_DATE:
       startDate = action.startDate;
       endDate = state.endDate;
-      if (moment(startDate).isSameOrAfter(moment(endDate))) {
+      if (isSameOrAfter(startDate, endDate)) {
         endDate = addDays(startDate, 1);
         return { ...state, startDate, endDate };
       }
@@ -128,8 +132,8 @@ export const chartOverview: Reducer<
     case ChartOverviewActionTypes.UPDATE_END_DATE:
       endDate = action.endDate;
       startDate = state.startDate;
-      if (moment(endDate).isSameOrBefore(moment(startDate))) {
-        startDate = addDays(endDate, -1);
+      if (isSameOrBefore(endDate, startDate)) {
+        startDate = subDays(endDate, 1);
         return { ...state, startDate, endDate };
       }
       return { ...state, endDate };
@@ -229,11 +233,10 @@ export const getActiveTimeFilteredDataSets = (
 ) => {
   const activeDataSet = activeChartTrackingTypes.map((chartTrackingType) => {
     const dataSet = getDataSetForChartTrackingType(chartTrackingType, dataSets);
-    const filteredData = dataSet.data.filter(
-      (data: any) =>
-        moment(data.x).isSameOrAfter(startDate) &&
-        moment(data.x).isSameOrBefore(endDate)
-    );
+    const filteredData = dataSet.data.filter((data: any) => {
+      const time = new Date(data.x);
+      return isSameOrAfter(time, startDate) && isSameOrBefore(time, endDate);
+    });
     let newDataSet = { ...dataSet, data: filteredData };
     newDataSet = addZerosToBarDataSets(newDataSet, startDate, endDate);
     return newDataSet;
