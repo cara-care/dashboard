@@ -37,9 +37,7 @@ describe('<NavBar />', () => {
     expect(getByLabelText(en['_.common.logout'])).toBeVisible();
   });
 
-  // FIXME: doesn't work due to <Hidden /> component
-  // https://material-ui.com/components/use-media-query/#testing
-  it.skip('renders select different patient button when patient is selected', () => {
+  it('renders select different patient button when patient is selected', () => {
     const { getByText } = renderWithRedux(<NavBarWithProviders />, {
       preloadedState: {
         auth: {
