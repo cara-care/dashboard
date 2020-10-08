@@ -18,11 +18,10 @@ class ChartCheckbox extends React.PureComponent<Props> {
   };
 
   render() {
-    const { chartTrackingType, label, active } = this.props;
+    const { label, active } = this.props;
 
     return (
       <FormControlLabel
-        key={chartTrackingType}
         label={label}
         onChange={this.onChangeHandler}
         style={{ width: '49%' }}
