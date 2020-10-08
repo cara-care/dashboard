@@ -5,6 +5,7 @@ import Dashboard from '../Dashboard';
 import { authInitialState, AuthStatus } from '../../auth/authReducer';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
+import { NUTRI_NAVIGATION } from '../../utils/test-helpers';
 
 jest.mock('../../utils/api');
 
@@ -45,7 +46,7 @@ describe('<Dashboard />', () => {
 
   it("doesn't render navigation when nutrisionist isn't authenticated", () => {
     const screen = renderWithRedux(<DashboardWithProviders />);
-    expect(screen.queryByTestId('nutri-navigation')).not.toBeInTheDocument();
+    expect(screen.queryByTestId(NUTRI_NAVIGATION)).not.toBeInTheDocument();
   });
 
   it('renders navigation when nutrisionist is authenticated', () => {

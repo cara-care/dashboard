@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { makeStyles } from '@material-ui/core/styles';
+import { NUTRI_NAVIGATION } from '../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 const NutriNavigation: React.FC = () => {
   const classes = useStyles();
   return (
-    <nav className={classes.root} data-testid="nutri-navigation">
+    <nav className={classes.root} data-testid={NUTRI_NAVIGATION}>
       <NavLink
         to="/nutri/programs"
         exact
