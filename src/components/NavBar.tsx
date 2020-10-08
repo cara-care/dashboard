@@ -204,7 +204,13 @@ const NavBar: React.FC = () => {
             </Tooltip>
             {isAuthenticated && (
               <>
-                <Hidden mdDown>
+                <Hidden
+                  mdDown
+                  // https://material-ui.com/components/use-media-query/#testing
+                  implementation={
+                    process.env.NODE_ENV === 'test' ? 'css' : undefined
+                  }
+                >
                   {isPatientSelected && (
                     <Button
                       variant="contained"
