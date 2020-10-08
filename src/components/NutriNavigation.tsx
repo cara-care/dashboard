@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 const NutriNavigation: React.FC = () => {
   const classes = useStyles();
   return (
-    <nav className={classes.root}>
+    <nav className={classes.root} data-testid="nutri-navigation">
       <NavLink
         to="/nutri/programs"
         exact
