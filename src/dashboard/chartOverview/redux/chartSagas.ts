@@ -1,5 +1,4 @@
 import { takeLatest, select, put, call } from 'redux-saga/effects';
-import moment from 'moment';
 import { getTimeFrame, getChartDataPage } from './chartOverview';
 import {
   ChartOverviewActionTypes,
@@ -13,6 +12,7 @@ import {
 import { getPatientId } from '../../../auth';
 import { getTrackingDataPoints } from '../../../utils/api';
 import { RootActions } from '../../../utils/store';
+import { format } from 'date-fns';
 
 const shouldFetchTrackingDataPage = (action: RootActions) =>
   action.type === ChartOverviewActionTypes.FETCH_CHART_DATA_INIT ||
@@ -43,8 +43,8 @@ export function* fetchChartDataPageSaga() {
   const userId = yield select(getPatientId);
   const { startDate, endDate } = yield select(getTimeFrame);
   const currentPage = yield select(getChartDataPage);
-  const start = moment(startDate).format().substring(0, 10);
-  const end = moment(endDate).format().substring(0, 10);
+  const start = format(startDate, 'yyyy-MM-dd');
+  const end = format(endDate, 'yyyy-MM-dd');
   const limit = 100;
   const offset = currentPage * limit;
 

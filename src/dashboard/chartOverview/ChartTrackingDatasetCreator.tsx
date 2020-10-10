@@ -1,12 +1,12 @@
-import moment from 'moment';
 import {
   ChartTrackingTypes,
   chartTypeForChartTrackingType,
 } from './chartOverviewUtils';
 import { TrackingDataPoint, TrackingType, TrackingTypes } from '../types';
+import { parse, parseISO } from 'date-fns';
 
-function parseDate(string: string) {
-  return moment(string).toDate();
+function parseDate(dateString: string, format: string) {
+  return parse(dateString, format, new Date());
 }
 
 function getDayKey(date: Date) {
@@ -43,18 +43,15 @@ const aggregateTrackingDataPointsByDay = (
 ): { [key: string]: TrackingDataPoint[] } => {
   let trackingDataPointsByDay = {};
   trackingDataPoints.forEach((trackingDataPoint) => {
-    if (
-      trackingDataPointsByDay[
-        getDayKey(parseDate(trackingDataPoint.timestampTracking as string))
-      ] === undefined
-    ) {
-      trackingDataPointsByDay[
-        getDayKey(parseDate(trackingDataPoint.timestampTracking as string))
-      ] = [trackingDataPoint];
+    const date =
+      typeof trackingDataPoint.timestampTracking === 'string'
+        ? parseISO(trackingDataPoint.timestampTracking)
+        : trackingDataPoint.timestampTracking;
+
+    if (trackingDataPointsByDay[getDayKey(date)] === undefined) {
+      trackingDataPointsByDay[getDayKey(date)] = [trackingDataPoint];
     } else {
-      trackingDataPointsByDay[
-        getDayKey(parseDate(trackingDataPoint.timestampTracking as string))
-      ].push(trackingDataPoint);
+      trackingDataPointsByDay[getDayKey(date)].push(trackingDataPoint);
     }
   });
   return trackingDataPointsByDay;
@@ -106,7 +103,7 @@ const createSymptomScoreDataset = (symptomScoresPerDay: {
   // Compute value per day depending on type
   let dataSetPoints = Object.keys(symptomScoresPerDay).map(function (day) {
     return {
-      x: moment(day, 'YYYY-MM-DD').toDate(),
+      x: parseDate(day, 'yyyy-MM-dd'),
       y: symptomScoresPerDay[day],
     };
   });
@@ -216,7 +213,7 @@ const createDataSet = (
     }
 
     return {
-      x: moment(day, 'YYYY-MM-DD').toDate(),
+      x: parseDate(day, 'yyyy-MM-dd'),
       y: value,
       tag: tag,
     };

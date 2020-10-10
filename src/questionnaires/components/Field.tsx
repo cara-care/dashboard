@@ -3,8 +3,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { v1 } from 'uuid';
 import GetApp from '@material-ui/icons/GetApp';
-import moment from 'moment';
 import { getHost } from '../../utils/constants';
+import { formatDate } from '../../utils/dateUtils';
+import { useIntl } from 'react-intl';
 
 export enum FieldTypes {
   char = 'char',
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Field: React.FC<Props> = ({ type, value }) => {
   const classes = useStyles();
+  const { locale } = useIntl();
 
   switch (type) {
     case FieldTypes.char:
@@ -76,7 +78,7 @@ const Field: React.FC<Props> = ({ type, value }) => {
     case FieldTypes.date:
       return (
         <Typography variant="body2">
-          {value ? moment(value).format('L') : '-'}
+          {value ? formatDate(value, 'P', locale) : '-'}
         </Typography>
       );
     case FieldTypes.file:

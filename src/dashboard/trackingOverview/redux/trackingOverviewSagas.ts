@@ -1,5 +1,4 @@
 import { takeLatest, select, put, call } from 'redux-saga/effects';
-import moment from 'moment';
 import {
   fetchTrackingDataInit,
   fetchTrackingDataFailed,
@@ -16,6 +15,7 @@ import {
 import { getPatientId } from '../../../auth';
 import { getTrackingDataPoints } from '../../../utils/api';
 import { RootActions } from '../../../utils/store';
+import { format } from 'date-fns';
 
 const shouldFetchTrackingDataPage = (action: RootActions) =>
   action.type === TrackingOverviewActionTypes.FETCH_TRACKING_DATA_INIT ||
@@ -45,7 +45,7 @@ export function* fetchTrackingDataPageSaga() {
   const userId = yield select(getPatientId);
   const date = yield select(getTrackingOverviewDate);
   const currentPage = yield select(getTrackingOverviewPage);
-  const start = moment(date).format().substr(0, 10);
+  const start = format(date, 'yyyy-MM-dd');
   const limit = 100;
   const offset = currentPage * limit;
 

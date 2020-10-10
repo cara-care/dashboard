@@ -3,8 +3,8 @@ import { Bar } from 'react-chartjs-2';
 import { ChartOptions } from 'chart.js';
 import { useIntl } from 'react-intl';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import moment from 'moment';
 import { ChartTrackingTypes, DataSet } from './chartOverviewUtils';
+import { addDays, subDays } from 'date-fns';
 
 interface OwnProps {
   displayGrids: boolean;
@@ -92,8 +92,8 @@ const CombinedChart: React.FC<Props> = ({
             unit: 'day',
           },
           ticks: {
-            min: moment(startDate).add(-1, 'days').toDate(),
-            max: moment(endDate).add(1, 'days').toDate(),
+            min: subDays(startDate, 1),
+            max: addDays(endDate, 1),
             fontColor: labelsColor,
           },
           scaleLabel: {

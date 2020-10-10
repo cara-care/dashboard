@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import { Link, useRouteMatch } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import moment from 'moment';
-import NutriNavigation from '../../components/NutriNavigation';
-import Placeholder from '../../components/Placeholder';
-import ErrorMessage from '../components/ErrorMessage';
-import Pagination from '../../components/Pagination';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import React, { useEffect, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useRouteMatch } from 'react-router-dom';
 import NoResults from '../../components/NoResults';
-import { fetchSubmissionsPageInit } from '../questionnairesActions';
-import { Submission, getSubmissions } from '../questionnairesReducer';
+import NutriNavigation from '../../components/NutriNavigation';
+import Pagination from '../../components/Pagination';
+import Placeholder from '../../components/Placeholder';
+import { formatDate } from '../../utils/dateUtils';
 import { RootState } from '../../utils/store';
+import ErrorMessage from '../components/ErrorMessage';
+import { fetchSubmissionsPageInit } from '../questionnairesActions';
+import { getSubmissions, Submission } from '../questionnairesReducer';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Questionnaires = () => {
+  const { locale } = useIntl();
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const match = useRouteMatch();
@@ -98,7 +99,11 @@ const Questionnaires = () => {
                             id="questionnaires.started"
                             defaultMessage="Started: {date}"
                             values={{
-                              date: moment(submission.started).format('LLL'),
+                              date: formatDate(
+                                submission.started,
+                                'LLL',
+                                locale
+                              ),
                             }}
                           />
                         </Typography>
@@ -107,7 +112,11 @@ const Questionnaires = () => {
                             id="questionnaires.completed"
                             defaultMessage="Completed: {date}"
                             values={{
-                              date: moment(submission.completed).format('LLL'),
+                              date: formatDate(
+                                submission.completed,
+                                'LLL',
+                                locale
+                              ),
                             }}
                           />
                         </Typography>

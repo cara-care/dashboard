@@ -32,13 +32,13 @@ type Props = OwnProps & WrappedComponentProps & WithStyles<typeof styles>;
 class DoubleDatePicker extends React.PureComponent<Props> {
   handleChangeStartDate = (date: MaterialUiPickersDate) => {
     if (date) {
-      this.props.updateStartDate(date.toDate());
+      this.props.updateStartDate(date);
     }
   };
 
   handleChangeEndDate = (date: MaterialUiPickersDate) => {
     if (date) {
-      this.props.updateEndDate(date.toDate());
+      this.props.updateEndDate(date);
     }
   };
 
@@ -53,7 +53,7 @@ class DoubleDatePicker extends React.PureComponent<Props> {
           onChange={this.handleChangeStartDate}
           style={{ width: '95px' }}
           autoOk={true}
-          format="L"
+          format="MM/dd/yyyy"
           maxDate={this.props.endDate}
           label={intl.formatMessage({
             id: 'overview.timePicker.startDate',
@@ -67,7 +67,7 @@ class DoubleDatePicker extends React.PureComponent<Props> {
           onChange={this.handleChangeEndDate}
           style={{ width: '95px' }}
           autoOk={true}
-          format="L"
+          format="MM/dd/yyyy"
           label={intl.formatMessage({
             id: 'overview.timePicker.endDate',
           })}
