@@ -30,10 +30,8 @@ describe('<ResetPassword />', () => {
     user.type(confirmNewPasswordInput, testData.confirmPassword);
     user.click(submitButton);
     await waitFor(() => {
-      // @ts-ignore
       expect(getByRole('alert')).toBeVisible();
     });
-    // @ts-ignore
     expect(getByText(/passwords don't match/i)).toBeVisible();
     user.click(getByLabelText(/close/i));
     await waitFor(() => {
@@ -58,10 +56,8 @@ describe('<ResetPassword />', () => {
     user.type(confirmNewPasswordInput, testData.confirmPassword);
     user.click(submitButton);
     await waitFor(() => {
-      // @ts-ignore
       expect(getByRole('alert')).toBeVisible();
     });
-    // @ts-ignore
     expect(getByText(/token is either invalid or expired/i)).toBeVisible();
     user.click(getByLabelText(/close/i));
     await waitFor(() => {
@@ -92,9 +88,7 @@ describe('<ResetPassword />', () => {
       password: testData.password,
       token,
     });
-    // @ts-ignore
     expect(getByRole('alert')).toBeVisible();
-    // @ts-ignore
     expect(getByText(/your password has been updated/i)).toBeVisible();
     user.click(getByLabelText(/close/i));
     await waitFor(() => {

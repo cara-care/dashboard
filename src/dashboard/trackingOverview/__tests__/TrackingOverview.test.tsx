@@ -1,14 +1,30 @@
 import React from 'react';
 import user from '@testing-library/user-event';
+import { waitFor } from '@testing-library/react';
 import { format, subDays } from 'date-fns';
 import TrackingOverview from '../TrackingOverview';
 import withProviders from '../../../components/withProviders';
 import { trackingOverviewInitalState } from '../redux/trackingOverview';
 import { renderWithRedux } from '../../../utils/test-utils';
+import { getTrackingDataPoints as mockGetTrackingDataPoints } from '../../../utils/api';
 import en from '../../../locale/en.json';
+
+jest.mock('../../../utils/api');
 
 describe('<TrackingOverview />', () => {
   const TrackingOverviewWithProviders = withProviders(TrackingOverview);
+  const emptyResult = {
+    status: 200,
+    statusText: 'OK',
+    headers: {},
+    config: {},
+    data: {
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    },
+  };
 
   it('shows a spinner when fetching', () => {
     const screen = renderWithRedux(<TrackingOverviewWithProviders />, {
@@ -62,16 +78,50 @@ describe('<TrackingOverview />', () => {
     expect(next).toBeDisabled();
   });
 
-  it('shows previous/next day when clicked on "<" or ">" buttons', () => {
-    const screen = renderWithRedux(<TrackingOverviewWithProviders />);
+  it('fetches data for previous/next day when clicked on "<" or ">" buttons', async () => {
+    // @ts-ignore
+    mockGetTrackingDataPoints.mockResolvedValueOnce(emptyResult);
+    const screen = renderWithRedux(<TrackingOverviewWithProviders />, {
+      preloadedState: {
+        auth: { patientId: 1 },
+        trackingOverview: {
+          date: new Date(),
+          isFetching: false,
+          inValidToken: false,
+          page: 0,
+          data: [],
+          error: null,
+        },
+      },
+    });
     const [previous, next] = screen.getAllByRole('button');
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue(format(new Date(), 'MM/dd/yyyy'));
 
+    // @ts-ignore
+    mockGetTrackingDataPoints.mockResolvedValueOnce(emptyResult);
+
     user.click(previous);
+    expect(mockGetTrackingDataPoints).toHaveBeenCalledTimes(1);
+    expect(mockGetTrackingDataPoints).toBeCalledWith({
+      userId: 1,
+      start: format(subDays(new Date(), 1), 'yyyy-MM-dd'),
+      end: format(subDays(new Date(), 1), 'yyyy-MM-dd'),
+      limit: 100,
+      offset: 0,
+    });
     expect(input).toHaveValue(format(subDays(new Date(), 1), 'MM/dd/yyyy'));
+    await waitFor(() => {
+      expect(
+        screen.getByText(en['overview.trackingOverview.noTrackingData'])
+      ).toBeVisible();
+    });
+
+    // @ts-ignore
+    mockGetTrackingDataPoints.mockResolvedValueOnce(emptyResult);
 
     user.click(next);
+    expect(mockGetTrackingDataPoints).toHaveBeenCalledTimes(2);
     expect(input).toHaveValue(format(new Date(), 'MM/dd/yyyy'));
   });
 });
