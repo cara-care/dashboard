@@ -1,6 +1,6 @@
 import React from 'react';
 import user from '@testing-library/user-event';
-import moment from 'moment';
+import { format, subDays } from 'date-fns';
 import TrackingOverview from '../TrackingOverview';
 import withProviders from '../../../components/withProviders';
 import { trackingOverviewInitalState } from '../redux/trackingOverview';
@@ -66,14 +66,13 @@ describe('<TrackingOverview />', () => {
     const screen = renderWithRedux(<TrackingOverviewWithProviders />);
     const [previous, next] = screen.getAllByRole('button');
     const input = screen.getByRole('textbox');
-
-    expect(input).toHaveValue(moment().format('L'));
+    expect(input).toHaveValue(format(new Date(), 'MM/dd/yyyy'));
 
     user.click(previous);
-    expect(input).toHaveValue(moment().subtract(1, 'days').format('L'));
+    expect(input).toHaveValue(format(subDays(new Date(), 1), 'MM/dd/yyyy'));
 
     user.click(next);
-    expect(input).toHaveValue(moment().format('L'));
+    expect(input).toHaveValue(format(new Date(), 'MM/dd/yyyy'));
   });
 });
 
