@@ -26,7 +26,7 @@ import {
 } from '../auth';
 import { getCurrentLocale, setLocale } from '../locale';
 import { useIsDarkMode, setTheme } from '../theme';
-import Link from '../components/Link';
+import { RouterLinkWithPropForwarding as Link } from './Link';
 import Logo from '../assets/images/logo.png';
 import { LOCALES } from '../utils/constants';
 import { LANGUAGE_MENU_BUTTON } from '../utils/test-helpers';
@@ -204,7 +204,13 @@ const NavBar: React.FC = () => {
             </Tooltip>
             {isAuthenticated && (
               <>
-                <Hidden mdDown>
+                <Hidden
+                  mdDown
+                  // https://material-ui.com/components/use-media-query/#testing
+                  implementation={
+                    process.env.NODE_ENV === 'test' ? 'css' : undefined
+                  }
+                >
                   {isPatientSelected && (
                     <Button
                       variant="contained"

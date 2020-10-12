@@ -80,6 +80,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "history": "^5.0.0",
     "is-ci-cli": "^2.1.1",
+    "jest-canvas-mock": "^2.3.0",
     "jest-mock-axios": "^4.0.0",
     "mutationobserver-shim": "^0.3.7",
     "prettier": "^2.0.2",

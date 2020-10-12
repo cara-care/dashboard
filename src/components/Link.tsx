@@ -8,7 +8,7 @@ import { Omit } from '@material-ui/types';
 
 // The use of React.forwardRef will no longer be required for react-router-dom v6.
 // See https://github.com/ReactTraining/react-router/issues/6056
-const RouterLinkWithPropForwarding = React.forwardRef<
+export const RouterLinkWithPropForwarding = React.forwardRef<
   HTMLAnchorElement,
   RouterLinkProps
 >((props, ref) => <RouterLink innerRef={ref} {...props} />);

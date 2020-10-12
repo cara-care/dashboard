@@ -59,7 +59,7 @@ Cypress.Commands.add('setDatePickerDateTo', ({ year, month, day }) => {
     }
   }
   // change the day
-  cy.findByText(new RegExp(day, 'i')).click();
+  cy.findByText(new RegExp(`^${day}$`, 'i')).click();
 });
 
 Cypress.Commands.add('login', ({ username, password }) => {

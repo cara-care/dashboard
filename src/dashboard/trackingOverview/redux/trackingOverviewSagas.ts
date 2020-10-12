@@ -54,7 +54,6 @@ export function* fetchTrackingDataPageSaga() {
       const res = yield call(() =>
         getTrackingDataPoints({ userId, start, end: start, limit, offset })
       );
-
       yield put(
         fetchTrackingDataPageSuccess({
           next: res.data.next ? currentPage + 1 : null,

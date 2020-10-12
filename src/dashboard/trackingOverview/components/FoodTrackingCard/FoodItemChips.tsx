@@ -7,6 +7,7 @@ import {
   StyleRules,
   WithStyles,
 } from '@material-ui/core/styles';
+import capitalize from 'lodash/capitalize';
 
 const styles = (theme: Theme): StyleRules => ({
   chip: {
@@ -42,20 +43,14 @@ const FoodItemChips: React.FC<Props> = ({
   const { locale } = intl;
 
   const foodItemChips = foodItems.map((foodItem, index) => {
-    let name;
-    if (locale === 'de') {
-      name =
-        foodItem.name_de.charAt(0).toUpperCase() + foodItem.name_de.slice(1);
-    } else {
-      name =
-        foodItem.name_en.charAt(0).toUpperCase() + foodItem.name_en.slice(1);
-    }
     return (
       <Chip
         color="primary"
         className={classes.chip}
         key={'fi' + index}
-        label={name}
+        label={capitalize(
+          locale === 'de' ? foodItem.name_de : foodItem.name_en
+        )}
       />
     );
   });
