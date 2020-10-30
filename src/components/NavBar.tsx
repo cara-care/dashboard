@@ -27,7 +27,7 @@ import {
 import { getCurrentLocale, setLocale } from '../locale';
 import { useIsDarkMode, setTheme } from '../theme';
 import { RouterLinkWithPropForwarding as Link } from './Link';
-import Logo from '../assets/images/logo.png';
+import Logo from '../assets/images/logo.svg';
 import { LOCALES } from '../utils/constants';
 import { LANGUAGE_MENU_BUTTON } from '../utils/test-helpers';
 import { DARK_MODE_ICON, LIGHT_MODE_ICON } from '../utils/test-helpers';
@@ -35,7 +35,6 @@ import { DARK_MODE_ICON, LIGHT_MODE_ICON } from '../utils/test-helpers';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: theme.palette.background.paper,
-    color: '#637280',
     boxShadow: '0 4px 22px 0 rgba(37,38,94,0.10)',
     zIndex: theme.zIndex.drawer + 1,
   },
@@ -52,8 +51,8 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     marginRight: theme.spacing(3),
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
   nav: {
     display: 'flex',
@@ -126,8 +125,8 @@ const NavBar: React.FC = () => {
             <img
               src={Logo}
               className={classes.logo}
-              width="50"
-              height="50"
+              width="40"
+              height="40"
               alt="Cara"
             />
             <Hidden xsDown>
