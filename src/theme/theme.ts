@@ -1,6 +1,16 @@
 import { createMuiTheme, useTheme } from '@material-ui/core/styles';
+import { TypographyStyleOptions } from '@material-ui/core/styles/createTypography';
 
-const PRIMARY_COLOR = '#00b3a5';
+const PRIMARY_COLOR = '#489f9d';
+
+const button: TypographyStyleOptions = {
+  fontFamily: `"Source Sans Pro", "Roboto", "Helvetica", "Arial", sans-serif`,
+  fontWeight: 500,
+  fontSize: '0.875rem',
+  lineHeight: 1.75,
+  letterSpacing: '0.02857em',
+  textTransform: 'uppercase',
+};
 
 export const lightTheme = createMuiTheme({
   palette: {
@@ -9,11 +19,14 @@ export const lightTheme = createMuiTheme({
       contrastText: '#fff',
     },
     background: {
-      default: '#fafbfc',
+      default: '#fffdfc',
     },
     text: {
-      primary: '#535d7e',
+      primary: '#150b2c',
     },
+  },
+  typography: {
+    button,
   },
 });
 
@@ -24,6 +37,9 @@ export const darkTheme = createMuiTheme({
       main: PRIMARY_COLOR,
       contrastText: '#fff',
     },
+  },
+  typography: {
+    button,
   },
 });
 
