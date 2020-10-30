@@ -435,5 +435,6 @@
   "search.sorryNoResultsFor": "Sorry, there are no results for {phrase}. Please try another phrase.",
   "timePicker.CANCEL": "CANCEL",
   "_.common.error": "Error",
-  "_.common.logout": "Logout"
+  "_.common.logout": "Logout",
+  "nutriNavigation.inbox": "Inbox"
 }
