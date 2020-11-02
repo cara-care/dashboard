@@ -20,12 +20,8 @@ const useStyles = makeStyles((theme) => ({
   inner: {
     marginRight: theme.spacing(2),
   },
+  divder: { backgroundColor: '#d8eceb' },
 }));
-
-// export interface MessagePreviewProps {
-//   name: string;
-//   message: string;
-// }
 
 export default function MessagePreview() {
   const classes = useStyles();
@@ -42,7 +38,7 @@ export default function MessagePreview() {
         </div>
         <Typography variant="caption">12h</Typography>
       </div>
-      <Divider />
+      <Divider className={classes.divder} />
     </>
   );
 }
