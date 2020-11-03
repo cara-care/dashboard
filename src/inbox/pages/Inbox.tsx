@@ -39,10 +39,37 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inbox() {
   const classes = useStyles();
+  const socketRef = React.useRef<WebSocket | null>(null);
   const [width, setWidth] = React.useState(320);
 
-  const handleResizeStop: ResizeCallback = (e, direction, ref, d) => {
+  const handleResizeStop: ResizeCallback = (_e, _direction, _ref, d) => {
     setWidth(width + d.width);
+  };
+
+  React.useEffect(() => {
+    const socket = new WebSocket('wss://localhost:3000/api/ws/dashboard/');
+
+    socket.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      console.log(data);
+    };
+
+    socketRef.current = socket;
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    socketRef.current?.send(
+      JSON.stringify({
+        type: 'message',
+        text: 'hi!',
+        room: 'u-0AS13EOKO5PZLVKV',
+        sent: new Date().toISOString(),
+      })
+    );
   };
 
   return (
@@ -84,6 +111,7 @@ export default function Inbox() {
             />
             <Message message="Hi Alina! I mostly struggle with pain and diarrhea." />
           </div>
+          <button onClick={sendMessage}>Sent test</button>
           <InputToolbar />
         </div>
       </div>

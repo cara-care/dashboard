@@ -2,7 +2,6 @@
   "name": "cara-dashboard",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://staging.cara.care",
   "resolutions": {
     "cypress": "4.3.0"
   },
@@ -37,6 +36,7 @@
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
+    "http-proxy-middleware": "^1.0.6",
     "lodash": "^4.17.11",
     "re-resizable": "^6.7.0",
     "react": "16.13.1",
