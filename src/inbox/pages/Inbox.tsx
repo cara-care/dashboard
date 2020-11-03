@@ -1,4 +1,5 @@
 import React from 'react';
+import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
 import MessagePreview from '../components/MessagePreview';
@@ -7,18 +8,23 @@ import InputToolbar from '../components/InputToolbar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'grid',
-    gridTemplateColumns: '320px auto',
+    display: 'flex',
+    flexWrap: 'nowrap',
     width: '100vw',
     height: `calc(100vh - 68px - 64px)`, // 100vh - nutri navigation height - appbar height
+  },
+  resize: {
+    display: 'flex',
+    borderRight: '2px solid #d8eceb',
   },
   sidebar: {
     display: 'flex',
     flexDirection: 'column',
-    borderRight: '2px solid #d8eceb',
+    width: '100%',
     overflowY: 'scroll',
   },
   main: {
+    flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -33,19 +39,43 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inbox() {
   const classes = useStyles();
+  const [width, setWidth] = React.useState(320);
+
+  const handleResizeStop: ResizeCallback = (e, direction, ref, d) => {
+    setWidth(width + d.width);
+  };
 
   return (
     <>
       <NutriNavigation />
       <div className={classes.root}>
-        <div className={classes.sidebar}>
-          <MessagePreview />
-          <MessagePreview />
-          <MessagePreview />
-          <MessagePreview />
-          <MessagePreview />
-          <MessagePreview />
-        </div>
+        <Resizable
+          className={classes.resize}
+          enable={{ right: true }}
+          size={{ width, height: '100%' }}
+          minWidth={180}
+          maxWidth={600}
+          onResizeStop={handleResizeStop}
+        >
+          <div className={classes.sidebar}>
+            <MessagePreview isActive />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+            <MessagePreview />
+          </div>
+        </Resizable>
         <div className={classes.main}>
           <div className={classes.messages}>
             <Message
