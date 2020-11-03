@@ -2,10 +2,10 @@ import axios from 'axios';
 
 // In production the requests made to `/api/` are proxied to production backend -> `public/_redirects`:
 // https://www.netlify.com/docs/redirects/#proxying
-// In development the reuqests are proxied to staging backend in package.json:
-// https://create-react-app.dev/docs/proxying-api-requests-in-development#docsNav
+// In development the reuqests are proxied to staging backend in setupProxy.js:
+// https://create-react-app.dev/docs/proxying-api-requests-in-development/#configuring-the-proxy-manually
 const api = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? '/api/' : '/',
+  baseURL: '/api/',
   timeout: 5500,
   headers: {
     Accept: 'application/json',
