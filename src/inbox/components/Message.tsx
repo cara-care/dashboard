@@ -3,6 +3,7 @@ import clsx from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import { getTime } from '../../utils/dateUtils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   bubbleRight: {
     backgroundColor: '#f3f1f1',
   },
+  message: {
+    whiteSpace: 'pre-wrap',
+  },
   timestamp: {
     position: 'absolute',
     bottom: '-24px',
@@ -51,9 +55,14 @@ const useStyles = makeStyles((theme) => ({
 export interface MessageProps {
   position?: 'left' | 'right';
   message: string;
+  sent: string | Date;
 }
 
-export default function Message({ message, position = 'left' }: MessageProps) {
+export default function Message({
+  message,
+  sent,
+  position = 'left',
+}: MessageProps) {
   const classes = useStyles();
   return (
     <div
@@ -73,9 +82,9 @@ export default function Message({ message, position = 'left' }: MessageProps) {
           [classes.bubbleRight]: position === 'right',
         })}
       >
-        <Typography>{message}</Typography>
+        <Typography className={classes.message}>{message}</Typography>
         <Typography variant="caption" className={classes.timestamp}>
-          15:30
+          {getTime(sent)}
         </Typography>
       </div>
     </div>

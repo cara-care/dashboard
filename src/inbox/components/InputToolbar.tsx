@@ -35,12 +35,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function InputToolbar() {
+interface InputToolbarProps {
+  onSubmit: (message: string) => void;
+}
+
+export default function InputToolbar({ onSubmit }: InputToolbarProps) {
   const classes = useStyles();
+  const [message, setMessage] = React.useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = () => {
+    if (message) {
+      onSubmit(message);
+      setMessage('');
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Paper elevation={0} className={classes.card}>
-        <textarea className={classes.input} rows={6} />
+        <textarea
+          value={message}
+          onChange={handleChange}
+          onKeyDown={handleEnterPress}
+          className={classes.input}
+          rows={6}
+        />
         <div className={classes.footer}>
           <div>
             <IconButton>
@@ -50,7 +80,12 @@ export default function InputToolbar() {
               <BookmarkIcon />
             </IconButton>
           </div>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!message}
+            onClick={handleSubmit}
+          >
             Send
           </Button>
         </div>
