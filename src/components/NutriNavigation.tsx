@@ -96,7 +96,6 @@ const NutriNavigation: React.FC = () => {
       </NavLink>
       <NavLink
         to="/nutri/inbox"
-        exact
         className={classes.link}
         activeClassName={classes.activeLink}
       >

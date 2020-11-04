@@ -1,14 +1,22 @@
 import React from 'react';
 import { Resizable, ResizeCallback } from 're-resizable';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'classnames';
 import times from 'lodash/times';
+import { v1 } from 'uuid';
 import NutriNavigation from '../../components/NutriNavigation';
 import MessagePreview from '../components/MessagePreview';
 import Message from '../components/Message';
 import MessageSkeleton from '../components/MessageSkeleton';
 import InputToolbar from '../components/InputToolbar';
+import { getChatRooms, getChatRoomsStatus, RoomsStatues } from '../chatReducer';
+import { fetchChatRoomsPageInit } from '../chatActions';
+import { getMessages } from '../../utils/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   messages: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column-reverse',
     padding: theme.spacing(2),
     overflowY: 'auto',
   },
@@ -52,15 +60,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const sleep = (ms: number) =>
-  new Promise<{ data: never[] }>((r) => setTimeout(() => r({ data: [] }), ms));
+function getMessagePosition(username: string) {
+  // app username starts with u- or auto-
+  return /^(u-|auto-).*/i.test(username) ? 'left' : 'right';
+}
 
 export default function Inbox() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { userId, username } = useParams();
+  const roomsStatus = useSelector(getChatRoomsStatus);
+  const rooms = useSelector(getChatRooms);
   const socketRef = React.useRef<WebSocket | null>(null);
   const [width, setWidth] = React.useState(320);
-  // @ts-ignore
-  const [userId, _] = React.useState(598765); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [isFetching, setIsFetching] = React.useState(false);
   const [messages, setMessages] = React.useState<any[]>([]);
 
@@ -68,11 +80,17 @@ export default function Inbox() {
     setWidth(width + d.width);
   };
 
-  const fetchMessages = React.useCallback(async (id: number) => {
+  const fetchChatRooms = React.useCallback(() => {
+    // TODO: FETCH CHAT ROOM PAGES DYNAMICALLY
+    dispatch(fetchChatRoomsPageInit(0));
+  }, [dispatch]);
+
+  const fetchMessages = React.useCallback(async (id: number | string) => {
     try {
       setIsFetching(true);
-      const res = await sleep(2500);
-      setMessages(res.data);
+      const res = await getMessages(id);
+      console.log(res.data.results);
+      setMessages(res.data.results);
     } catch {
     } finally {
       setIsFetching(false);
@@ -84,11 +102,15 @@ export default function Inbox() {
       JSON.stringify({
         type: 'message',
         text: message,
-        room: 'u-0AS13EOKO5PZLVKV',
+        room: username, // TODO: CHECK IF EXISTS
         sent: new Date().toISOString(),
       })
     );
   };
+
+  React.useEffect(() => {
+    fetchChatRooms();
+  }, [fetchChatRooms]);
 
   React.useEffect(() => {
     if (userId) {
@@ -104,7 +126,7 @@ export default function Inbox() {
     socketRef.current = socket;
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data);
-      setMessages((m) => m.concat(data));
+      setMessages((m) => [data, ...m]);
     };
 
     return () => {
@@ -125,22 +147,31 @@ export default function Inbox() {
           onResizeStop={handleResizeStop}
         >
           <div className={classes.sidebar}>
-            <MessagePreview isActive />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
-            <MessagePreview />
+            {rooms.map((room) => (
+              <MessagePreview
+                key={v1()}
+                userId={room.patient.id}
+                username={room.patient.username}
+                nickname={room.patient.nickname}
+                message={room.lastMessage.text}
+                sent={room.lastMessage.sent}
+              />
+            ))}
+            {roomsStatus === RoomsStatues.FETCHING ? (
+              times(5).map(() => (
+                <Box key={v1()} px={2} py={1}>
+                  <MessageSkeleton />
+                </Box>
+              ))
+            ) : roomsStatus === RoomsStatues.ERROR ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={fetchChatRooms}
+              >
+                Retry
+              </Button>
+            ) : null}
           </div>
         </Resizable>
         <div className={classes.main}>
@@ -156,10 +187,15 @@ export default function Inbox() {
               {messages.map((message) => (
                 <Message
                   key={message.id}
-                  // TODO: figure out how to decide if the message should be left or right
-                  position="right"
+                  position={
+                    username
+                      ? username === message.author
+                        ? 'left'
+                        : 'right'
+                      : getMessagePosition(message.author)
+                  }
                   message={message.text}
-                  sent={message.sent}
+                  created={message.created}
                 />
               ))}
             </div>

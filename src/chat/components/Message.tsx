@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: '-24px',
     right: 0,
     display: 'block',
+    width: '200%',
     textAlign: 'right',
     color: theme.palette.primary.main,
   },
@@ -55,12 +56,12 @@ const useStyles = makeStyles((theme) => ({
 export interface MessageProps {
   position?: 'left' | 'right';
   message: string;
-  sent: string | Date;
+  created: string | Date;
 }
 
 export default function Message({
   message,
-  sent,
+  created,
   position = 'left',
 }: MessageProps) {
   const classes = useStyles();
@@ -84,7 +85,7 @@ export default function Message({
       >
         <Typography className={classes.message}>{message}</Typography>
         <Typography variant="caption" className={classes.timestamp}>
-          {getTime(sent)}
+          {getTime(created)}
         </Typography>
       </div>
     </div>

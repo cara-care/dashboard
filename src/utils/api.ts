@@ -155,4 +155,22 @@ export const changePassword = ({
   });
 };
 
+export const getChatRooms = ({
+  limit,
+  offset,
+}: {
+  limit: number;
+  offset: number;
+}) => {
+  return api.get(`/dashboard/chat/rooms/?limit=${limit}&offset=${offset}`);
+};
+
+export const getChatRoom = (userId: number) => {
+  return api.get(`/dashboard/chat/rooms/${userId}/`);
+};
+
+export const getMessages = (userId: number | string) => {
+  return api.get(`/dashboard/chat/rooms/${userId}/messages/`);
+};
+
 export default api;
