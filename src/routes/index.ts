@@ -16,7 +16,7 @@ const Questionnaire = React.lazy(() =>
   import('../questionnaires/pages/Questionnaire')
 );
 const Programs = React.lazy(() => import('../programs/pages/Programs'));
-const Inbox = React.lazy(() => import('../inbox/pages/Inbox'));
+const Inbox = React.lazy(() => import('../chat/pages/Inbox'));
 
 const routes = [
   {
@@ -80,7 +80,7 @@ const routes = [
     authRequired: true,
   },
   {
-    path: '/nutri/inbox',
+    path: '/nutri/inbox/:userId?/:username?',
     component: Inbox,
     exact: false,
     authRequired: true,
