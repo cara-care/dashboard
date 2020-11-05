@@ -159,8 +159,8 @@ export const getChatRooms = ({
   limit,
   offset,
 }: {
-  limit: number;
-  offset: number;
+  limit: number | string;
+  offset: number | string;
 }) => {
   return api.get(`/dashboard/chat/rooms/?limit=${limit}&offset=${offset}`);
 };

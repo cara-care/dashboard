@@ -36,13 +36,6 @@ import {
 } from '../auth';
 import * as TrackingOverviewSagas from '../dashboard/trackingOverview/redux/trackingOverviewSagas';
 import * as ChartOverviewSagas from '../dashboard/chartOverview/redux/chartSagas';
-import {
-  chatReducer,
-  rootChatSaga,
-  ChatState,
-  ChatActions,
-  chatInitialState,
-} from '../chat';
 import { localeReducer, LocaleState, LocaleActions } from '../locale';
 import { themeReducer, ThemeState, ThemeActions } from '../theme';
 
@@ -52,7 +45,6 @@ export interface RootState {
   chartOverview: ChartOverviewState;
   trackingOverview: TrackingOverviewState;
   questionnaires: QuestionnairesState;
-  chat: ChatState;
   theme: ThemeState;
 }
 
@@ -62,7 +54,6 @@ export type RootActions =
   | ChartOverviewActions
   | TrackingOverviewActions
   | QuestionnairesActions
-  | ChatActions
   | ThemeActions;
 
 export default function configureStore({
@@ -80,7 +71,6 @@ export default function configureStore({
     chartOverview,
     trackingOverview: trackingOverviewReducer,
     questionnaires: questionnairesReducer,
-    chat: chatReducer,
     theme: themeReducer,
   });
 
@@ -90,7 +80,6 @@ export default function configureStore({
       rootAuthSaga(),
       ChartOverviewSagas.chartOverviewRootSaga(),
       TrackingOverviewSagas.trackingOverviewRootSaga(),
-      rootChatSaga(),
     ]);
   }
 
@@ -118,7 +107,6 @@ export default function configureStore({
       chartOverview: chartOverviewInitialState,
       questionnaires: questionnairesInitialState,
       trackingOverview: trackingOverviewInitalState,
-      chat: chatInitialState,
       theme: { theme: preloadedTheme },
       ...preloadedState,
     },

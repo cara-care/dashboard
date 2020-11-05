@@ -1,22 +1,24 @@
 import React from 'react';
 import { Resizable, ResizeCallback } from 're-resizable';
-import { useSelector, useDispatch } from 'react-redux';
+import { useInfiniteQuery, useQueryCache } from 'react-query';
 import { useParams } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'classnames';
 import times from 'lodash/times';
 import { v1 } from 'uuid';
 import NutriNavigation from '../../components/NutriNavigation';
-import MessagePreview from '../components/MessagePreview';
 import Message from '../components/Message';
 import MessageSkeleton from '../components/MessageSkeleton';
 import InputToolbar from '../components/InputToolbar';
-import { getChatRooms, getChatRoomsStatus, RoomsStatues } from '../chatReducer';
-import { fetchChatRoomsPageInit } from '../chatActions';
-import { getMessages } from '../../utils/api';
+import MessagePreview from '../components/MessagePreview';
+import Spinner from '../../components/Spinner';
+import { getChatRooms, getMessages } from '../../utils/api';
+import getParams from '../../utils/getParams';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,33 +69,53 @@ function getMessagePosition(username: string) {
 
 export default function Inbox() {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { userId, username } = useParams();
-  const roomsStatus = useSelector(getChatRoomsStatus);
-  const rooms = useSelector(getChatRooms);
+  const queryCache = useQueryCache();
+  const {
+    status,
+    data,
+    error,
+    // isFetching,
+    isFetchingMore,
+    refetch,
+    fetchMore,
+    canFetchMore,
+  } = useInfiniteQuery(
+    'chatRooms',
+    async (_key, url = '?limit=1&offset=0') => {
+      // FIXME: typings
+      // @ts-ignore
+      const { limit, offset } = getParams(url);
+      const res = await getChatRooms({ limit, offset });
+      return res.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+      getFetchMore: (lastPage) => (lastPage.next ? lastPage.next : null),
+    }
+  );
   const socketRef = React.useRef<WebSocket | null>(null);
   const [width, setWidth] = React.useState(320);
-  const [isFetching, setIsFetching] = React.useState(false);
+  const [isFetchingMessages, setIsFetchingMessages] = React.useState(false);
   const [messages, setMessages] = React.useState<any[]>([]);
+
+  const refetchChatRooms = () => {
+    refetch();
+  };
 
   const handleResizeStop: ResizeCallback = (_e, _direction, _ref, d) => {
     setWidth(width + d.width);
   };
 
-  const fetchChatRooms = React.useCallback(() => {
-    // TODO: FETCH CHAT ROOM PAGES DYNAMICALLY
-    dispatch(fetchChatRoomsPageInit(0));
-  }, [dispatch]);
-
   const fetchMessages = React.useCallback(async (id: number | string) => {
     try {
-      setIsFetching(true);
+      setIsFetchingMessages(true);
       const res = await getMessages(id);
       console.log(res.data.results);
       setMessages(res.data.results);
     } catch {
     } finally {
-      setIsFetching(false);
+      setIsFetchingMessages(false);
     }
   }, []);
 
@@ -102,15 +124,11 @@ export default function Inbox() {
       JSON.stringify({
         type: 'message',
         text: message,
-        room: username, // TODO: CHECK IF EXISTS
+        room: username,
         sent: new Date().toISOString(),
       })
     );
   };
-
-  React.useEffect(() => {
-    fetchChatRooms();
-  }, [fetchChatRooms]);
 
   React.useEffect(() => {
     if (userId) {
@@ -125,14 +143,20 @@ export default function Inbox() {
     const socket = new WebSocket('wss://localhost:3000/api/ws/dashboard/');
     socketRef.current = socket;
     socket.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      setMessages((m) => [data, ...m]);
+      const msg = JSON.parse(e.data);
+      // TODO:
+      // go through all the rooms and check if the room is in cache, if yes re-fetch all queries
+      console.log(msg);
+      queryCache.refetchQueries('chatRooms');
+      if (msg.room === username) {
+        setMessages((m) => [msg, ...m]);
+      }
     };
 
     return () => {
       socket.close();
     };
-  }, []);
+  }, [queryCache, username]);
 
   return (
     <>
@@ -147,35 +171,65 @@ export default function Inbox() {
           onResizeStop={handleResizeStop}
         >
           <div className={classes.sidebar}>
-            {rooms.map((room) => (
-              <MessagePreview
-                key={v1()}
-                userId={room.patient.id}
-                username={room.patient.username}
-                nickname={room.patient.nickname}
-                message={room.lastMessage.text}
-                sent={room.lastMessage.sent}
-              />
-            ))}
-            {roomsStatus === RoomsStatues.FETCHING ? (
+            {status === 'loading' ? (
               times(5).map(() => (
                 <Box key={v1()} px={2} py={1}>
                   <MessageSkeleton />
                 </Box>
               ))
-            ) : roomsStatus === RoomsStatues.ERROR ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={fetchChatRooms}
+            ) : status === 'error' ? (
+              <Alert
+                severity="error"
+                action={
+                  <Button
+                    color="inherit"
+                    size="small"
+                    onClick={refetchChatRooms}
+                  >
+                    Retry
+                  </Button>
+                }
               >
-                Retry
-              </Button>
+                <AlertTitle>Error</AlertTitle>
+                {error.response
+                  ? error.response.data
+                  : error.request
+                  ? error.request?.response
+                  : error.message}
+              </Alert>
+            ) : (
+              data?.map((page, i) => (
+                <React.Fragment key={i}>
+                  {page.results.map((room: any) => (
+                    <MessagePreview
+                      key={v1()}
+                      userId={room.patient.id}
+                      username={room.patient.username}
+                      nickname={room.patient.nickname}
+                      message={room.lastMessage.text}
+                      sent={room.lastMessage.created}
+                    />
+                  ))}
+                </React.Fragment>
+              ))
+            )}
+            {isFetchingMore ? (
+              <Box
+                px={2}
+                py={1}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Spinner size={24} noText />
+              </Box>
+            ) : canFetchMore ? (
+              <Button onClick={() => fetchMore()}>Load more</Button>
             ) : null}
           </div>
         </Resizable>
         <div className={classes.main}>
-          {isFetching ? (
+          {isFetchingMessages ? (
             <div className={clsx(classes.messages, classes.noScroll)}>
               {times(5).map((n) => (
                 <MessageSkeleton key={n} />
@@ -187,13 +241,7 @@ export default function Inbox() {
               {messages.map((message) => (
                 <Message
                   key={message.id}
-                  position={
-                    username
-                      ? username === message.author
-                        ? 'left'
-                        : 'right'
-                      : getMessagePosition(message.author)
-                  }
+                  position={getMessagePosition(message.author)}
                   message={message.text}
                   created={message.created}
                 />
@@ -201,10 +249,14 @@ export default function Inbox() {
             </div>
           ) : (
             <div className={classes.center}>
-              <Typography>No messages here yet...</Typography>
+              <Typography>
+                {username
+                  ? 'No messages here yet...'
+                  : 'Please select a room...'}
+              </Typography>
             </div>
           )}
-          <InputToolbar onSubmit={sendMessage} />
+          {username && <InputToolbar onSubmit={sendMessage} />}
         </div>
       </div>
     </>
