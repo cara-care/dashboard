@@ -7253,6 +7253,11 @@ internal-slot@^1.0.2:
     has "^1.0.3"
     side-channel "^1.0.2"
 
+intersection-observer@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.11.0.tgz#f4ea067070326f68393ee161cc0a2ca4c0040c6f"
+  integrity sha512-KZArj2QVnmdud9zTpKf279m2bbGfG+4/kn16UU0NL3pTVl52ZHiJ9IRNSsnn6jaHrL9EGLFM5eWjTx2fz/+zoQ==
+
 intl-format-cache@^4.2.28:
   version "4.2.28"
   resolved "https://registry.yarnpkg.com/intl-format-cache/-/intl-format-cache-4.2.28.tgz#67cccee0ae5234cb61bb72f82c4f1df5804aed7f"
@@ -11326,6 +11331,11 @@ react-transition-group@^4.4.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-use-websocket@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-use-websocket/-/react-use-websocket-2.2.0.tgz#3e9a6fc0a557d8ef4ad5266a721183e464c5a6ed"
+  integrity sha512-Pt7lbnHxEOTOwO51TD9Nk5cSpuIOQ25hPVb9c0n7HDkciqAYSx9TQxs2clz6pA8KrFlTIHrV5/Pu+cb8MEb5fg==
 
 react@16.13.1:
   version "16.13.1"

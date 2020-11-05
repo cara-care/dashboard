@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-export interface MessagePreviewProps {
+export interface ChatRoomProps {
   nickname: string;
   message: string;
   sent: string;
@@ -66,13 +66,13 @@ export interface MessagePreviewProps {
   username: string;
 }
 
-export default React.memo(function MessagePreview({
+export default React.memo(function ChatRoom({
   nickname,
   message,
   sent,
   userId,
   username,
-}: MessagePreviewProps) {
+}: ChatRoomProps) {
   const classes = useStyles();
 
   return (

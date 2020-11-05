@@ -169,8 +169,18 @@ export const getChatRoom = (userId: number) => {
   return api.get(`/dashboard/chat/rooms/${userId}/`);
 };
 
-export const getMessages = (userId: number | string) => {
-  return api.get(`/dashboard/chat/rooms/${userId}/messages/`);
+export const getMessages = ({
+  userId,
+  limit,
+  offset,
+}: {
+  userId: number | string;
+  limit: number | string;
+  offset: number | string;
+}) => {
+  return api.get(
+    `/dashboard/chat/rooms/${userId}/messages/?limit=${limit}&offset=${offset}`
+  );
 };
 
 export default api;
