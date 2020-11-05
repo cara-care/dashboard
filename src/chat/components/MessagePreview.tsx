@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     transition: `color ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}, background-color ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut}`,
     '&:hover': {
       color: '#150b2c',
-      backgroundColor: 'rgba(216, 236, 235, 0.8)',
+      backgroundColor: 'rgba(216, 236, 235, 0.3)',
     },
   },
   root: {
@@ -27,8 +27,19 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(),
   },
   active: {
+    position: 'relative',
     color: '#150b2c',
     backgroundColor: '#d8eceb',
+    '&:before': {
+      position: 'absolute',
+      display: 'block',
+      content: '""',
+      top: 0,
+      left: 0,
+      width: 8,
+      height: '100%',
+      backgroundColor: '#a6d2d1',
+    },
   },
   container: {
     display: 'flex',
