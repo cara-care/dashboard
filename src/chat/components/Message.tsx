@@ -3,7 +3,7 @@ import clsx from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { getTime } from '../../utils/dateUtils';
+import { getTime, padWith0 } from '../../utils/dateUtils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#150b2c',
     borderRadius: theme.shape.borderRadius,
     marginBottom: 24,
+    minWidth: 28,
     [theme.breakpoints.up('md')]: {
       maxWidth: '50%',
     },
@@ -45,11 +46,17 @@ const useStyles = makeStyles((theme) => ({
   timestamp: {
     position: 'absolute',
     bottom: '-24px',
-    right: 0,
     display: 'block',
     width: '200%',
-    textAlign: 'right',
     color: theme.palette.primary.main,
+  },
+  timestampLeft: {
+    left: 0,
+    textAlign: 'left',
+  },
+  timestampRight: {
+    right: 0,
+    textAlign: 'right',
   },
 }));
 
@@ -84,8 +91,14 @@ export default function Message({
         })}
       >
         <Typography className={classes.message}>{message}</Typography>
-        <Typography variant="caption" className={classes.timestamp}>
-          {getTime(created)}
+        <Typography
+          variant="caption"
+          className={clsx(classes.timestamp, {
+            [classes.timestampLeft]: position === 'left',
+            [classes.timestampRight]: position === 'right',
+          })}
+        >
+          {padWith0(getTime(created))}
         </Typography>
       </div>
     </div>
