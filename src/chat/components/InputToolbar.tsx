@@ -69,7 +69,7 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
           onChange={handleChange}
           onKeyDown={handleEnterPress}
           className={classes.input}
-          rows={6}
+          rows={5}
         />
         <div className={classes.footer}>
           <div>
