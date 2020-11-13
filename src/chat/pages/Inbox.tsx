@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
 import Chat from '../components/Chat';
 import ChatRooms from '../components/ChatRooms';
+import ChatDetails from '../components/ChatDetails';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     paddingTop: theme.spacing(2),
+  },
+  details: {
+    display: 'flex',
+    flex: '0 0 300px',
   },
 }));
 
@@ -118,6 +123,9 @@ export default function Inbox() {
               onSendMessage={sendMessage}
             />
           )}
+        </div>
+        <div className={classes.details}>
+          {userId && <ChatDetails userId={userId} />}
         </div>
       </div>
     </>
