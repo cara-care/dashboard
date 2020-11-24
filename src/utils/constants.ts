@@ -5,6 +5,6 @@ export const LOCALES = [
 ];
 export const getHost = () => {
   return process.env.NODE_ENV === 'production'
-    ? 'https://web.cara.care'
+    ? 'https://web.gohidoc.com'
     : 'https://localhost:3000';
 };

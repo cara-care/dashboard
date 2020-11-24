@@ -1,6 +1,9 @@
 # Redirect default Netlify subdomain to primary domain
-https://nutri-dashboard.netlify.com/* https://web.cara.care/:splat 301!
-https://nutri-dashboard.netlify.app/* https://web.cara.care/:splat 301!
+https://nutri-dashboard.netlify.com/* https://web.gohidoc.com/:splat 301!
+https://nutri-dashboard.netlify.app/* https://web.gohidoc.com/:splat 301!
+
+# Redirect from old domain
+https://web.cara.care.com/* https://web.gohidoc.com/:splat 301!
 
 /api/*  https://backend.gohidoc.com/:splat  200
 /*  /index.html  200

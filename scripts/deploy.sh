@@ -11,7 +11,7 @@ if [[ $DASHBOARD_ENV = "EU" ]]; then
   ORIGINAL_NETLIFY_SITE_NAME="nutri-dashboard"
   EU_NETLIFY_SITE_NAME="eu-nutri-dashboard"
 
-  ORIGINAL_HOST="web.cara.care"
+  ORIGINAL_HOST="web.gohidoc.com"
   EU_HOST="eu-web.cara.care"
 
   echo "⌛ replacing \"${ORIGINAL_BACKEND_HOST}\" with \"${EU_BACKEND_HOST}\"..."
@@ -21,6 +21,10 @@ if [[ $DASHBOARD_ENV = "EU" ]]; then
   echo "⌛ replacing \"${ORIGINAL_NETLIFY_SITE_NAME}\" with \"${EU_NETLIFY_SITE_NAME}\"..."
   echo
   sed -i.tmp "s/${ORIGINAL_NETLIFY_SITE_NAME}/${EU_NETLIFY_SITE_NAME}/g" "$PWD/public/_redirects"
+
+  echo "⌛ removing https://web.cara.care.com/* https://web.gohidoc.com/:splat 301! redirect"
+  echo
+  sed -i.tmp "/https:\/\/web.cara.care.com\/\* https:\/\/web.gohidoc.com\/:splat 301!/d" "$PWD/public/_redirects"
 
   echo "⌛ replacing \"${ORIGINAL_HOST}\" with \"${EU_HOST}\"..."
   echo
