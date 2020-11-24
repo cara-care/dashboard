@@ -51,10 +51,12 @@ describe('<FoodItemChips />', () => {
     const screen = renderWithRedux(<ConnectedFoodItemChips />);
 
     times(NUM_ITEMS).forEach((_n, i) => {
-      expect(
-        screen.getByText(new RegExp(mockFoodItemsData[i].name_en, 'i'))
-      ).toBeVisible();
-      expect(screen.getByText(mockCustomFoodItemsData[i].name)).toBeVisible();
+      screen
+        .getAllByText(new RegExp(mockFoodItemsData[i].name_en, 'i'))
+        .forEach((el) => expect(el).toBeVisible());
+      screen
+        .getAllByText(mockCustomFoodItemsData[i].name)
+        .forEach((el) => expect(el).toBeVisible());
     });
   });
 });
