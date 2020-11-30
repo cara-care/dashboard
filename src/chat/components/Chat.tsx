@@ -10,12 +10,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import times from 'lodash/times';
 import MessageSkeleton from './MessageSkeleton';
-import Message from './Message';
 import InputToolbar from './InputToolbar';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import Spinner from '../../components/Spinner';
 import { getMessages } from '../../utils/api';
 import getParams from '../../utils/getParams';
+import ChatMessages from './ChatMessages';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -50,11 +50,6 @@ export interface ChatProps {
   onSendMessage: (message: string) => void;
 }
 
-function getMessagePosition(username: string) {
-  // app username starts with u- or auto-
-  return /^(u-|auto-).*/i.test(username) ? 'left' : 'right';
-}
-
 export default React.memo(function Chat({
   userId,
   username,
@@ -84,7 +79,7 @@ export default React.memo(function Chat({
     canFetchMore,
   } = useInfiniteQuery(
     `messages-${username}`,
-    async (_key, url = '?limit=100&offset=0') => {
+    async (_key, url = '?limit=6&offset=0') => {
       // FIXME: typings
       // @ts-ignore
       const { limit, offset } = getParams(url);
@@ -143,18 +138,7 @@ export default React.memo(function Chat({
         </div>
       ) : data?.length ? (
         <div ref={messagesRootRef} className={classes.messages}>
-          {data.map((page, i) => (
-            <React.Fragment key={i}>
-              {page.results.map((message: any) => (
-                <Message
-                  key={message.id}
-                  position={getMessagePosition(message.author)}
-                  message={message.text}
-                  created={message.created}
-                />
-              ))}
-            </React.Fragment>
-          ))}
+          <ChatMessages data={data} />
           <div ref={messagesTopRef} className={classes.top} />
           {isFetchingMore && (
             <Box
