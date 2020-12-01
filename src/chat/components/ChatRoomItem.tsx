@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { formatDistanceToNowStrict } from 'date-fns';
 import truncate from 'lodash/truncate';
@@ -6,6 +6,13 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  ChatUser,
+  clearChatMessages,
+  setCurrentChatUser,
+  currentUserIdSelector,
+} from '../redux';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -58,28 +65,46 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-export interface ChatRoomProps {
-  nickname: string;
+export interface ChatRoomItemProps {
   message: string;
   sent: string;
-  userId: number;
-  username: string;
+  patient: ChatUser;
 }
 
-export default React.memo(function ChatRoom({
-  nickname,
-  message,
+export default React.memo(function ChatRoomItem({
   sent,
-  userId,
-  username,
-}: ChatRoomProps) {
+  message,
+  patient,
+}: ChatRoomItemProps) {
+  const { nickname, username, id: userId } = patient;
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const currentUserId = useSelector(currentUserIdSelector);
+
+  const setCurrentPatient = useCallback(
+    (patient: ChatUser) => {
+      dispatch(setCurrentChatUser(patient));
+    },
+    [dispatch]
+  );
+  const clearMessages = useCallback(() => {
+    dispatch(clearChatMessages());
+  }, [dispatch]);
+
+  const handleChatRoomSelected = useCallback(() => {
+    if (currentUserId !== patient.id) {
+      clearMessages();
+      setCurrentPatient(patient);
+    }
+  }, [patient, currentUserId, setCurrentPatient, clearMessages]);
 
   return (
     <NavLink
+      // TODO: remove link, erase NavLInk
       to={`/nutri/inbox/${userId}` + (username ? `/${username}` : '')}
       className={classes.link}
       activeClassName={classes.active}
+      onClick={handleChatRoomSelected}
     >
       <div className={classes.root}>
         <div className={classes.container}>

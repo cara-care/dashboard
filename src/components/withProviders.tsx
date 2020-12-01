@@ -16,7 +16,7 @@ const messages = {
   de: require('../locale/de.json'),
 };
 
-const queryCache = new QueryCache();
+export const queryCache = new QueryCache();
 
 const withProviders = (
   Component: React.ComponentType,

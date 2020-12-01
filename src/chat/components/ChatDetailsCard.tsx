@@ -39,7 +39,7 @@ const useStyles = makeStyles((_theme) => ({
 
 export interface CardDetailsValues {
   key: string;
-  value: string;
+  value: string | number;
 }
 
 interface ChatDetailsCardProps {

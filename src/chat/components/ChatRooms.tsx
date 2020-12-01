@@ -1,19 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { FormattedMessage } from 'react-intl';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import times from 'lodash/times';
 import { v1 } from 'uuid';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import Spinner from '../../components/Spinner';
 import MessageSkeleton from './MessageSkeleton';
-import ChatRoom from './ChatRoom';
+import ChatRoomsList from './ChatRoomsList';
 import getParams from '../../utils/getParams';
 import { getChatRooms } from '../../utils/api';
+import { useDispatch } from 'react-redux';
+import { setChatRooms } from '../redux';
+import { ChatRoomsError } from './Errors';
 
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
@@ -26,11 +26,19 @@ const useStyles = makeStyles((_theme) => ({
 
 export default function ChatRooms() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement>(null);
   const fetchMoreButtonRef = useRef<HTMLButtonElement>(null);
+
+  const setChatMessagesToStore = useCallback(
+    (chatRooms: any) => {
+      dispatch(setChatRooms(chatRooms));
+    },
+    [dispatch]
+  );
+
   const {
     status,
-    data,
     error,
     isFetchingMore,
     refetch,
@@ -43,6 +51,7 @@ export default function ChatRooms() {
       // @ts-ignore
       const { limit, offset } = getParams(url);
       const res = await getChatRooms({ limit, offset });
+      setChatMessagesToStore(res.data.results);
       return res.data;
     },
     {
@@ -75,38 +84,9 @@ export default function ChatRooms() {
           </Box>
         ))
       ) : status === 'error' ? (
-        <Alert
-          severity="error"
-          action={
-            <Button color="inherit" size="small" onClick={() => refetch}>
-              Retry
-            </Button>
-          }
-        >
-          <AlertTitle>
-            <FormattedMessage id="common.error" defaultMessage="Error" />
-          </AlertTitle>
-          {error.response
-            ? error.response.data
-            : error.request
-            ? error.request?.response
-            : error.message}
-        </Alert>
+        <ChatRoomsError {...{ error, refetch }} />
       ) : (
-        data?.map((page, i) => (
-          <React.Fragment key={i}>
-            {page.results.map((room: any) => (
-              <ChatRoom
-                key={v1()}
-                userId={room.patient.id}
-                username={room.patient.username}
-                nickname={room.patient.nickname}
-                message={room.lastMessage.text}
-                sent={room.lastMessage.created}
-              />
-            ))}
-          </React.Fragment>
-        ))
+        <ChatRoomsList />
       )}
       {isFetchingMore ? (
         <Box

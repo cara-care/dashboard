@@ -1,12 +1,8 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
-import { FormattedMessage } from 'react-intl';
 import clsx from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
-import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import times from 'lodash/times';
 import MessageSkeleton from './MessageSkeleton';
@@ -15,7 +11,17 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import Spinner from '../../components/Spinner';
 import { getMessages } from '../../utils/api';
 import getParams from '../../utils/getParams';
-import ChatMessages from './ChatMessages';
+import ChatMessagesList from './ChatMessagesList';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setChatMessages,
+  scrollToChatBottomSelector,
+  ChatUser,
+  setScrollToBottom,
+  clearChatMessages,
+  setCurrentChatUser,
+} from '../redux';
+import { ChatMessagesError } from './Errors';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -45,29 +51,53 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export interface ChatProps {
-  username?: string;
-  userId: string | number;
+  user: ChatUser;
   onSendMessage: (message: string) => void;
 }
 
-export default React.memo(function Chat({
-  userId,
-  username,
-  onSendMessage,
-}: ChatProps) {
+export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
   const classes = useStyles();
-  const messagesRootRef = React.useRef<HTMLDivElement>(null);
-  const messagesTopRef = React.useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+  const { id: userId, username } = user;
+  const isScrollNeeded = useSelector(scrollToChatBottomSelector);
+  const messagesRootRef = useRef<HTMLDivElement>(null);
+  const messagesTopRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
+  const performScrollToBottom = () => {
     messagesRootRef.current!.scrollTop = messagesRootRef.current!.scrollHeight;
   };
 
-  const handleSendMessage = (message: string) => {
-    // FIXME: WAIT FOR THE MESSAGE FROM A WEBSOCKET FRAME
-    scrollToBottom();
-    onSendMessage(message);
-  };
+  const setScrollValue = useCallback(
+    (value: boolean) => {
+      dispatch(setScrollToBottom(value));
+    },
+    [dispatch]
+  );
+
+  const clearChat = useCallback(() => {
+    dispatch(clearChatMessages());
+    dispatch(setCurrentChatUser(null));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isScrollNeeded) {
+      performScrollToBottom();
+      setScrollValue(false);
+    }
+  }, [isScrollNeeded, setScrollValue]);
+
+  useEffect(() => {
+    return () => {
+      clearChat();
+    };
+  }, [clearChat]);
+
+  const setChatMessagesToStore = useCallback(
+    (chatMessages: any) => {
+      dispatch(setChatMessages(chatMessages));
+    },
+    [dispatch]
+  );
 
   const {
     status,
@@ -79,14 +109,16 @@ export default React.memo(function Chat({
     canFetchMore,
   } = useInfiniteQuery(
     `messages-${username}`,
-    async (_key, url = '?limit=6&offset=0') => {
+    async (_key, url = '?limit=10&offset=0') => {
       // FIXME: typings
       // @ts-ignore
       const { limit, offset } = getParams(url);
       const res = await getMessages({ userId, limit, offset });
+      setChatMessagesToStore(res.data.results);
       return res.data;
     },
     {
+      cacheTime: 0,
       enabled: !!username || !!userId,
       refetchOnWindowFocus: false,
       getFetchMore: (lastPage) => (lastPage.next ? lastPage.next : null),
@@ -108,37 +140,24 @@ export default React.memo(function Chat({
     enabled: !!canFetchMore,
   });
 
+  // Needed to move it out, because on scrolling issue when new chat room selected
+  if (status === 'loading') {
+    return (
+      <div className={clsx(classes.messages, classes.noScroll)}>
+        {times(5).map((n) => (
+          <MessageSkeleton key={n} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <>
-      {status === 'loading' ? (
-        <div className={clsx(classes.messages, classes.noScroll)}>
-          {times(5).map((n) => (
-            <MessageSkeleton key={n} />
-          ))}
-        </div>
-      ) : status === 'error' ? (
-        <div className={classes.center}>
-          <Alert
-            severity="error"
-            action={
-              <Button color="inherit" size="small" onClick={() => refetch}>
-                Retry
-              </Button>
-            }
-          >
-            <AlertTitle>
-              <FormattedMessage id="common.error" defaultMessage="Error" />
-            </AlertTitle>
-            {error.response
-              ? error.response.data
-              : error.request
-              ? error.request?.response
-              : error.message}
-          </Alert>
-        </div>
+      {status === 'error' ? (
+        <ChatMessagesError {...{ error, refetch }} />
       ) : data?.length ? (
         <div ref={messagesRootRef} className={classes.messages}>
-          <ChatMessages data={data} />
+          <ChatMessagesList />
           <div ref={messagesTopRef} className={classes.top} />
           {isFetchingMore && (
             <Box
@@ -158,7 +177,7 @@ export default React.memo(function Chat({
           </Typography>
         </div>
       )}
-      {username && <InputToolbar onSubmit={handleSendMessage} />}
+      {username && <InputToolbar onSubmit={onSendMessage} />}
     </>
   );
 });

@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Resizable, ResizeCallback } from 're-resizable';
-import { useQueryCache } from 'react-query';
+// import { useQueryCache } from 'react-query';
 import useWebSocket from 'react-use-websocket';
-import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
 import Chat from '../components/Chat';
 import ChatRooms from '../components/ChatRooms';
 import ChatDetails from '../components/ChatDetails';
+import {
+  addChatMessage,
+  addNewMessageToChatRoomInit,
+  currentUserSelector,
+} from '../redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,17 +46,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Inbox() {
   const classes = useStyles();
   const didUnmount = React.useRef(false);
-  const queryCache = useQueryCache();
-  const { userId, username } = useParams();
+  const dispatch = useDispatch();
+  // const queryCache = useQueryCache();
+
+  const currentUser = useSelector(currentUserSelector);
+
   // TODO: figure out how to handle this in prod (CORS + SameSite cookies) :(
   // Netlify doesn't support websocket proxying:
   // https://community.netlify.com/t/does-netlify-support-websocket-proxying/11230/4
-  const { lastMessage, sendJsonMessage } = useWebSocket(
+  const { sendJsonMessage } = useWebSocket(
     'wss://localhost:3000/api/ws/dashboard/',
     {
       shouldReconnect: (_closeEvent) => {
         // reconnect if not unmounted
         return didUnmount.current === false;
+      },
+      onMessage: (event: WebSocketEventMap['message']) => {
+        const message = JSON.parse(event.data);
+        dispatch(addChatMessage(message));
+        dispatch(addNewMessageToChatRoomInit(message));
       },
     }
   );
@@ -63,43 +76,43 @@ export default function Inbox() {
     setWidth(width + d.width);
   };
 
-  const sendMessage = React.useCallback(
+  const sendMessage = useCallback(
     (message: string) => {
       sendJsonMessage({
         type: 'message',
         text: message,
-        room: username,
+        room: currentUser?.username,
         sent: new Date().toISOString(),
       });
     },
-    [username, sendJsonMessage]
+    [currentUser, sendJsonMessage]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       didUnmount.current = true;
     };
   }, []);
 
-  React.useEffect(() => {
-    if (lastMessage) {
-      const msg = JSON.parse(lastMessage.data);
-      // FIXME: optimistically update chat rooms?
-      // E.g.: Go through all the rooms and check if the room in cache + move it if necessary?
-      queryCache.refetchQueries('chatRooms');
+  // React.useEffect(() => {
+  //   if (lastMessage) {
+  //     const msg = JSON.parse(lastMessage.data);
+  //     // FIXME: optimistically update chat rooms?
+  //     // E.g.: Go through all the rooms and check if the room in cache + move it if necessary?
+  //     queryCache.refetchQueries('chatRooms');
 
-      // TODO: UPDATE MESSAGES
-      // queryCache.cancelQueries(`messages-${msg.room}`);
-      // const previousValue = queryCache.getQueryData(`messages-${msg.room}`);
-      // console.log(previousValue);
-      // queryCache.setQueryData(`messages-${msg.room}`, (old) => ({
-      //   ...old,
-      // }));
-      if (msg.room === username) {
-        queryCache.refetchQueries(`messages-${msg.room}`);
-      }
-    }
-  }, [queryCache, lastMessage, username]);
+  //     // TODO: UPDATE MESSAGES
+  //     // queryCache.cancelQueries(`messages-${msg.room}`);
+  //     // const previousValue = queryCache.getQueryData(`messages-${msg.room}`);
+  //     // console.log(previousValue);
+  //     // queryCache.setQueryData(`messages-${msg.room}`, (old) => ({
+  //     //   ...old,
+  //     // }));
+  //     if (msg.room === username) {
+  //       queryCache.refetchQueries(`messages-${msg.room}`);
+  //     }
+  //   }
+  // }, [queryCache, lastMessage, username]);
 
   return (
     <>
@@ -115,18 +128,16 @@ export default function Inbox() {
         >
           <ChatRooms />
         </Resizable>
-        <div className={classes.main}>
-          {userId && (
-            <Chat
-              userId={userId}
-              username={username}
-              onSendMessage={sendMessage}
-            />
-          )}
-        </div>
-        <div className={classes.details}>
-          {userId && <ChatDetails userId={userId} />}
-        </div>
+        {currentUser && (
+          <>
+            <div className={classes.main}>
+              <Chat user={currentUser} onSendMessage={sendMessage} />
+            </div>
+            <div className={classes.details}>
+              <ChatDetails user={currentUser} />
+            </div>
+          </>
+        )}
       </div>
     </>
   );
