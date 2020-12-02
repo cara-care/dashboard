@@ -13,6 +13,8 @@ import {
   currentUserSelector,
 } from '../redux';
 import { useDispatch, useSelector } from 'react-redux';
+import ChatHeader from '../components/ChatHeader';
+import InboxSidebar from '../components/InboxSidebar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +37,15 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: theme.spacing(2),
+
+    //
+    position: 'relative',
   },
   details: {
+    display: 'flex',
+    flex: '0 0 300px',
+  },
+  inboxSidebar: {
     display: 'flex',
     flex: '0 0 300px',
   },
@@ -118,6 +126,9 @@ export default function Inbox() {
     <>
       <NutriNavigation />
       <div className={classes.root}>
+        <div className={classes.inboxSidebar}>
+          <InboxSidebar />
+        </div>
         <Resizable
           className={classes.resize}
           enable={{ right: true }}
@@ -131,6 +142,7 @@ export default function Inbox() {
         {currentUser && (
           <>
             <div className={classes.main}>
+              <ChatHeader user={currentUser} />
               <Chat user={currentUser} onSendMessage={sendMessage} />
             </div>
             <div className={classes.details}>
