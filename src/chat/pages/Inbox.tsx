@@ -134,7 +134,7 @@ export default function Inbox() {
           enable={{ right: true }}
           size={{ width, height: '100%' }}
           minWidth={180}
-          maxWidth={600}
+          maxWidth={400}
           onResizeStop={handleResizeStop}
         >
           <ChatRooms />
