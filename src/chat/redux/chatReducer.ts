@@ -2,10 +2,17 @@ import { Reducer } from 'redux';
 import { ChatActions, ChatActionTypes } from './chatActions';
 import { RootState } from '../../utils/store';
 import { uniqBy } from 'lodash';
-
 export interface ChatUser {
+  allergies: any[];
+  birthdate: string;
+  dateJoined: string;
+  enrolledProgrammes: any[];
   id: number;
+  lastSeen: string;
   nickname: string;
+  platform: string;
+  sex: string;
+  timezone: string;
   username: string;
 }
 
@@ -26,6 +33,7 @@ export interface ChatRoom {
 }
 
 export interface ChatState {
+  loadingCurrentUser: boolean;
   currentChatUser: ChatUser | null;
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
@@ -33,6 +41,7 @@ export interface ChatState {
 }
 
 export const chatInitialState = {
+  loadingCurrentUser: false,
   currentChatUser: null,
   chatMessages: [],
   chatRooms: [],
@@ -45,6 +54,11 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
 ) => {
   switch (action.type) {
     // Current User
+    case ChatActionTypes.SET_CURRENT_USER_LOADING:
+      return {
+        ...state,
+        loadingCurrentUser: action.payload,
+      };
     case ChatActionTypes.SET_CURRENT_CHAT_USER:
       return {
         ...state,
@@ -117,6 +131,8 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
   }
 };
 
+export const loadingCurrentUserSelector = (state: RootState) =>
+  state.chat.loadingCurrentUser;
 export const currentUserIdSelector = (state: RootState) =>
   state.chat.currentChatUser?.id;
 export const currentUserSelector = (state: RootState) =>

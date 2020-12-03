@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   ChatUser,
   clearChatMessages,
-  setCurrentChatUser,
+  setCurrentChatUserInit,
   currentUserIdSelector,
 } from '../redux';
 
@@ -83,7 +83,7 @@ export default React.memo(function ChatRoomItem({
 
   const setCurrentPatient = useCallback(
     (patient: ChatUser) => {
-      dispatch(setCurrentChatUser(patient));
+      dispatch(setCurrentChatUserInit(userId));
     },
     [dispatch]
   );

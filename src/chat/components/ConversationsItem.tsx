@@ -42,7 +42,7 @@ function ConverstaionsItem({
       <div
         style={{
           fontSize: 16,
-          marginTop: type === 'primary' ? 5 : 2,
+          marginTop: type === 'primary' ? 5 : 1,
           minWidth: type === 'primary' ? 30 : 18,
         }}
       >

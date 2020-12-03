@@ -183,4 +183,8 @@ export const getMessages = ({
   );
 };
 
+export const getUserDataById = (userId: number) => {
+  return api.get(`/dashboard/${userId}/`);
+};
+
 export default api;

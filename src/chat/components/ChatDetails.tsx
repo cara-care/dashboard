@@ -3,12 +3,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ChatDetailsCard from './ChatDetailsCard';
-import { ChatUser } from '../redux';
+import { ChatUser, loadingCurrentUserSelector } from '../redux';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((_theme) => ({
   root: {
     padding: '20px 12px',
     backgroundColor: 'rgba(216, 236, 235, 0.3)',
+    overflowY: 'scroll',
   },
 }));
 
@@ -19,29 +21,8 @@ export interface ChatDetailsProps {
 export default function ChatDetails({ user }: ChatDetailsProps) {
   const classes = useStyles();
   const intl = useIntl();
+  const loadingUserData = useSelector(loadingCurrentUserSelector);
 
-  // const { isLoading, isError, data, error, refetch } = useQuery(
-  //   [`chatRoom-${userId}`, userId],
-  //   getChatRoom
-  // );
-
-  // if (isLoading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         display: 'flex',
-  //         alignItems: 'center',
-  //         justifyContent: 'center',
-  //       }}
-  //     >
-  //       {times(3).map(() => (
-  //         <Box key={v1()} px={2} py={1}>
-  //           <MessageSkeleton />
-  //         </Box>
-  //       ))}
-  //     </div>
-  //   );
-  // }
   // if (isError) {
   //   return (
   //     <Alert
@@ -63,22 +44,19 @@ export default function ChatDetails({ user }: ChatDetailsProps) {
   //     </Alert>
   //   );
   // }
-  // if (!data?.data) {
-  //   return null;
-  // }
 
   const userInformation = [
     { key: 'User ID', value: user.id },
     { key: 'Last Contact', value: 'Alina' },
     { key: 'Age', value: '24' },
-    { key: 'Sex', value: 'male' },
+    { key: 'Sex', value: user.sex ?? 'not specified' },
   ];
 
   const userDetails = [
     { key: 'Back-end ID', value: user.username },
-    { key: 'Phone OS', value: 'Android' },
+    { key: 'Phone OS', value: user.platform },
     { key: 'First Seen', value: '12/12/2020' },
-    { key: 'Last Seen', value: '12/12/2020' },
+    { key: 'Last Seen', value: user.lastSeen },
     { key: 'Last heard from', value: '12/12/2020' },
   ];
 
@@ -97,6 +75,7 @@ export default function ChatDetails({ user }: ChatDetailsProps) {
           defaultMessage: 'User Information',
         })}
         cardDetailsValues={userInformation}
+        loading={loadingUserData}
       />
       <ChatDetailsCard
         title={intl.formatMessage({
@@ -104,6 +83,7 @@ export default function ChatDetails({ user }: ChatDetailsProps) {
           defaultMessage: 'Details',
         })}
         cardDetailsValues={userDetails}
+        loading={loadingUserData}
       />
     </div>
   );

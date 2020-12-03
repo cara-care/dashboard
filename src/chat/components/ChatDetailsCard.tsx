@@ -10,11 +10,13 @@ import {
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { ReactComponent as CardDetailsIcon } from '../../assets/images/iconChatDetailsCard.svg';
+import { CardDetailSkeleton } from './LoadingScreens';
 
 const useStyles = makeStyles((_theme) => ({
   root: {
     marginTop: 16,
     minWidth: 275,
+    borderRadius: 12,
   },
   headerRoot: {
     alignItems: 'baseline',
@@ -43,15 +45,21 @@ export interface CardDetailsValues {
 }
 
 interface ChatDetailsCardProps {
+  loading: boolean;
   title: string;
   cardDetailsValues: CardDetailsValues[];
 }
 
 export default function ChatDetailsCard({
+  loading,
   title,
   cardDetailsValues,
 }: ChatDetailsCardProps) {
   const classes = useStyles();
+
+  if (loading) {
+    return <CardDetailSkeleton />;
+  }
 
   return (
     <Card className={classes.root}>

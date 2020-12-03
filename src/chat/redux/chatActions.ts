@@ -1,6 +1,8 @@
 import { ChatMessage, ChatRoom, ChatUser } from './chatReducer';
 
 export enum ChatActionTypes {
+  SET_CURRENT_USER_LOADING = 'chat/SET_CURRENT_USER_LOADING',
+  SET_CURRENT_CHAT_USER_INIT = 'chat/SET_CURRENT_CHAT_USER_INIT',
   SET_CURRENT_CHAT_USER = 'chat/SET_CURRENT_CHAT_USER',
   CLEAR_CURRENT_CHAT_USER = 'chat/CLEAR_CURRENT_CHAT_USER',
   ADD_CHAT_MESSAGE = 'chat/ADD_CHAT_MESSAGE',
@@ -16,6 +18,29 @@ export enum ChatActionTypes {
 
 // Chat User
 
+export interface SetCurrentUserLoading {
+  type: ChatActionTypes.SET_CURRENT_USER_LOADING;
+  payload: boolean;
+}
+
+export const setCurrentUserLoading = (
+  payload: boolean
+): SetCurrentUserLoading => ({
+  type: ChatActionTypes.SET_CURRENT_USER_LOADING,
+  payload,
+});
+
+export interface SetCurrentUserActionInit {
+  type: ChatActionTypes.SET_CURRENT_CHAT_USER_INIT;
+  userId: number;
+}
+
+export const setCurrentChatUserInit = (
+  userId: number
+): SetCurrentUserActionInit => ({
+  type: ChatActionTypes.SET_CURRENT_CHAT_USER_INIT,
+  userId,
+});
 export interface SetCurrentUserAction {
   type: ChatActionTypes.SET_CURRENT_CHAT_USER;
   user: ChatUser | null;
@@ -141,6 +166,8 @@ export const setScrollToBottom = (payload: boolean): SetScrollToBottom => ({
 });
 
 export type ChatActions =
+  | SetCurrentUserLoading
+  | SetCurrentUserActionInit
   | SetCurrentUserAction
   | AddChatMessage
   | SetChatMessages
