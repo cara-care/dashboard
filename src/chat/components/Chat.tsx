@@ -140,7 +140,6 @@ export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
     enabled: !!canFetchMore,
   });
 
-  // Needed to move it out, because on scrolling issue when new chat room selected
   if (status === 'loading') {
     return (
       <div className={clsx(classes.messages, classes.noScroll)}>

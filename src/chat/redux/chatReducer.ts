@@ -12,6 +12,7 @@ export interface ChatUser {
   nickname: string;
   platform: string;
   sex: string;
+  email: string;
   timezone: string;
   username: string;
 }

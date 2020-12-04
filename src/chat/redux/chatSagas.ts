@@ -1,4 +1,4 @@
-import { put, takeEvery, select, call, takeLatest } from 'redux-saga/effects';
+import { put, takeEvery, select, call, takeLatest, delay } from 'redux-saga/effects';
 import { queryCache } from '../../components/withProviders';
 import { getUserDataById } from '../../utils/api';
 import {
@@ -29,6 +29,7 @@ export function* getCurrentUserData({ userId }: SetCurrentUserActionInit) {
     }
     yield put(setCurrentUserLoading(true));
     const res = yield call(() => getUserDataById(userId));
+    yield delay(1000);
     yield put(setCurrentChatUser(res.data));
   } catch (error) {
     console.log(error);

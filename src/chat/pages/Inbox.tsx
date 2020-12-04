@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
 import { Resizable, ResizeCallback } from 're-resizable';
-// import { useQueryCache } from 'react-query';
 import useWebSocket from 'react-use-websocket';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
@@ -44,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   details: {
     display: 'flex',
     flex: '0 0 300px',
+    marginLeft: 'auto',
   },
   inboxSidebar: {
     display: 'flex',
@@ -139,17 +139,17 @@ export default function Inbox() {
         >
           <ChatRooms />
         </Resizable>
+
         {currentUser && (
-          <>
-            <div className={classes.main}>
-              <ChatHeader user={currentUser} />
-              <Chat user={currentUser} onSendMessage={sendMessage} />
-            </div>
-            <div className={classes.details}>
-              <ChatDetails user={currentUser} />
-            </div>
-          </>
+          // TODO: Loading logic here
+          <div className={classes.main}>
+            <ChatHeader user={currentUser} />
+            <Chat user={currentUser} onSendMessage={sendMessage} />
+          </div>
         )}
+        <div className={classes.details}>
+          <ChatDetails />
+        </div>
       </div>
     </>
   );
