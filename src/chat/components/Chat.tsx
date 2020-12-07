@@ -20,6 +20,7 @@ import {
   setScrollToBottom,
   clearChatMessages,
   setCurrentChatUser,
+  loadingCurrentUserSelector,
 } from '../redux';
 import { ChatMessagesError } from './Errors';
 
@@ -59,6 +60,7 @@ export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { id: userId, username } = user;
+  const loadingUserData = useSelector(loadingCurrentUserSelector);
   const isScrollNeeded = useSelector(scrollToChatBottomSelector);
   const messagesRootRef = useRef<HTMLDivElement>(null);
   const messagesTopRef = useRef<HTMLDivElement>(null);
@@ -140,7 +142,7 @@ export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
     enabled: !!canFetchMore,
   });
 
-  if (status === 'loading') {
+  if (loadingUserData || status === 'loading') {
     return (
       <div className={clsx(classes.messages, classes.noScroll)}>
         {times(5).map((n) => (

@@ -1,4 +1,12 @@
-import { put, takeEvery, select, call, takeLatest, delay } from 'redux-saga/effects';
+import {
+  put,
+  takeEvery,
+  select,
+  call,
+  takeLatest,
+  delay,
+  cancelled,
+} from 'redux-saga/effects';
 import { queryCache } from '../../components/withProviders';
 import { getUserDataById } from '../../utils/api';
 import {
@@ -22,15 +30,21 @@ export function* rootChatSaga() {
   );
 }
 
-export function* getCurrentUserData({ userId }: SetCurrentUserActionInit) {
+export function* getCurrentUserData({
+  user: { id, username },
+  refetchMessages,
+}: SetCurrentUserActionInit) {
   try {
-    if (!userId) {
+    if (!id) {
       return;
     }
     yield put(setCurrentUserLoading(true));
-    const res = yield call(() => getUserDataById(userId));
-    yield delay(1000);
+    const res = yield call(() => getUserDataById(id));
+    // yield delay(1000);
     yield put(setCurrentChatUser(res.data));
+    if (refetchMessages) {
+      queryCache.refetchQueries(`messages-${username}`);
+    }
   } catch (error) {
     console.log(error);
   } finally {

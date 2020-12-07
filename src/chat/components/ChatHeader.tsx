@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'classnames';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Box, IconButton, Typography } from '@material-ui/core';
@@ -7,9 +7,11 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { ChatUser } from '../redux';
+import { ChatUser, loadingCurrentUserSelector } from '../redux';
 import { zIndexes } from '../../theme';
 import ChatHeaderLabel from './ChatHeaderLabel';
+import { useSelector } from 'react-redux';
+import { ChatHeaderSkeleton } from './LoadingScreens';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,66 +54,82 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: theme.palette.divider },
 }));
 
-interface ChatHeaderProps {
-  user: ChatUser;
-}
-
-export default function ChatHeader({ user }: ChatHeaderProps) {
-  const { username, nickname } = user;
+export default function ChatHeader({ user }: { user: ChatUser }) {
+  const loadingUserData = useSelector(loadingCurrentUserSelector);
   const classes = useStyles();
+  const ref = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(96);
+
+  useEffect(() => {
+    if (ref.current?.clientHeight) {
+      // minus margin and border
+      setHeight(ref.current.clientHeight - 13);
+    }
+  }, [loadingUserData]);
+
+  if (loadingUserData) {
+    return (
+      <Box className={classes.root}>
+        <ChatHeaderSkeleton height={height} />
+      </Box>
+    );
+  }
+
   return (
-    <Box className={classes.root}>
-      {/* 1 BOX */}
-      <Box className={clsx(classes.box, classes.box1)}>
-        <Box className={classes.photo}>
-          <Avatar>H</Avatar>
+    <div ref={ref}>
+      <Box className={classes.root}>
+        {/* 1 BOX */}
+        <Box className={clsx(classes.box, classes.box1)}>
+          <Box className={classes.photo}>
+            <Avatar>H</Avatar>
+          </Box>
+          <Box>
+            <Typography variant="body2">Premium: Ibs program</Typography>
+            <Typography variant="h6">{user.nickname}</Typography>
+            <Typography variant="body2">User-ID: {user.username}</Typography>
+          </Box>
+          <Box className={classes.assginedLabel}>
+            <ChatHeaderLabel label="Verified" />
+          </Box>
         </Box>
-        <Box>
-          <Typography variant="body2">Premium: Ibs program</Typography>
-          <Typography variant="h6">{nickname}</Typography>
-          <Typography variant="body2">User-ID: {username}</Typography>
-        </Box>
-        <Box className={classes.assginedLabel}>
-          <ChatHeaderLabel label="Verified" />
+        {/* 2 BOX */}
+        <Box className={clsx(classes.box, classes.box2)}>
+          <IconButton
+            size="small"
+            aria-label="settings"
+            className={classes.iconMargin}
+          >
+            <MoreVertIcon />
+          </IconButton>
+          <div
+            style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
+          >
+            <AccountCircleIcon style={{ marginRight: 4, fontSize: 18 }} />
+            <Typography variant="body2">Unassigned</Typography>
+          </div>
+          <IconButton
+            size="small"
+            aria-label="star"
+            className={classes.iconMargin}
+          >
+            <StarBorderIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            aria-label="notifications"
+            className={classes.iconMargin}
+          >
+            <NotificationsNoneIcon />
+          </IconButton>
+          <IconButton
+            size="small"
+            aria-label="check"
+            className={classes.iconMargin}
+          >
+            <CheckCircleOutlineIcon />
+          </IconButton>
         </Box>
       </Box>
-      {/* 2 BOX */}
-      <Box className={clsx(classes.box, classes.box2)}>
-        <IconButton
-          size="small"
-          aria-label="settings"
-          className={classes.iconMargin}
-        >
-          <MoreVertIcon />
-        </IconButton>
-        <div
-          style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
-        >
-          <AccountCircleIcon style={{ marginRight: 4, fontSize: 18 }} />
-          <Typography variant="body2">Unassigned</Typography>
-        </div>
-        <IconButton
-          size="small"
-          aria-label="star"
-          className={classes.iconMargin}
-        >
-          <StarBorderIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          aria-label="notifications"
-          className={classes.iconMargin}
-        >
-          <NotificationsNoneIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          aria-label="check"
-          className={classes.iconMargin}
-        >
-          <CheckCircleOutlineIcon />
-        </IconButton>
-      </Box>
-    </Box>
+    </div>
   );
 }

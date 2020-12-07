@@ -141,7 +141,6 @@ export default function Inbox() {
         </Resizable>
 
         {currentUser && (
-          // TODO: Loading logic here
           <div className={classes.main}>
             <ChatHeader user={currentUser} />
             <Chat user={currentUser} onSendMessage={sendMessage} />

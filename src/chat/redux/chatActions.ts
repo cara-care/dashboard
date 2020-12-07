@@ -32,14 +32,17 @@ export const setCurrentUserLoading = (
 
 export interface SetCurrentUserActionInit {
   type: ChatActionTypes.SET_CURRENT_CHAT_USER_INIT;
-  userId: number;
+  user: ChatUser;
+  refetchMessages: boolean;
 }
 
 export const setCurrentChatUserInit = (
-  userId: number
+  user: ChatUser,
+  refetchMessages: boolean = false
 ): SetCurrentUserActionInit => ({
   type: ChatActionTypes.SET_CURRENT_CHAT_USER_INIT,
-  userId,
+  user,
+  refetchMessages,
 });
 export interface SetCurrentUserAction {
   type: ChatActionTypes.SET_CURRENT_CHAT_USER;

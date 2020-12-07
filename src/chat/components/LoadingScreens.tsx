@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { Box } from '@material-ui/core';
+import Spinner from '../../components/Spinner';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,3 +33,17 @@ export function CardDetailSkeleton() {
     </Card>
   );
 }
+
+export const ChatHeaderSkeleton = memo(({ height }: { height: number }) => {
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height={height}
+      width="100%"
+    >
+      <Spinner size={24} noText />
+    </Box>
+  );
+});

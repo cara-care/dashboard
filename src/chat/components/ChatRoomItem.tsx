@@ -12,6 +12,7 @@ import {
   clearChatMessages,
   setCurrentChatUserInit,
   currentUserIdSelector,
+  loadingCurrentUserSelector,
 } from '../redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -79,11 +80,12 @@ export default React.memo(function ChatRoomItem({
   const { nickname, username, id: userId } = patient;
   const classes = useStyles();
   const dispatch = useDispatch();
+  const loadingUserData = useSelector(loadingCurrentUserSelector);
   const currentUserId = useSelector(currentUserIdSelector);
 
   const setCurrentPatient = useCallback(
-    (patient: ChatUser) => {
-      dispatch(setCurrentChatUserInit(userId));
+    (patient: ChatUser, refetchMessages = false) => {
+      dispatch(setCurrentChatUserInit(patient, refetchMessages));
     },
     [dispatch]
   );
@@ -91,12 +93,16 @@ export default React.memo(function ChatRoomItem({
     dispatch(clearChatMessages());
   }, [dispatch]);
 
-  const handleChatRoomSelected = useCallback(() => {
-    if (currentUserId !== patient.id) {
+  const handleChatRoomSelected = () => {
+    if (currentUserId === patient.id) {
+      if (loadingUserData) {
+        setCurrentPatient(patient, true);
+      }
+    } else {
       clearMessages();
       setCurrentPatient(patient);
     }
-  }, [patient, currentUserId, setCurrentPatient, clearMessages]);
+  };
 
   return (
     <NavLink

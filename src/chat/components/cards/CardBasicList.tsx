@@ -39,9 +39,9 @@ export default function CardBasicList({
           <SvgIcon className={classes.icon}>
             <CardDetailsIcon />
           </SvgIcon>
-          <Typography className={classes.cardItemText}>
+          <div className={classes.cardItemText}>
             {item.key}: {item.component ?? null} {item.value}
-          </Typography>
+          </div>
         </div>
       ))}
     </CardContent>

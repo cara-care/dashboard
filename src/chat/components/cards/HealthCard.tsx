@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, Divider, Typography } from '@material-ui/core';
 import { CardDetailSkeleton } from '../LoadingScreens';
@@ -52,9 +52,8 @@ export default function HealthCard() {
       {healthInformation.map((inforamtion) => {
         const { key, value, divider } = inforamtion;
         return (
-          <>
+          <Fragment key={key}>
             <div
-              key={key}
               style={{
                 display: 'flex',
                 alignItems: divider ? 'flex-start' : 'center',
@@ -68,7 +67,7 @@ export default function HealthCard() {
               <Typography variant="body2">{value}</Typography>
             </div>
             {divider && <Divider className={classes.divider} />}
-          </>
+          </Fragment>
         );
       })}
     </Card>
