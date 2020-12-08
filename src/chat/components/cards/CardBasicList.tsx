@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardContent, Typography, SvgIcon } from '@material-ui/core';
+import { CardContent, SvgIcon } from '@material-ui/core';
 import { ReactComponent as CardDetailsIcon } from '../../../assets/images/iconChatDetailsCard.svg';
 
 const useStyles = makeStyles((_theme) => ({

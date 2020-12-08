@@ -1,12 +1,4 @@
-import {
-  put,
-  takeEvery,
-  select,
-  call,
-  takeLatest,
-  delay,
-  cancelled,
-} from 'redux-saga/effects';
+import { put, takeEvery, select, call, takeLatest } from 'redux-saga/effects';
 import { queryCache } from '../../components/withProviders';
 import { getUserDataById } from '../../utils/api';
 import {
