@@ -78,7 +78,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
       return {
         ...state,
         chatMessages: [action.chatMessage, ...state.chatMessages],
-        // setScrolling on send&received messages
         scrollToChatBottom: true,
       };
     case ChatActionTypes.SET_CHAT_MESSAGES:
@@ -102,7 +101,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
       const newChatRooms = uniqBy(action.chatRooms, 'patient.id');
       return {
         ...state,
-        // chatRooms: [...state.chatRooms, ...action.chatRooms],
         chatRooms: newChatRooms,
       };
     case ChatActionTypes.CLEAR_CHAT_ROOMS:

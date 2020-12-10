@@ -18,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     marginBottom: 24,
   },
-  // heading: {
-  //   fontSize: theme.typography.pxToRem(15),
-  //   fontWeight: theme.typography.fontWeightRegular,
-  // },
 }));
 
 export default function InboxSidebar() {

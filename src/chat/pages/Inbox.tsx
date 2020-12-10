@@ -102,26 +102,6 @@ export default function Inbox() {
     };
   }, []);
 
-  // React.useEffect(() => {
-  //   if (lastMessage) {
-  //     const msg = JSON.parse(lastMessage.data);
-  //     // FIXME: optimistically update chat rooms?
-  //     // E.g.: Go through all the rooms and check if the room in cache + move it if necessary?
-  //     queryCache.refetchQueries('chatRooms');
-
-  //     // TODO: UPDATE MESSAGES
-  //     // queryCache.cancelQueries(`messages-${msg.room}`);
-  //     // const previousValue = queryCache.getQueryData(`messages-${msg.room}`);
-  //     // console.log(previousValue);
-  //     // queryCache.setQueryData(`messages-${msg.room}`, (old) => ({
-  //     //   ...old,
-  //     // }));
-  //     if (msg.room === username) {
-  //       queryCache.refetchQueries(`messages-${msg.room}`);
-  //     }
-  //   }
-  // }, [queryCache, lastMessage, username]);
-
   return (
     <>
       <NutriNavigation />

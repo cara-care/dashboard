@@ -18,27 +18,7 @@ const useStyles = makeStyles((_theme) => ({
 export default function ChatDetails() {
   const classes = useStyles();
 
-  // if (isError) {
-  //   return (
-  //     <Alert
-  //       severity="error"
-  //       action={
-  //         <Button color="inherit" size="small" onClick={() => refetch}>
-  //           Retry
-  //         </Button>
-  //       }
-  //     >
-  //       <AlertTitle>
-  //         <FormattedMessage id="common.error" defaultMessage="Error" />
-  //       </AlertTitle>
-  //       {error.response
-  //         ? error.response.data
-  //         : error.request
-  //         ? error.request?.response
-  //         : error.message}
-  //     </Alert>
-  //   );
-  // }
+  // TODO: display error when error fetching user data
 
   return (
     <div className={classes.root}>
