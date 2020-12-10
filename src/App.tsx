@@ -35,7 +35,9 @@ export const App = () => (
         </Switch>
       </React.Suspense>
     </Layout>
-    <ReactQueryDevtools initialIsOpen />
+    <ReactQueryDevtools
+      initialIsOpen={process.env.NODE_ENV === 'development'}
+    />
   </>
 );
 
