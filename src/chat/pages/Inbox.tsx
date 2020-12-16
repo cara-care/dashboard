@@ -104,7 +104,6 @@ export default function Inbox() {
   const sendMessage = useCallback(
     (message: string) => {
       channel.current?.push('message', {
-        type: 'message',
         room: currentUser?.username,
         text: message,
         sent: new Date().toISOString(),
