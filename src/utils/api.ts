@@ -187,4 +187,8 @@ export const getUserDataById = (userId: number) => {
   return api.get(`/dashboard/${userId}/`);
 };
 
+export const getChatAuthorizationToken = () => {
+  return api.post(`/mercury/token-dispenser/`);
+};
+
 export default api;

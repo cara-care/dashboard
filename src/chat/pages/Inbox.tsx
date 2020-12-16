@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { Channel, Socket } from 'phoenix';
 import { Resizable, ResizeCallback } from 're-resizable';
-import useWebSocket from 'react-use-websocket';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
 import Chat from '../components/Chat';
@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import ChatHeader from '../components/ChatHeader';
 import InboxSidebar from '../components/InboxSidebar';
+import { getChatAuthorizationToken } from '../../utils/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,29 +54,45 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inbox() {
   const classes = useStyles();
-  const didUnmount = React.useRef(false);
   const dispatch = useDispatch();
-  // const queryCache = useQueryCache();
-
   const currentUser = useSelector(currentUserSelector);
 
-  // TODO: figure out how to handle this in prod (CORS + SameSite cookies) :(
-  // Netlify doesn't support websocket proxying:
-  // https://community.netlify.com/t/does-netlify-support-websocket-proxying/11230/4
-  const { sendJsonMessage } = useWebSocket(
-    'wss://localhost:3000/api/ws/dashboard/',
-    {
-      shouldReconnect: (_closeEvent) => {
-        // reconnect if not unmounted
-        return didUnmount.current === false;
-      },
-      onMessage: (event: WebSocketEventMap['message']) => {
-        const message = JSON.parse(event.data);
-        dispatch(addChatMessage(message));
-        dispatch(addNewMessageToChatRoomInit(message));
-      },
-    }
-  );
+  const socket = useRef<Socket | null>(null);
+  const channel = useRef<Channel | null>(null);
+
+  useEffect(() => {
+    const establishSocketConnection = async () => {
+      try {
+        const res = await getChatAuthorizationToken();
+        const ws = new Socket('wss://localhost:3000/api/mercury/socket', {
+          params: { token: res.data.token },
+        });
+        socket.current = ws;
+        ws.connect();
+        ws.onOpen(() => {
+          console.info('The socket was opened');
+          const nutriChannel = ws.channel('nutris:all');
+          channel.current = nutriChannel;
+          nutriChannel.join().receive('ok', () => {
+            console.log('Joined to Channel');
+          });
+          nutriChannel.on('message', (message) => {
+            dispatch(addChatMessage(message));
+            dispatch(addNewMessageToChatRoomInit(message));
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    establishSocketConnection();
+
+    return () => {
+      socket.current?.disconnect(() => {
+        console.info('The socket was closed');
+      });
+    };
+  }, [dispatch]);
 
   const [width, setWidth] = React.useState(320);
 
@@ -86,21 +103,15 @@ export default function Inbox() {
 
   const sendMessage = useCallback(
     (message: string) => {
-      sendJsonMessage({
+      channel.current?.push('message', {
         type: 'message',
-        text: message,
         room: currentUser?.username,
+        text: message,
         sent: new Date().toISOString(),
       });
     },
-    [currentUser, sendJsonMessage]
+    [currentUser]
   );
-
-  useEffect(() => {
-    return () => {
-      didUnmount.current = true;
-    };
-  }, []);
 
   return (
     <>
