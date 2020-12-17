@@ -33,7 +33,7 @@ if [[ $DASHBOARD_ENV = "EU" ]]; then
 
   echo "⌛ replacing localhost:3000/api/mercury/socket websocket URL with eu-prod.cara.care/mercury/socket"
   echo
-  sed -i.tmp "s/localhost:3000\/api\//eu-prod.cara.care/g" "$PWD/src/chat/pages/Inbox.tsx"
+  sed -i.tmp "s/localhost:3000\/api/eu-prod.cara.care/g" "$PWD/src/chat/pages/Inbox.tsx"
 
   echo "⌛ cleaning up .tmp files..."
   echo
