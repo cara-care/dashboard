@@ -31,9 +31,9 @@ if [[ $DASHBOARD_ENV = "EU" ]]; then
   sed -i.tmp "s/${ORIGINAL_HOST}/${EU_HOST}/g" "$PWD/public/_redirects"
   sed -i.tmp "s/${ORIGINAL_HOST}/${EU_HOST}/g" "$PWD/src/utils/constants.ts"
 
-  echo "⌛ replacing localhost:3000/api/ws/dashboard/ websocket URL with eu-prod.cara.care/ws/dashboard/"
+  echo "⌛ replacing localhost:3000/api/mercury/socket websocket URL with eu-prod.cara.care/mercury/socket"
   echo
-  sed -i.tmp "s/localhost:3000\/api\/ws\/dashboard\//eu-prod.cara.care\/ws\/dashboard\//g" "$PWD/src/chat/pages/Inbox.tsx"
+  sed -i.tmp "s/localhost:3000\/api\//eu-prod.cara.care/g" "$PWD/src/chat/pages/Inbox.tsx"
 
   echo "⌛ cleaning up .tmp files..."
   echo
