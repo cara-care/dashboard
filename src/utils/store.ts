@@ -7,7 +7,7 @@ import {
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import {
   ChartOverviewState,
   chartOverview,
@@ -38,10 +38,18 @@ import * as TrackingOverviewSagas from '../dashboard/trackingOverview/redux/trac
 import * as ChartOverviewSagas from '../dashboard/chartOverview/redux/chartSagas';
 import { localeReducer, LocaleState, LocaleActions } from '../locale';
 import { themeReducer, ThemeState, ThemeActions } from '../theme';
+import {
+  ChatActions,
+  chatInitialState,
+  chatReducer,
+  ChatState,
+  rootChatSaga,
+} from '../chat/redux';
 
 export interface RootState {
   locale: LocaleState;
   auth: AuthState;
+  chat: ChatState;
   chartOverview: ChartOverviewState;
   trackingOverview: TrackingOverviewState;
   questionnaires: QuestionnairesState;
@@ -51,6 +59,7 @@ export interface RootState {
 export type RootActions =
   | LocaleActions
   | AuthActions
+  | ChatActions
   | ChartOverviewActions
   | TrackingOverviewActions
   | QuestionnairesActions
@@ -68,6 +77,7 @@ export default function configureStore({
   const rootReducer = combineReducers<RootState, RootActions>({
     locale: localeReducer,
     auth: authReducer,
+    chat: chatReducer,
     chartOverview,
     trackingOverview: trackingOverviewReducer,
     questionnaires: questionnairesReducer,
@@ -78,6 +88,7 @@ export default function configureStore({
     yield all([
       watchSubmissionInitSaga(),
       rootAuthSaga(),
+      rootChatSaga(),
       ChartOverviewSagas.chartOverviewRootSaga(),
       TrackingOverviewSagas.trackingOverviewRootSaga(),
     ]);
@@ -95,15 +106,16 @@ export default function configureStore({
 
   const middlewares: Middleware[] = [sagaMiddleware];
 
-  if (process.env.NODE_ENV === 'development') {
-    middlewares.push(logger);
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   middlewares.push(logger);
+  // }
 
   const store = createStore<RootState, RootActions, {}, {}>(
     rootReducer,
     {
       locale: { locale: preloadedLocale },
       auth: authInitialState,
+      chat: chatInitialState,
       chartOverview: chartOverviewInitialState,
       questionnaires: questionnairesInitialState,
       trackingOverview: trackingOverviewInitalState,

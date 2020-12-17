@@ -7,11 +7,14 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   content: {
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(7),
     flexGrow: 1,
     display: 'block',
     width: 'auto',
     maxWidth: '100%',
+    [theme.breakpoints.up('sm')]: {
+      paddingTop: theme.spacing(8),
+    },
   },
 }));
 

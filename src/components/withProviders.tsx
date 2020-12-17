@@ -5,6 +5,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsAdapter from '@date-io/date-fns';
 import { IntlProvider } from 'react-intl';
+import { ReactQueryCacheProvider, QueryCache } from 'react-query';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { RootState } from '../utils/store';
 import { lightTheme, darkTheme } from '../theme';
@@ -14,6 +15,8 @@ const messages = {
   en: require('../locale/en.json'),
   de: require('../locale/de.json'),
 };
+
+export const queryCache = new QueryCache();
 
 const withProviders = (
   Component: React.ComponentType,
@@ -37,18 +40,20 @@ const withProviders = (
     }, [preferedTheme, prefersDarkMode]);
 
     return (
-      <IntlProvider locale={locale} messages={messages[locale]}>
-        <MuiThemeProvider theme={theme}>
-          <MuiPickersUtilsProvider
-            utils={DateFnsAdapter}
-            locale={getLocale(locale)}
-          >
-            <Router>
-              <Component {...props} />
-            </Router>
-          </MuiPickersUtilsProvider>
-        </MuiThemeProvider>
-      </IntlProvider>
+      <ReactQueryCacheProvider queryCache={queryCache}>
+        <IntlProvider locale={locale} messages={messages[locale]}>
+          <MuiThemeProvider theme={theme}>
+            <MuiPickersUtilsProvider
+              utils={DateFnsAdapter}
+              locale={getLocale(locale)}
+            >
+              <Router>
+                <Component {...props} />
+              </Router>
+            </MuiPickersUtilsProvider>
+          </MuiThemeProvider>
+        </IntlProvider>
+      </ReactQueryCacheProvider>
     );
   };
 

@@ -6,6 +6,9 @@
   "changePassword.failedToChangePassword": "Failed to change your password, make sure you entered your current password correctly.",
   "changePassword.goBack": "Go back",
   "changePassword.yourPasswordHasBeenUpdated": "Your password has been updated",
+  "chat.conversationDetails":" Conversation Details",
+  "chat.healthCard":" Health Card",
+  "chat.userInformation":" User Information",
   "common.additionalSymptoms": "Additional Symptoms",
   "common.back": "Back",
   "common.bloating": "Bloating",
@@ -13,6 +16,7 @@
   "common.changeLanguage": "Change Language",
   "common.constipation": "Constipation",
   "common.diarrhoea": "Diarrhoea",
+  "common.details":"Details",
   "common.error": "Error",
   "common.fallbackErrorMsg.somethingWentWrong": "Oops... Something went wrong",
   "common.food": "Food",
@@ -435,5 +439,6 @@
   "search.sorryNoResultsFor": "Sorry, there are no results for {phrase}. Please try another phrase.",
   "timePicker.CANCEL": "CANCEL",
   "_.common.error": "Error",
-  "_.common.logout": "Logout"
+  "_.common.logout": "Logout",
+  "nutriNavigation.inbox": "Inbox"
 }

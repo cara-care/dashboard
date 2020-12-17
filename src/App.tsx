@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+// import { ReactQueryDevtools } from 'react-query-devtools';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { v1 } from 'uuid';
 import Layout from './components/Layout';
@@ -34,6 +35,9 @@ export const App = () => (
         </Switch>
       </React.Suspense>
     </Layout>
+    {/* <ReactQueryDevtools
+      initialIsOpen={process.env.NODE_ENV === 'development'}
+    /> */}
   </>
 );
 

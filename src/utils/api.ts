@@ -2,10 +2,10 @@ import axios from 'axios';
 
 // In production the requests made to `/api/` are proxied to production backend -> `public/_redirects`:
 // https://www.netlify.com/docs/redirects/#proxying
-// In development the reuqests are proxied to staging backend in package.json:
-// https://create-react-app.dev/docs/proxying-api-requests-in-development#docsNav
+// In development the reuqests are proxied to staging backend in setupProxy.js:
+// https://create-react-app.dev/docs/proxying-api-requests-in-development/#configuring-the-proxy-manually
 const api = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? '/api/' : '/',
+  baseURL: '/api/',
   timeout: 5500,
   headers: {
     Accept: 'application/json',
@@ -153,6 +153,42 @@ export const changePassword = ({
     current: currentPassword,
     new: newPassword,
   });
+};
+
+export const getChatRooms = ({
+  limit,
+  offset,
+}: {
+  limit: number | string;
+  offset: number | string;
+}) => {
+  return api.get(`/dashboard/chat/rooms/?limit=${limit}&offset=${offset}`);
+};
+
+export const getChatRoom = (_: string, userId: number) => {
+  return api.get(`/dashboard/chat/rooms/${userId}/`);
+};
+
+export const getMessages = ({
+  userId,
+  limit,
+  offset,
+}: {
+  userId: number | string;
+  limit: number | string;
+  offset: number | string;
+}) => {
+  return api.get(
+    `/dashboard/chat/rooms/${userId}/messages/?limit=${limit}&offset=${offset}`
+  );
+};
+
+export const getUserDataById = (userId: number) => {
+  return api.get(`/dashboard/${userId}/`);
+};
+
+export const getChatAuthorizationToken = () => {
+  return api.post(`/mercury/token-dispenser/`);
 };
 
 export default api;

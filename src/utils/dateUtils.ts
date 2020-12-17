@@ -52,6 +52,11 @@ function getFormat(formatOrPreset: string) {
   return presets[formatOrPreset] ?? formatOrPreset;
 }
 
+export function padWith0(date: string, maxLength: number = 8) {
+  const length = Math.min(date.length + 1, maxLength);
+  return date.padStart(length, '0');
+}
+
 /**
  * Only include formats that are _**invalid**_ `date-fns` formats, as to not disallow usages of `getFormat` with a built-in, valid format.
  */

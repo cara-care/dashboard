@@ -9,10 +9,11 @@ const useStyles = makeStyles((theme) => ({
     padding: `${theme.spacing(3)}px 0`,
     margin: '0 auto',
     display: 'flex',
-    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.palette.primary.main,
+    maxHeight: 68,
+    overflowX: 'scroll',
   },
   link: {
     margin: `0 ${theme.spacing(4)}px`,
@@ -92,6 +93,13 @@ const NutriNavigation: React.FC = () => {
         activeClassName={classes.activeLink}
       >
         <FormattedMessage id="nutriNavigation.graph" />
+      </NavLink>
+      <NavLink
+        to="/nutri/inbox"
+        className={classes.link}
+        activeClassName={classes.activeLink}
+      >
+        <FormattedMessage id="nutriNavigation.inbox" />
       </NavLink>
     </nav>
   );

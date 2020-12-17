@@ -16,8 +16,9 @@ const Questionnaire = React.lazy(() =>
   import('../questionnaires/pages/Questionnaire')
 );
 const Programs = React.lazy(() => import('../programs/pages/Programs'));
+const Inbox = React.lazy(() => import('../chat/pages/Inbox'));
 
-export default [
+const routes = [
   {
     path: '/export/:token',
     component: Dashboard,
@@ -79,9 +80,17 @@ export default [
     authRequired: true,
   },
   {
+    path: '/nutri/inbox/:userId?/:username?',
+    component: Inbox,
+    exact: false,
+    authRequired: true,
+  },
+  {
     path: undefined,
     component: NotFound,
     exact: false,
     authRequired: false,
   },
 ];
+
+export default routes;
