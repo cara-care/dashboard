@@ -33,12 +33,28 @@ export default function HealthCard() {
   }
 
   const healthInformation = [
-    { key: 'Diagnosis', value: 'IBS, IBD, GERD', divider: true },
     {
-      key: 'Quality of life',
+      key: intl.formatMessage({
+        id: 'chat.key.diagnosis',
+        defaultMessage: 'Diagnosis',
+      }),
+      value: 'IBS, IBD, GERD',
+      divider: true,
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.qualityOfLife',
+        defaultMessage: 'Quality of life',
+      }),
       value: 'Mild improvement',
     },
-    { key: 'Symptom Score S', value: 'Diminished' },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.sypmtomScoreS',
+        defaultMessage: 'Symptom Score S',
+      }),
+      value: 'Diminished',
+    },
   ];
 
   return (

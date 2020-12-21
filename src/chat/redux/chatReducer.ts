@@ -3,8 +3,8 @@ import { ChatActions, ChatActionTypes } from './chatActions';
 import { RootState } from '../../utils/store';
 import { uniqBy } from 'lodash';
 export interface ChatUser {
+  age: number;
   allergies: any[];
-  birthdate: string;
   dateJoined: string;
   enrolledProgrammes: any[];
   id: number;

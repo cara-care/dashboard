@@ -7,11 +7,13 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CloseIcon from '@material-ui/icons/Close';
 import { ChatUser, loadingCurrentUserSelector } from '../redux';
 import { zIndexes } from '../../theme';
 import ChatHeaderLabel from './ChatHeaderLabel';
 import { useSelector } from 'react-redux';
 import { ChatHeaderSkeleton } from './LoadingScreens';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,12 +53,17 @@ const useStyles = makeStyles((theme) => ({
   iconMargin: {
     margin: '0 8px',
   },
+  premiumBox: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   divder: { backgroundColor: theme.palette.divider },
 }));
 
 export default function ChatHeader({ user }: { user: ChatUser }) {
   const loadingUserData = useSelector(loadingCurrentUserSelector);
   const classes = useStyles();
+  const intl = useIntl();
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(96);
 
@@ -84,12 +91,34 @@ export default function ChatHeader({ user }: { user: ChatUser }) {
             <Avatar>H</Avatar>
           </Box>
           <Box>
-            <Typography variant="body2">Premium: Ibs program</Typography>
+            <Typography variant="body2" className={classes.premiumBox}>
+              {intl.formatMessage({
+                id: 'common.premium',
+                defaultMessage: 'Premium',
+              })}
+              :{' '}
+              {user.enrolledProgrammes.length === 0 ? (
+                <CloseIcon style={{ fontSize: 18 }} />
+              ) : (
+                user.enrolledProgrammes[0]
+              )}
+            </Typography>
             <Typography variant="h6">{user.nickname}</Typography>
-            <Typography variant="body2">User-ID: {user.username}</Typography>
+            <Typography variant="body2">
+              {intl.formatMessage({
+                id: 'chat.key.userID',
+                defaultMessage: 'User ID',
+              })}
+              : {user.username}
+            </Typography>
           </Box>
           <Box className={classes.assginedLabel}>
-            <ChatHeaderLabel label="Verified" />
+            <ChatHeaderLabel
+              label={intl.formatMessage({
+                id: 'common.verified',
+                defaultMessage: 'Verified',
+              })}
+            />
           </Box>
         </Box>
         {/* 2 BOX */}
@@ -105,7 +134,12 @@ export default function ChatHeader({ user }: { user: ChatUser }) {
             style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
           >
             <AccountCircleIcon style={{ marginRight: 4, fontSize: 18 }} />
-            <Typography variant="body2">Unassigned</Typography>
+            <Typography variant="body2">
+              {intl.formatMessage({
+                id: 'common.unassigned',
+                defaultMessage: 'Unassigned',
+              })}
+            </Typography>
           </div>
           <IconButton
             size="small"
