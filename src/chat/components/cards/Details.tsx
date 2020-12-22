@@ -42,15 +42,63 @@ export default function Details() {
   }
 
   const userDetails = [
-    { key: 'Back-end ID', value: user.username },
-    { key: 'Phone OS', value: user.platform },
-    { key: 'First Seen', value: user.dateJoined },
-    { key: 'Last Seen', value: user.lastSeen },
-    { key: 'Last heard from', value: '12/12/2020' },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.backendID',
+        defaultMessage: 'Back-end ID',
+      }),
+      value: user.username,
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.phoneOS',
+        defaultMessage: 'Phone OS',
+      }),
+      value: user.platform,
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.firstSeen',
+        defaultMessage: 'First Seen',
+      }),
+      value: user.dateJoined,
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.lastSeen',
+        defaultMessage: 'Last Seen',
+      }),
+      value: user.lastSeen,
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.lastHeard',
+        defaultMessage: 'Last heard from',
+      }),
+      value: '12/12/2020',
+    },
   ];
+
   const userDetailsExpanded = [
-    { key: 'email', value: user.email ?? 'not specified' },
-    { key: 'timezone', value: user.timezone },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.email',
+        defaultMessage: 'Email',
+      }),
+      value:
+        user.email ??
+        intl.formatMessage({
+          id: 'chat.key.notSpecified',
+          defaultMessage: 'not specified',
+        }),
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.timezone',
+        defaultMessage: 'Timezone',
+      }),
+      value: user.timezone,
+    },
   ];
 
   return (
@@ -73,7 +121,15 @@ export default function Details() {
           aria-label="expand"
           color="primary"
         >
-          {expanded ? 'hide' : 'expand'}
+          {expanded
+            ? intl.formatMessage({
+                id: 'common.hide',
+                defaultMessage: 'Hide',
+              })
+            : intl.formatMessage({
+                id: 'common.expand',
+                defaultMessage: 'Expand',
+              })}
         </Button>
       </CardActions>
     </Card>

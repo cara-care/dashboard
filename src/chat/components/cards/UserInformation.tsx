@@ -7,7 +7,6 @@ import { currentUserSelector, loadingCurrentUserSelector } from '../../redux';
 import CardHeaderComp from './CardHeader';
 import CardBasicList from './CardBasicList';
 import { useIntl } from 'react-intl';
-import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     borderColor: theme.palette.primary.main,
     fontSize: 10,
+    textTransform: 'uppercase',
   },
   avatar: {
     height: 20,
@@ -42,9 +42,18 @@ export default function UserInformation() {
   }
 
   const userInformation = [
-    { key: 'User ID', value: user.id },
     {
-      key: 'Last Contact',
+      key: intl.formatMessage({
+        id: 'chat.key.userID',
+        defaultMessage: 'User ID',
+      }),
+      value: user.id,
+    },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.lastContact',
+        defaultMessage: 'Last Contact',
+      }),
       value: 'Alina',
       component: (
         <Avatar alt="nutri image" className={classes.avatar}>
@@ -53,10 +62,24 @@ export default function UserInformation() {
       ),
     },
     {
-      key: 'Age',
-      value: Math.ceil(moment(Date.now()).diff(user.birthdate, 'years', true)),
+      key: intl.formatMessage({
+        id: 'chat.key.age',
+        defaultMessage: 'Age',
+      }),
+      value: user.age,
     },
-    { key: 'Sex', value: user.sex ?? 'not specified' },
+    {
+      key: intl.formatMessage({
+        id: 'chat.key.sex',
+        defaultMessage: 'Sex',
+      }),
+      value:
+        user.sex ??
+        intl.formatMessage({
+          id: 'chat.key.notSpecified',
+          defaultMessage: 'not specified',
+        }),
+    },
   ];
 
   return (
@@ -68,7 +91,10 @@ export default function UserInformation() {
         })}
       />
       <Button variant="outlined" size="small" className={classes.button}>
-        PRESCRIPTION
+        {intl.formatMessage({
+          id: 'chat.prescription',
+          defaultMessage: 'Prescription',
+        })}
       </Button>
       <CardBasicList cardDetailsValues={userInformation} />
     </Card>
