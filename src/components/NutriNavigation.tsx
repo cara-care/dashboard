@@ -99,7 +99,7 @@ const NutriNavigation: React.FC = () => {
         className={classes.link}
         activeClassName={classes.activeLink}
       >
-        <FormattedMessage id="nutriNavigation.inbox" />
+        <FormattedMessage id="nutriNavigation.inbox" defaultMessage="Inbox" />
       </NavLink>
     </nav>
   );
