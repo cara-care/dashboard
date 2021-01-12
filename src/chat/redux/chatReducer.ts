@@ -2,11 +2,13 @@ import { Reducer } from 'redux';
 import { ChatActions, ChatActionTypes } from './chatActions';
 import { RootState } from '../../utils/store';
 import { uniqBy } from 'lodash';
+import { EnrolledProgram } from '../../auth';
 export interface ChatUser {
   age: number;
-  allergies: any[];
+  allergies: string[];
   dateJoined: string;
-  enrolledProgrammes: any[];
+  enrolledProgrammes: EnrolledProgram[];
+  diagnosis: string;
   id: number;
   lastSeen: string;
   nickname: string;
@@ -16,6 +18,8 @@ export interface ChatUser {
   timezone: string;
   username: string;
 }
+
+// "diagnosis":":Crohn's disease:Ulcerative Colitis:Leaky gut",
 
 export interface ChatMessage {
   author: string;

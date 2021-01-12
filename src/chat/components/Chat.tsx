@@ -111,7 +111,7 @@ export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
     canFetchMore,
   } = useInfiniteQuery(
     `messages-${username}`,
-    async (_key, url = '?limit=10&offset=0') => {
+    async (_key, url = '?limit=100&offset=0') => {
       // FIXME: typings
       // @ts-ignore
       const { limit, offset } = getParams(url);
