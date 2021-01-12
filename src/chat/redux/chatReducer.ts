@@ -19,8 +19,6 @@ export interface ChatUser {
   username: string;
 }
 
-// "diagnosis":":Crohn's disease:Ulcerative Colitis:Leaky gut",
-
 export interface ChatMessage {
   author: string;
   created: string;
