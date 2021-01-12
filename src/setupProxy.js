@@ -6,7 +6,7 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: 'https://staging.cara.care',
       // ws: true <-- broken tests but needed for development
-      ws: true,
+      ws: process.env.NODE_ENV === 'production',
       changeOrigin: true,
       pathRewrite: {
         '^/api/': '',
