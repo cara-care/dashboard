@@ -50,7 +50,7 @@ export default function HealthCard() {
     },
     {
       key: intl.formatMessage({
-        id: 'chat.key.sypmtomScoreS',
+        id: 'common.symptomScore',
         defaultMessage: 'Symptom Score S',
       }),
       value: 'Diminished',

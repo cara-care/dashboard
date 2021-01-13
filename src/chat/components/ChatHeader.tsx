@@ -100,7 +100,7 @@ export default function ChatHeader({ user }: { user: ChatUser }) {
               {user.enrolledProgrammes.length === 0 ? (
                 <CloseIcon style={{ fontSize: 18 }} />
               ) : (
-                user.enrolledProgrammes[0]
+                user.enrolledProgrammes[0].title
               )}
             </Typography>
             <Typography variant="h6">{user.nickname}</Typography>

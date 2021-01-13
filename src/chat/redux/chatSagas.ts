@@ -1,10 +1,18 @@
-import { put, takeEvery, select, call, takeLatest } from 'redux-saga/effects';
+import {
+  put,
+  takeEvery,
+  select,
+  call,
+  takeLatest,
+  cancelled,
+} from 'redux-saga/effects';
 import { queryCache } from '../../components/withProviders';
 import { getUserDataById } from '../../utils/api';
 import {
   addNewMessageToChatRoom,
   AddNewMessageToChatRoom,
   ChatActionTypes,
+  clearChatMessages,
   setCurrentChatUser,
   SetCurrentUserActionInit,
   setCurrentUserLoading,
@@ -40,6 +48,9 @@ export function* getCurrentUserData({
   } catch (error) {
     console.log(error);
   } finally {
+    if (cancelled()) {
+      yield put(clearChatMessages());
+    }
     yield put(setCurrentUserLoading(false));
   }
 }
