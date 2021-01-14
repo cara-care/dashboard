@@ -6,3 +6,6 @@ export const QUESTIONNAIRE_NAME = 'questionnaire-name';
 export const DARK_MODE_ICON = 'dark-mode-icon';
 export const LIGHT_MODE_ICON = 'light-mode-icon';
 export const NUTRI_NAVIGATION = 'nutri-navigation';
+export const CHAT_WRAPPER = 'chat-wrapper';
+export const MESSAGE_CONTAINER = 'message-container';
+export const CHAT_MESSAGE_INPUT = 'chat-message-input';

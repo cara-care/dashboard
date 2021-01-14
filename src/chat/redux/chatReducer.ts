@@ -13,7 +13,7 @@ export interface ChatUser {
   lastSeen: string;
   nickname: string;
   platform: string;
-  sex: string;
+  sex: string | null;
   email: string;
   timezone: string;
   username: string;

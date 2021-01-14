@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ChatHeader from '../components/ChatHeader';
 import InboxSidebar from '../components/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
+import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,7 +132,7 @@ export default function Inbox() {
         </Resizable>
 
         {currentUser && (
-          <div className={classes.main}>
+          <div className={classes.main} data-testid={CHAT_WRAPPER}>
             <ChatHeader user={currentUser} />
             <Chat user={currentUser} onSendMessage={sendMessage} />
           </div>
