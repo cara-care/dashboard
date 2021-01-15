@@ -30,9 +30,24 @@ export interface ChatMessage {
   upload: null;
 }
 
+export interface LastMessage {
+  author: string;
+  created: string;
+  id: number;
+  sent: string;
+  text: string;
+  upload: null;
+}
+
+export interface ChatRoomPatient {
+  id: number;
+  nickname: string;
+  username: string;
+}
+
 export interface ChatRoom {
-  lastMessage: ChatMessage;
-  patient: ChatUser;
+  lastMessage: LastMessage;
+  patient: ChatRoomPatient;
 }
 
 export interface ChatState {

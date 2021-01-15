@@ -11,9 +11,6 @@ jest.mock('../../utils/api');
 const onSendMessageMock = jest.fn();
 
 describe('<Chat />', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
   const ChatWithUser = () => (
     <Chat user={currentUserMock} onSendMessage={onSendMessageMock} />
   );

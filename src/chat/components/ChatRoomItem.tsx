@@ -8,11 +8,11 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ChatUser,
   clearChatMessages,
   setCurrentChatUserInit,
   currentUserIdSelector,
   loadingCurrentUserSelector,
+  ChatRoomPatient,
 } from '../redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 export interface ChatRoomItemProps {
   message: string;
   sent: string;
-  patient: ChatUser;
+  patient: ChatRoomPatient;
 }
 
 export default React.memo(function ChatRoomItem({
@@ -84,7 +84,7 @@ export default React.memo(function ChatRoomItem({
   const currentUserId = useSelector(currentUserIdSelector);
 
   const setCurrentPatient = useCallback(
-    (patient: ChatUser, refetchMessages = false) => {
+    (patient: ChatRoomPatient, refetchMessages = false) => {
       dispatch(setCurrentChatUserInit(patient, refetchMessages));
     },
     [dispatch]
@@ -106,7 +106,6 @@ export default React.memo(function ChatRoomItem({
 
   return (
     <NavLink
-      // TODO: remove link, erase NavLInk
       to={`/nutri/inbox/${userId}` + (username ? `/${username}` : '')}
       className={classes.link}
       activeClassName={classes.active}
