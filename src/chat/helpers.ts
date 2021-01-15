@@ -34,3 +34,28 @@ export const chatMessagesMock = [
     upload: null,
   },
 ];
+
+export const chatRoomsMock = [
+  {
+    lastMessage: {
+      author: 'auto-Bue9Ku8zbZNS41RXGZPo',
+      created: '2021-01-15T08:30:46Z',
+      id: 1457,
+      sent: '2021-01-15T08:30:46Z',
+      text: 'Hi Test',
+      upload: null,
+    },
+    patient: { id: 101010, username: 'test-user', nickname: 'Tester' },
+  },
+  {
+    lastMessage: {
+      author: 'auto-Bue9Ku8zbZNS41RXG999',
+      created: '2021-01-15T08:40:46Z',
+      id: 1458,
+      sent: '2021-01-15T08:40:46Z',
+      text: 'Hi Test2',
+      upload: null,
+    },
+    patient: { id: 202020, username: 'test-user2', nickname: 'Tester2' },
+  },
+];

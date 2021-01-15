@@ -1,4 +1,4 @@
-import { ChatMessage, ChatRoom, ChatUser } from './chatReducer';
+import { ChatMessage, ChatRoom, ChatRoomPatient, ChatUser } from './chatReducer';
 
 export enum ChatActionTypes {
   SET_CURRENT_USER_LOADING = 'chat/SET_CURRENT_USER_LOADING',
@@ -32,12 +32,12 @@ export const setCurrentUserLoading = (
 
 export interface SetCurrentUserActionInit {
   type: ChatActionTypes.SET_CURRENT_CHAT_USER_INIT;
-  user: ChatUser;
+  user: ChatRoomPatient;
   refetchMessages: boolean;
 }
 
 export const setCurrentChatUserInit = (
-  user: ChatUser,
+  user: ChatRoomPatient,
   refetchMessages: boolean = false
 ): SetCurrentUserActionInit => ({
   type: ChatActionTypes.SET_CURRENT_CHAT_USER_INIT,
