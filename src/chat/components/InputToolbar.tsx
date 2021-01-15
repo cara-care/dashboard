@@ -6,6 +6,8 @@ import AttachIcon from '@material-ui/icons/AttachFile';
 import BookmarkIcon from '@material-ui/icons/BookmarkBorder';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { CHAT_MESSAGE_INPUT } from '../../utils/test-helpers';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +43,7 @@ interface InputToolbarProps {
 
 export default function InputToolbar({ onSubmit }: InputToolbarProps) {
   const classes = useStyles();
+  const intl = useIntl();
   const [message, setMessage] = React.useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -70,6 +73,7 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
           onKeyDown={handleEnterPress}
           className={classes.input}
           rows={3}
+          data-testid={CHAT_MESSAGE_INPUT}
         />
         <div className={classes.footer}>
           <div>
@@ -86,7 +90,10 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
             disabled={!message}
             onClick={handleSubmit}
           >
-            Send
+            {intl.formatMessage({
+              id: 'common.send',
+              defaultMessage: 'Send',
+            })}
           </Button>
         </div>
       </Paper>

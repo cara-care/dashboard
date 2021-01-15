@@ -4,6 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { getTime, padWith0 } from '../../utils/dateUtils';
+import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,6 +78,7 @@ export default function Message({
       className={clsx(classes.root, {
         [classes.reverse]: position === 'right',
       })}
+      data-testid={MESSAGE_CONTAINER}
     >
       <Avatar
         className={clsx(classes.avatar, {
