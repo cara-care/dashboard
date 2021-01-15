@@ -3,7 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Card, Divider, Typography } from '@material-ui/core';
 import { CardDetailSkeleton } from '../LoadingScreens';
 import { useSelector } from 'react-redux';
-import { currentUserSelector, loadingCurrentUserSelector } from '../../redux';
+import {
+  ChatUser,
+  currentUserSelector,
+  loadingCurrentUserSelector,
+} from '../../redux';
 import CardHeaderComp from './CardHeader';
 import { useIntl } from 'react-intl';
 
@@ -18,6 +22,17 @@ const useStyles = makeStyles((_theme) => ({
     margin: '8px 12px',
   },
 }));
+
+const shortDiagnosisRegex = /\[(.*?)\]/;
+const prepareDiagnosis = (user: ChatUser) =>
+  user.diagnosis
+    .split(':')
+    .slice(1)
+    .map((diagnosis) => {
+      const isShortDiagnosisName = diagnosis.match(shortDiagnosisRegex);
+      return isShortDiagnosisName ? isShortDiagnosisName[1] : diagnosis;
+    })
+    .join(', ');
 
 export default function HealthCard() {
   const classes = useStyles();
@@ -38,7 +53,7 @@ export default function HealthCard() {
         id: 'chat.key.diagnosis',
         defaultMessage: 'Diagnosis',
       }),
-      value: 'IBS, IBD, GERD',
+      value: prepareDiagnosis(user),
       divider: true,
     },
     {
