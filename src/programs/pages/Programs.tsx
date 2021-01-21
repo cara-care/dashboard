@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { getPatientTimezone, getPatientEnrolledPrograms } from '../../auth';
 import NutriNavigation from '../../components/NutriNavigation';
 import { formatDate } from '../../utils/dateUtils';
+import CheckPatientWrapper from '../../components/IsPatientWrapper';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -35,7 +36,7 @@ const Programs = () => {
   const { locale } = useIntl();
 
   return (
-    <>
+    <CheckPatientWrapper route="/nutri/programs">
       <NutriNavigation />
       <Container className={classes.container}>
         <Grid container spacing={2}>
@@ -75,7 +76,7 @@ const Programs = () => {
           )}
         </Grid>
       </Container>
-    </>
+    </CheckPatientWrapper>
   );
 };
 

@@ -19,9 +19,7 @@ import Brightness7Icon from '@material-ui/icons/Brightness7';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   isAuthenticated as isAuthenticatedSelector,
-  hasPatientId,
   getPatientNickname,
-  unselectPatientAction,
   logoutInitAction,
 } from '../auth';
 import { getCurrentLocale, setLocale } from '../locale';
@@ -31,6 +29,7 @@ import Logo from '../assets/images/logo.svg';
 import { LOCALES } from '../utils/constants';
 import { LANGUAGE_MENU_BUTTON } from '../utils/test-helpers';
 import { DARK_MODE_ICON, LIGHT_MODE_ICON } from '../utils/test-helpers';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -73,20 +72,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar: React.FC = () => {
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const intl = useIntl();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  const isPatientSelected = useSelector(hasPatientId);
   const patientNickname = useSelector(getPatientNickname);
   const currentLocale = useSelector(getCurrentLocale);
   const isDarkMode = useIsDarkMode();
   const [languageMenu, setLanguageMenu] = React.useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
-  const unselectPatient = useCallback(() => {
-    dispatch(unselectPatientAction());
-  }, [dispatch]);
+  const handleSelectPatientPress = useCallback(() => {
+    history.push('/nutri/select-patient');
+  }, []);
   const handleLogout = useCallback(() => {
     dispatch(logoutInitAction());
   }, [dispatch]);
@@ -210,19 +209,17 @@ const NavBar: React.FC = () => {
                     process.env.NODE_ENV === 'test' ? 'css' : undefined
                   }
                 >
-                  {isPatientSelected && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={unselectPatient}
-                    >
-                      <FormattedMessage
-                        id="navbar.selectDifferentPatient"
-                        defaultMessage="Select different patient"
-                      />
-                    </Button>
-                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={handleSelectPatientPress}
+                  >
+                    <FormattedMessage
+                      id="navbar.selectDifferentPatient"
+                      defaultMessage="Select different patient"
+                    />
+                  </Button>
                 </Hidden>
                 <Tooltip
                   title={

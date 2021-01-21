@@ -11,6 +11,7 @@ import { hasPatientId } from '../auth';
 import { fetchTrackingDataInit } from './trackingOverview/redux/trackingOverviewActions';
 import { fetchChartDataInit } from './chartOverview/redux/chartOverviewActions';
 import api from '../utils/api';
+import CheckPatientWrapper from '../components/IsPatientWrapper';
 
 const useStyles = makeStyles({
   trackingOverview: {
@@ -23,8 +24,8 @@ const Dashboard: React.FC<RouteComponentProps<{
 }>> = ({ match }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(hasPatientId);
   const { token } = match.params;
+  const isPatientSelected = useSelector(hasPatientId);
   const fetchTrackingData = useCallback(() => {
     dispatch(fetchTrackingDataInit());
   }, [dispatch]);
@@ -40,11 +41,11 @@ const Dashboard: React.FC<RouteComponentProps<{
     }
     fetchTrackingData();
     fetchChartData();
-  }, [token, fetchTrackingData, fetchChartData]);
+  }, [token, fetchTrackingData, fetchChartData, isPatientSelected]);
 
   return (
-    <>
-      {isAuthenticated && <NutriNavigation />}
+    <CheckPatientWrapper route="/nutri/dashboard">
+      <NutriNavigation />
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
@@ -55,7 +56,7 @@ const Dashboard: React.FC<RouteComponentProps<{
           </Grid>
         </Grid>
       </Container>
-    </>
+    </CheckPatientWrapper>
   );
 };
 

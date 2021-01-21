@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   FormattedMessage,
@@ -11,7 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  hasPatientId,
   isSelectingPatient,
   hasError,
   isAuthenticated as isAuthenticatedSelector,
@@ -21,7 +20,9 @@ import AuthLayout from '../components/AuthLayout';
 import Modal from '../../components/Modal';
 import getIntercomLink from '../../utils/getIntercomLink';
 
-type Props = WrappedComponentProps;
+interface Props extends WrappedComponentProps {
+  route?: string;
+}
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -40,17 +41,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SelectPatient: React.FC<Props> = ({ intl }) => {
+const SelectPatient: React.FC<Props> = ({ intl, route }) => {
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
-  const isPatientSelected = useSelector(hasPatientId);
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const isFetching = useSelector(isSelectingPatient);
   const isErrorDialogOpen = useSelector(hasError);
   const selectPatient = useCallback(
-    (email) => {
-      dispatch(selectPatientInitAction(email));
+    (email, history, route = '/nutri/programs') => {
+      dispatch(selectPatientInitAction(email, history, route));
     },
     [dispatch]
   );
@@ -62,15 +63,11 @@ const SelectPatient: React.FC<Props> = ({ intl }) => {
   };
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    selectPatient(email);
+    selectPatient(email, history, route);
   };
 
   if (!isAuthenticated) {
     return <Redirect to="/nutri/login" />;
-  }
-
-  if (isPatientSelected) {
-    return <Redirect to="/nutri" />;
   }
 
   return (
