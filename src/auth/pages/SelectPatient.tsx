@@ -41,7 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SelectPatient: React.FC<Props> = ({ intl, route }) => {
+const SelectPatient: React.FC<Props> = ({
+  intl,
+  route = '/nutri/programs',
+}) => {
   const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -50,7 +53,7 @@ const SelectPatient: React.FC<Props> = ({ intl, route }) => {
   const isFetching = useSelector(isSelectingPatient);
   const isErrorDialogOpen = useSelector(hasError);
   const selectPatient = useCallback(
-    (email, history, route = '/nutri/programs') => {
+    (email, history, route) => {
       dispatch(selectPatientInitAction(email, history, route));
     },
     [dispatch]

@@ -82,14 +82,14 @@ export const logoutFailedAction = (error: Error): LogoutFailedAction => ({
 export interface SelectPatientInitAction {
   type: AuthActionTypes.SELECT_PATIENT_INIT;
   email: string;
-  history: History;
-  route: string;
+  history?: History;
+  route?: string;
 }
 
 export const selectPatientInitAction = (
   email: string,
-  history: History,
-  route: string
+  history?: History,
+  route?: string
 ): SelectPatientInitAction => ({
   type: AuthActionTypes.SELECT_PATIENT_INIT,
   email,

@@ -11,7 +11,7 @@ jest.mock('../../utils/api');
 
 describe('<Dashboard />', () => {
   const history = createMemoryHistory();
-  const TEST_TOKEN = 'test';
+  // const TEST_TOKEN = 'test';
   const DashboardWithParams: React.FC<{ token?: string }> = ({ token }) => (
     <Dashboard
       history={history}
@@ -30,12 +30,12 @@ describe('<Dashboard />', () => {
       }}
     />
   );
-  const DashboardWithToken = () => <DashboardWithParams token={TEST_TOKEN} />;
+  // const DashboardWithToken = () => <DashboardWithParams token={TEST_TOKEN} />;
   const DashboardWithoutToken = () => <DashboardWithParams />;
-  const DashboardWithTokenParam = withProviders(
-    DashboardWithToken,
-    MemoryRouter
-  );
+  // const DashboardWithTokenParam = withProviders(
+  //   DashboardWithToken,
+  //   MemoryRouter
+  // );
   const DashboardWithoutTokenParam = withProviders(
     DashboardWithoutToken,
     MemoryRouter

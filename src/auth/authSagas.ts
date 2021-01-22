@@ -51,7 +51,9 @@ export function* fetchPatientSaga({ email, history, route }: SelectPatientInitAc
   try {
     const res = yield call(() => getUserByEmail(email));
     yield put(selectPatientSuccessAction(res.data));
-    history.push(route)
+    if(history && route) {
+      history.push(route)
+    }
   } catch (err) {
     yield put(selectPatientFailedAction(err));
   }
