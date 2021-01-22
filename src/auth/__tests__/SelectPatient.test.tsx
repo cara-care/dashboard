@@ -22,17 +22,4 @@ describe('<SelectPatient />', () => {
     renderWithRedux(<SelectPatientWithProviders />);
     expect(MockRedirect).toBeCalledWith({ to: '/nutri/login' }, {});
   });
-
-  it('redirect to dashboard if authenticated and patient is selected', () => {
-    renderWithRedux(<SelectPatientWithProviders />, {
-      preloadedState: {
-        auth: {
-          ...authInitialState,
-          status: AuthStatus.AUTHENTICATED,
-          patientId: 1,
-        },
-      },
-    });
-    expect(MockRedirect).toBeCalledWith({ to: '/nutri' }, {});
-  });
 });

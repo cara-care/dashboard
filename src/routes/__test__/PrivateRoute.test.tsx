@@ -24,7 +24,7 @@ describe('<PrivateRoute />', () => {
     expect(history.location.pathname).toBe('/nutri/login');
   });
 
-  it("redirects to select patient page when patient isn't selected", () => {
+  it("does not redirect to select patient page when patient isn't selected", () => {
     const history = createMemoryHistory();
     renderWithRedux(
       <Router history={history}>
@@ -36,7 +36,7 @@ describe('<PrivateRoute />', () => {
         },
       }
     );
-    expect(history.location.pathname).toBe('/nutri/select-patient');
+    expect(history.location.pathname).toBe('/');
   });
 
   it('renders component when authenticated and patient is selected', () => {

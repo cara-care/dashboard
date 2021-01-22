@@ -34,7 +34,14 @@ const mockPrograms = [
 describe('<Programs />', () => {
   it('shows a message when patient is not enrolled in programs', () => {
     const ProgramWithProviders = withProviders(Programs);
-    const { getByText } = renderWithRedux(<ProgramWithProviders />);
+    const { getByText } = renderWithRedux(<ProgramWithProviders />, {
+      preloadedState: {
+        auth: {
+          ...authInitialState,
+          patientId: 1,
+        },
+      },
+    });
     expect(getByText(/not enrolled in any programs/i)).toHaveTextContent(
       'Patient is not enrolled in any programs.'
     );
@@ -48,6 +55,7 @@ describe('<Programs />', () => {
         preloadedState: {
           auth: {
             ...authInitialState,
+            patientId: 1,
             patientTimezone: timezone,
             patientEnrolledPrograms: mockPrograms,
           },
