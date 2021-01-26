@@ -11,7 +11,7 @@ import {
   LoginInitAction,
   SelectPatientInitAction,
 } from './authActions';
-import { getMe, login, logout, getUserByEmail } from '../utils/api';
+import { getMe, login, logout, getUserByEmailOrUsername } from '../utils/api';
 
 export function* rootAuthSaga() {
   yield takeLatest(AuthActionTypes.TRY_AUTO_LOGIN, autoLoginSaga);
@@ -49,9 +49,9 @@ export function* logoutSaga() {
 
 export function* fetchPatientSaga({ email, history, route }: SelectPatientInitAction) {
   try {
-    const res = yield call(() => getUserByEmail(email));
+    const res = yield call(() => getUserByEmailOrUsername(email));
     yield put(selectPatientSuccessAction(res.data));
-    if(history && route) {
+    if (history && route) {
       history.push(route)
     }
   } catch (err) {
