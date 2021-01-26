@@ -59,11 +59,13 @@ export const getMe = () => {
   return api.get('/dashboard/me/');
 };
 
-export const getUserByEmail = (email: string) =>
-  api.post<{ id: number; nickname: string; timezone: string }>(
+export const getUserByEmailOrUsername = (input: string) => {
+  const data = input.includes("@") ? { email: input } : { username: input }
+  return api.post<{ email?: string, username?: string }>(
     '/dashboard/find-user/',
-    { email }
+    { ...data }
   );
+}
 
 export const getTrackingDataPoints = ({
   userId,
@@ -86,8 +88,7 @@ export const getTrackingDataPoints = ({
       completed: Date;
     }[]
   >(
-    `/dashboard/${
-      userId || 'me'
+    `/dashboard/${userId || 'me'
     }/data-points/?start=${start}&end=${end}&limit=${limit}&offset=${offset}`
   );
 };
