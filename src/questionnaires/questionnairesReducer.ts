@@ -45,6 +45,7 @@ export const questionnairesReducer: Reducer<
     case QuestionnairesActionTypes.FETCH_SUBMISSIONS_PAGE_SUCCESS:
       return {
         ...state,
+        error: null,
         isFetching: false,
         submissions: action.submissions,
         count: action.count,

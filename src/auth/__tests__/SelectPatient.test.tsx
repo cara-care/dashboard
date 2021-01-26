@@ -1,6 +1,5 @@
 import React from 'react';
 import { MemoryRouter, Redirect as MockRedirect } from 'react-router-dom';
-import { authInitialState, AuthStatus } from '../authReducer';
 import withProviders from '../../components/withProviders';
 import SelectPatient from '../pages/SelectPatient';
 import { renderWithRedux } from '../../utils/test-utils';
@@ -11,7 +10,11 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('<SelectPatient />', () => {
-  const SelectPatientWithProviders = withProviders(SelectPatient, MemoryRouter);
+  const SelectPatientComp = () => <SelectPatient />;
+  const SelectPatientWithProviders = withProviders(
+    SelectPatientComp,
+    MemoryRouter
+  );
 
   beforeEach(() => {
     // @ts-ignore
@@ -21,18 +24,5 @@ describe('<SelectPatient />', () => {
   it('redirect to login page if not authenticated', () => {
     renderWithRedux(<SelectPatientWithProviders />);
     expect(MockRedirect).toBeCalledWith({ to: '/nutri/login' }, {});
-  });
-
-  it('redirect to dashboard if authenticated and patient is selected', () => {
-    renderWithRedux(<SelectPatientWithProviders />, {
-      preloadedState: {
-        auth: {
-          ...authInitialState,
-          status: AuthStatus.AUTHENTICATED,
-          patientId: 1,
-        },
-      },
-    });
-    expect(MockRedirect).toBeCalledWith({ to: '/nutri' }, {});
   });
 });

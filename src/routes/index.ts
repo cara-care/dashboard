@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: '/nutri',
-    component: Dashboard,
+    component: Login,
     exact: true,
     authRequired: true,
   },
@@ -76,6 +76,12 @@ const routes = [
   {
     path: '/nutri/programs',
     component: Programs,
+    exact: false,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/dashboard',
+    component: Dashboard,
     exact: false,
     authRequired: true,
   },

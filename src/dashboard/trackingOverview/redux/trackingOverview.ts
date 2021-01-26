@@ -52,6 +52,8 @@ export const trackingOverviewReducer: Reducer<
     case TrackingOverviewActionTypes.FETCH_TRACKING_DATA_PAGE_SUCCESS:
       return {
         ...state,
+        invalidToken: false,
+        error: null,
         page: action.next,
         data: state.data.concat(action.data),
       };

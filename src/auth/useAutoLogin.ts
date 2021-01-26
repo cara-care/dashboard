@@ -19,7 +19,7 @@ const useAutoLogin = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push('/nutri/select-patient');
+      history.push('/nutri/inbox');
     }
   }, [isAuthenticated, history]);
 };

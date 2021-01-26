@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { hasPatientId } from '../../auth';
+import CheckPatientWrapper from '../../components/IsPatientWrapper';
 import NoResults from '../../components/NoResults';
 import NutriNavigation from '../../components/NutriNavigation';
 import Pagination from '../../components/Pagination';
@@ -45,6 +47,7 @@ const Questionnaires = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const match = useRouteMatch();
+  const isPatientSelected = useSelector(hasPatientId);
   const isFetching = useSelector<RootState, boolean>(
     (state) => state.questionnaires.isFetching
   );
@@ -62,7 +65,7 @@ const Questionnaires = () => {
 
   useEffect(() => {
     dispatch(fetchSubmissionsPageInit(page));
-  }, [dispatch, page]);
+  }, [dispatch, page, isPatientSelected]);
 
   const handleOnClickPrev = () => {
     setPage(page - 1);
@@ -73,7 +76,7 @@ const Questionnaires = () => {
   };
 
   return (
-    <>
+    <CheckPatientWrapper route="/nutri/questionnaires">
       <NutriNavigation />
       <Container className={classes.container}>
         {isFetching ? (
@@ -142,7 +145,7 @@ const Questionnaires = () => {
           </Grid>
         )}
       </Container>
-    </>
+    </CheckPatientWrapper>
   );
 };
 
