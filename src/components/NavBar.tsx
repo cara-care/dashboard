@@ -85,7 +85,7 @@ const NavBar: React.FC = () => {
   >(null);
   const handleSelectPatientPress = useCallback(() => {
     history.push('/nutri/select-patient');
-  }, []);
+  }, [history]);
   const handleLogout = useCallback(() => {
     dispatch(logoutInitAction());
   }, [dispatch]);
