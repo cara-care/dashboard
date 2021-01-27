@@ -23,17 +23,17 @@ export default function ChatMessagesList() {
         const isLastMessage = index + 1 === data.length;
         const isDifferentDate = messageDate !== timeToCheck;
 
+        if (isDifferentDate) timeToCheck = messageDate;
+
         return (
           <Fragment key={id}>
-            {isDifferentDate && (timeToCheck = messageDate) && (
-              <MessageDivider children={dataToDisplay} />
-            )}
+            {isDifferentDate && <MessageDivider content={dataToDisplay} />}
             <Message
               position={getMessagePosition(author)}
               message={text}
               created={created}
             />
-            {isLastMessage && <MessageDivider children={dataToDisplay} />}
+            {isLastMessage && <MessageDivider content={dataToDisplay} />}
           </Fragment>
         );
       })}

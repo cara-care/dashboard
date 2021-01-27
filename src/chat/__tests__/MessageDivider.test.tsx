@@ -7,11 +7,7 @@ import MessageDivider from '../components/MessageDivider';
 const label = 'test-label';
 
 describe('<MessageDivider />', () => {
-  const MessageDividerWithUser = () => (
-    <MessageDivider>
-      <span>{label}</span>
-    </MessageDivider>
-  );
+  const MessageDividerWithUser = () => <MessageDivider content={label} />;
   it('does render children correctly', () => {
     const MessageDividerWithProviders = withProviders(
       MessageDividerWithUser,
