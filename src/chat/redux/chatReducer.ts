@@ -155,6 +155,8 @@ export const currentUserSelector = (state: RootState) =>
   state.chat.currentChatUser;
 export const chatMessagesSelector = (state: RootState) =>
   state.chat.chatMessages;
+export const lastHeardFromSelector = (state: RootState) =>
+  state.chat.chatMessages[0]?.created.slice(0, 10);
 export const chatRoomsSelector = (state: RootState) => state.chat.chatRooms;
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;
