@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { ChatMessage, chatMessagesSelector } from '../redux';
 import Message from './Message';
+import MessageDivider from './MessageDivider';
 
 function getMessagePosition(username: string) {
   // app username starts with u- or auto-
@@ -10,16 +11,30 @@ function getMessagePosition(username: string) {
 
 export default function ChatMessagesList() {
   const data = useSelector(chatMessagesSelector);
+  let timeToCheck = new Date().toJSON().slice(0, 10);
+
   return (
     <Fragment>
-      {data.map((message: ChatMessage) => {
+      {data.map((message: ChatMessage, index) => {
+        const { id, created, text, author } = message;
+        const dataToDisplay = timeToCheck;
+        const messageDate = created.slice(0, 10);
+
+        const isLastMessage = index + 1 === data.length;
+        const isDifferentDate = messageDate !== timeToCheck;
+
+        if (isDifferentDate) timeToCheck = messageDate;
+
         return (
-          <Message
-            key={message.id}
-            position={getMessagePosition(message.author)}
-            message={message.text}
-            created={message.created}
-          />
+          <Fragment key={id}>
+            {isDifferentDate && <MessageDivider content={dataToDisplay} />}
+            <Message
+              position={getMessagePosition(author)}
+              message={text}
+              created={created}
+            />
+            {isLastMessage && <MessageDivider content={dataToDisplay} />}
+          </Fragment>
         );
       })}
     </Fragment>

@@ -138,7 +138,7 @@ export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
     rootRef: messagesRootRef,
     onIntersect,
     threshold: 0.5,
-    rootMargin: '16px',
+    rootMargin: '20px',
     enabled: !!canFetchMore,
   });
 

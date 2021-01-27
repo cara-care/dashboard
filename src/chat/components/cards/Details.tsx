@@ -3,7 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button, Card, CardActions, Collapse } from '@material-ui/core';
 import { CardDetailSkeleton } from '../LoadingScreens';
 import { useSelector } from 'react-redux';
-import { currentUserSelector, loadingCurrentUserSelector } from '../../redux';
+import {
+  currentUserSelector,
+  lastHeardFromSelector,
+  loadingCurrentUserSelector,
+} from '../../redux';
 import CardHeaderComp from './CardHeader';
 import CardBasicList from './CardBasicList';
 import { useIntl } from 'react-intl';
@@ -28,6 +32,7 @@ export default function Details() {
   const intl = useIntl();
   const user = useSelector(currentUserSelector);
   const loadingUserData = useSelector(loadingCurrentUserSelector);
+  const lastHeardFrom = useSelector(lastHeardFromSelector);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = useCallback(() => {
@@ -75,7 +80,7 @@ export default function Details() {
         id: 'chat.key.lastHeard',
         defaultMessage: 'Last heard from',
       }),
-      value: '12/12/2020',
+      value: lastHeardFrom,
     },
   ];
 
