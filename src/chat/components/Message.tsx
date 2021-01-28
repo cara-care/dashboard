@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { getTime, padWith0 } from '../../utils/dateUtils';
 import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
+import Linkify from 'react-linkify';
+import ExternalLink from '../../components/ExternalLink';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +69,10 @@ export interface MessageProps {
   created: string | Date;
 }
 
+const componentDecorator = (href: string, text: string) => (
+  <ExternalLink href={href}>{text}</ExternalLink>
+);
+
 export default function Message({
   message,
   created,
@@ -92,7 +98,9 @@ export default function Message({
           [classes.bubbleRight]: position === 'right',
         })}
       >
-        <Typography className={classes.message}>{message}</Typography>
+        <Linkify componentDecorator={componentDecorator}>
+          <Typography className={classes.message}>{message}</Typography>
+        </Linkify>
         <Typography
           variant="caption"
           className={clsx(classes.timestamp, {

@@ -11,7 +11,7 @@ function getMessagePosition(username: string) {
 
 export default function ChatMessagesList() {
   const data = useSelector(chatMessagesSelector);
-  let timeToCheck = data[0].created.slice(0, 10);
+  let timeToCheck = data[0]?.created.slice(0, 10);
 
   return (
     <Fragment>

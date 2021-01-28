@@ -18,6 +18,7 @@ import {
   setCurrentUserLoading,
 } from './chatActions';
 import { ChatRoom, chatRoomsSelector } from './chatReducer';
+import { deletedUserData } from './utils';
 
 export function* rootChatSaga() {
   yield takeEvery(
@@ -40,13 +41,13 @@ export function* getCurrentUserData({
     }
     yield put(setCurrentUserLoading(true));
     const res = yield call(() => getUserDataById(id));
-    // yield delay(1000);
     yield put(setCurrentChatUser(res.data));
     if (refetchMessages) {
       queryCache.refetchQueries(`messages-${username}`);
     }
   } catch (error) {
     console.log(error);
+    yield put(setCurrentChatUser(deletedUserData(id, username)));
   } finally {
     if (cancelled()) {
       yield put(clearChatMessages());

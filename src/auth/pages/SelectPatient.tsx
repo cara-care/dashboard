@@ -19,6 +19,7 @@ import { selectPatientInitAction, resetErrorAction } from '../authActions';
 import AuthLayout from '../components/AuthLayout';
 import Modal from '../../components/Modal';
 import getIntercomLink from '../../utils/getIntercomLink';
+import ExternalLink from '../../components/ExternalLink';
 
 interface Props extends WrappedComponentProps {
   route?: string;
@@ -113,14 +114,9 @@ const SelectPatient: React.FC<Props> = ({
       >
         <Typography>
           <FormattedMessage id="nutriMenu.selectPatient.errorMsgBeforeLink" />{' '}
-          <a
-            className={classes.link}
-            target="_blank"
-            rel="nofollow noreferrer noopener"
-            href={getIntercomLink(email)}
-          >
+          <ExternalLink href={getIntercomLink(email)}>
             <FormattedMessage id="nutriMenu.selectPatient.errorMsgLink" />
-          </a>{' '}
+          </ExternalLink>{' '}
           <FormattedMessage id="nutriMenu.selectPatient.errorMsgAfterLink" />
         </Typography>
       </Modal>

@@ -14,6 +14,7 @@ import {
   loadingCurrentUserSelector,
   ChatRoomPatient,
 } from '../redux';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -116,7 +117,7 @@ export default React.memo(function ChatRoomItem({
           <Avatar className={classes.avatar} />
           <div className={classes.inner}>
             <Typography variant="h6" className={classes.nickname}>
-              {nickname || ' '}
+              {nickname || <CloseIcon style={{ fontSize: 18 }} />}
             </Typography>
             {/* TODO: SHOW FILE NAME IF MESSAGE WAS A FILE? */}
             <Typography variant="body2">
