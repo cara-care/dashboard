@@ -70,9 +70,7 @@ export interface MessageProps {
 }
 
 const componentDecorator = (href: string, text: string) => (
-  <ExternalLink href={href}>
-    <>{text}</>
-  </ExternalLink>
+  <ExternalLink href={href}>{text}</ExternalLink>
 );
 
 export default function Message({
