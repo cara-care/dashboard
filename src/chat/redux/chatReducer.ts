@@ -3,6 +3,7 @@ import { ChatActions, ChatActionTypes } from './chatActions';
 import { RootState } from '../../utils/store';
 import { uniqBy } from 'lodash';
 import { EnrolledProgram } from '../../auth';
+import { findLastContact } from './utils';
 export interface ChatUser {
   age: number;
   allergies: string[];
@@ -151,6 +152,11 @@ export const loadingCurrentUserSelector = (state: RootState) =>
   state.chat.loadingCurrentUser;
 export const currentUserIdSelector = (state: RootState) =>
   state.chat.currentChatUser?.id;
+export const lastContactSelector = (state: RootState) =>
+  findLastContact(
+    state.chat.chatMessages,
+    state.chat.currentChatUser?.username
+  );
 export const currentUserSelector = (state: RootState) =>
   state.chat.currentChatUser;
 export const chatMessagesSelector = (state: RootState) =>

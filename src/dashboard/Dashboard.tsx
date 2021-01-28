@@ -7,7 +7,10 @@ import TrackingOverview from './trackingOverview/TrackingOverview';
 import ChartOverview from './chartOverview/ChartOverview';
 import Container from '../components/Container';
 import NutriNavigation from '../components/NutriNavigation';
-import { hasPatientId } from '../auth';
+import {
+  hasPatientId,
+  isAuthenticated as isAuthenticatedSelector,
+} from '../auth';
 import { fetchTrackingDataInit } from './trackingOverview/redux/trackingOverviewActions';
 import { fetchChartDataInit } from './chartOverview/redux/chartOverviewActions';
 import api from '../utils/api';
@@ -25,6 +28,7 @@ const Dashboard: React.FC<RouteComponentProps<{
   const classes = useStyles();
   const dispatch = useDispatch();
   const { token } = match.params;
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
   const isPatientSelected = useSelector(hasPatientId);
   const fetchTrackingData = useCallback(() => {
     dispatch(fetchTrackingDataInit());
@@ -43,9 +47,8 @@ const Dashboard: React.FC<RouteComponentProps<{
     fetchChartData();
   }, [token, fetchTrackingData, fetchChartData, isPatientSelected]);
 
-  return (
-    <CheckPatientWrapper route="/nutri/dashboard">
-      <NutriNavigation />
+  const renderDashboard = useCallback(() => {
+    return (
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
@@ -56,6 +59,18 @@ const Dashboard: React.FC<RouteComponentProps<{
           </Grid>
         </Grid>
       </Container>
+    );
+  }, [classes.trackingOverview]);
+
+  // Comment: sb can access this component by /export-token/${token} route, without authentication
+  if (!isAuthenticated) {
+    return renderDashboard();
+  }
+
+  return (
+    <CheckPatientWrapper route="/nutri/dashboard">
+      <NutriNavigation />
+      {renderDashboard()}
     </CheckPatientWrapper>
   );
 };

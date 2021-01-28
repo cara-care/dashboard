@@ -1,4 +1,4 @@
-import React, { Fragment, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { hasPatientId, SelectPatient } from '../auth';
 import NutriNavigation from './NutriNavigation';
@@ -18,9 +18,9 @@ const CheckPatientWrapper = ({ children, route }: CheckPatientWrapperProps) => {
         <SelectPatient route={route} />
       </>
     );
-  } else {
-    return <Fragment>{children}</Fragment>;
   }
+
+  return <>{children}</>;
 };
 
 export default CheckPatientWrapper;
