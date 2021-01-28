@@ -11,7 +11,7 @@ function getMessagePosition(username: string) {
 
 export default function ChatMessagesList() {
   const data = useSelector(chatMessagesSelector);
-  let timeToCheck = new Date().toJSON().slice(0, 10);
+  let timeToCheck = data[0].created.slice(0, 10);
 
   return (
     <Fragment>
@@ -33,7 +33,7 @@ export default function ChatMessagesList() {
               message={text}
               created={created}
             />
-            {isLastMessage && <MessageDivider content={dataToDisplay} />}
+            {isLastMessage && <MessageDivider content={timeToCheck} />}
           </Fragment>
         );
       })}

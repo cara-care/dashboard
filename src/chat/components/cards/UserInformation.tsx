@@ -3,7 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Button, Card } from '@material-ui/core';
 import { CardDetailSkeleton } from '../LoadingScreens';
 import { useSelector } from 'react-redux';
-import { currentUserSelector, loadingCurrentUserSelector } from '../../redux';
+import {
+  currentUserSelector,
+  lastContactSelector,
+  loadingCurrentUserSelector,
+} from '../../redux';
 import CardHeaderComp from './CardHeader';
 import CardBasicList from './CardBasicList';
 import { useIntl } from 'react-intl';
@@ -32,6 +36,7 @@ export default function UserInformation() {
   const classes = useStyles();
   const intl = useIntl();
   const user = useSelector(currentUserSelector);
+  const lastContact = useSelector(lastContactSelector);
   const loadingUserData = useSelector(loadingCurrentUserSelector);
 
   if (loadingUserData) {
@@ -54,12 +59,12 @@ export default function UserInformation() {
         id: 'chat.key.lastContact',
         defaultMessage: 'Last Contact',
       }),
-      value: 'Alina',
-      component: (
+      value: lastContact,
+      component: lastContact ? (
         <Avatar alt="nutri image" className={classes.avatar}>
           A
         </Avatar>
-      ),
+      ) : undefined,
     },
     {
       key: intl.formatMessage({
