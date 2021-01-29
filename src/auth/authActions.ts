@@ -1,4 +1,4 @@
-import { EnrolledProgram } from './authReducer';
+import { EnrolledProgram, MePayload } from './authReducer';
 import { History } from 'history';
 
 export enum AuthActionTypes {
@@ -37,10 +37,12 @@ export const loginInitAction = ({
 
 export interface LoginSuccessAction {
   type: AuthActionTypes.LOGIN_SUCCESS;
+  payload: MePayload
 }
 
-export const loginSuccessAction = (): LoginSuccessAction => ({
+export const loginSuccessAction = (payload: MePayload): LoginSuccessAction => ({
   type: AuthActionTypes.LOGIN_SUCCESS,
+  payload
 });
 
 export interface LoginFailedAction {

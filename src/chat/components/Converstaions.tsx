@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InboxIcon from '@material-ui/icons/Inbox';
-import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import AddIcon from '@material-ui/icons/Add';
 import { Typography } from '@material-ui/core';
 import ConverstaionsItem from './ConversationsItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { getNutriName } from '../../auth';
+import { setChatRoomsSlug } from '../redux';
 
 export default function Converstaions() {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const dispatch = useDispatch();
+  const nutriName = useSelector(getNutriName);
+
+  const setChatSlug = useCallback(
+    (slug: string) => {
+      dispatch(setChatRoomsSlug(slug));
+    },
+    [dispatch]
+  );
 
   const handleListItemClick = (
     _: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -51,28 +61,7 @@ export default function Converstaions() {
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
               handleListItemClick(e, 0);
-            }}
-          />
-          <ConverstaionsItem
-            icon={<AlternateEmailIcon fontSize="small" />}
-            text="Mentions"
-            count={6}
-            selectedIndex={selectedIndex === 1}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 1);
-            }}
-          />
-          <ConverstaionsItem
-            icon={<PersonOutlineIcon />}
-            text="Unassigned"
-            count={999}
-            selectedIndex={selectedIndex === 2}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 2);
+              setChatSlug(nutriName);
             }}
           />
           <ConverstaionsItem
@@ -84,6 +73,7 @@ export default function Converstaions() {
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
               handleListItemClick(e, 3);
+              setChatSlug('All');
             }}
           />
           <ConverstaionsItem icon={<AddIcon />} text="Create View" />

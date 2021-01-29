@@ -60,12 +60,12 @@ export const getMe = () => {
 };
 
 export const getUserByEmailOrUsername = (input: string) => {
-  const data = input.includes("@") ? { email: input } : { username: input }
-  return api.post<{ email?: string, username?: string }>(
+  const data = input.includes('@') ? { email: input } : { username: input };
+  return api.post<{ email?: string; username?: string }>(
     '/dashboard/find-user/',
     { ...data }
   );
-}
+};
 
 export const getTrackingDataPoints = ({
   userId,
@@ -88,7 +88,8 @@ export const getTrackingDataPoints = ({
       completed: Date;
     }[]
   >(
-    `/dashboard/${userId || 'me'
+    `/dashboard/${
+      userId || 'me'
     }/data-points/?start=${start}&end=${end}&limit=${limit}&offset=${offset}`
   );
 };
@@ -157,13 +158,15 @@ export const changePassword = ({
 };
 
 export const getChatRooms = ({
+  chatRoomsSlug = 'all',
   limit,
   offset,
 }: {
+  chatRoomsSlug: string;
   limit: number | string;
   offset: number | string;
 }) => {
-  return api.get(`/dashboard/chat/rooms/?limit=${limit}&offset=${offset}`);
+  return api.get(`/dashboard/chat/rooms/?inbox=${chatRoomsSlug}&limit=${limit}&offset=${offset}`);
 };
 
 export const getChatRoom = (_: string, userId: number) => {
@@ -190,6 +193,10 @@ export const getUserDataById = (userId: number) => {
 
 export const getChatAuthorizationToken = () => {
   return api.post(`/mercury/token-dispenser/`);
+};
+
+export const getInboxesList = () => {
+  return api.get('/dashboard/chat/inboxes/');
 };
 
 export default api;

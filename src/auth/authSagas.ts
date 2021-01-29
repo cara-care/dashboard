@@ -22,8 +22,8 @@ export function* rootAuthSaga() {
 
 export function* autoLoginSaga() {
   try {
-    yield call(getMe);
-    yield put(loginSuccessAction());
+    const res = yield call(getMe);
+    yield put(loginSuccessAction(res.data));
   } catch (_) {
     yield put(tryAutoLoginFailedAction());
   }
@@ -32,7 +32,8 @@ export function* autoLoginSaga() {
 export function* loginSaga({ username, password }: LoginInitAction) {
   try {
     yield call(() => login({ username, password }));
-    yield put(loginSuccessAction());
+    const res = yield call(getMe);
+    yield put(loginSuccessAction(res.data));
   } catch (err) {
     yield put(loginFailedAction(err));
   }

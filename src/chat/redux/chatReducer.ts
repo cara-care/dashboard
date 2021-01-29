@@ -51,11 +51,19 @@ export interface ChatRoom {
   patient: ChatRoomPatient;
 }
 
+export interface ChatConversation {
+  name: string;
+  private: boolean;
+  slug: string;
+}
+
 export interface ChatState {
   loadingCurrentUser: boolean;
   currentChatUser: ChatUser | null;
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
+  chatConversations: ChatConversation[];
+  chatRoomsSlug: string;
   scrollToChatBottom: boolean;
 }
 
@@ -64,6 +72,8 @@ export const chatInitialState = {
   currentChatUser: null,
   chatMessages: [],
   chatRooms: [],
+  chatConversations: [],
+  chatRoomsSlug: 'all',
   scrollToChatBottom: false,
 };
 
@@ -99,7 +109,10 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         scrollToChatBottom: true,
       };
     case ChatActionTypes.SET_CHAT_MESSAGES:
-      const newChatMessages = uniqBy([...state.chatMessages, ...action.chatMessages], 'id');
+      const newChatMessages = uniqBy(
+        [...state.chatMessages, ...action.chatMessages],
+        'id'
+      );
       return {
         ...state,
         chatMessages: newChatMessages,
@@ -137,7 +150,21 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         chatRooms: updatedRooms,
       };
+    // CHAT CONVERSATIONS
+    case ChatActionTypes.SET_CHAT_CONVERSATIONS:
+      return {
+        ...state,
+        chatConversations: [...action.chatConversations],
+      };
     // Other
+    case ChatActionTypes.SET_CHAT_ROOMS_SLUG:
+      const conversation = state.chatConversations.find(
+        (el) => el.name === action.payload
+      );
+      return {
+        ...state,
+        chatRoomsSlug: conversation?.slug ?? 'all',
+      };
     case ChatActionTypes.SET_SCROLL_TO_BOTTOM:
       return {
         ...state,
@@ -164,5 +191,8 @@ export const chatMessagesSelector = (state: RootState) =>
 export const lastHeardFromSelector = (state: RootState) =>
   state.chat.chatMessages[0]?.created.slice(0, 10);
 export const chatRoomsSelector = (state: RootState) => state.chat.chatRooms;
+export const getChatRoomsSlug = (state: RootState) => state.chat.chatRoomsSlug;
+export const chatConversationsSelector = (state: RootState) =>
+  state.chat.chatConversations;
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;

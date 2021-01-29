@@ -9,10 +9,9 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import Spinner from '../../components/Spinner';
 import MessageSkeleton from './MessageSkeleton';
 import ChatRoomsList from './ChatRoomsList';
-import getParams from '../../utils/getParams';
 import { getChatRooms } from '../../utils/api';
-import { useDispatch } from 'react-redux';
-import { setChatRooms } from '../redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getChatRoomsSlug, setChatRooms } from '../redux';
 import { ChatRoomsError } from './Errors';
 
 const useStyles = makeStyles((_theme) => ({
@@ -29,6 +28,7 @@ export default function ChatRooms() {
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement>(null);
   const fetchMoreButtonRef = useRef<HTMLButtonElement>(null);
+  const chatRoomsSlug = useSelector(getChatRoomsSlug);
 
   const setChatMessagesToStore = useCallback(
     (chatRooms: any) => {
@@ -45,12 +45,14 @@ export default function ChatRooms() {
     fetchMore,
     canFetchMore,
   } = useInfiniteQuery(
-    'chatRooms',
-    async (_key, url = '?limit=100&offset=0') => {
-      // FIXME: typings
-      // @ts-ignore
-      const { limit, offset } = getParams(url);
-      const res = await getChatRooms({ limit, offset });
+    ['chatRooms', chatRoomsSlug],
+    async (
+      _key: string,
+      chatRoomsSlug: string,
+      limit: number = 100,
+      offset: number = 0
+    ) => {
+      const res = await getChatRooms({ chatRoomsSlug, limit, offset });
       setChatMessagesToStore(res.data.results);
       return res.data;
     },

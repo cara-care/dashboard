@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Converstaions from './Converstaions';
 import SearchInput from './SearchInput';
 import SidebarPrograms from './SidebarPrograms';
+import { getInboxesList } from '../../utils/api';
+import { useDispatch } from 'react-redux';
+import { ChatConversation, setChatConversations } from '../redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +24,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InboxSidebar() {
+  const dispatch = useDispatch();
+
+  const setConversations = useCallback(
+    (conversations: ChatConversation[]) => {
+      dispatch(setChatConversations(conversations));
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    const getInboxes = async () => {
+      const res = await getInboxesList();
+      setConversations(res.data.results);
+    };
+    getInboxes();
+  }, []);
+
   const classes = useStyles();
   return (
     <Box className={classes.root}>
