@@ -50,13 +50,6 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
     setMessage(e.target.value);
   };
 
-  const handleEnterPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
   const handleSubmit = () => {
     if (message) {
       onSubmit(message);
@@ -70,7 +63,6 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
         <textarea
           value={message}
           onChange={handleChange}
-          onKeyDown={handleEnterPress}
           className={classes.input}
           rows={3}
           data-testid={CHAT_MESSAGE_INPUT}
