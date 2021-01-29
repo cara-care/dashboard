@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Channel, Socket } from 'phoenix';
 import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
@@ -58,36 +58,47 @@ export default function Inbox() {
   const dispatch = useDispatch();
   const currentUser = useSelector(currentUserSelector);
 
+  const [open, setOpen] = useState(false);
+
   const socket = useRef<Socket | null>(null);
   const channel = useRef<Channel | null>(null);
 
-  useEffect(() => {
-    const establishSocketConnection = async () => {
-      try {
-        const res = await getChatAuthorizationToken();
-        const ws = new Socket('wss://localhost:3000/api/mercury/socket', {
-          params: { token: res.data.token },
-        });
-        socket.current = ws;
-        ws.connect();
-        ws.onOpen(() => {
-          console.info('The socket was opened');
-          const nutriChannel = ws.channel('nutris:all');
+  const establishSocketConnection = useCallback(async () => {
+    try {
+      const res = await getChatAuthorizationToken();
+      const ws = new Socket('wss://localhost:3000/api/mercury/socket', {
+        params: { token: res.data.token },
+      });
+      socket.current = ws;
+      ws.connect();
+      ws.onOpen(() => {
+        console.info('The socket was opened');
+        const nutriChannel = ws.channel('nutris:all');
+        nutriChannel.join().receive('ok', () => {
+          console.log('Joined to Channel');
           channel.current = nutriChannel;
-          nutriChannel.join().receive('ok', () => {
-            console.log('Joined to Channel');
-          });
-          nutriChannel.on('message', (message) => {
-            dispatch(addChatMessage(message));
-            dispatch(addNewMessageToChatRoomInit(message));
-          });
+          setOpen(true);
         });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    establishSocketConnection();
+        nutriChannel.on('message', (message) => {
+          dispatch(addChatMessage(message));
+          dispatch(addNewMessageToChatRoomInit(message));
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
+  useEffect(() => {
+    if (open) return;
+    let interval = setInterval(() => {
+      establishSocketConnection();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [open]);
+
+  useEffect(() => {
+    establishSocketConnection();
     return () => {
       socket.current?.disconnect(() => {
         console.info('The socket was closed');
