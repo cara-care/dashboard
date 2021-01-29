@@ -87,7 +87,7 @@ export default function Inbox() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (open) return;
@@ -95,7 +95,7 @@ export default function Inbox() {
       establishSocketConnection();
     }, 5000);
     return () => clearInterval(interval);
-  }, [open]);
+  }, [open, establishSocketConnection]);
 
   useEffect(() => {
     establishSocketConnection();
@@ -104,7 +104,7 @@ export default function Inbox() {
         console.info('The socket was closed');
       });
     };
-  }, [dispatch]);
+  }, [dispatch, establishSocketConnection]);
 
   const [width, setWidth] = React.useState(320);
 
