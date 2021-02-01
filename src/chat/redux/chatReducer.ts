@@ -99,9 +99,10 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         scrollToChatBottom: true,
       };
     case ChatActionTypes.SET_CHAT_MESSAGES:
+      const newChatMessages = uniqBy([...state.chatMessages, ...action.chatMessages], 'id');
       return {
         ...state,
-        chatMessages: [...state.chatMessages, ...action.chatMessages],
+        chatMessages: newChatMessages,
       };
     case ChatActionTypes.CLEAR_CHAT_MESSAGES:
       return {
@@ -115,7 +116,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         chatRooms: [action.chatRoom, ...state.chatRooms],
       };
     case ChatActionTypes.SET_CHAT_ROOMS:
-      // uniq, becasue of sagas -> (refetching all)
       const newChatRooms = uniqBy(action.chatRooms, 'patient.id');
       return {
         ...state,
