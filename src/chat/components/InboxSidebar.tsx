@@ -35,11 +35,15 @@ export default function InboxSidebar() {
 
   useEffect(() => {
     const getInboxes = async () => {
-      const res = await getInboxesList();
-      setConversations(res.data.results);
+      try {
+        const res = await getInboxesList();
+        setConversations(res.data.results);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getInboxes();
-  }, []);
+  }, [setConversations]);
 
   const classes = useStyles();
   return (

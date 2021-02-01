@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
 import ChatRoomsList from '../components/ChatRoomsList';
-import { chatRoomsMock } from '../helpers';
+import { chatRoomsMock } from '../testHelpers';
 
 describe('<ChatRoomsList />', () => {
   it('renders message and patient name correctly', async () => {

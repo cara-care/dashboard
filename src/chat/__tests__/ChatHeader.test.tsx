@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
 import ChatHeader from '../components/ChatHeader';
-import { currentUserMock } from '../helpers';
+import { currentUserMock } from '../testHelpers';
 
 describe('<ChatHeader />', () => {
   const ChatHeaderWithUser = () => <ChatHeader user={currentUserMock} />;

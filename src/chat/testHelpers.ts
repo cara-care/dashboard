@@ -59,3 +59,8 @@ export const chatRoomsMock = [
     patient: { id: 202020, username: 'test-user2', nickname: 'Tester2' },
   },
 ];
+
+export const chatConversationsMock = [
+  { name: 'All', private: false, slug: 'all' },
+  { name: 'Test Conversation', private: false, slug: 'test-conversation' }
+]

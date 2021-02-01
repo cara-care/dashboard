@@ -5,7 +5,7 @@ import user from '@testing-library/user-event';
 import { CHAT_MESSAGE_INPUT } from '../../utils/test-helpers';
 import { renderWithRedux } from '../../utils/test-utils';
 import InputToolbar from '../components/InputToolbar';
-import { testMessage } from '../helpers';
+import { testMessage } from '../testHelpers';
 import { fireEvent } from '@testing-library/react';
 
 const onSubmitMock = jest.fn();

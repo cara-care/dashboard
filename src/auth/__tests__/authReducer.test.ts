@@ -21,6 +21,10 @@ const patientDataMock = {
   timezone: 'Europe/Berlin',
   enrolledProgrammes: [],
 };
+const mePayload = {
+  firstName: 'Test',
+  lastName: 'User',
+};
 const errorMock = { name: 'Error', message: 'Failed' };
 
 describe('authReducer', () => {
@@ -41,8 +45,13 @@ describe('authReducer', () => {
   });
 
   it('should handle auth/LOGIN_SUCCESS', () => {
-    expect(authReducer(undefined, actions.loginSuccessAction())).toEqual(
-      Object.assign({}, authInitialState, { status: AuthStatus.AUTHENTICATED })
+    expect(
+      authReducer(undefined, actions.loginSuccessAction(mePayload))
+    ).toEqual(
+      Object.assign({}, authInitialState, {
+        status: AuthStatus.AUTHENTICATED,
+        nutriName: `${mePayload.firstName} ${mePayload.lastName}`,
+      })
     );
   });
 
