@@ -21,6 +21,7 @@ export enum ChatActionTypes {
   ADD_NEW_MESSAGE_TO_CHAT_ROOM = 'chat/ADD_NEW_MESSAGE_TO_CHAT_ROOM',
   SET_CHAT_CONVERSATIONS = 'chat/SET_CHAT_CONVERSATIONS',
   SET_CHAT_ROOMS_SLUG = 'chat/SET_CHAT_ROOMS_SLUG',
+  SET_SELECTED_ASSIGNMENT = 'chat/SET_SELECTED_ASSIGNMENT',
   SET_SCROLL_TO_BOTTOM = 'chat/SET_SCROLL_TO_BOTTOM',
 }
 
@@ -190,6 +191,18 @@ export const setChatRoomsSlug = (payload: string): SetChatRoomsSlug => ({
   payload,
 });
 
+export interface SetSelectedAssignment {
+  type: ChatActionTypes.SET_SELECTED_ASSIGNMENT;
+  payload: string;
+}
+
+export const setSelectedAssignment = (
+  payload: string
+): SetSelectedAssignment => ({
+  type: ChatActionTypes.SET_SELECTED_ASSIGNMENT,
+  payload,
+});
+
 export interface SetScrollToBottom {
   type: ChatActionTypes.SET_SCROLL_TO_BOTTOM;
   payload: boolean;
@@ -215,4 +228,5 @@ export type ChatActions =
   | AddNewMessageToChatRoomInit
   | AddNewMessageToChatRoom
   | SetChatConversations
-  | SetChatRoomsSlug;
+  | SetChatRoomsSlug
+  | SetSelectedAssignment;

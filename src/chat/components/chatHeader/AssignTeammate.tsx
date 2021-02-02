@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Paper, Theme, Typography, useTheme } from '@material-ui/core';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
+  ChatConversation,
   chatConversationsSelector,
   currentUserUsernameSelector,
+  selectedAssignmentSelector,
+  setSelectedAssignment,
 } from '../../redux';
 
 const useStyles = makeStyles({
@@ -58,20 +61,29 @@ export default function AssignTeammate({
   const classes = useStyles();
   const intl = useIntl();
   const theme = useTheme();
+  const dispatch = useDispatch();
   const chatConversations = useSelector(chatConversationsSelector);
   const username = useSelector(currentUserUsernameSelector);
-  const [activeElement, setActiveElement] = useState('unassigned');
+  const selectedAssignment = useSelector(selectedAssignmentSelector);
 
-  const handleClick = (slug: string) => {
+  const selectAssignment = useCallback(
+    (assignment: string) => {
+      dispatch(setSelectedAssignment(assignment));
+    },
+    [dispatch]
+  );
+
+  const handleClick = (conversation: ChatConversation) => {
+    const { slug, name } = conversation;
     assignUserToNutri(slug, username);
-    setActiveElement(slug);
+    selectAssignment(name);
     handleCloseAssignPopup();
   };
 
   const noneOption = {
     name: intl.formatMessage({
-      id: 'common.none',
-      defaultMessage: 'None',
+      id: 'common.unassigned',
+      defaultMessage: 'Unassigned',
     }),
     private: false,
     slug: 'unassigned',
@@ -93,8 +105,8 @@ export default function AssignTeammate({
               <AssigneeWrapper
                 key={conversation.slug}
                 theme={theme}
-                active={conversation.slug === activeElement}
-                onClick={() => handleClick(conversation.slug)}
+                active={conversation.name === selectedAssignment}
+                onClick={() => handleClick(conversation)}
               >
                 <Avatar className={classes.avatar} />
                 <Typography variant="body2">{conversation.name}</Typography>

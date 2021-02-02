@@ -63,6 +63,7 @@ export interface ChatState {
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
   chatConversations: ChatConversation[];
+  selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
 }
@@ -73,6 +74,7 @@ export const chatInitialState = {
   chatMessages: [],
   chatRooms: [],
   chatConversations: [],
+  selectedChatAssignment: 'Unassigned',
   selectedChatConversation: {
     name: 'All',
     private: false,
@@ -96,6 +98,7 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
       return {
         ...state,
         currentChatUser: action.user,
+        // selectedChatAssignment: '' TODO: put here assignment info from BE
       };
     case ChatActionTypes.CLEAR_CURRENT_CHAT_USER:
       return {
@@ -170,6 +173,11 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         selectedChatConversation:
           conversation ?? chatInitialState.selectedChatConversation,
       };
+    case ChatActionTypes.SET_SELECTED_ASSIGNMENT:
+      return {
+        ...state,
+        selectedChatAssignment: action.payload,
+      };
     case ChatActionTypes.SET_SCROLL_TO_BOTTOM:
       return {
         ...state,
@@ -206,5 +214,7 @@ export const getChatRoomsFullName = (state: RootState) =>
   state.chat.selectedChatConversation.name;
 export const chatConversationsSelector = (state: RootState) =>
   state.chat.chatConversations;
+export const selectedAssignmentSelector = (state: RootState) =>
+  state.chat.selectedChatAssignment;
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;

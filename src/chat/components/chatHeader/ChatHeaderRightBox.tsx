@@ -8,6 +8,8 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useIntl } from 'react-intl';
 import AssignTeammate from './AssignTeammate';
+import { useSelector } from 'react-redux';
+import { selectedAssignmentSelector } from '../../redux';
 
 const useStyles = makeStyles({
   box: {
@@ -32,6 +34,7 @@ export default function ChatHeaderRightBox({
 }: ChatHeaderRightBoxProps) {
   const classes = useStyles();
   const intl = useIntl();
+  const selectedAssignment = useSelector(selectedAssignmentSelector);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -62,10 +65,11 @@ export default function ChatHeaderRightBox({
         >
           <AccountCircleIcon style={{ marginRight: 4, fontSize: 18 }} />
           <Typography variant="body2">
-            {intl.formatMessage({
-              id: 'common.unassigned',
-              defaultMessage: 'Unassigned',
-            })}
+            {selectedAssignment ??
+              intl.formatMessage({
+                id: 'common.unassigned',
+                defaultMessage: 'Unassigned',
+              })}
           </Typography>
         </div>
         <IconButton
