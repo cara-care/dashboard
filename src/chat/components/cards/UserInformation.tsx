@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Button, Card } from '@material-ui/core';
-import { CardDetailSkeleton } from '../LoadingScreens';
+import { CardDetailSkeleton } from '../other/LoadingScreens';
 import { useSelector } from 'react-redux';
 import {
   currentUserSelector,

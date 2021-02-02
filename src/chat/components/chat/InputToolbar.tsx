@@ -6,7 +6,7 @@ import AttachIcon from '@material-ui/icons/AttachFile';
 import BookmarkIcon from '@material-ui/icons/BookmarkBorder';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { CHAT_MESSAGE_INPUT } from '../../utils/test-helpers';
+import { CHAT_MESSAGE_INPUT } from '../../../utils/test-helpers';
 import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((theme) => ({

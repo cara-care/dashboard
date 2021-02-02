@@ -5,21 +5,21 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import times from 'lodash/times';
 import { v1 } from 'uuid';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import Spinner from '../../components/Spinner';
-import MessageSkeleton from './MessageSkeleton';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import Spinner from '../../../components/Spinner';
+import MessageSkeleton from '../other/MessageSkeleton';
 import ChatRoomsList from './ChatRoomsList';
-import { getChatRooms } from '../../utils/api';
+import { getChatRooms } from '../../../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getChatRoomsSlug,
   setChatRooms,
   getChatRoomsFullName,
   chatRoomsNumberSelector,
-} from '../redux';
-import { ChatRoomsError } from './Errors';
+} from '../../redux';
+import { ChatRoomsError } from '../other/Errors';
 import { Divider, Typography } from '@material-ui/core';
-import { getNutriName } from '../../auth';
+import { getNutriName } from '../../../auth';
 import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((_theme) => ({

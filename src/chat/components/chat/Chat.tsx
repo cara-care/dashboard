@@ -5,12 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import times from 'lodash/times';
-import MessageSkeleton from './MessageSkeleton';
+import MessageSkeleton from '../other/MessageSkeleton';
 import InputToolbar from './InputToolbar';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import Spinner from '../../components/Spinner';
-import { getMessages } from '../../utils/api';
-import getParams from '../../utils/getParams';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import Spinner from '../../../components/Spinner';
+import { getMessages } from '../../../utils/api';
+import getParams from '../../../utils/getParams';
 import ChatMessagesList from './ChatMessagesList';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -21,8 +21,8 @@ import {
   clearChatMessages,
   setCurrentChatUser,
   loadingCurrentUserSelector,
-} from '../redux';
-import { ChatMessagesError } from './Errors';
+} from '../../redux';
+import { ChatMessagesError } from '../other/Errors';
 
 const useStyles = makeStyles((theme) => ({
   messages: {

@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
 import { getMessages as mockGetMessages } from '../../utils/api';
-import Chat from '../components/Chat';
+import Chat from '../components/chat/Chat';
 import { currentUserMock } from '../testHelpers';
 
 jest.mock('../../utils/api');

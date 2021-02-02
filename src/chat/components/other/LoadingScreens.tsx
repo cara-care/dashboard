@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Box } from '@material-ui/core';
-import Spinner from '../../components/Spinner';
+import Spinner from '../../../components/Spinner';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

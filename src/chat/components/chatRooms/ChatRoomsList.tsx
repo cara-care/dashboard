@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { chatRoomsSelector, ChatRoom } from '../redux';
+import { chatRoomsSelector, ChatRoom } from '../../redux';
 import ChatRoomItem from './ChatRoomItem';
 
 export default function ChatMessages() {

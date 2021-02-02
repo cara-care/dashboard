@@ -13,7 +13,7 @@ import {
   currentUserIdSelector,
   loadingCurrentUserSelector,
   ChatRoomPatient,
-} from '../redux';
+} from '../../redux';
 import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({

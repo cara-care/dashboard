@@ -4,7 +4,7 @@ import { Box } from '@material-ui/core';
 import { ChatUser, loadingCurrentUserSelector } from '../../redux';
 import { zIndexes } from '../../../theme';
 import { useSelector } from 'react-redux';
-import { ChatHeaderSkeleton } from '../LoadingScreens';
+import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import ChatHeaderLeftBox from './ChatHeaderLeftBox';
 import ChatHeaderRightBox from './ChatHeaderRightBox';
 

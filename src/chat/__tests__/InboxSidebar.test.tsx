@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { waitFor } from '@testing-library/react';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
-import InboxSidebar from '../components/InboxSidebar';
+import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getInboxesList as mockGetInboxesList } from '../../utils/api';
 import { chatConversationsMock } from '../testHelpers';
 

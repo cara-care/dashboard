@@ -4,9 +4,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import Conversations from './Conversations';
 import SearchInput from './SearchInput';
 import SidebarPrograms from './SidebarPrograms';
-import { getInboxesList } from '../../utils/api';
+import { getInboxesList } from '../../../utils/api';
 import { useDispatch } from 'react-redux';
-import { ChatConversation, setChatConversations } from '../redux';
+import { ChatConversation, setChatConversations } from '../../redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {

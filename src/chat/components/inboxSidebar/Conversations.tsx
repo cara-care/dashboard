@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -9,12 +9,12 @@ import AddIcon from '@material-ui/icons/Add';
 import { Typography } from '@material-ui/core';
 import ConverstaionsItem from './ConversationsItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNutriName } from '../../auth';
-import { setChatRoomsSlug } from '../redux';
+import { getNutriName } from '../../../auth';
+import { setChatRoomsSlug } from '../../redux';
 import { useIntl } from 'react-intl';
 
 export default function Conversations() {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(1);
   const intl = useIntl();
   const dispatch = useDispatch();
   const nutriName = useSelector(getNutriName);
@@ -71,13 +71,16 @@ export default function Conversations() {
           />
           <ConverstaionsItem
             icon={<PeopleOutlineIcon />}
-            text="All"
-            count={1236}
-            selectedIndex={selectedIndex === 3}
+            text={intl.formatMessage({
+              id: 'common.all',
+              defaultMessage: 'All',
+            })}
+            count={100}
+            selectedIndex={selectedIndex === 1}
             handleSelected={(
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
-              handleListItemClick(e, 3);
+              handleListItemClick(e, 1);
               setChatSlug('All');
             }}
           />

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { ChatMessage, chatMessagesSelector } from '../redux';
+import { ChatMessage, chatMessagesSelector } from '../../redux';
 import Message from './Message';
 import MessageDivider from './MessageDivider';
 

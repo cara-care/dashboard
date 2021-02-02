@@ -3,9 +3,9 @@ import { Channel, Socket } from 'phoenix';
 import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
-import Chat from '../components/Chat';
-import ChatRooms from '../components/ChatRooms';
-import ChatDetails from '../components/ChatDetails';
+import Chat from '../components/chat/Chat';
+import ChatRooms from '../components/chatRooms/ChatRooms';
+import ChatDetails from '../components/cards/ChatDetails';
 import {
   addChatMessage,
   addNewMessageToChatRoomInit,
@@ -13,7 +13,7 @@ import {
 } from '../redux';
 import { useDispatch, useSelector } from 'react-redux';
 import ChatHeader from '../components/chatHeader/ChatHeader';
-import InboxSidebar from '../components/InboxSidebar';
+import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 

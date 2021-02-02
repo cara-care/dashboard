@@ -4,7 +4,7 @@ import { waitFor } from '@testing-library/react';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
 import { getChatRooms as mockGetChatRooms } from '../../utils/api';
-import ChatRooms from '../components/ChatRooms';
+import ChatRooms from '../components/chatRooms/ChatRooms';
 
 jest.mock('../../utils/api');
 

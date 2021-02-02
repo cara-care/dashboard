@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../components/withProviders';
 import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
 import { renderWithRedux } from '../../utils/test-utils';
-import Message from '../components/Message';
+import Message from '../components/chat/Message';
 import { testMessage } from '../testHelpers';
 
 describe('<Message />', () => {
