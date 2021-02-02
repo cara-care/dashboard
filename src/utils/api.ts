@@ -166,7 +166,11 @@ export const getChatRooms = ({
   limit: number | string;
   offset: number | string;
 }) => {
-  return api.get(`/dashboard/chat/rooms/?inbox=${chatRoomsSlug}&limit=${limit}&offset=${offset}`);
+  const url =
+    chatRoomsSlug === 'all'
+      ? `/dashboard/chat/rooms/?limit=${limit}&offset=${offset}`
+      : `/dashboard/chat/rooms/?inbox=${chatRoomsSlug}&limit=${limit}&offset=${offset}`;
+  return api.get(url);
 };
 
 export const getChatRoom = (_: string, userId: number) => {

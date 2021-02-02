@@ -63,7 +63,7 @@ export interface ChatState {
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
   chatConversations: ChatConversation[];
-  chatRoomsSlug: string;
+  selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
 }
 
@@ -73,7 +73,11 @@ export const chatInitialState = {
   chatMessages: [],
   chatRooms: [],
   chatConversations: [],
-  chatRoomsSlug: 'all',
+  selectedChatConversation: {
+    name: 'All',
+    private: false,
+    slug: 'all',
+  },
   scrollToChatBottom: false,
 };
 
@@ -163,7 +167,8 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
       );
       return {
         ...state,
-        chatRoomsSlug: conversation?.slug ?? 'all',
+        selectedChatConversation:
+          conversation ?? chatInitialState.selectedChatConversation,
       };
     case ChatActionTypes.SET_SCROLL_TO_BOTTOM:
       return {
@@ -191,7 +196,12 @@ export const chatMessagesSelector = (state: RootState) =>
 export const lastHeardFromSelector = (state: RootState) =>
   state.chat.chatMessages[0]?.created.slice(0, 10);
 export const chatRoomsSelector = (state: RootState) => state.chat.chatRooms;
-export const getChatRoomsSlug = (state: RootState) => state.chat.chatRoomsSlug;
+export const chatRoomsNumberSelector = (state: RootState) =>
+  state.chat.chatRooms.length;
+export const getChatRoomsSlug = (state: RootState) =>
+  state.chat.selectedChatConversation.slug;
+export const getChatRoomsFullName = (state: RootState) =>
+  state.chat.selectedChatConversation.name;
 export const chatConversationsSelector = (state: RootState) =>
   state.chat.chatConversations;
 export const scrollToChatBottomSelector = (state: RootState) =>

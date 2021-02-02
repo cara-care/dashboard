@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   box1: {
-    flex: 3,
+    flex: 1,
     padding: '12px 0',
   },
   box2: {
-    flex: 2,
+    flex: 1,
     paddingTop: 16,
     alignItems: 'flex-start',
     justifyContent: 'flex-end',
@@ -112,6 +112,7 @@ export default function ChatHeader({ user }: { user: ChatUser }) {
               : {user.username}
             </Typography>
           </Box>
+          {/* Comment: uncomment it when backend ready
           <Box className={classes.assginedLabel}>
             <ChatHeaderLabel
               label={intl.formatMessage({
@@ -119,7 +120,7 @@ export default function ChatHeader({ user }: { user: ChatUser }) {
                 defaultMessage: 'Verified',
               })}
             />
-          </Box>
+          </Box> */}
         </Box>
         {/* 2 BOX */}
         <Box className={clsx(classes.box, classes.box2)}>

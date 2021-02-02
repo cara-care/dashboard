@@ -11,8 +11,14 @@ import MessageSkeleton from './MessageSkeleton';
 import ChatRoomsList from './ChatRoomsList';
 import { getChatRooms } from '../../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChatRoomsSlug, setChatRooms } from '../redux';
+import {
+  getChatRoomsSlug,
+  setChatRooms,
+  getChatRoomsFullName,
+  chatRoomsNumberSelector,
+} from '../redux';
 import { ChatRoomsError } from './Errors';
+import { Divider, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
@@ -21,6 +27,13 @@ const useStyles = makeStyles((_theme) => ({
     width: '100%',
     overflowY: 'scroll',
   },
+  headerBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: '24px 16px',
+  },
+  divider: {},
 }));
 
 export default function ChatRooms() {
@@ -28,7 +41,9 @@ export default function ChatRooms() {
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement>(null);
   const fetchMoreButtonRef = useRef<HTMLButtonElement>(null);
+  const chatRoomsNumber = useSelector(chatRoomsNumberSelector);
   const chatRoomsSlug = useSelector(getChatRoomsSlug);
+  const chatRoomName = useSelector(getChatRoomsFullName);
 
   const setChatMessagesToStore = useCallback(
     (chatRooms: any) => {
@@ -79,6 +94,11 @@ export default function ChatRooms() {
 
   return (
     <div ref={rootRef} className={classes.sidebar}>
+      <Box className={classes.headerBox}>
+        <Typography variant="h6">{chatRoomName}</Typography>
+        <Typography variant="subtitle1">{chatRoomsNumber}</Typography>
+      </Box>
+      <Divider className={classes.divider} />
       {status === 'loading' ? (
         times(5).map(() => (
           <Box key={v1()} px={2} py={1}>

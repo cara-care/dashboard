@@ -113,6 +113,13 @@ export default function Inbox() {
     setWidth(width + d.width);
   };
 
+  // const assignUserToNutri = useCallback((slug: string) => {
+  //   channel.current?.push('room:inboxes', {
+  //     room: 'auto-VPFhcNjafAOKZZqkAYWB',
+  //     inboxes: [slug],
+  //   });
+  // }, []);
+
   const sendMessage = useCallback(
     (message: string) => {
       channel.current?.push('message', {
