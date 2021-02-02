@@ -11,9 +11,11 @@ import ConverstaionsItem from './ConversationsItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNutriName } from '../../auth';
 import { setChatRoomsSlug } from '../redux';
+import { useIntl } from 'react-intl';
 
-export default function Converstaions() {
+export default function Conversations() {
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const intl = useIntl();
   const dispatch = useDispatch();
   const nutriName = useSelector(getNutriName);
 
@@ -54,7 +56,10 @@ export default function Converstaions() {
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
           <ConverstaionsItem
             icon={<InboxIcon fontSize="small" />}
-            text="You"
+            text={intl.formatMessage({
+              id: 'common.you',
+              defaultMessage: 'You',
+            })}
             count={6}
             selectedIndex={selectedIndex === 0}
             handleSelected={(

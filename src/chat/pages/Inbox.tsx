@@ -12,7 +12,7 @@ import {
   currentUserSelector,
 } from '../redux';
 import { useDispatch, useSelector } from 'react-redux';
-import ChatHeader from '../components/ChatHeader';
+import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
@@ -113,12 +113,15 @@ export default function Inbox() {
     setWidth(width + d.width);
   };
 
-  // const assignUserToNutri = useCallback((slug: string) => {
-  //   channel.current?.push('room:inboxes', {
-  //     room: 'auto-VPFhcNjafAOKZZqkAYWB',
-  //     inboxes: [slug],
-  //   });
-  // }, []);
+  const assignUserToNutri = useCallback(
+    (slug: string, room: string = 'undefined') => {
+      channel.current?.push('room:inboxes', {
+        room,
+        inboxes: [slug, 'all'],
+      });
+    },
+    []
+  );
 
   const sendMessage = useCallback(
     (message: string) => {
@@ -151,7 +154,10 @@ export default function Inbox() {
 
         {currentUser && (
           <div className={classes.main} data-testid={CHAT_WRAPPER}>
-            <ChatHeader user={currentUser} />
+            <ChatHeader
+              user={currentUser}
+              assignUserToNutri={assignUserToNutri}
+            />
             <Chat user={currentUser} onSendMessage={sendMessage} />
           </div>
         )}

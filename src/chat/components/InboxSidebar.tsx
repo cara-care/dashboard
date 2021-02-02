@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import Converstaions from './Converstaions';
+import Conversations from './Conversations';
 import SearchInput from './SearchInput';
 import SidebarPrograms from './SidebarPrograms';
 import { getInboxesList } from '../../utils/api';
@@ -56,7 +56,7 @@ export default function InboxSidebar() {
           <SearchIcon />
         </IconButton>
       </Box>
-      <Converstaions />
+      <Conversations />
       <SearchInput />
       <SidebarPrograms title="UK Users" />
       <SidebarPrograms title="US Nutris" />

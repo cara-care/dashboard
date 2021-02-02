@@ -19,6 +19,8 @@ import {
 } from '../redux';
 import { ChatRoomsError } from './Errors';
 import { Divider, Typography } from '@material-ui/core';
+import { getNutriName } from '../../auth';
+import { useIntl } from 'react-intl';
 
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
@@ -38,12 +40,14 @@ const useStyles = makeStyles((_theme) => ({
 
 export default function ChatRooms() {
   const classes = useStyles();
+  const intl = useIntl();
   const dispatch = useDispatch();
   const rootRef = useRef<HTMLDivElement>(null);
   const fetchMoreButtonRef = useRef<HTMLButtonElement>(null);
   const chatRoomsNumber = useSelector(chatRoomsNumberSelector);
   const chatRoomsSlug = useSelector(getChatRoomsSlug);
   const chatRoomName = useSelector(getChatRoomsFullName);
+  const nutriName = useSelector(getNutriName);
 
   const setChatMessagesToStore = useCallback(
     (chatRooms: any) => {
@@ -95,7 +99,14 @@ export default function ChatRooms() {
   return (
     <div ref={rootRef} className={classes.sidebar}>
       <Box className={classes.headerBox}>
-        <Typography variant="h6">{chatRoomName}</Typography>
+        <Typography variant="h6">
+          {chatRoomName === nutriName
+            ? intl.formatMessage({
+                id: 'common.you',
+                defaultMessage: 'You',
+              })
+            : chatRoomName}
+        </Typography>
         <Typography variant="subtitle1">{chatRoomsNumber}</Typography>
       </Box>
       <Divider className={classes.divider} />

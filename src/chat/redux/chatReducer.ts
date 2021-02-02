@@ -191,6 +191,8 @@ export const lastContactSelector = (state: RootState) =>
   );
 export const currentUserSelector = (state: RootState) =>
   state.chat.currentChatUser;
+export const currentUserUsernameSelector = (state: RootState) =>
+  state.chat.currentChatUser?.username;
 export const chatMessagesSelector = (state: RootState) =>
   state.chat.chatMessages;
 export const lastHeardFromSelector = (state: RootState) =>
