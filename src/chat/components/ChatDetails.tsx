@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import UserInformation from './cards/UserInformation';
 import Details from './cards/Details';
 import HealthCard from './cards/HealthCard';
+import Notes from './cards/NotesCard';
 
 const useStyles = makeStyles((_theme) => ({
   root: {
@@ -31,6 +32,7 @@ export default function ChatDetails() {
       <UserInformation />
       <HealthCard />
       <Details />
+      <Notes />
     </div>
   );
 }
