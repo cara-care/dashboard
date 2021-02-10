@@ -55,6 +55,7 @@ export interface ChatConversation {
   name: string;
   private: boolean;
   slug: string;
+  rooms: number;
 }
 
 export interface ChatState {
@@ -214,6 +215,12 @@ export const getChatRoomsFullName = (state: RootState) =>
   state.chat.selectedChatConversation.name;
 export const chatConversationsSelector = (state: RootState) =>
   state.chat.chatConversations;
+export const chatPublicConversationsSelector = (state: RootState) =>
+  state.chat.chatConversations.filter((conversation) => !conversation.private);
+export const chatOwnConversationsSelector = (state: RootState) =>
+  state.chat.chatConversations.find(
+    (conversation) => conversation.name === state.auth.nutriName
+  );
 export const selectedAssignmentSelector = (state: RootState) =>
   state.chat.selectedChatAssignment;
 export const scrollToChatBottomSelector = (state: RootState) =>

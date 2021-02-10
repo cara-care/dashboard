@@ -1,26 +1,45 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import InboxIcon from '@material-ui/icons/Inbox';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import AddIcon from '@material-ui/icons/Add';
-import { Typography } from '@material-ui/core';
+import { Avatar, makeStyles, Typography } from '@material-ui/core';
 import ConverstaionsItem from './ConversationsItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNutriName } from '../../../auth';
-import { setChatRoomsSlug } from '../../redux';
+import {
+  chatPublicConversationsSelector,
+  chatOwnConversationsSelector,
+  setChatRoomsSlug,
+} from '../../redux';
 import { useIntl } from 'react-intl';
+
+const useStyles = makeStyles((theme) => ({
+  uppercase: {
+    textTransform: 'uppercase',
+  },
+  avatar: {
+    height: 22,
+    width: 22,
+  },
+}));
 
 export default function Conversations() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const intl = useIntl();
+  const classes = useStyles();
   const dispatch = useDispatch();
-  const nutriName = useSelector(getNutriName);
+  const ownConversation = useSelector(chatOwnConversationsSelector);
+  const publicConversations = useSelector(chatPublicConversationsSelector);
+
+  const icons = useMemo(
+    () => [<Avatar className={classes.avatar} />, <PeopleOutlineIcon />],
+    [classes]
+  );
 
   const setChatSlug = useCallback(
-    (slug: string) => {
+    (slug: string = 'undefined') => {
       dispatch(setChatRoomsSlug(slug));
     },
     [dispatch]
@@ -33,7 +52,36 @@ export default function Conversations() {
     setSelectedIndex(index);
   };
 
-  // TODO: refactor render items
+  const renderConversationItems = useCallback(() => {
+    return [ownConversation, ...publicConversations].map(
+      (conversation, index) => {
+        const isFirst = index === 0;
+        return (
+          <ConverstaionsItem
+            key={`${conversation?.slug}-${index}`}
+            icon={icons[index]}
+            text={
+              isFirst
+                ? intl.formatMessage({
+                    id: 'common.you',
+                    defaultMessage: 'You',
+                  })
+                : conversation?.name
+            }
+            count={conversation?.rooms}
+            selectedIndex={selectedIndex === index}
+            handleSelected={(
+              e: React.MouseEvent<HTMLDivElement, MouseEvent>
+            ) => {
+              handleListItemClick(e, index);
+              setChatSlug(conversation?.name);
+            }}
+          />
+        );
+      }
+    );
+  }, [ownConversation, publicConversations]);
+
   return (
     <div>
       <Accordion
@@ -50,40 +98,16 @@ export default function Conversations() {
           style={{ display: 'inline-flex', height: 30, minHeight: 30 }}
         >
           <div>
-            <Typography variant="subtitle1">CONVERSATIONS</Typography>
+            <Typography variant="subtitle1" className={classes.uppercase}>
+              {intl.formatMessage({
+                id: 'chat.conversations',
+                defaultMessage: 'Conversations',
+              })}
+            </Typography>
           </div>
         </AccordionSummary>
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-          <ConverstaionsItem
-            icon={<InboxIcon fontSize="small" />}
-            text={intl.formatMessage({
-              id: 'common.you',
-              defaultMessage: 'You',
-            })}
-            count={6}
-            selectedIndex={selectedIndex === 0}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 0);
-              setChatSlug(nutriName);
-            }}
-          />
-          <ConverstaionsItem
-            icon={<PeopleOutlineIcon />}
-            text={intl.formatMessage({
-              id: 'common.all',
-              defaultMessage: 'All',
-            })}
-            count={100}
-            selectedIndex={selectedIndex === 1}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 1);
-              setChatSlug('All');
-            }}
-          />
+          {renderConversationItems()}
           <ConverstaionsItem icon={<AddIcon />} text="Create View" />
         </AccordionDetails>
       </Accordion>
