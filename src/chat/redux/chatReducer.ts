@@ -80,6 +80,7 @@ export const chatInitialState = {
     name: 'All',
     private: false,
     slug: 'all',
+    rooms: 0
   },
   scrollToChatBottom: false,
 };

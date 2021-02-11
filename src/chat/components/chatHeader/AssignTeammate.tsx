@@ -80,15 +80,6 @@ export default function AssignTeammate({
     handleCloseAssignPopup();
   };
 
-  const noneOption = {
-    name: intl.formatMessage({
-      id: 'common.unassigned',
-      defaultMessage: 'Unassigned',
-    }),
-    private: false,
-    slug: 'unassigned',
-  };
-
   return (
     <Paper elevation={3} className={classes.root}>
       <Typography variant="h6" className={classes.header}>
@@ -98,7 +89,7 @@ export default function AssignTeammate({
         })}
       </Typography>
       <div className={classes.container}>
-        {[noneOption, ...chatConversations]
+        {chatConversations
           .filter((conversation) => conversation.name !== 'All')
           .map((conversation) => {
             return (

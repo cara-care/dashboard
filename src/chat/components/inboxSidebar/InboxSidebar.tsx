@@ -5,8 +5,12 @@ import Conversations from './Conversations';
 import SearchInput from './SearchInput';
 import SidebarPrograms from './SidebarPrograms';
 import { getInboxesList } from '../../../utils/api';
-import { useDispatch } from 'react-redux';
-import { ChatConversation, setChatConversations } from '../../redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  ChatConversation,
+  selectedAssignmentSelector,
+  setChatConversations,
+} from '../../redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InboxSidebar() {
   const dispatch = useDispatch();
+  const selectedAssignment = useSelector(selectedAssignmentSelector);
 
   const setConversations = useCallback(
     (conversations: ChatConversation[]) => {
@@ -37,13 +42,13 @@ export default function InboxSidebar() {
     const getInboxes = async () => {
       try {
         const res = await getInboxesList();
-        setConversations(res.data.results);
+        setConversations(res.data);
       } catch (error) {
         console.log(error);
       }
     };
     getInboxes();
-  }, [setConversations]);
+  }, [setConversations, selectedAssignment]);
 
   const classes = useStyles();
   return (

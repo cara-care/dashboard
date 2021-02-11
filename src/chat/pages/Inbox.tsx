@@ -115,9 +115,9 @@ export default function Inbox() {
 
   const assignUserToNutri = useCallback(
     (slug: string, room: string = 'undefined') => {
-      channel.current?.push('room:inboxes', {
+      channel.current?.push('inbox', {
         room,
-        inboxes: [slug, 'all'],
+        inbox: slug,
       });
     },
     []

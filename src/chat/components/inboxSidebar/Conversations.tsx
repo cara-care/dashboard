@@ -3,6 +3,7 @@ import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import AddIcon from '@material-ui/icons/Add';
 import { Avatar, makeStyles, Typography } from '@material-ui/core';
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Conversations() {
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(2);
   const intl = useIntl();
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -34,7 +35,11 @@ export default function Conversations() {
   const publicConversations = useSelector(chatPublicConversationsSelector);
 
   const icons = useMemo(
-    () => [<Avatar className={classes.avatar} />, <PeopleOutlineIcon />],
+    () => [
+      <Avatar className={classes.avatar} />,
+      <PermIdentityIcon />,
+      <PeopleOutlineIcon />,
+    ],
     [classes]
   );
 

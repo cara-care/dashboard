@@ -76,6 +76,7 @@ export default function ChatRooms() {
       return res.data;
     },
     {
+      cacheTime: 0,
       refetchOnWindowFocus: false,
       getFetchMore: (lastPage) => (lastPage.next ? lastPage.next : null),
     }
