@@ -85,7 +85,14 @@ export default function Conversations() {
         );
       }
     );
-  }, [ownConversation, publicConversations]);
+  }, [
+    ownConversation,
+    publicConversations,
+    icons,
+    intl,
+    selectedIndex,
+    setChatSlug,
+  ]);
 
   return (
     <div>
