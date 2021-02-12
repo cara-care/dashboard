@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatHeaderLeftBox({ user }: { user: ChatUser }) {
   const classes = useStyles();
   const intl = useIntl();
+  const { enrolledProgrammes, username, nickname } = user;
 
   return (
     <Box className={classes.box}>
@@ -43,19 +44,19 @@ export default function ChatHeaderLeftBox({ user }: { user: ChatUser }) {
             defaultMessage: 'Premium',
           })}
           :{' '}
-          {user.enrolledProgrammes.length === 0 ? (
+          {enrolledProgrammes.length === 0 ? (
             <CloseIcon style={{ fontSize: 18 }} />
           ) : (
-            user.enrolledProgrammes[0].title
+            enrolledProgrammes[0].title
           )}
         </Typography>
-        <Typography variant="h6">{user.nickname}</Typography>
+        <Typography variant="h6">{nickname}</Typography>
         <Typography variant="body2">
           {intl.formatMessage({
             id: 'chat.key.userID',
             defaultMessage: 'User ID',
           })}
-          : {user.username}
+          : {username}
         </Typography>
       </Box>
       {/* Comment: uncomment it when backend ready

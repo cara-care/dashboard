@@ -11,6 +11,7 @@ export interface ChatUser {
   enrolledProgrammes: EnrolledProgram[];
   diagnosis: string;
   id: number;
+  inbox: string;
   lastSeen: string;
   nickname: string;
   platform: string;
@@ -75,12 +76,12 @@ export const chatInitialState = {
   chatMessages: [],
   chatRooms: [],
   chatConversations: [],
-  selectedChatAssignment: 'Unassigned',
+  selectedChatAssignment: '',
   selectedChatConversation: {
     name: 'All',
     private: false,
     slug: 'all',
-    rooms: 0
+    rooms: 0,
   },
   scrollToChatBottom: false,
 };
@@ -100,7 +101,7 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
       return {
         ...state,
         currentChatUser: action.user,
-        // selectedChatAssignment: '' TODO: put here assignment info from BE
+        selectedChatAssignment: action.user?.inbox ?? '_',
       };
     case ChatActionTypes.CLEAR_CURRENT_CHAT_USER:
       return {
@@ -209,7 +210,10 @@ export const lastHeardFromSelector = (state: RootState) =>
   state.chat.chatMessages[0]?.created.slice(0, 10);
 export const chatRoomsSelector = (state: RootState) => state.chat.chatRooms;
 export const chatRoomsNumberSelector = (state: RootState) =>
-  state.chat.chatRooms.length;
+  state.chat.chatConversations.find(
+    (conversation) =>
+      conversation.slug === state.chat.selectedChatConversation.slug
+  )?.rooms;
 export const getChatRoomsSlug = (state: RootState) =>
   state.chat.selectedChatConversation.slug;
 export const getChatRoomsFullName = (state: RootState) =>
@@ -223,6 +227,8 @@ export const chatOwnConversationsSelector = (state: RootState) =>
     (conversation) => conversation.name === state.auth.nutriName
   );
 export const selectedAssignmentSelector = (state: RootState) =>
-  state.chat.selectedChatAssignment;
+  state.chat.chatConversations?.find(
+    (conversation) => conversation.slug === state.chat.selectedChatAssignment
+  )?.name;
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;

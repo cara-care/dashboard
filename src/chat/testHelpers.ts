@@ -6,6 +6,7 @@ export const currentUserMock = {
   email: 'test@email.com',
   enrolledProgrammes: [],
   id: 832624,
+  inbox: 'test',
   lastSeen: '2020-12-21',
   nickname: 'test',
   platform: 'Android',

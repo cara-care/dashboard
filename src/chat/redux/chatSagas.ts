@@ -66,12 +66,9 @@ export function* addMessageToChatRooms({ message }: AddNewMessageToChatRoom) {
     if (roomIndex !== -1) {
       yield put(addNewMessageToChatRoom(roomIndex, message));
     } else {
-      // 1) fetch new Room and add to State, we need endpoint from backend
-      // /dashboard/chat/rooms/<user_id: int> - which accepts backendID
-
-      // - or refetch all Rooms (temporary)
       queryCache.refetchQueries('chatRooms');
-    }
+      queryCache.refetchQueries('inboxList');
+    } 
   } catch (error) {
     console.log(error);
   }

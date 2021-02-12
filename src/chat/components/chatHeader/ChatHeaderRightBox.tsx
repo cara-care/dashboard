@@ -6,7 +6,6 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { useIntl } from 'react-intl';
 import AssignTeammate from './AssignTeammate';
 import { useSelector } from 'react-redux';
 import { selectedAssignmentSelector } from '../../redux';
@@ -33,7 +32,6 @@ export default function ChatHeaderRightBox({
   assignUserToNutri,
 }: ChatHeaderRightBoxProps) {
   const classes = useStyles();
-  const intl = useIntl();
   const selectedAssignment = useSelector(selectedAssignmentSelector);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -64,13 +62,7 @@ export default function ChatHeaderRightBox({
           style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
         >
           <AccountCircleIcon style={{ marginRight: 4, fontSize: 18 }} />
-          <Typography variant="body2">
-            {selectedAssignment ??
-              intl.formatMessage({
-                id: 'common.unassigned',
-                defaultMessage: 'Unassigned',
-              })}
-          </Typography>
+          <Typography variant="body2">{selectedAssignment}</Typography>
         </div>
         <IconButton
           size="small"

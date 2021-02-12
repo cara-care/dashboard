@@ -17,6 +17,7 @@ export const deletedUserData = (id: number, username: string): ChatUser => ({
   dateJoined: '',
   enrolledProgrammes: [],
   diagnosis: '',
+  inbox: '',
   lastSeen: '',
   platform: '',
   sex: '',

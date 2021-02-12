@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Conversations from './Conversations';
@@ -11,6 +11,8 @@ import {
   selectedAssignmentSelector,
   setChatConversations,
 } from '../../redux';
+import { useQuery } from 'react-query';
+import { ChatRoomsError } from '../other/Errors';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InboxSidebar() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const selectedAssignment = useSelector(selectedAssignmentSelector);
 
@@ -38,19 +41,19 @@ export default function InboxSidebar() {
     [dispatch]
   );
 
-  useEffect(() => {
-    const getInboxes = async () => {
-      try {
-        const res = await getInboxesList();
-        setConversations(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getInboxes();
-  }, [setConversations, selectedAssignment]);
+  const { error, refetch } = useQuery(
+    ['inboxList', selectedAssignment],
+    async (_key: string) => {
+      const res = await getInboxesList();
+      setConversations(res.data);
+      return res.data;
+    },
+    {
+      cacheTime: 0,
+      refetchOnWindowFocus: true,
+    }
+  );
 
-  const classes = useStyles();
   return (
     <Box className={classes.root}>
       <Box className={classes.headerBox}>
@@ -61,7 +64,7 @@ export default function InboxSidebar() {
           <SearchIcon />
         </IconButton>
       </Box>
-      <Conversations />
+      {error ? <ChatRoomsError {...{ error, refetch }} /> : <Conversations />}
       <SearchInput />
       <SidebarPrograms title="UK Users" />
       <SidebarPrograms title="US Nutris" />

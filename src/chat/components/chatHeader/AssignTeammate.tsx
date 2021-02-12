@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ChatConversation,
   chatConversationsSelector,
   currentUserUsernameSelector,
   selectedAssignmentSelector,
@@ -73,10 +72,9 @@ export default function AssignTeammate({
     [dispatch]
   );
 
-  const handleClick = (conversation: ChatConversation) => {
-    const { slug, name } = conversation;
+  const handleClick = (slug: string) => {
     assignUserToNutri(slug, username);
-    selectAssignment(name);
+    selectAssignment(slug);
     handleCloseAssignPopup();
   };
 
@@ -92,15 +90,16 @@ export default function AssignTeammate({
         {chatConversations
           .filter((conversation) => conversation.name !== 'All')
           .map((conversation) => {
+            const { slug, name } = conversation;
             return (
               <AssigneeWrapper
-                key={conversation.slug}
+                key={slug}
                 theme={theme}
-                active={conversation.name === selectedAssignment}
-                onClick={() => handleClick(conversation)}
+                active={name === selectedAssignment}
+                onClick={() => handleClick(slug)}
               >
                 <Avatar className={classes.avatar} />
-                <Typography variant="body2">{conversation.name}</Typography>
+                <Typography variant="body2">{name}</Typography>
               </AssigneeWrapper>
             );
           })}

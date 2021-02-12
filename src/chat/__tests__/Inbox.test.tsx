@@ -22,6 +22,10 @@ describe('<Inbox />', () => {
     mockGetInboxesList.mockResolvedValueOnce({
       data: { results: chatConversationsMock },
     });
+    //@ts-ignore
+    mockGetChatAuthorizationToken.mockResolvedValueOnce({
+      data: { token: 'test' },
+    });
   });
   it('does not render a chat when no chat user selected', () => {
     const { queryByTestId } = renderWithRedux(<InboxWithProviders />);
