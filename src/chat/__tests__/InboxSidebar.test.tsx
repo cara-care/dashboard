@@ -4,14 +4,14 @@ import { waitFor } from '@testing-library/react';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
-import { getInboxesList as mockGetInboxesList } from '../../utils/api';
+import { getInboxesList } from '../../utils/api';
 import { chatConversationsMock } from '../testHelpers';
 
 jest.mock('../../utils/api');
+const mockGetInboxesList = getInboxesList as jest.Mock;
 
 describe('<InboxSidebar />', () => {
   it('does render correctly', async () => {
-    // @ts-ignore
     mockGetInboxesList.mockResolvedValueOnce({
       data: { results: chatConversationsMock },
     });
