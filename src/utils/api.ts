@@ -173,10 +173,6 @@ export const getChatRooms = ({
   return api.get(url);
 };
 
-// export const getChatRoom = (_: string, userId: number) => {
-//   return api.get(`/dashboard/chat/rooms/${userId}/`);
-// };
-
 export const getMessages = ({
   userId,
   limit,
@@ -196,7 +192,7 @@ export const getUserDataById = (userId: number) => {
 };
 
 export const getChatAuthorizationToken = () => {
-  return api.post(`/mercury/token-dispenser/`);
+  return api.post<{},{data:{token:string}}>(`/mercury/token-dispenser/`);
 };
 
 export const getInboxesList = () => {
