@@ -2,8 +2,8 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
-import ChatRoomItem from '../components/ChatRoomItem';
-import { chatRoomsMock } from '../helpers';
+import ChatRoomItem from '../components/chatRooms/ChatRoomItem';
+import { chatRoomsMock } from '../testHelpers';
 
 const routePath = `/nutri/inbox`;
 const chatRoomMock = chatRoomsMock[0];

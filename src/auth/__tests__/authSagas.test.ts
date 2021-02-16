@@ -7,8 +7,12 @@ import { AuthActions } from '../authActions';
 describe('authSagas', () => {
   const dispatch = (action: AuthActions) => dispatched.push(action);
   const getState = () => ({});
+  const mePayload = {
+    firstName: 'Test',
+    lastName: 'User',
+  };
   const successResponse = {
-    data: {},
+    data: mePayload,
     status: 200,
     statusText: 'OK',
     headers: {},
@@ -27,7 +31,7 @@ describe('authSagas', () => {
   it('[autoLoginSaga] - dispatches auth/LOGIN_SUCCESS on successful response', () => {
     runSaga({ dispatch, getState }, authSagas.autoLoginSaga).toPromise();
     mockAxios.mockResponseFor({ url: '/dashboard/me/' }, successResponse);
-    expect(dispatched).toContainEqual(actions.loginSuccessAction());
+    expect(dispatched).toContainEqual(actions.loginSuccessAction(mePayload));
   });
 
   it('[autoLoginSaga] - dispatches auth/TRY_AUTO_LOGIN_FAILED on error', () => {
@@ -45,8 +49,9 @@ describe('authSagas', () => {
         password: 'password',
       })
     ).toPromise();
-    mockAxios.mockResponse(successResponse);
-    expect(dispatched).toContainEqual(actions.loginSuccessAction());
+    mockAxios.mockResponseFor({ url: '/dashboard/login/' }, successResponse);
+    mockAxios.mockResponseFor({ url: '/dashboard/me/' }, successResponse);
+    expect(dispatched).toContainEqual(actions.loginSuccessAction(mePayload));
   });
 
   it('[loginSaga] - dispatches auth/LOGIN_FAILED on error', () => {

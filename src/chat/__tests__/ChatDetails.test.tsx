@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
-import ChatDetails from '../components/ChatDetails';
+import ChatDetails from '../components/cards/ChatDetails';
 
 describe('<ChatDetails />', () => {
   it('does render correctly', () => {

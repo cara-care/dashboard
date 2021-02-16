@@ -2,10 +2,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import UserInformation from './cards/UserInformation';
-import Details from './cards/Details';
-import HealthCard from './cards/HealthCard';
-import Notes from './cards/NotesCard';
+import UserInformation from './UserInformation';
+import Details from './Details';
+import HealthCard from './HealthCard';
+import Notes from './NotesCard';
 
 const useStyles = makeStyles((_theme) => ({
   root: {

@@ -13,7 +13,7 @@ import NotesInput from './NotesInput';
 import NotesList from './NotesList';
 import { useSelector } from 'react-redux';
 import { currentUserSelector, loadingCurrentUserSelector } from '../../redux';
-import { CardDetailSkeleton } from '../LoadingScreens';
+import { CardDetailSkeleton } from '../other/LoadingScreens';
 
 const NOTES = [
   {

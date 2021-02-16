@@ -6,6 +6,7 @@ export const currentUserMock = {
   email: 'test@email.com',
   enrolledProgrammes: [],
   id: 832624,
+  inbox: 'test',
   lastSeen: '2020-12-21',
   nickname: 'test',
   platform: 'Android',
@@ -59,3 +60,8 @@ export const chatRoomsMock = [
     patient: { id: 202020, username: 'test-user2', nickname: 'Tester2' },
   },
 ];
+
+export const chatConversationsMock = [
+  { name: 'All', private: false, slug: 'all' },
+  { name: 'Test Conversation', private: false, slug: 'test-conversation' }
+]

@@ -1,4 +1,10 @@
-import { ChatMessage, ChatRoom, ChatRoomPatient, ChatUser } from './chatReducer';
+import {
+  ChatConversation,
+  ChatMessage,
+  ChatRoom,
+  ChatRoomPatient,
+  ChatUser,
+} from './chatReducer';
 
 export enum ChatActionTypes {
   SET_CURRENT_USER_LOADING = 'chat/SET_CURRENT_USER_LOADING',
@@ -13,6 +19,9 @@ export enum ChatActionTypes {
   CLEAR_CHAT_ROOMS = 'chat/CLEAR_CHAT_ROOMS',
   ADD_NEW_MESSAGE_TO_CHAT_ROOM_INIT = 'chat/ADD_NEW_MESSAGE_TO_CHAT_ROOM_INIT',
   ADD_NEW_MESSAGE_TO_CHAT_ROOM = 'chat/ADD_NEW_MESSAGE_TO_CHAT_ROOM',
+  SET_CHAT_CONVERSATIONS = 'chat/SET_CHAT_CONVERSATIONS',
+  SET_CHAT_ROOMS_SLUG = 'chat/SET_CHAT_ROOMS_SLUG',
+  SET_SELECTED_ASSIGNMENT = 'chat/SET_SELECTED_ASSIGNMENT',
   SET_SCROLL_TO_BOTTOM = 'chat/SET_SCROLL_TO_BOTTOM',
 }
 
@@ -156,7 +165,43 @@ export const addNewMessageToChatRoom = (
   message,
 });
 
+// Chat Conversations
+
+export interface SetChatConversations {
+  type: ChatActionTypes.SET_CHAT_CONVERSATIONS;
+  chatConversations: ChatConversation[];
+}
+
+export const setChatConversations = (
+  chatConversations: ChatConversation[]
+): SetChatConversations => ({
+  type: ChatActionTypes.SET_CHAT_CONVERSATIONS,
+  chatConversations,
+});
+
 // Others
+
+export interface SetChatRoomsSlug {
+  type: ChatActionTypes.SET_CHAT_ROOMS_SLUG;
+  payload: string;
+}
+
+export const setChatRoomsSlug = (payload: string): SetChatRoomsSlug => ({
+  type: ChatActionTypes.SET_CHAT_ROOMS_SLUG,
+  payload,
+});
+
+export interface SetSelectedAssignment {
+  type: ChatActionTypes.SET_SELECTED_ASSIGNMENT;
+  payload: string;
+}
+
+export const setSelectedAssignment = (
+  payload: string
+): SetSelectedAssignment => ({
+  type: ChatActionTypes.SET_SELECTED_ASSIGNMENT,
+  payload,
+});
 
 export interface SetScrollToBottom {
   type: ChatActionTypes.SET_SCROLL_TO_BOTTOM;
@@ -181,4 +226,7 @@ export type ChatActions =
   | SetChatRooms
   | ClearChatRooms
   | AddNewMessageToChatRoomInit
-  | AddNewMessageToChatRoom;
+  | AddNewMessageToChatRoom
+  | SetChatConversations
+  | SetChatRoomsSlug
+  | SetSelectedAssignment;

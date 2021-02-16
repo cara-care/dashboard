@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../components/withProviders';
 import { renderWithRedux } from '../../utils/test-utils';
-import ChatHeaderLabel from '../components/ChatHeaderLabel';
+import ChatHeaderLabel from '../components/chatHeader/ChatHeaderLabel';
 
 const label = 'test-label';
 

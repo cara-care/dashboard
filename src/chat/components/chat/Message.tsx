@@ -3,10 +3,10 @@ import clsx from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { getTime, padWith0 } from '../../utils/dateUtils';
-import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
+import { getTime, padWith0 } from '../../../utils/dateUtils';
+import { MESSAGE_CONTAINER } from '../../../utils/test-helpers';
 import Linkify from 'react-linkify';
-import ExternalLink from '../../components/ExternalLink';
+import ExternalLink from '../../../components/ExternalLink';
 
 const useStyles = makeStyles((theme) => ({
   root: {

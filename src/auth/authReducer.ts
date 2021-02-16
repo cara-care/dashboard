@@ -10,8 +10,14 @@ export enum AuthStatus {
   ERROR = 'ERROR',
 }
 
+export interface MePayload {
+  firstName: string;
+  lastName: string;
+}
+
 export interface AuthState {
   status: AuthStatus;
+  nutriName: string;
   error: Error | null;
   patientId: number | null;
   isSelectingPatient: boolean;
@@ -34,6 +40,7 @@ export interface EnrolledProgram {
 
 export const authInitialState = {
   status: AuthStatus.IDLE,
+  nutriName: '',
   isSelectingPatient: false,
   patientId: null,
   patientNickname: null,
@@ -63,6 +70,7 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
       return {
         ...state,
         status: AuthStatus.AUTHENTICATED,
+        nutriName: `${action.payload.firstName} ${action.payload.lastName}`,
       };
     case AuthActionTypes.LOGIN_FAILED:
     case AuthActionTypes.LOGOUT_FAILED:
@@ -118,6 +126,8 @@ export const isAuthenticating = (state: RootState) =>
 
 export const isAuthenticated = (state: RootState) =>
   state.auth.status === AuthStatus.AUTHENTICATED;
+
+export const getNutriName = (state: RootState) => state.auth.nutriName;
 
 export const getPatientId = (state: RootState) => state.auth.patientId;
 
