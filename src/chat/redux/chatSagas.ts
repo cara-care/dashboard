@@ -18,7 +18,8 @@ import {
   SetCurrentUserActionInit,
   setCurrentUserLoading,
 } from './chatActions';
-import { ChatRoom, chatRoomsSelector } from './chatReducer';
+import { chatRoomsSelector } from './chatReducer';
+import { ChatRoom } from './types';
 import { deletedUserData } from './utils';
 
 export function* rootChatSaga() {

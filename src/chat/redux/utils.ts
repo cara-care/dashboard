@@ -1,5 +1,5 @@
 import { capitalize } from 'lodash';
-import { ChatMessage, ChatUser } from '.';
+import { ChatMessage, ChatUser } from './types';
 
 export const findLastContact = (
   messages: ChatMessage[],

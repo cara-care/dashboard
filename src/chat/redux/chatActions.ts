@@ -5,7 +5,7 @@ import {
   ChatRoomPatient,
   ChatUser,
   ChatUserNote,
-} from './chatReducer';
+} from './types';
 
 export enum ChatActionTypes {
   SET_CURRENT_USER_LOADING = 'chat/SET_CURRENT_USER_LOADING',
