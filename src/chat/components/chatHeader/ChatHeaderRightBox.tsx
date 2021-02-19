@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, IconButton, Popover, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  IconButton,
+  Popover,
+  Typography,
+} from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
@@ -21,6 +27,13 @@ const useStyles = makeStyles({
   },
   iconMargin: {
     margin: '0 8px',
+  },
+  button: {
+    marginTop: -5,
+  },
+  buttonText: {
+    fontSize: 12,
+    letterSpacing: '1.6px',
   },
 });
 
@@ -50,19 +63,23 @@ export default function ChatHeaderRightBox({
   return (
     <>
       <Box className={classes.box}>
-        <IconButton
-          size="small"
-          aria-label="settings"
-          className={classes.iconMargin}
-          onClick={handleOpenAssignPopup}
-        >
+        <IconButton size="small" aria-label="settings">
           <MoreVertIcon />
         </IconButton>
         <div
           style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
         >
-          <AccountCircleIcon style={{ marginRight: 4, fontSize: 18 }} />
-          <Typography variant="body2">{selectedAssignment}</Typography>
+          <Button
+            onClick={handleOpenAssignPopup}
+            className={classes.button}
+            startIcon={
+              <AccountCircleIcon style={{ marginRight: 4, fontSize: 20 }} />
+            }
+          >
+            <Typography variant="body2" className={classes.buttonText}>
+              {selectedAssignment}
+            </Typography>
+          </Button>
         </div>
         <IconButton
           size="small"
