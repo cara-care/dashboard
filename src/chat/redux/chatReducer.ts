@@ -2,77 +2,39 @@ import { Reducer } from 'redux';
 import { ChatActions, ChatActionTypes } from './chatActions';
 import { RootState } from '../../utils/store';
 import { uniqBy } from 'lodash';
-import { EnrolledProgram } from '../../auth';
 import { findLastContact } from './utils';
-export interface ChatUser {
-  age: number;
-  allergies: string[];
-  dateJoined: string;
-  enrolledProgrammes: EnrolledProgram[];
-  diagnosis: string;
-  id: number;
-  inbox: string;
-  lastSeen: string;
-  nickname: string;
-  platform: string;
-  sex: string | null;
-  email: string;
-  timezone: string;
-  username: string;
-}
-
-export interface ChatMessage {
-  author: string;
-  created: string;
-  id: number;
-  room: string;
-  sent: string;
-  text: string;
-  type: string;
-  upload: null;
-}
-
-export interface LastMessage {
-  author: string;
-  created: string;
-  id: number;
-  sent: string;
-  text: string;
-  upload: null;
-}
-
-export interface ChatRoomPatient {
-  id: number;
-  nickname: string;
-  username: string;
-}
-
-export interface ChatRoom {
-  lastMessage: LastMessage;
-  patient: ChatRoomPatient;
-}
-
-export interface ChatConversation {
-  name: string;
-  private: boolean;
-  slug: string;
-  rooms: number;
-}
+import {
+  ChatUser,
+  ChatUserNote,
+  ChatMessage,
+  ChatRoom,
+  ChatConversation,
+  ChatEditMode,
+} from './types';
 
 export interface ChatState {
   loadingCurrentUser: boolean;
   currentChatUser: ChatUser | null;
+  currentChatUserNotes: ChatUserNote[];
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
   chatConversations: ChatConversation[];
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
+  noteEditMode: ChatEditMode
 }
+
+const initialEditMode = {
+  isEdit: false,
+  noteId: -1,
+  message: '',
+};
 
 export const chatInitialState = {
   loadingCurrentUser: false,
   currentChatUser: null,
+  currentChatUserNotes: [],
   chatMessages: [],
   chatRooms: [],
   chatConversations: [],
@@ -84,6 +46,7 @@ export const chatInitialState = {
     rooms: 0,
   },
   scrollToChatBottom: false,
+  noteEditMode: initialEditMode,
 };
 
 export const chatReducer: Reducer<ChatState, ChatActions> = (
@@ -166,6 +129,45 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         chatConversations: [...action.chatConversations],
       };
+    // CHAT NOTES
+    case ChatActionTypes.SET_CHATUSER_NOTES:
+      return {
+        ...state,
+        currentChatUserNotes: [...action.notes.reverse()],
+      };
+    case ChatActionTypes.ADD_CHATUSER_NOTE:
+      return {
+        ...state,
+        currentChatUserNotes: [action.note, ...state.currentChatUserNotes],
+      };
+    case ChatActionTypes.EDIT_CHATUSER_NOTE:
+      const index = state.currentChatUserNotes.findIndex(
+        (note) => note.id === action.id
+      );
+      const newNotes = [...state.currentChatUserNotes];
+      newNotes[index] = { ...newNotes[index], text: action.text };
+      return {
+        ...state,
+        currentChatUserNotes: newNotes,
+      };
+    case ChatActionTypes.DELETE_CHATUSER_NOTE:
+      const filteredNotes = state.currentChatUserNotes.filter(
+        (note) => note.id !== action.id
+      );
+      return {
+        ...state,
+        currentChatUserNotes: filteredNotes,
+      };
+    case ChatActionTypes.SET_NOTE_EDIT_MODE:
+      return {
+        ...state,
+        noteEditMode: action.payload,
+      };
+    case ChatActionTypes.CLEAR_NOTE_EDIT_MODE:
+      return {
+        ...state,
+        noteEditMode: { ...initialEditMode },
+      };
     // Other
     case ChatActionTypes.SET_CHAT_ROOMS_SLUG:
       const conversation = state.chatConversations.find(
@@ -230,5 +232,9 @@ export const selectedAssignmentSelector = (state: RootState) =>
   state.chat.chatConversations?.find(
     (conversation) => conversation.slug === state.chat.selectedChatAssignment
   )?.name;
+export const notesSelector = (state: RootState) =>
+  state.chat.currentChatUserNotes;
+export const noteEditModeSelector = (state: RootState) =>
+  state.chat.noteEditMode;
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;

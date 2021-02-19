@@ -1,10 +1,12 @@
 import {
   ChatConversation,
+  ChatEditMode,
   ChatMessage,
   ChatRoom,
   ChatRoomPatient,
   ChatUser,
-} from './chatReducer';
+  ChatUserNote,
+} from './types';
 
 export enum ChatActionTypes {
   SET_CURRENT_USER_LOADING = 'chat/SET_CURRENT_USER_LOADING',
@@ -23,6 +25,12 @@ export enum ChatActionTypes {
   SET_CHAT_ROOMS_SLUG = 'chat/SET_CHAT_ROOMS_SLUG',
   SET_SELECTED_ASSIGNMENT = 'chat/SET_SELECTED_ASSIGNMENT',
   SET_SCROLL_TO_BOTTOM = 'chat/SET_SCROLL_TO_BOTTOM',
+  SET_CHATUSER_NOTES = 'chat/SET_CHATUSER_NOTES',
+  ADD_CHATUSER_NOTE = 'chat/ADD_CHATUSER_NOTE',
+  EDIT_CHATUSER_NOTE = 'chat/EDIT_CHATUSER_NOTE',
+  DELETE_CHATUSER_NOTE = 'chat/DELETE_CHATUSER_NOTE',
+  SET_NOTE_EDIT_MODE = 'chat/SET_NOTE_EDIT_MODE',
+  CLEAR_NOTE_EDIT_MODE = 'chat/CLEAR_NOTE_EDIT_MODE',
 }
 
 // Chat User
@@ -179,6 +187,70 @@ export const setChatConversations = (
   chatConversations,
 });
 
+// ChatUser Notes
+export interface SetChatUserNotes {
+  type: ChatActionTypes.SET_CHATUSER_NOTES;
+  notes: ChatUserNote[];
+}
+
+export const setChatUserNotes = (notes: ChatUserNote[]): SetChatUserNotes => ({
+  type: ChatActionTypes.SET_CHATUSER_NOTES,
+  notes,
+});
+
+export interface AddChatUserNote {
+  type: ChatActionTypes.ADD_CHATUSER_NOTE;
+  note: ChatUserNote;
+}
+
+export const addChatUserNote = (note: ChatUserNote): AddChatUserNote => ({
+  type: ChatActionTypes.ADD_CHATUSER_NOTE,
+  note,
+});
+
+export interface EditChatUserNote {
+  type: ChatActionTypes.EDIT_CHATUSER_NOTE;
+  id: number;
+  text: string;
+}
+
+export const editChatUserNote = (
+  id: number,
+  text: string
+): EditChatUserNote => ({
+  type: ChatActionTypes.EDIT_CHATUSER_NOTE,
+  id,
+  text,
+});
+
+export interface DeleteChatUserNote {
+  type: ChatActionTypes.DELETE_CHATUSER_NOTE;
+  id: number;
+}
+
+export const deleteChatUserNote = (id: number): DeleteChatUserNote => ({
+  type: ChatActionTypes.DELETE_CHATUSER_NOTE,
+  id,
+});
+
+export interface SetNoteEditMode {
+  type: ChatActionTypes.SET_NOTE_EDIT_MODE;
+  payload: ChatEditMode
+}
+
+export const setNodeEditMode = (payload: ChatEditMode): SetNoteEditMode => ({
+  type: ChatActionTypes.SET_NOTE_EDIT_MODE,
+  payload,
+});
+
+export interface ClearEditMode {
+  type: ChatActionTypes.CLEAR_NOTE_EDIT_MODE;
+}
+
+export const clearEditMode = (): ClearEditMode => ({
+  type: ChatActionTypes.CLEAR_NOTE_EDIT_MODE,
+});
+
 // Others
 
 export interface SetChatRoomsSlug {
@@ -229,4 +301,10 @@ export type ChatActions =
   | AddNewMessageToChatRoom
   | SetChatConversations
   | SetChatRoomsSlug
-  | SetSelectedAssignment;
+  | SetSelectedAssignment
+  | SetChatUserNotes
+  | AddChatUserNote
+  | EditChatUserNote
+  | DeleteChatUserNote
+  | SetNoteEditMode
+  | ClearEditMode;
