@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import clsx from 'classnames';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -23,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 22,
     width: 22,
+    marginTop: -4,
+  },
+  avatarEmoji: {
+    backgroundColor: 'transparent',
+    paddingLeft: 3,
   },
 }));
 
@@ -37,6 +43,10 @@ export default function Conversations() {
   const icons = useMemo(
     () => [
       <Avatar className={classes.avatar} />,
+      '🐙',
+      '🐻',
+      '🐙',
+      '🐻',
       <PermIdentityIcon />,
       <PeopleOutlineIcon />,
     ],
@@ -61,10 +71,19 @@ export default function Conversations() {
     return [ownConversation, ...publicConversations].map(
       (conversation, index) => {
         const isFirst = index === 0;
+        const icon = icons[index];
         return (
           <ConverstaionsItem
             key={`${conversation?.slug}-${index}`}
-            icon={icons[index]}
+            icon={
+              typeof icon === 'string' ? (
+                <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
+                  {icon}
+                </Avatar>
+              ) : (
+                icon
+              )
+            }
             text={
               isFirst
                 ? intl.formatMessage({

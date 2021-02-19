@@ -3,7 +3,6 @@ import { Box, IconButton, makeStyles, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Conversations from './Conversations';
 import SearchInput from './SearchInput';
-import SidebarPrograms from './SidebarPrograms';
 import { getInboxesList } from '../../../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -66,8 +65,9 @@ export default function InboxSidebar() {
       </Box>
       {error ? <ChatRoomsError {...{ error, refetch }} /> : <Conversations />}
       <SearchInput />
-      <SidebarPrograms title="UK Users" />
-      <SidebarPrograms title="US Nutris" />
+      {/* Comment: Two expanded list here, remove if not needed */}
+      {/* <SidebarPrograms title="UK Users" />
+      <SidebarPrograms title="US Nutris" /> */}
     </Box>
   );
 }
