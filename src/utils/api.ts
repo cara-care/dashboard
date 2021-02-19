@@ -192,11 +192,31 @@ export const getUserDataById = (userId: number) => {
 };
 
 export const getChatAuthorizationToken = () => {
-  return api.post<{},{data:{token:string}}>(`/mercury/token-dispenser/`);
+  return api.post(`/mercury/token-dispenser/`);
 };
 
 export const getInboxesList = () => {
   return api.get('/dashboard/chat/inboxes/');
+};
+
+export const getNotesList = (userId: number) => {
+  return api.get(`/dashboard/${userId}/notes/`);
+};
+
+export const sendNote = (userId: number, text: string) => {
+  return api.post(`/dashboard/${userId}/notes/`, {
+    text,
+  });
+};
+
+export const editNote = (userId: number, noteId: number, text: string) => {
+  return api.patch(`/dashboard/${userId}/notes/${noteId}/`, {
+    text,
+  });
+};
+
+export const deleteNote = (userId: number, noteId: number) => {
+  return api.delete(`/dashboard/${userId}/notes/${noteId}/`);
 };
 
 export default api;

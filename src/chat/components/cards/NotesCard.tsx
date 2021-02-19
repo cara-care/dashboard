@@ -12,31 +12,12 @@ import CardHeaderComp from './CardHeader';
 import NotesInput from './NotesInput';
 import NotesList from './NotesList';
 import { useSelector } from 'react-redux';
-import { currentUserSelector, loadingCurrentUserSelector } from '../../redux';
+import {
+  currentUserSelector,
+  loadingCurrentUserSelector,
+  notesSelector,
+} from '../../redux';
 import { CardDetailSkeleton } from '../other/LoadingScreens';
-
-const NOTES = [
-  {
-    id: 0,
-    author: 'Kora',
-    text: 'This user said something about an ingredient that he’s allergic to.',
-  },
-  {
-    id: 1,
-    author: 'Anastasija',
-    text: 'There are other ingredients he still has not tried.',
-  },
-  {
-    id: 2,
-    author: 'Kora',
-    text: 'Other notes',
-  },
-  {
-    id: 3,
-    author: 'Anastasija',
-    text: 'Other notes',
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,13 +47,12 @@ export default function NotesCard() {
   const intl = useIntl();
   const [expanded, setExpanded] = useState(false);
   const user = useSelector(currentUserSelector);
+  const notes = useSelector(notesSelector);
   const loadingUserData = useSelector(loadingCurrentUserSelector);
 
   const handleExpandClick = useCallback(() => {
     setExpanded((s) => !s);
   }, [setExpanded]);
-
-  const onSubmit = (message: string) => {};
 
   if (loadingUserData) {
     return <CardDetailSkeleton />;
@@ -89,15 +69,15 @@ export default function NotesCard() {
           defaultMessage: 'Notes',
         })}
       />
-      <NotesInput onSubmit={onSubmit} />
-      <NotesList notes={NOTES.slice(0, 2)} />
-      {NOTES.length > 2 ? (
+      <NotesInput />
+      {notes.length ? <NotesList notes={notes.slice(0, 2)} /> : null}
+      {notes.length > 2 ? (
         <>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div className={classes.dividerBox}>
               <Divider />
             </div>
-            <NotesList notes={NOTES.slice(2)} />
+            <NotesList notes={notes.slice(2)} />
           </Collapse>
           <CardActions style={{ marginTop: 16 }}>
             <Button

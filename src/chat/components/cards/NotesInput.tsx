@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import { useIntl } from 'react-intl';
+import { useDispatch, useSelector } from 'react-redux';
+import { editNote, sendNote } from '../../../utils/api';
+import {
+  currentUserIdSelector,
+  ChatUserNote,
+  addChatUserNote,
+  noteEditModeSelector,
+  editChatUserNote,
+  clearEditMode,
+} from '../../redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,24 +36,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface NotesInput {
-  onSubmit: (message: string) => void;
-}
-
-export default function NotesInput({ onSubmit }: NotesInput) {
+export default function NotesInput() {
   const intl = useIntl();
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const userId = useSelector(currentUserIdSelector);
+  const { isEdit, message: editedMessage, noteId } = useSelector(
+    noteEditModeSelector
+  );
   const [message, setMessage] = useState('');
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  };
+  useEffect(() => {
+    setMessage(editedMessage);
+  }, [editedMessage]);
 
-  const handleSubmit = () => {
-    if (message) {
-      onSubmit(message);
+  const sendNoteToStore = useCallback(
+    (note: ChatUserNote) => {
+      dispatch(addChatUserNote(note));
+    },
+    [dispatch]
+  );
+
+  const handleMessageChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMessage(e.target.value);
+    },
+    []
+  );
+
+  const handleNoteUpdate = useCallback(
+    async (userId: number) => {
+      await editNote(userId, noteId, message);
+      dispatch(editChatUserNote(noteId, message));
+      dispatch(clearEditMode());
+    },
+    [dispatch, noteId, message]
+  );
+
+  const handleNoteCreate = useCallback(
+    async (userId: number) => {
+      const res = await sendNote(userId, message);
+      sendNoteToStore(res.data);
       setMessage('');
-    }
+    },
+    [message, sendNoteToStore]
+  );
+
+  const handleSubmit = async () => {
+    if (!userId || !message) return;
+    try {
+      isEdit ? handleNoteUpdate(userId) : handleNoteCreate(userId);
+    } catch (error) {}
   };
 
   return (
@@ -59,13 +102,18 @@ export default function NotesInput({ onSubmit }: NotesInput) {
       <Button
         variant="contained"
         color="primary"
-        disabled={!message}
+        disabled={!message || (isEdit && message === editedMessage)}
         onClick={handleSubmit}
       >
-        {intl.formatMessage({
-          id: 'common.send',
-          defaultMessage: 'Send',
-        })}
+        {isEdit
+          ? intl.formatMessage({
+              id: 'common.update',
+              defaultMessage: 'Update',
+            })
+          : intl.formatMessage({
+              id: 'common.send',
+              defaultMessage: 'Send',
+            })}
       </Button>
     </div>
   );

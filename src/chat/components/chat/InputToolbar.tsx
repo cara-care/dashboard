@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { useIntl } from 'react-intl';
 import { Tabs, Tab } from '@material-ui/core';
 import InputToolbarTab from './InputToolbarTab';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendNote } from '../../../utils/api';
+import {
+  addChatUserNote,
+  ChatUserNote,
+  currentUserIdSelector,
+} from '../../redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +30,16 @@ interface InputToolbarProps {
 export default function InputToolbar({ onSubmit }: InputToolbarProps) {
   const classes = useStyles();
   const intl = useIntl();
-
+  const dispatch = useDispatch();
+  const userId = useSelector(currentUserIdSelector);
   const [value, setValue] = useState(0);
+
+  const sendNoteToStore = useCallback(
+    (note: ChatUserNote) => {
+      dispatch(addChatUserNote(note));
+    },
+    [dispatch]
+  );
 
   const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -34,8 +49,12 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
     onSubmit(message);
   };
 
-  const sendNote = (message: string) => {
-    console.log(message); // TODO: Update when `notes` BE ready
+  const handleNoteSend = async (message: string) => {
+    if (!userId || !message) return;
+    try {
+      const res = await sendNote(userId, message);
+      sendNoteToStore(res.data);
+    } catch (error) {}
   };
 
   return (
@@ -77,7 +96,7 @@ export default function InputToolbar({ onSubmit }: InputToolbarProps) {
             id: 'chat.addNote',
             defaultMessage: 'Add Note',
           })}
-          onSubmit={sendNote}
+          onSubmit={handleNoteSend}
         />
       </Paper>
     </div>

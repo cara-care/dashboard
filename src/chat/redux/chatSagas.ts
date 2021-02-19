@@ -7,12 +7,13 @@ import {
   cancelled,
 } from 'redux-saga/effects';
 import { queryCache } from '../../components/withProviders';
-import { getUserDataById } from '../../utils/api';
+import { getNotesList, getUserDataById } from '../../utils/api';
 import {
   addNewMessageToChatRoom,
   AddNewMessageToChatRoom,
   ChatActionTypes,
   clearChatMessages,
+  setChatUserNotes,
   setCurrentChatUser,
   SetCurrentUserActionInit,
   setCurrentUserLoading,
@@ -36,12 +37,12 @@ export function* getCurrentUserData({
   refetchMessages,
 }: SetCurrentUserActionInit) {
   try {
-    if (!id) {
-      return;
-    }
+    if (!id) return;
     yield put(setCurrentUserLoading(true));
-    const res = yield call(() => getUserDataById(id));
-    yield put(setCurrentChatUser(res.data));
+    const userResponse = yield call(() => getUserDataById(id));
+    yield put(setCurrentChatUser(userResponse.data));
+    const noteResponse = yield call(() => getNotesList(id));
+    yield put(setChatUserNotes(noteResponse.data));
     if (refetchMessages) {
       queryCache.refetchQueries(`messages-${username}`);
     }
@@ -68,7 +69,7 @@ export function* addMessageToChatRooms({ message }: AddNewMessageToChatRoom) {
     } else {
       queryCache.refetchQueries('chatRooms');
       queryCache.refetchQueries('inboxList');
-    } 
+    }
   } catch (error) {
     console.log(error);
   }

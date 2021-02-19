@@ -59,20 +59,44 @@ export interface ChatConversation {
   rooms: number;
 }
 
+export interface ChatUserNote {
+  author: {
+    id: number;
+    name: string;
+  };
+  created: string;
+  id: number;
+  lastModified: string;
+  text: string;
+}
+
 export interface ChatState {
   loadingCurrentUser: boolean;
   currentChatUser: ChatUser | null;
+  currentChatUserNotes: ChatUserNote[];
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
   chatConversations: ChatConversation[];
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
+  noteEditMode: {
+    isEdit: boolean;
+    noteId: number;
+    message: string;
+  };
 }
+
+const initialEditMode = {
+  isEdit: false,
+  noteId: -1,
+  message: '',
+};
 
 export const chatInitialState = {
   loadingCurrentUser: false,
   currentChatUser: null,
+  currentChatUserNotes: [],
   chatMessages: [],
   chatRooms: [],
   chatConversations: [],
@@ -84,6 +108,7 @@ export const chatInitialState = {
     rooms: 0,
   },
   scrollToChatBottom: false,
+  noteEditMode: initialEditMode,
 };
 
 export const chatReducer: Reducer<ChatState, ChatActions> = (
@@ -166,6 +191,45 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         chatConversations: [...action.chatConversations],
       };
+    // CHAT NOTES
+    case ChatActionTypes.SET_CHATUSER_NOTES:
+      return {
+        ...state,
+        currentChatUserNotes: [...action.notes.reverse()],
+      };
+    case ChatActionTypes.ADD_CHATUSER_NOTE:
+      return {
+        ...state,
+        currentChatUserNotes: [action.note, ...state.currentChatUserNotes],
+      };
+    case ChatActionTypes.EDIT_CHATUSER_NOTE:
+      const index = state.currentChatUserNotes.findIndex(
+        (note) => note.id === action.id
+      );
+      const newNotes = [...state.currentChatUserNotes];
+      newNotes[index] = { ...newNotes[index], text: action.text };
+      return {
+        ...state,
+        currentChatUserNotes: newNotes,
+      };
+    case ChatActionTypes.DELETE_CHATUSER_NOTE:
+      const filteredNotes = state.currentChatUserNotes.filter(
+        (note) => note.id !== action.id
+      );
+      return {
+        ...state,
+        currentChatUserNotes: filteredNotes,
+      };
+    case ChatActionTypes.SET_NOTE_EDIT_MODE:
+      return {
+        ...state,
+        noteEditMode: action.payload,
+      };
+    case ChatActionTypes.CLEAR_NOTE_EDIT_MODE:
+      return {
+        ...state,
+        noteEditMode: { ...initialEditMode },
+      };
     // Other
     case ChatActionTypes.SET_CHAT_ROOMS_SLUG:
       const conversation = state.chatConversations.find(
@@ -230,5 +294,9 @@ export const selectedAssignmentSelector = (state: RootState) =>
   state.chat.chatConversations?.find(
     (conversation) => conversation.slug === state.chat.selectedChatAssignment
   )?.name;
+export const notesSelector = (state: RootState) =>
+  state.chat.currentChatUserNotes;
+export const noteEditModeSelector = (state: RootState) =>
+  state.chat.noteEditMode;
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;
