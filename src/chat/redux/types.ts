@@ -65,3 +65,9 @@ export interface ChatUserNote {
   lastModified: string;
   text: string;
 }
+
+export interface ChatEditMode {
+  isEdit: boolean;
+  noteId: number;
+  message: string;
+}

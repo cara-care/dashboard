@@ -1,5 +1,6 @@
 import {
   ChatConversation,
+  ChatEditMode,
   ChatMessage,
   ChatRoom,
   ChatRoomPatient,
@@ -234,10 +235,10 @@ export const deleteChatUserNote = (id: number): DeleteChatUserNote => ({
 
 export interface SetNoteEditMode {
   type: ChatActionTypes.SET_NOTE_EDIT_MODE;
-  payload: any;
+  payload: ChatEditMode
 }
 
-export const setNodeEditMode = (payload: any): SetNoteEditMode => ({
+export const setNodeEditMode = (payload: ChatEditMode): SetNoteEditMode => ({
   type: ChatActionTypes.SET_NOTE_EDIT_MODE,
   payload,
 });

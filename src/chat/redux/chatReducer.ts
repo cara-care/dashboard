@@ -9,6 +9,7 @@ import {
   ChatMessage,
   ChatRoom,
   ChatConversation,
+  ChatEditMode,
 } from './types';
 
 export interface ChatState {
@@ -21,11 +22,7 @@ export interface ChatState {
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
-  noteEditMode: {
-    isEdit: boolean;
-    noteId: number;
-    message: string;
-  };
+  noteEditMode: ChatEditMode
 }
 
 const initialEditMode = {
