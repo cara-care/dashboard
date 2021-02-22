@@ -111,6 +111,7 @@ export default function Conversations() {
     intl,
     selectedIndex,
     setChatSlug,
+    classes.avatar,
   ]);
 
   return (
