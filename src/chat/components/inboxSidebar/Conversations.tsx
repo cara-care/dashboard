@@ -112,6 +112,7 @@ export default function Conversations() {
     selectedIndex,
     setChatSlug,
     classes.avatar,
+    classes.avatarEmoji,
   ]);
 
   return (

@@ -7,10 +7,10 @@ export const currentUserMock = {
   enrolledProgrammes: [],
   id: 832624,
   inbox: 'test',
-  lastSeen: '2020-12-21',
+  lastSeen: '2020-12-22',
   nickname: 'test',
   platform: 'Android',
-  sex: null,
+  sex: 'male',
   timezone: 'Europe/Warsaw',
   username: 'auto-lcWollvQTegJsckadasadoK1',
 };
@@ -62,6 +62,36 @@ export const chatRoomsMock = [
 ];
 
 export const chatConversationsMock = [
-  { name: 'All', private: false, slug: 'all' },
-  { name: 'Test Conversation', private: false, slug: 'test-conversation' }
-]
+  { name: 'Unknown', private: false, slug: 'unknown', count: 0 },
+  { name: 'All', private: false, slug: 'all', count: 0 },
+  {
+    name: 'Test Conversation',
+    private: false,
+    slug: 'test-conversation',
+    count: 0,
+  },
+];
+
+export const notesMock = [
+  {
+    author: { id: 832625, name: 'Test Nutri' },
+    created: '2021-02-22T15:57:00.441726Z',
+    id: 1000,
+    lastModified: '2021-02-22T15:57:00.441756Z',
+    text: 'note1',
+  },
+  {
+    author: { id: 832620, name: 'Test Nutri2' },
+    created: '2021-02-22T15:57:02.794563Z',
+    id: 1001,
+    lastModified: '2021-02-22T15:57:02.794601Z',
+    text: 'note2',
+  },
+  {
+    author: { id: 832626, name: 'Test Nutri3' },
+    created: '2021-02-22T15:57:02.794563Z',
+    id: 1002,
+    lastModified: '2021-02-22T15:57:02.794601Z',
+    text: 'note3',
+  },
+];
