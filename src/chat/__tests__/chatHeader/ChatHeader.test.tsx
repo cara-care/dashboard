@@ -1,9 +1,9 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import withProviders from '../../components/withProviders';
-import { renderWithRedux } from '../../utils/test-utils';
-import ChatHeader from '../components/chatHeader/ChatHeader';
-import { currentUserMock } from '../testHelpers';
+import withProviders from '../../../components/withProviders';
+import { renderWithRedux } from '../../../utils/test-utils';
+import ChatHeader from '../../components/chatHeader/ChatHeader';
+import { currentUserMock } from '../../testHelpers';
 
 const assignUserToNutriMock = jest.fn();
 

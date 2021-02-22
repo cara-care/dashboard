@@ -1,8 +1,8 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import withProviders from '../../components/withProviders';
-import { renderWithRedux } from '../../utils/test-utils';
-import MessageDivider from '../components/chat/MessageDivider';
+import withProviders from '../../../components/withProviders';
+import { renderWithRedux } from '../../../utils/test-utils';
+import MessageDivider from '../../components/chat/MessageDivider';
 
 const label = 'test-label';
 

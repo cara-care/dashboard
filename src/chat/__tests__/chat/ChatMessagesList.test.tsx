@@ -1,9 +1,9 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import withProviders from '../../components/withProviders';
-import { renderWithRedux } from '../../utils/test-utils';
-import ChatMessagesList from '../components/chat/ChatMessagesList';
-import { chatMessagesMock } from '../testHelpers';
+import withProviders from '../../../components/withProviders';
+import { renderWithRedux } from '../../../utils/test-utils';
+import ChatMessagesList from '../../components/chat/ChatMessagesList';
+import { chatMessagesMock } from '../../testHelpers';
 
 describe('<ChatMessagesList />', () => {
   it('renders all messages correctly', () => {

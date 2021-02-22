@@ -1,11 +1,11 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import withProviders from '../../components/withProviders';
+import withProviders from '../../../components/withProviders';
 import user from '@testing-library/user-event';
-import { CHAT_MESSAGE_INPUT } from '../../utils/test-helpers';
-import { renderWithRedux } from '../../utils/test-utils';
-import InputToolbar from '../components/chat/InputToolbar';
-import { testMessage } from '../testHelpers';
+import { CHAT_MESSAGE_INPUT } from '../../../utils/test-helpers';
+import { renderWithRedux } from '../../../utils/test-utils';
+import InputToolbar from '../../components/chat/InputToolbar';
+import { testMessage } from '../../testHelpers';
 import { fireEvent } from '@testing-library/react';
 
 const onSubmitMock = jest.fn();
