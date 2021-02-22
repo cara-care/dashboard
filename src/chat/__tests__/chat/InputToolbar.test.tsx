@@ -30,4 +30,28 @@ describe('<InputToolbar />', () => {
     expect(onSubmitMock).toHaveBeenCalledTimes(1);
     expect(onSubmitMock).toHaveBeenCalledWith(testMessage);
   });
+  it('changes tabs properly', async () => {
+    const InputToolbarComp = () => <InputToolbar onSubmit={onSubmitMock} />;
+    const InputToolbarWithProviders = withProviders(
+      InputToolbarComp,
+      MemoryRouter
+    );
+    const { queryByText, getByText, getByRole } = renderWithRedux(
+      <InputToolbarWithProviders />
+    );
+    const tab1Button = getByRole('tab', {
+      name: /Reply/i,
+    });
+    const tab2Button = getByRole('tab', {
+      name: /Note/i,
+    });
+    expect(getByText(/Send/i)).toBeInTheDocument();
+    expect(queryByText(/Add Note/i)).not.toBeInTheDocument();
+    user.click(tab2Button);
+    expect(queryByText(/Send/i)).not.toBeInTheDocument();
+    expect(getByText(/Add Note/i)).toBeInTheDocument();
+    user.click(tab1Button);
+    expect(getByText(/Send/i)).toBeInTheDocument();
+    expect(queryByText(/Add Note/i)).not.toBeInTheDocument();
+  });
 });

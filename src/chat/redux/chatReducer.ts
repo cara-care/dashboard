@@ -25,7 +25,7 @@ export interface ChatState {
   noteEditMode: ChatEditMode
 }
 
-const initialEditMode = {
+export const initialEditMode = {
   isEdit: false,
   noteId: -1,
   message: '',
