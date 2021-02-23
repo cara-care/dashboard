@@ -52,7 +52,7 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
             icon="🐻"
             text="Cara Care Premium"
             count={6}
-            selectedIndex={selectedIndex === 0}
+            active={selectedIndex === 0}
             handleSelected={(
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
@@ -64,7 +64,7 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
             icon="🐙"
             text="Cara Care Free"
             count={6}
-            selectedIndex={selectedIndex === 1}
+            active={selectedIndex === 1}
             handleSelected={(
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
@@ -76,7 +76,7 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
             icon="💩"
             text="Technical Support"
             count={999}
-            selectedIndex={selectedIndex === 2}
+            active={selectedIndex === 2}
             handleSelected={(
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
