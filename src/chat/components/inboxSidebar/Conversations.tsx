@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'classnames';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -17,7 +17,7 @@ import {
 } from '../../redux';
 import { useIntl } from 'react-intl';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   uppercase: {
     textTransform: 'uppercase',
   },
@@ -33,12 +33,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Conversations() {
-  const [selectedIndex, setSelectedIndex] = useState(2);
   const intl = useIntl();
   const classes = useStyles();
   const dispatch = useDispatch();
   const ownConversation = useSelector(chatOwnConversationsSelector);
   const publicConversations = useSelector(chatPublicConversationsSelector);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    const allInboxIndex = publicConversations.findIndex(
+      (conversation) => conversation.name === 'All'
+    );
+    setSelectedIndex(allInboxIndex + 1);
+  }, [publicConversations.length]);
 
   const icons = useMemo(
     () => [
