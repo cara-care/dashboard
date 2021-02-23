@@ -23,20 +23,28 @@ const ConverstaionItemWrapper = styled.div<ConverstaionItemWrapperProps>`
   }
 `;
 
+interface ConverstaionsItemProps {
+  icon: JSX.Element | string;
+  text: string | undefined;
+  handleSelected: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  count?: number;
+  active?: boolean;
+  type?: string;
+}
+
 function ConverstaionsItem({
-  type = 'primary',
   icon,
   text,
   count,
-  selectedIndex,
+  active = false,
   handleSelected,
-}: any) {
+  type = 'primary',
+}: ConverstaionsItemProps) {
   const theme = useTheme();
-
   return (
     <ConverstaionItemWrapper
       theme={theme}
-      active={selectedIndex}
+      active={active}
       onClick={handleSelected}
     >
       <div

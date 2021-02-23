@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'classnames';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -17,7 +17,7 @@ import {
 } from '../../redux';
 import { useIntl } from 'react-intl';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   uppercase: {
     textTransform: 'uppercase',
   },
@@ -33,12 +33,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Conversations() {
-  const [selectedIndex, setSelectedIndex] = useState(2);
   const intl = useIntl();
   const classes = useStyles();
   const dispatch = useDispatch();
   const ownConversation = useSelector(chatOwnConversationsSelector);
   const publicConversations = useSelector(chatPublicConversationsSelector);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
+  useEffect(() => {
+    if (!publicConversations.length) return;
+    const allInboxIndex = publicConversations.findIndex(
+      (conversation) => conversation.name === 'All'
+    );
+    setSelectedIndex(allInboxIndex + 1);
+    // eslint-disable-next-line
+  }, [publicConversations.length]);
 
   const icons = useMemo(
     () => [
@@ -60,12 +69,14 @@ export default function Conversations() {
     [dispatch]
   );
 
-  const handleListItemClick = (
-    _: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
-  ) => {
-    setSelectedIndex(index);
-  };
+  const handleListItemClick = useCallback(
+    (_: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+      setSelectedIndex(index);
+    },
+    []
+  );
+
+  const handleCreateView = useCallback(() => {}, []);
 
   const renderConversationItems = useCallback(() => {
     return [ownConversation, ...publicConversations].map(
@@ -93,7 +104,7 @@ export default function Conversations() {
                 : conversation?.name
             }
             count={conversation?.rooms}
-            selectedIndex={selectedIndex === index}
+            active={selectedIndex === index}
             handleSelected={(
               e: React.MouseEvent<HTMLDivElement, MouseEvent>
             ) => {
@@ -113,6 +124,7 @@ export default function Conversations() {
     setChatSlug,
     classes.avatar,
     classes.avatarEmoji,
+    handleListItemClick,
   ]);
 
   return (
@@ -141,7 +153,11 @@ export default function Conversations() {
         </AccordionSummary>
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
           {renderConversationItems()}
-          <ConverstaionsItem icon={<AddIcon />} text="Create View" />
+          <ConverstaionsItem
+            icon={<AddIcon />}
+            text="Create View"
+            handleSelected={handleCreateView}
+          />
         </AccordionDetails>
       </Accordion>
     </div>

@@ -65,9 +65,9 @@ export const chatConversationsMock = [
   { name: 'Unknown', private: false, slug: 'unknown', count: 0 },
   { name: 'All', private: false, slug: 'all', count: 0 },
   {
-    name: 'Test Conversation',
+    name: 'Test Nutri',
     private: false,
-    slug: 'test-conversation',
+    slug: 'test-nutri',
     count: 0,
   },
 ];
