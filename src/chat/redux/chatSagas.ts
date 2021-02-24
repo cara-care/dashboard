@@ -41,8 +41,8 @@ export function* getCurrentUserData({
     if (!id) return;
     yield put(setCurrentUserLoading(true));
     const userResponse = yield call(() => getUserDataById(id));
-    yield put(setCurrentChatUser(userResponse.data));
     const noteResponse = yield call(() => getNotesList(id));
+    yield put(setCurrentChatUser(userResponse.data));
     yield put(setChatUserNotes(noteResponse.data));
     if (refetchMessages) {
       queryCache.refetchQueries(`messages-${username}`);
