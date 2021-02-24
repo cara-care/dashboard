@@ -128,11 +128,16 @@ export const addChatRoom = (chatRoom: ChatRoom): AddChatRoom => ({
 export interface SetChatRooms {
   type: ChatActionTypes.SET_CHAT_ROOMS;
   chatRooms: ChatRoom[];
+  isNewRoom: boolean;
 }
 
-export const setChatRooms = (chatRooms: ChatRoom[]): SetChatRooms => ({
+export const setChatRooms = (
+  chatRooms: ChatRoom[],
+  isNewRoom: boolean
+): SetChatRooms => ({
   type: ChatActionTypes.SET_CHAT_ROOMS,
   chatRooms,
+  isNewRoom,
 });
 
 // not used
@@ -235,7 +240,7 @@ export const deleteChatUserNote = (id: number): DeleteChatUserNote => ({
 
 export interface SetNoteEditMode {
   type: ChatActionTypes.SET_NOTE_EDIT_MODE;
-  payload: ChatEditMode
+  payload: ChatEditMode;
 }
 
 export const setNodeEditMode = (payload: ChatEditMode): SetNoteEditMode => ({

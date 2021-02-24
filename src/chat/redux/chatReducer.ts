@@ -22,7 +22,7 @@ export interface ChatState {
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
-  noteEditMode: ChatEditMode
+  noteEditMode: ChatEditMode;
 }
 
 export const initialEditMode = {
@@ -102,7 +102,9 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         chatRooms: [action.chatRoom, ...state.chatRooms],
       };
     case ChatActionTypes.SET_CHAT_ROOMS:
-      const newChatRooms = uniqBy(action.chatRooms, 'patient.id');
+      const newChatRooms = action.isNewRoom
+        ? uniqBy(action.chatRooms, 'patient.id')
+        : uniqBy([...state.chatRooms, ...action.chatRooms], 'patient.id');
       return {
         ...state,
         chatRooms: newChatRooms,

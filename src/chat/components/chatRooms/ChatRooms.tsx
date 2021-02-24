@@ -16,11 +16,13 @@ import {
   setChatRooms,
   getChatRoomsFullName,
   chatRoomsNumberSelector,
+  ChatRoom,
 } from '../../redux';
 import { ChatRoomsError } from '../other/Errors';
 import { Divider, Typography } from '@material-ui/core';
 import { getNutriName } from '../../../auth';
 import { useIntl } from 'react-intl';
+import getParams from '../../../utils/getParams';
 
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
@@ -48,10 +50,11 @@ export default function ChatRooms() {
   const chatRoomsSlug = useSelector(getChatRoomsSlug);
   const chatRoomName = useSelector(getChatRoomsFullName);
   const nutriName = useSelector(getNutriName);
+  const previousSlug = useRef<string>('all');
 
-  const setChatMessagesToStore = useCallback(
-    (chatRooms: any) => {
-      dispatch(setChatRooms(chatRooms));
+  const setChatRoomsToStore = useCallback(
+    (chatRooms: ChatRoom[], isNewRoom) => {
+      dispatch(setChatRooms(chatRooms, isNewRoom));
     },
     [dispatch]
   );
@@ -68,11 +71,15 @@ export default function ChatRooms() {
     async (
       _key: string,
       chatRoomsSlug: string,
-      limit: number = 100,
-      offset: number = 0
+      url: string = '?limit=100&offset=0'
     ) => {
+      const { limit, offset } = getParams(url);
       const res = await getChatRooms({ chatRoomsSlug, limit, offset });
-      setChatMessagesToStore(res.data.results);
+      setChatRoomsToStore(
+        res.data.results,
+        chatRoomsSlug !== previousSlug.current
+      );
+      previousSlug.current = chatRoomsSlug;
       return res.data;
     },
     {
