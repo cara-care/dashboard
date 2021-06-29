@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     '/api/**',
     createProxyMiddleware({
-      target: 'https://staging.cara.care',
+      target: 'https://eu-staging.cara.care',
       // ws: true, // <-- broken tests but needed for chat development
       ws: process.env.NODE_ENV === 'production',
       changeOrigin: true,
