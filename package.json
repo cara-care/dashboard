@@ -8,7 +8,7 @@
   "scripts": {
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "start": "cross-env HTTPS=true react-scripts start",
+    "start": "cross-env HTTPS=true BROWSER=none react-scripts start",
     "prebuild": "./scripts/deploy.sh",
     "build": "react-scripts build",
     "test": "react-scripts test",
