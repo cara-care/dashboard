@@ -45,11 +45,11 @@ const withProviders = (
           locale={locale}
           messages={messages[locale]}
           onError={(err) => {
-            if (err.code === "MISSING_TRANSLATION") {
-              console.warn("Missing translation", err.message);
-              return;
+            if (err.code === 'MISSING_TRANSLATION') {
+              console.warn(err.message);
+            } else {
+              console.error(err);
             }
-            throw err;
           }}
         >
           <MuiThemeProvider theme={theme}>
