@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Channel, Socket } from 'phoenix';
+import React, { useCallback, useEffect, useRef } from 'react';
+import Kabelwerk from 'kabelwerk';
 import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
@@ -7,11 +7,11 @@ import Chat from '../components/chat/Chat';
 import ChatRooms from '../components/chatRooms/ChatRooms';
 import ChatDetails from '../components/cards/ChatDetails';
 import {
-  addChatMessage,
-  addNewMessageToChatRoomInit,
+  // addChatMessage,
+  // addNewMessageToChatRoomInit,
   currentUserSelector,
 } from '../redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
@@ -55,56 +55,74 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inbox() {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const currentUser = useSelector(currentUserSelector);
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const socket = useRef<Socket | null>(null);
-  const channel = useRef<Channel | null>(null);
+  // const socket = useRef<Socket | null>(null);
+  // const channel = useRef<Channel | null>(null);
 
-  const establishSocketConnection = useCallback(async () => {
+  // const establishSocketConnection = useCallback(async () => {
+  //   try {
+  //     const res = await getChatAuthorizationToken();
+  //     const ws = new Socket('wss://localhost:3000/api/mercury/socket', {
+  //       params: { token: res.data.token },
+  //     });
+  //     socket.current = ws;
+  //     ws.connect();
+  //     ws.onOpen(() => {
+  //       console.info('The socket was opened');
+  //       const nutriChannel = ws.channel('nutris:all');
+  //       nutriChannel.join().receive('ok', () => {
+  //         console.log('Joined to Channel');
+  //         channel.current = nutriChannel;
+  //         setOpen(true);
+  //       });
+  //       nutriChannel.on('message', (message) => {
+  //         dispatch(addChatMessage(message));
+  //         dispatch(addNewMessageToChatRoomInit(message));
+  //       });
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (open) return;
+  //   let interval = setInterval(() => {
+  //     establishSocketConnection();
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [open, establishSocketConnection]);
+
+  // useEffect(() => {
+  //   establishSocketConnection();
+  //   return () => {
+  //     socket.current?.disconnect(() => {
+  //       console.info('The socket was closed');
+  //     });
+  //   };
+  // }, [dispatch, establishSocketConnection]);
+
+
+  const kabelRef = useRef<any>(null);
+
+  useEffect(() => {
     try {
-      const res = await getChatAuthorizationToken();
-      const ws = new Socket('wss://localhost:3000/api/mercury/socket', {
-        params: { token: res.data.token },
-      });
-      socket.current = ws;
-      ws.connect();
-      ws.onOpen(() => {
-        console.info('The socket was opened');
-        const nutriChannel = ws.channel('nutris:all');
-        nutriChannel.join().receive('ok', () => {
-          console.log('Joined to Channel');
-          channel.current = nutriChannel;
-          setOpen(true);
-        });
-        nutriChannel.on('message', (message) => {
-          dispatch(addChatMessage(message));
-          dispatch(addNewMessageToChatRoomInit(message));
-        });
-      });
+      kabelRef.current = Kabelwerk.getKabel();
     } catch (error) {
-      console.log(error);
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (open) return;
-    let interval = setInterval(() => {
-      establishSocketConnection();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [open, establishSocketConnection]);
-
-  useEffect(() => {
-    establishSocketConnection();
-    return () => {
-      socket.current?.disconnect(() => {
-        console.info('The socket was closed');
+      getChatAuthorizationToken().then((res) => {
+        kabelRef.current = Kabelwerk.connect({
+          url: 'wss://eu-staging-chat.cara.care/socket/hub',
+          token: res.data.token,
+          logging: 'info',
+        });
       });
-    };
-  }, [dispatch, establishSocketConnection]);
+    }
+  }, []);
+
 
   const [width, setWidth] = React.useState(320);
 
@@ -115,21 +133,21 @@ export default function Inbox() {
 
   const assignUserToNutri = useCallback(
     (slug: string, room: string = 'undefined') => {
-      channel.current?.push('inbox', {
-        room,
-        inbox: slug,
-      });
+      // channel.current?.push('inbox', {
+      //   room,
+      //   inbox: slug,
+      // });
     },
     []
   );
 
   const sendMessage = useCallback(
     (message: string) => {
-      channel.current?.push('message', {
-        room: currentUser?.username,
-        text: message,
-        sent: new Date().toISOString(),
-      });
+      // channel.current?.push('message', {
+      //   room: currentUser?.username,
+      //   text: message,
+      //   sent: new Date().toISOString(),
+      // });
     },
     [currentUser]
   );

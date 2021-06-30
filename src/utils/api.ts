@@ -192,7 +192,7 @@ export const getUserDataById = (userId: number) => {
 };
 
 export const getChatAuthorizationToken = () => {
-  return api.post(`/mercury/token-dispenser/`);
+  return api.get(`/dashboard/kabelwerk/`);
 };
 
 export const getInboxesList = () => {
