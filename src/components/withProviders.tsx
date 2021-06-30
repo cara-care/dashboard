@@ -41,7 +41,17 @@ const withProviders = (
 
     return (
       <ReactQueryCacheProvider queryCache={queryCache}>
-        <IntlProvider locale={locale} messages={messages[locale]}>
+        <IntlProvider
+          locale={locale}
+          messages={messages[locale]}
+          onError={(err) => {
+            if (err.code === 'MISSING_TRANSLATION') {
+              console.warn(err.message);
+            } else {
+              console.error(err);
+            }
+          }}
+        >
           <MuiThemeProvider theme={theme}>
             <MuiPickersUtilsProvider
               utils={DateFnsAdapter}
