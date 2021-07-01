@@ -10,6 +10,7 @@ import {
   ChatRoom,
   ChatConversation,
   ChatEditMode,
+  Inbox,
 } from './types';
 
 export interface ChatState {
@@ -19,6 +20,9 @@ export interface ChatState {
   chatMessages: ChatMessage[];
   chatRooms: ChatRoom[];
   chatConversations: ChatConversation[];
+  inbox: Inbox | null;
+  inboxRooms: any[];
+  room: any;
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
@@ -38,6 +42,9 @@ export const chatInitialState = {
   chatMessages: [],
   chatRooms: [],
   chatConversations: [],
+  inbox: null,
+  inboxRooms: [],
+  room: null,
   selectedChatAssignment: '',
   selectedChatConversation: {
     name: 'All',
@@ -48,6 +55,7 @@ export const chatInitialState = {
   scrollToChatBottom: false,
   noteEditMode: initialEditMode,
 };
+
 
 export const chatReducer: Reducer<ChatState, ChatActions> = (
   state = chatInitialState,
@@ -71,6 +79,7 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         currentChatUser: null,
       };
+
     // Chat Messages
     case ChatActionTypes.ADD_CHAT_MESSAGE:
       const isCurrentChat =
@@ -95,6 +104,7 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         chatMessages: [],
       };
+
     // Chat Rooms
     case ChatActionTypes.ADD_CHAT_ROOM:
       return {
@@ -125,12 +135,14 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         chatRooms: updatedRooms,
       };
+
     // CHAT CONVERSATIONS
     case ChatActionTypes.SET_CHAT_CONVERSATIONS:
       return {
         ...state,
         chatConversations: [...action.chatConversations],
       };
+
     // CHAT NOTES
     case ChatActionTypes.SET_CHATUSER_NOTES:
       return {
@@ -170,6 +182,7 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         noteEditMode: { ...initialEditMode },
       };
+
     // Other
     case ChatActionTypes.SET_CHAT_ROOMS_SLUG:
       const conversation = state.chatConversations.find(
@@ -190,53 +203,92 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         ...state,
         scrollToChatBottom: action.payload,
       };
+
+    // Kabelwerk
+    case ChatActionTypes.SELECT_INBOX:
+      return {
+        ...state,
+        inbox: action.payload,
+      };
+
+    case ChatActionTypes.UPDATE_INBOX_ROOMS:
+      return {
+        ...state,
+        inboxRooms: action.payload,
+      };
+
     default:
       return state;
   }
 };
 
+
 export const loadingCurrentUserSelector = (state: RootState) =>
   state.chat.loadingCurrentUser;
+
 export const currentUserIdSelector = (state: RootState) =>
   state.chat.currentChatUser?.id;
+
 export const lastContactSelector = (state: RootState) =>
   findLastContact(
     state.chat.chatMessages,
     state.chat.currentChatUser?.username
   );
+
 export const currentUserSelector = (state: RootState) =>
   state.chat.currentChatUser;
+
 export const currentUserUsernameSelector = (state: RootState) =>
   state.chat.currentChatUser?.username;
+
 export const chatMessagesSelector = (state: RootState) =>
   state.chat.chatMessages;
+
 export const lastHeardFromSelector = (state: RootState) =>
   state.chat.chatMessages[0]?.created.slice(0, 10);
+
 export const chatRoomsSelector = (state: RootState) => state.chat.chatRooms;
+
 export const chatRoomsNumberSelector = (state: RootState) =>
   state.chat.chatConversations.find(
     (conversation) =>
       conversation.slug === state.chat.selectedChatConversation.slug
   )?.rooms;
+
 export const getChatRoomsSlug = (state: RootState) =>
   state.chat.selectedChatConversation.slug;
+
 export const getChatRoomsFullName = (state: RootState) =>
   state.chat.selectedChatConversation.name;
+
 export const chatConversationsSelector = (state: RootState) =>
   state.chat.chatConversations;
+
 export const chatPublicConversationsSelector = (state: RootState) =>
   state.chat.chatConversations.filter((conversation) => !conversation.private);
+
 export const chatOwnConversationsSelector = (state: RootState) =>
   state.chat.chatConversations.find(
     (conversation) => conversation.name === state.auth.nutriName
   );
+
 export const selectedAssignmentSelector = (state: RootState) =>
   state.chat.chatConversations?.find(
     (conversation) => conversation.slug === state.chat.selectedChatAssignment
   )?.name;
+
 export const notesSelector = (state: RootState) =>
   state.chat.currentChatUserNotes;
+
 export const noteEditModeSelector = (state: RootState) =>
   state.chat.noteEditMode;
+
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;
+
+
+// Kabelwerk
+
+export const getInbox = (state: RootState) => state.chat.inbox;
+
+export const getInboxRooms = (state: RootState) => state.chat.inboxRooms;

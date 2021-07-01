@@ -5,10 +5,8 @@ import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import { Avatar, makeStyles } from '@material-ui/core';
 import ConverstaionsItem from './ConversationsItem';
 import { useDispatch } from 'react-redux';
-import {
-  setChatRoomsSlug,
-} from '../../redux';
-import { useIntl } from 'react-intl';
+import { selectInbox } from '../../redux';
+import { INBOXES } from '../../inboxes';
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -22,29 +20,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const INBOXES = [
-  {slug: 'personal', name: 'Assigned to me', icon: '💚'},
-  {slug: 'DE:free', name: 'Germany (free)', icon: '🐙'},
-  {slug: 'DE:premium', name: 'Germany (premium)', icon: '🐻'},
-  {slug: 'UK:free', name: 'UK (free)', icon: '🐙'},
-  {slug: 'UK:premium', name: 'UK (premium)', icon: '🐻'},
-  {slug: 'pilot_study', name: 'Anwendertest', icon: '🧪'},
-  {slug: '_', name: 'Unknown', icon: '❓'},
-  {slug: 'all', name: 'All', icon: '🌍'},
-];
-
 export default function Conversations() {
-  const intl = useIntl();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const setChatSlug = useCallback(
-    (slug: string = 'undefined') => {
-      dispatch(setChatRoomsSlug(slug));
-    },
-    [dispatch]
-  );
 
   const renderConversationItems = useCallback(() => {
     return INBOXES.map(
@@ -62,18 +41,17 @@ export default function Conversations() {
             active={selectedIndex === index}
             handleSelected={() => {
               setSelectedIndex(index);
-              setChatSlug(inbox.name);
+              dispatch(selectInbox(inbox));
             }}
           />
         );
       }
     );
   }, [
-    intl,
-    selectedIndex,
-    setChatSlug,
     classes.avatar,
     classes.avatarEmoji,
+    dispatch,
+    selectedIndex,
   ]);
 
   return (

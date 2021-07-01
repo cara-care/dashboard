@@ -71,3 +71,10 @@ export interface ChatEditMode {
   noteId: number;
   message: string;
 }
+
+
+export interface Inbox {
+  slug: string;
+  name: string;
+  icon: string;
+}

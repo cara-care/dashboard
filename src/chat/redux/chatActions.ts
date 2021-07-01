@@ -6,6 +6,7 @@ import {
   ChatRoomPatient,
   ChatUser,
   ChatUserNote,
+  Inbox,
 } from './types';
 
 export enum ChatActionTypes {
@@ -31,7 +32,13 @@ export enum ChatActionTypes {
   DELETE_CHATUSER_NOTE = 'chat/DELETE_CHATUSER_NOTE',
   SET_NOTE_EDIT_MODE = 'chat/SET_NOTE_EDIT_MODE',
   CLEAR_NOTE_EDIT_MODE = 'chat/CLEAR_NOTE_EDIT_MODE',
+
+  // Kabelwerk
+  SELECT_INBOX = 'chat/SELECT_INBOX',
+  SELECT_ROOM = 'chat/SELECT_ROOM',
+  UPDATE_INBOX_ROOMS = 'chat/UPDATE_INBOX_ROOMS',
 }
+
 
 // Chat User
 
@@ -81,6 +88,7 @@ export const clearCurrentChatUser = (): ClearCurrentUserAction => ({
   type: ChatActionTypes.CLEAR_CURRENT_CHAT_USER,
 });
 
+
 // Chat Messages
 
 export interface AddChatMessage {
@@ -113,6 +121,7 @@ export const clearChatMessages = (): ClearChatMessages => ({
   type: ChatActionTypes.CLEAR_CHAT_MESSAGES,
 });
 
+
 // Chat Rooms
 
 export interface AddChatRoom {
@@ -140,6 +149,7 @@ export const setChatRooms = (
   isNewRoom,
 });
 
+
 // not used
 export interface ClearChatRooms {
   type: ChatActionTypes.CLEAR_CHAT_ROOMS;
@@ -148,6 +158,7 @@ export interface ClearChatRooms {
 export const clearChatRooms = (): ClearChatRooms => ({
   type: ChatActionTypes.CLEAR_CHAT_ROOMS,
 });
+
 
 // Add Msg to Chat Room
 
@@ -178,6 +189,7 @@ export const addNewMessageToChatRoom = (
   message,
 });
 
+
 // Chat Conversations
 
 export interface SetChatConversations {
@@ -192,7 +204,9 @@ export const setChatConversations = (
   chatConversations,
 });
 
+
 // ChatUser Notes
+
 export interface SetChatUserNotes {
   type: ChatActionTypes.SET_CHATUSER_NOTES;
   notes: ChatUserNote[];
@@ -256,6 +270,37 @@ export const clearEditMode = (): ClearEditMode => ({
   type: ChatActionTypes.CLEAR_NOTE_EDIT_MODE,
 });
 
+
+// Kabelwerk
+
+export interface SelectInbox {
+  type: ChatActionTypes.SELECT_INBOX,
+  payload: Inbox
+}
+export const selectInbox = (payload: Inbox): SelectInbox => ({
+  type: ChatActionTypes.SELECT_INBOX,
+  payload,
+});
+
+export interface SelectRoom {
+  type: ChatActionTypes.SELECT_ROOM,
+  payload: number,
+}
+export const selectRoom = (payload: number): SelectRoom => ({
+  type: ChatActionTypes.SELECT_ROOM,
+  payload,
+});
+
+export interface UpdateInboxRooms {
+  type: ChatActionTypes.UPDATE_INBOX_ROOMS,
+  payload: any[]
+}
+export const updateInboxRooms = (payload: any[]): UpdateInboxRooms => ({
+  type: ChatActionTypes.UPDATE_INBOX_ROOMS,
+  payload,
+});
+
+
 // Others
 
 export interface SetChatRoomsSlug {
@@ -290,6 +335,7 @@ export const setScrollToBottom = (payload: boolean): SetScrollToBottom => ({
   payload,
 });
 
+
 export type ChatActions =
   | SetCurrentUserLoading
   | SetCurrentUserActionInit
@@ -312,4 +358,7 @@ export type ChatActions =
   | EditChatUserNote
   | DeleteChatUserNote
   | SetNoteEditMode
-  | ClearEditMode;
+  | ClearEditMode
+  | SelectInbox
+  | SelectRoom
+  | UpdateInboxRooms;

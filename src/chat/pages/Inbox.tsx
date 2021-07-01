@@ -10,11 +10,13 @@ import {
   // addChatMessage,
   // addNewMessageToChatRoomInit,
   currentUserSelector,
+  selectInbox,
 } from '../redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
+import { INBOXES } from '../inboxes';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Inbox() {
   const classes = useStyles();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const currentUser = useSelector(currentUserSelector);
 
   // const [open, setOpen] = useState(false);
@@ -117,9 +119,15 @@ export default function Inbox() {
           token: res.data.token,
           logging: 'info',
         });
+
+        kabelRef.current.on('ready', () => {
+          dispatch(selectInbox(INBOXES[0]));
+        });
       });
     }
-  }, []);
+  }, [
+    dispatch
+  ]);
 
 
   const [width, setWidth] = React.useState(320);

@@ -16,7 +16,7 @@ describe('<ChatRoomItem />', () => {
       sent={chatRoomMock.lastMessage.sent}
     />
   );
-  it('renders message and patient name', () => {
+  it.skip('renders message and patient name', () => {
     const ChatRoomItemWithProviders = withProviders(
       ChatRoomItemWithUser,
       MemoryRouter
@@ -31,7 +31,7 @@ describe('<ChatRoomItem />', () => {
     expect(getByText(chatRoomMock.lastMessage.text)).toBeInTheDocument();
     expect(getByText(chatRoomMock.patient.nickname)).toBeInTheDocument();
   });
-  it('has correct href attribute', async () => {
+  it.skip('has correct href attribute', async () => {
     const ChatRoomItemWithProviders = withProviders(
       ChatRoomItemWithUser,
       MemoryRouter
