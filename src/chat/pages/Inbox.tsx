@@ -38,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
-
-    //
     position: 'relative',
   },
   details: {
@@ -49,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inboxSidebar: {
     display: 'flex',
-    flex: '0 0 300px',
+    flex: '0 0 275px',
   },
 }));
 

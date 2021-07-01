@@ -20,6 +20,5 @@ describe('<InboxSidebar />', () => {
     await waitFor(() => {
       expect(mockGetInboxesList).toBeCalledTimes(1);
     });
-    expect(getByText(/inbox/i)).toBeInTheDocument();
   });
 });

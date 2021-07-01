@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import withProviders from '../../../components/withProviders';
 import { renderWithRedux } from '../../../utils/test-utils';
-import Conversations from '../../components/inboxSidebar/Conversations';
+import Conversations, { INBOXES } from '../../components/inboxSidebar/Conversations';
 import { chatConversationsMock } from '../../testHelpers';
 
 describe('<Conversations />', () => {
@@ -22,9 +22,8 @@ describe('<Conversations />', () => {
         },
       },
     });
-    expect(getByText('You')).toBeInTheDocument();
-    chatConversationsMock.forEach((conversation) => {
-      expect(getByText(conversation.name)).toBeInTheDocument();
+    INBOXES.forEach((inbox) => {
+      expect(getByText(inbox.name)).toBeInTheDocument();
     });
   });
 });
