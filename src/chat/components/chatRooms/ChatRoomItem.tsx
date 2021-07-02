@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { formatDistanceToNowStrict } from 'date-fns';
 import truncate from 'lodash/truncate';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,14 +55,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   nickname: {
+    fontWeight: 'bold',
     whiteSpace: 'pre-wrap',
   },
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-export default React.memo(function ChatRoomItem({
-  room,
-}: any) {
+export default React.memo(function ChatRoomItem({ room }: any) {
   const classes = useStyles();
   const dispatch = useDispatch();
   // const loadingUserData = useSelector(loadingCurrentUserSelector);
@@ -91,7 +89,7 @@ export default React.memo(function ChatRoomItem({
   // };
 
   const handleClick = () => {
-    dispatch(selectRoom(room.id));
+    dispatch(selectRoom(room));
   };
 
   return (
@@ -103,9 +101,8 @@ export default React.memo(function ChatRoomItem({
     >
       <div className={classes.root}>
         <div className={classes.container}>
-          <Avatar className={classes.avatar} />
           <div className={classes.inner}>
-            <Typography variant="h6" className={classes.nickname}>
+            <Typography className={classes.nickname}>
               {'Unknown' || <CloseIcon style={{ fontSize: 18 }} />}
             </Typography>
             <Typography variant="body2">
@@ -114,7 +111,9 @@ export default React.memo(function ChatRoomItem({
           </div>
         </div>
         <Typography variant="caption">
-          {formatDistanceToNowStrict(room.lastMessage.insertedAt)}
+          {room.lastMessage
+            ? formatDistanceToNowStrict(room.lastMessage.insertedAt)
+            : 'unknown'}
         </Typography>
       </div>
       <Divider className={classes.divder} />

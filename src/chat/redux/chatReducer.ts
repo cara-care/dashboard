@@ -11,6 +11,8 @@ import {
   ChatConversation,
   ChatEditMode,
   Inbox,
+  InboxRoom,
+  Message,
 } from './types';
 
 export interface ChatState {
@@ -22,7 +24,8 @@ export interface ChatState {
   chatConversations: ChatConversation[];
   inbox: Inbox | null;
   inboxRooms: any[];
-  room: any;
+  messages: Message[];
+  room: InboxRoom | null;
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
   scrollToChatBottom: boolean;
@@ -44,6 +47,7 @@ export const chatInitialState = {
   chatConversations: [],
   inbox: null,
   inboxRooms: [],
+  messages: [],
   room: null,
   selectedChatAssignment: '',
   selectedChatConversation: {
@@ -211,10 +215,32 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         inbox: action.payload,
       };
 
+    case ChatActionTypes.SELECT_ROOM:
+      return {
+        ...state,
+        room: action.payload,
+      };
+
     case ChatActionTypes.UPDATE_INBOX_ROOMS:
       return {
         ...state,
         inboxRooms: action.payload,
+      };
+
+    case ChatActionTypes.UPDATE_MESSAGES:
+      let newMessages = [];
+
+      if (action.subtype === 'prepend') {
+        newMessages = action.payload.concat(state.messages);
+      } else if (action.subtype === 'append') {
+        newMessages = state.messages.concat(action.payload);
+      } else {
+        newMessages = action.payload;
+      }
+
+      return {
+        ...state,
+        messages: newMessages,
       };
 
     default:
@@ -292,3 +318,7 @@ export const scrollToChatBottomSelector = (state: RootState) =>
 export const getInbox = (state: RootState) => state.chat.inbox;
 
 export const getInboxRooms = (state: RootState) => state.chat.inboxRooms;
+
+export const getRoom = (state: RootState) => state.chat.room;
+
+export const getMessages = (state: RootState) => state.chat.messages;

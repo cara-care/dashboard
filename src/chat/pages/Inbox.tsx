@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Kabelwerk from 'kabelwerk';
 import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,11 +9,11 @@ import ChatDetails from '../components/cards/ChatDetails';
 import {
   // addChatMessage,
   // addNewMessageToChatRoomInit,
-  currentUserSelector,
+  // currentUserSelector,
   selectInbox,
 } from '../redux';
-import { useDispatch, useSelector } from 'react-redux';
-import ChatHeader from '../components/chatHeader/ChatHeader';
+import { useDispatch } from 'react-redux';
+// import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
 import { INBOXES } from '../inboxes';
@@ -49,14 +49,14 @@ const useStyles = makeStyles((theme) => ({
   },
   inboxSidebar: {
     display: 'flex',
-    flex: '0 0 275px',
+    flex: '0 0 250px',
   },
 }));
 
 export default function Inbox() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const currentUser = useSelector(currentUserSelector);
+  // const currentUser = useSelector(currentUserSelector);
 
   // const [open, setOpen] = useState(false);
 
@@ -137,26 +137,6 @@ export default function Inbox() {
     setWidth(width + d.width);
   };
 
-  const assignUserToNutri = useCallback(
-    (slug: string, room: string = 'undefined') => {
-      // channel.current?.push('inbox', {
-      //   room,
-      //   inbox: slug,
-      // });
-    },
-    []
-  );
-
-  const sendMessage = useCallback(
-    (message: string) => {
-      // channel.current?.push('message', {
-      //   room: currentUser?.username,
-      //   text: message,
-      //   sent: new Date().toISOString(),
-      // });
-    },
-    [currentUser]
-  );
 
   return (
     <>
@@ -176,15 +156,9 @@ export default function Inbox() {
           <ChatRooms />
         </Resizable>
 
-        {currentUser && (
-          <div className={classes.main} data-testid={CHAT_WRAPPER}>
-            <ChatHeader
-              user={currentUser}
-              assignUserToNutri={assignUserToNutri}
-            />
-            <Chat user={currentUser} onSendMessage={sendMessage} />
-          </div>
-        )}
+        <div className={classes.main} data-testid={CHAT_WRAPPER}>
+          <Chat />
+        </div>
         <div className={classes.details}>
           <ChatDetails />
         </div>

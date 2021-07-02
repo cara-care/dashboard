@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Kabelwerk from 'kabelwerk';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import Spinner from '../../../components/Spinner';
 import ChatRoomsList from './ChatRoomsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInbox, updateInboxRooms } from '../../redux';
@@ -26,22 +29,35 @@ const useStyles = makeStyles((_theme) => ({
 export default function ChatRooms() {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
+
+  // the inbox selected from the sidebar to the very left
   const selectedInbox = useSelector(getInbox);
 
-  useEffect(() => {
-    let kabel, params, inbox;
+  // Kabelwerk's inbox object
+  const inboxRef = useRef<any>(null);
 
+  // whether we are awaiting Kabelwerk's loadMore() function
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // whether we have reached the bottom of the room list
+  const [canLoadMore, setCanLoadMore] = useState(true);
+
+  useEffect(() => {
     if (!selectedInbox) {
       return;  // do nothing if no inbox is selected yet
     }
 
+    let kabel;
     try {
       kabel = Kabelwerk.getKabel();
     } catch (error) {
       return;  // do nothing if the websocket is not connected yet
     }
 
-    params = {limit: 10};
+    let params = {limit: 10};
     switch (selectedInbox.slug) {
       case 'personal':
         break;
@@ -74,13 +90,13 @@ export default function ChatRooms() {
         break;
     }
 
-    inbox = kabel.openInbox(params);
+    inboxRef.current = kabel.openInbox(params);
 
-    inbox.on('ready', (rooms: any[]) => {
+    inboxRef.current.on('ready', (rooms: any[]) => {
       dispatch(updateInboxRooms(rooms));
     });
 
-    inbox.on('updated', (rooms: any[]) => {
+    inboxRef.current.on('updated', (rooms: any[]) => {
       dispatch(updateInboxRooms(rooms));
     });
   }, [
@@ -88,15 +104,60 @@ export default function ChatRooms() {
     selectedInbox,
   ]);
 
+  const handleIntersect = function() {
+    if (inboxRef.current && !isLoadingMore && canLoadMore) {
+      setIsLoadingMore(true);
+      inboxRef.current.loadMore().then((rooms: any[]) => {
+        if (rooms.length) {
+          dispatch(updateInboxRooms(rooms));
+        } else {
+          setCanLoadMore(false);
+        }
+        setIsLoadingMore(false);
+      }).catch((error: any) => {
+        console.error(error);
+        setIsLoadingMore(false);
+      });
+    }
+  };
+
+  useIntersectionObserver({
+    targetRef: loadMoreButtonRef,
+    rootRef: rootRef,
+    onIntersect: handleIntersect,
+    threshold: 0.5,
+    rootMargin: '16px',
+    enabled: canLoadMore,
+  });
+
   return (
-    <div className={classes.sidebar}>
+    <div ref={rootRef} className={classes.sidebar}>
       <Box className={classes.headerBox}>
         <Typography variant="h6">
           {selectedInbox ? selectedInbox.name : 'Loading…'}
         </Typography>
+        <Typography variant="subtitle1">666</Typography>
       </Box>
       <Divider className={classes.divider} />
       <ChatRoomsList />
+      {isLoadingMore ? (
+        <Box
+          px={2}
+          py={1}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Spinner size={24} noText />
+        </Box>
+      ) : canLoadMore ? (
+        <Button
+          ref={loadMoreButtonRef}
+          disabled={true}
+        >
+          {isLoadingMore ? 'Loading...' : 'Load more'}
+        </Button>
+      ) : null}
     </div>
   );
 }

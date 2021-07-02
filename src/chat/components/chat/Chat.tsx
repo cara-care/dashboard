@@ -1,28 +1,13 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { useInfiniteQuery } from 'react-query';
-import clsx from 'classnames';
+import React, { useEffect, useRef, useState } from 'react';
+import Kabelwerk from 'kabelwerk';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import times from 'lodash/times';
-import MessageSkeleton from '../other/MessageSkeleton';
 import InputToolbar from './InputToolbar';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../../../components/Spinner';
-import { getMessages } from '../../../utils/api';
-import getParams from '../../../utils/getParams';
 import ChatMessagesList from './ChatMessagesList';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setChatMessages,
-  scrollToChatBottomSelector,
-  ChatUser,
-  setScrollToBottom,
-  clearChatMessages,
-  setCurrentChatUser,
-  loadingCurrentUserSelector,
-} from '../../redux';
-import { ChatMessagesError } from '../other/Errors';
+import { Message, getRoom, updateMessages } from '../../redux';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -51,132 +36,90 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export interface ChatProps {
-  user: ChatUser;
-  onSendMessage: (message: string) => void;
-}
-
-export default React.memo(function Chat({ user, onSendMessage }: ChatProps) {
+export default function Chat() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { id: userId, username } = user;
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
-  const isScrollNeeded = useSelector(scrollToChatBottomSelector);
+
   const messagesRootRef = useRef<HTMLDivElement>(null);
   const messagesTopRef = useRef<HTMLDivElement>(null);
 
-  const performScrollToBottom = () => {
-    messagesRootRef.current!.scrollTop = messagesRootRef.current!.scrollHeight;
+  // the inbox item selected from the list to the left
+  const selectedRoom = useSelector(getRoom);
+
+  // Kabelwerk's room object
+  const roomRef = useRef<any>(null);
+
+  // whether we are awaiting Kabelwerk's loadEarlier() function
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // whether we have reached the earliest message in the room
+  const [canLoadMore, setCanLoadMore] = useState(true);
+
+  useEffect(() => {
+    // do nothing if no room is selected yet
+    if (!selectedRoom) return;
+
+    // if we have selected a room, we have a connection
+    let kabel = Kabelwerk.getKabel();
+
+    // replace the existing room object, if such
+    roomRef.current = kabel.openRoom(selectedRoom.id);
+
+    roomRef.current.on('ready', (messages: Message[]) => {
+      dispatch(updateMessages(messages));
+    });
+
+    roomRef.current.on('message_posted', (message: Message) => {
+      console.log(message);
+    });
+  }, [
+    dispatch,
+    selectedRoom,
+  ]);
+
+  const handleIntersect = function() {
+    if (roomRef.current && !isLoadingMore && canLoadMore) {
+      setIsLoadingMore(true);
+      roomRef.current.loadEarlier().then((messages: Message[]) => {
+        if (messages.length) {
+          dispatch(updateMessages(messages, 'prepend'));
+        } else {
+          setCanLoadMore(false);
+        }
+        setIsLoadingMore(false);
+      }).catch((error: any) => {
+        console.error(error);
+        setIsLoadingMore(false);
+      });
+    }
   };
-
-  const setScrollValue = useCallback(
-    (value: boolean) => {
-      dispatch(setScrollToBottom(value));
-    },
-    [dispatch]
-  );
-
-  const clearChat = useCallback(() => {
-    dispatch(clearChatMessages());
-    dispatch(setCurrentChatUser(null));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isScrollNeeded) {
-      performScrollToBottom();
-      setScrollValue(false);
-    }
-  }, [isScrollNeeded, setScrollValue]);
-
-  useEffect(() => {
-    return () => {
-      clearChat();
-    };
-  }, [clearChat]);
-
-  const setChatMessagesToStore = useCallback(
-    (chatMessages: any) => {
-      dispatch(setChatMessages(chatMessages));
-    },
-    [dispatch]
-  );
-
-  const {
-    status,
-    error,
-    data,
-    refetch,
-    isFetchingMore,
-    fetchMore,
-    canFetchMore,
-  } = useInfiniteQuery(
-    `messages-${username}`,
-    async (_key, url: string = '?limit=100&offset=0') => {
-      const { limit, offset } = getParams(url);
-      const res = await getMessages({ userId, limit, offset });
-      setChatMessagesToStore(res.data.results);
-      return res.data;
-    },
-    {
-      cacheTime: 0,
-      enabled: !!username || !!userId,
-      refetchOnWindowFocus: false,
-      getFetchMore: (lastPage) => (lastPage.next ? lastPage.next : null),
-    }
-  );
-
-  const onIntersect = React.useCallback(() => {
-    if (!isFetchingMore) {
-      fetchMore();
-    }
-  }, [isFetchingMore, fetchMore]);
 
   useIntersectionObserver({
     targetRef: messagesTopRef,
     rootRef: messagesRootRef,
-    onIntersect,
+    onIntersect: handleIntersect,
     threshold: 0.5,
     rootMargin: '20px',
-    enabled: !!canFetchMore,
+    enabled: canLoadMore,
   });
-
-  if (loadingUserData || status === 'loading') {
-    return (
-      <div className={clsx(classes.messages, classes.noScroll)}>
-        {times(5).map((n) => (
-          <MessageSkeleton key={n} />
-        ))}
-      </div>
-    );
-  }
 
   return (
     <>
-      {status === 'error' ? (
-        <ChatMessagesError {...{ error, refetch }} />
-      ) : data?.length ? (
-        <div ref={messagesRootRef} className={classes.messages}>
-          <ChatMessagesList />
-          <div ref={messagesTopRef} className={classes.top} />
-          {isFetchingMore && (
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              p={1}
-            >
-              <Spinner size={24} noText />
-            </Box>
-          )}
-        </div>
-      ) : (
-        <div className={classes.center}>
-          <Typography>
-            {username ? 'No messages here yet...' : 'Please select a room...'}
-          </Typography>
-        </div>
-      )}
-      {username && <InputToolbar onSubmit={onSendMessage} />}
+      <div ref={messagesRootRef} className={classes.messages}>
+        <ChatMessagesList />
+        <div ref={messagesTopRef} className={classes.top} />
+        {isLoadingMore && (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            p={1}
+          >
+            <Spinner size={24} noText />
+          </Box>
+        )}
+      </div>
+      <InputToolbar onSubmit={console.log} />
     </>
   );
-});
+};

@@ -7,6 +7,8 @@ import {
   ChatUser,
   ChatUserNote,
   Inbox,
+  InboxRoom,
+  Message,
 } from './types';
 
 export enum ChatActionTypes {
@@ -37,6 +39,7 @@ export enum ChatActionTypes {
   SELECT_INBOX = 'chat/SELECT_INBOX',
   SELECT_ROOM = 'chat/SELECT_ROOM',
   UPDATE_INBOX_ROOMS = 'chat/UPDATE_INBOX_ROOMS',
+  UPDATE_MESSAGES = 'chat/UPDATE_MESSAGES',
 }
 
 
@@ -274,8 +277,8 @@ export const clearEditMode = (): ClearEditMode => ({
 // Kabelwerk
 
 export interface SelectInbox {
-  type: ChatActionTypes.SELECT_INBOX,
-  payload: Inbox
+  type: ChatActionTypes.SELECT_INBOX;
+  payload: Inbox;
 }
 export const selectInbox = (payload: Inbox): SelectInbox => ({
   type: ChatActionTypes.SELECT_INBOX,
@@ -283,20 +286,31 @@ export const selectInbox = (payload: Inbox): SelectInbox => ({
 });
 
 export interface SelectRoom {
-  type: ChatActionTypes.SELECT_ROOM,
-  payload: number,
+  type: ChatActionTypes.SELECT_ROOM;
+  payload: InboxRoom;
 }
-export const selectRoom = (payload: number): SelectRoom => ({
+export const selectRoom = (payload: InboxRoom): SelectRoom => ({
   type: ChatActionTypes.SELECT_ROOM,
   payload,
 });
 
 export interface UpdateInboxRooms {
-  type: ChatActionTypes.UPDATE_INBOX_ROOMS,
-  payload: any[]
+  type: ChatActionTypes.UPDATE_INBOX_ROOMS;
+  payload: any[];
 }
 export const updateInboxRooms = (payload: any[]): UpdateInboxRooms => ({
   type: ChatActionTypes.UPDATE_INBOX_ROOMS,
+  payload,
+});
+
+export interface UpdateMessages {
+  type: ChatActionTypes.UPDATE_MESSAGES;
+  subtype: string;
+  payload: Message[];
+}
+export const updateMessages = (payload: Message[], subtype: string = ''): UpdateMessages => ({
+  type: ChatActionTypes.UPDATE_MESSAGES,
+  subtype,
   payload,
 });
 
@@ -361,4 +375,5 @@ export type ChatActions =
   | ClearEditMode
   | SelectInbox
   | SelectRoom
-  | UpdateInboxRooms;
+  | UpdateInboxRooms
+  | UpdateMessages

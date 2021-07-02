@@ -78,3 +78,23 @@ export interface Inbox {
   name: string;
   icon: string;
 }
+
+export interface InboxRoom {
+  id: number;
+  lastMessage: Message | null;
+}
+
+export interface Message {
+  id: number;
+  insertedAt: Date;
+  roomId: number;
+  text: string;
+  updatedAt: Date;
+  user: MessageAuthor | null;
+}
+
+export interface MessageAuthor {
+  id: number;
+  key: string;
+  name: string;
+}
