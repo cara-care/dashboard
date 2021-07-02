@@ -9,6 +9,7 @@ import ChatMessagesList from './ChatMessagesList';
 import { useDispatch, useSelector } from 'react-redux';
 import { Message, getRoom, updateMessages } from '../../redux';
 
+
 const useStyles = makeStyles((theme) => ({
   messages: {
     flex: 1,
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
 }));
+
 
 export default function Chat() {
   const classes = useStyles();
@@ -70,12 +72,21 @@ export default function Chat() {
     });
 
     roomRef.current.on('message_posted', (message: Message) => {
-      console.log(message);
+      dispatch(updateMessages([message], 'append'));
     });
   }, [
     dispatch,
     selectedRoom,
   ]);
+
+  const postMessage = function(text: string) {
+    if (roomRef.current) {
+      // the message_posted hook above takes care of displaying it
+      roomRef.current.postMessage({ text }).catch((error: any) => {
+        console.error(error);
+      });
+    }
+  };
 
   const handleIntersect = function() {
     if (roomRef.current && !isLoadingMore && canLoadMore) {
@@ -119,7 +130,7 @@ export default function Chat() {
           </Box>
         )}
       </div>
-      <InputToolbar onSubmit={console.log} />
+      {selectedRoom && <InputToolbar onSubmit={postMessage} />}
     </>
   );
 };

@@ -27,7 +27,7 @@ export default function ChatMessagesList() {
     let messageDate = getDate(message.insertedAt);
     if (lastDate && messageDate !== lastDate) {
       output.push(
-        <MessageDivider content={lastDate} />
+        <MessageDivider key={lastDate} content={lastDate} />
       )
       lastDate = messageDate;
     } else if (!lastDate) {  // the first iteration
@@ -48,7 +48,7 @@ export default function ChatMessagesList() {
   return (
     <>
       {output}
-      {lastDate && <MessageDivider content={lastDate} />}
+      {lastDate && <MessageDivider key={lastDate} content={lastDate} />}
     </>
   );
 }

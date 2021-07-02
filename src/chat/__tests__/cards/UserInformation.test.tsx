@@ -5,7 +5,7 @@ import { renderWithRedux } from '../../../utils/test-utils';
 import UserInformation from '../../components/cards/UserInformation';
 import { chatMessagesMock, currentUserMock } from '../../testHelpers';
 
-describe('<UserInformation />', () => {
+describe.skip('<UserInformation />', () => {
   const UserInformationWithUser = () => <UserInformation />;
   it('renders user data correctly', () => {
     const UserInformationWithProviders = withProviders(

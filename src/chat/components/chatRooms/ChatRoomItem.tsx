@@ -6,8 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
-import { selectRoom } from '../../redux';
-import CloseIcon from '@material-ui/icons/Close';
+import { InboxRoom, selectRoom } from '../../redux';
+
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -61,7 +61,12 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-export default React.memo(function ChatRoomItem({ room }: any) {
+
+interface ChatRoomItemProps {
+  room: InboxRoom;
+}
+
+export default function ChatRoomItem({ room }: ChatRoomItemProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   // const loadingUserData = useSelector(loadingCurrentUserSelector);
@@ -103,10 +108,12 @@ export default React.memo(function ChatRoomItem({ room }: any) {
         <div className={classes.container}>
           <div className={classes.inner}>
             <Typography className={classes.nickname}>
-              {'Unknown' || <CloseIcon style={{ fontSize: 18 }} />}
+              {room.user.name}
             </Typography>
             <Typography variant="body2">
-              {truncate(room.lastMessage.text, { length: 60 })}
+              {room.lastMessage
+                ? truncate(room.lastMessage.text, { length: 60 })
+                : ''}
             </Typography>
           </div>
         </div>
@@ -119,4 +126,4 @@ export default React.memo(function ChatRoomItem({ room }: any) {
       <Divider className={classes.divder} />
     </NavLink>
   );
-});
+};

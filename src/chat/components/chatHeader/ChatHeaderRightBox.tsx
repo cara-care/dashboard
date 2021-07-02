@@ -16,6 +16,7 @@ import AssignTeammate from './AssignTeammate';
 import { useSelector } from 'react-redux';
 import { selectedAssignmentSelector } from '../../redux';
 
+
 const useStyles = makeStyles({
   box: {
     display: 'flex',
@@ -37,13 +38,8 @@ const useStyles = makeStyles({
   },
 });
 
-interface ChatHeaderRightBoxProps {
-  assignUserToNutri: (slug: string, room?: string) => void;
-}
 
-export default function ChatHeaderRightBox({
-  assignUserToNutri,
-}: ChatHeaderRightBoxProps) {
+export default function ChatHeaderRightBox() {
   const classes = useStyles();
   const selectedAssignment = useSelector(selectedAssignmentSelector);
   const [open, setOpen] = useState(false);
@@ -118,7 +114,7 @@ export default function ChatHeaderRightBox({
         }}
       >
         <AssignTeammate
-          assignUserToNutri={assignUserToNutri}
+          assignUserToNutri={console.log}
           handleCloseAssignPopup={handleCloseAssignPopup}
         />
       </Popover>

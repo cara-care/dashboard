@@ -73,6 +73,12 @@ export interface ChatEditMode {
 }
 
 
+export interface User {
+  id: number;
+  key: string;
+  name: string;
+}
+
 export interface Inbox {
   slug: string;
   name: string;
@@ -82,6 +88,7 @@ export interface Inbox {
 export interface InboxRoom {
   id: number;
   lastMessage: Message | null;
+  user: User;
 }
 
 export interface Message {
@@ -90,11 +97,5 @@ export interface Message {
   roomId: number;
   text: string;
   updatedAt: Date;
-  user: MessageAuthor | null;
-}
-
-export interface MessageAuthor {
-  id: number;
-  key: string;
-  name: string;
+  user: User | null;
 }

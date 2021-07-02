@@ -13,7 +13,7 @@ import {
   selectInbox,
 } from '../redux';
 import { useDispatch } from 'react-redux';
-// import ChatHeader from '../components/chatHeader/ChatHeader';
+import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
 import { INBOXES } from '../inboxes';
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   details: {
     display: 'flex',
-    flex: '0 0 300px',
+    flex: '0 0 350px',
     marginLeft: 'auto',
   },
   inboxSidebar: {
@@ -157,6 +157,7 @@ export default function Inbox() {
         </Resizable>
 
         <div className={classes.main} data-testid={CHAT_WRAPPER}>
+          <ChatHeader />
           <Chat />
         </div>
         <div className={classes.details}>

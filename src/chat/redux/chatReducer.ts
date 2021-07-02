@@ -25,6 +25,7 @@ export interface ChatState {
   inbox: Inbox | null;
   inboxRooms: any[];
   messages: Message[];
+  patient: ChatUser | null;
   room: InboxRoom | null;
   selectedChatAssignment: string;
   selectedChatConversation: ChatConversation;
@@ -48,6 +49,7 @@ export const chatInitialState = {
   inbox: null,
   inboxRooms: [],
   messages: [],
+  patient: null,
   room: null,
   selectedChatAssignment: '',
   selectedChatConversation: {
@@ -243,6 +245,12 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         messages: newMessages,
       };
 
+    case ChatActionTypes.UPDATE_PATIENT:
+      return {
+        ...state,
+        patient: action.payload,
+      };
+
     default:
       return state;
   }
@@ -322,3 +330,5 @@ export const getInboxRooms = (state: RootState) => state.chat.inboxRooms;
 export const getRoom = (state: RootState) => state.chat.room;
 
 export const getMessages = (state: RootState) => state.chat.messages;
+
+export const getPatient = (state: RootState) => state.chat.patient;

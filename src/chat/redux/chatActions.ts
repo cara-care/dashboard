@@ -40,6 +40,7 @@ export enum ChatActionTypes {
   SELECT_ROOM = 'chat/SELECT_ROOM',
   UPDATE_INBOX_ROOMS = 'chat/UPDATE_INBOX_ROOMS',
   UPDATE_MESSAGES = 'chat/UPDATE_MESSAGES',
+  UPDATE_PATIENT = 'chat/UPDATE_PATIENT',
 }
 
 
@@ -315,6 +316,16 @@ export const updateMessages = (payload: Message[], subtype: string = ''): Update
 });
 
 
+export interface UpdatePatient {
+  type: ChatActionTypes.UPDATE_PATIENT;
+  payload: ChatUser | null;
+}
+export const updatePatient = (payload: ChatUser | null): UpdatePatient => ({
+  type: ChatActionTypes.UPDATE_PATIENT,
+  payload,
+});
+
+
 // Others
 
 export interface SetChatRoomsSlug {
@@ -377,3 +388,4 @@ export type ChatActions =
   | SelectRoom
   | UpdateInboxRooms
   | UpdateMessages
+  | UpdatePatient

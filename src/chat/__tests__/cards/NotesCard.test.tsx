@@ -8,7 +8,7 @@ import NotesCard from '../../components/cards/NotesCard';
 import { initialEditMode } from '../../redux';
 import { currentUserMock, notesMock } from '../../testHelpers';
 
-describe('<NotesCard />', () => {
+describe.skip('<NotesCard />', () => {
   const NotesCardWithUser = () => <NotesCard />;
   it('renders notes correctly', async () => {
     const NotesCardWithProviders = withProviders(
