@@ -38,7 +38,7 @@
     "date-fns": "^2.16.1",
     "http-proxy-middleware": "^1.0.6",
     "intersection-observer": "^0.11.0",
-    "kabelwerk": "^0.1.1",
+    "kabelwerk": "^0.1.2",
     "lodash": "^4.17.11",
     "re-resizable": "^6.7.0",
     "react": "16.13.1",

@@ -57,9 +57,10 @@ export default function ChatRooms() {
       return;  // do nothing if the websocket is not connected yet
     }
 
-    let params = {limit: 10};
+    let params = {limit: 20};
     switch (selectedInbox.slug) {
       case 'personal':
+        params['assignedTo'] = kabel.getUser().id;
         break;
 
       case 'DE:free':
@@ -79,10 +80,11 @@ export default function ChatRooms() {
         break;
 
       case 'pilot_study':
-        params['attributes'] = {groups: ['pilot_study']};
+        params['attributes'] = {in_anwendertest_ibs: true};
         break;
 
       case '_':
+        params['attributes'] = {country: ''};
         break;
 
       case 'all':
