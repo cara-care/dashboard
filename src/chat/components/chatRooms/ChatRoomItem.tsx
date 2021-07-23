@@ -69,29 +69,6 @@ interface ChatRoomItemProps {
 export default function ChatRoomItem({ room }: ChatRoomItemProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  // const loadingUserData = useSelector(loadingCurrentUserSelector);
-  // const currentUserId = useSelector(currentUserIdSelector);
-
-  // const setCurrentPatient = useCallback(
-  //   (patient: ChatRoomPatient, refetchMessages = false) => {
-  //     dispatch(setCurrentChatUserInit(patient, refetchMessages));
-  //   },
-  //   [dispatch]
-  // );
-  // const clearMessages = useCallback(() => {
-  //   dispatch(clearChatMessages());
-  // }, [dispatch]);
-
-  // const handleChatRoomSelected = () => {
-  //   if (currentUserId === patient.id) {
-  //     if (loadingUserData) {
-  //       setCurrentPatient(patient, true);
-  //     }
-  //   } else {
-  //     clearMessages();
-  //     setCurrentPatient(patient);
-  //   }
-  // };
 
   const handleClick = () => {
     dispatch(selectRoom(room));

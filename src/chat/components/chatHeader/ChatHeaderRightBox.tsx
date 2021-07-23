@@ -3,14 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Box,
   Button,
-  IconButton,
   Popover,
   Typography,
 } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignTeammate from './AssignTeammate';
 import { useSelector } from 'react-redux';
@@ -59,9 +54,6 @@ export default function ChatHeaderRightBox() {
   return (
     <>
       <Box className={classes.box}>
-        <IconButton size="small" aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
         <div
           style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
         >
@@ -77,27 +69,6 @@ export default function ChatHeaderRightBox() {
             </Typography>
           </Button>
         </div>
-        <IconButton
-          size="small"
-          aria-label="star"
-          className={classes.iconMargin}
-        >
-          <StarBorderIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          aria-label="notifications"
-          className={classes.iconMargin}
-        >
-          <NotificationsNoneIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          aria-label="check"
-          className={classes.iconMargin}
-        >
-          <CheckCircleOutlineIcon />
-        </IconButton>
       </Box>
       <Popover
         id="assign-popover"

@@ -64,7 +64,13 @@ export default function Chat() {
     // if we have selected a room, we have a connection
     let kabel = Kabelwerk.getKabel();
 
-    // replace the existing room object, if such
+    // clear the previous room object, if such
+    if (roomRef.current) {
+      roomRef.current.off();
+      roomRef.current = null;
+    }
+
+    // init the new room object
     roomRef.current = kabel.openRoom(selectedRoom.id);
 
     roomRef.current.on('ready', (messages: Message[]) => {
@@ -74,6 +80,10 @@ export default function Chat() {
     roomRef.current.on('message_posted', (message: Message) => {
       dispatch(updateMessages([message], 'append'));
     });
+
+    // reset the load more flags
+    setIsLoadingMore(false);
+    setCanLoadMore(true);
   }, [
     dispatch,
     selectedRoom,

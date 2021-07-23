@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInbox, updateInboxRooms } from '../../redux';
 import { Divider, Typography } from '@material-ui/core';
 
+
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
     display: 'flex',
@@ -25,6 +26,7 @@ const useStyles = makeStyles((_theme) => ({
   },
   divider: {},
 }));
+
 
 export default function ChatRooms() {
   const classes = useStyles();
@@ -92,6 +94,11 @@ export default function ChatRooms() {
         break;
     }
 
+    if (inboxRef.current) {
+      inboxRef.current.off();  // clear the previously attached event listeners
+      inboxRef.current = null;
+    }
+
     inboxRef.current = kabel.openInbox(params);
 
     inboxRef.current.on('ready', (rooms: any[]) => {
@@ -101,6 +108,10 @@ export default function ChatRooms() {
     inboxRef.current.on('updated', (rooms: any[]) => {
       dispatch(updateInboxRooms(rooms));
     });
+
+    // reset the load more flags
+    setIsLoadingMore(false);
+    setCanLoadMore(true);
   }, [
     dispatch,
     selectedInbox,
@@ -138,7 +149,7 @@ export default function ChatRooms() {
         <Typography variant="h6">
           {selectedInbox ? selectedInbox.name : 'Loading…'}
         </Typography>
-        <Typography variant="subtitle1">666</Typography>
+        <Typography variant="subtitle1"></Typography>
       </Box>
       <Divider className={classes.divider} />
       <ChatRoomsList />

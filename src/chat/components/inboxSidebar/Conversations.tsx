@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { selectInbox } from '../../redux';
 import { INBOXES } from '../../inboxes';
 
+
 const useStyles = makeStyles(() => ({
   avatar: {
     height: 22,
@@ -19,6 +20,7 @@ const useStyles = makeStyles(() => ({
     paddingLeft: 3,
   },
 }));
+
 
 export default function Conversations() {
   const classes = useStyles();
