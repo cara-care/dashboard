@@ -73,7 +73,7 @@ export default function Chat() {
     // init the new room object
     roomRef.current = kabel.openRoom(selectedRoom.id);
 
-    roomRef.current.on('ready', (messages: Message[]) => {
+    roomRef.current.on('ready', ({ messages }: { messages: Message[] }) => {
       dispatch(updateMessages(messages));
     });
 

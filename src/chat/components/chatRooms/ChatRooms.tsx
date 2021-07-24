@@ -7,7 +7,7 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../../../components/Spinner';
 import ChatRoomsList from './ChatRoomsList';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInbox, updateInboxRooms } from '../../redux';
+import { InboxRoom, getInbox, updateInboxRooms } from '../../redux';
 import { Divider, Typography } from '@material-ui/core';
 
 
@@ -101,11 +101,11 @@ export default function ChatRooms() {
 
     inboxRef.current = kabel.openInbox(params);
 
-    inboxRef.current.on('ready', (rooms: any[]) => {
+    inboxRef.current.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
       dispatch(updateInboxRooms(rooms));
     });
 
-    inboxRef.current.on('updated', (rooms: any[]) => {
+    inboxRef.current.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
       dispatch(updateInboxRooms(rooms));
     });
 
@@ -120,7 +120,7 @@ export default function ChatRooms() {
   const handleIntersect = function() {
     if (inboxRef.current && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
-      inboxRef.current.loadMore().then((rooms: any[]) => {
+      inboxRef.current.loadMore().then(({ rooms }: { rooms: InboxRoom[] }) => {
         if (rooms.length) {
           dispatch(updateInboxRooms(rooms));
         } else {

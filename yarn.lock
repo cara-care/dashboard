@@ -8616,10 +8616,10 @@ jsx-ast-utils@^2.2.3:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
 
-kabelwerk@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/kabelwerk/-/kabelwerk-0.1.2.tgz#a69220eab94008f6bb1a72ecd2a3edaf16d17f59"
-  integrity sha512-u1fu4PpdJBIMRsIEB+s1HhThFY0mesR+s7IiUDAPmXIfQJwio0Or4YN9l3o754uIluM6KykeOD9ClTkItRGAFA==
+kabelwerk@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/kabelwerk/-/kabelwerk-0.1.3.tgz#50a14e798291c38ce471d5642ca42dc32004ac12"
+  integrity sha512-g7s4R35Ka1iqQhV1YOywYaJ1Ief8S4Bc6XHjkoiOQ+Aqq+oQVbHh8wHkKE2edaiJg4w/jeqK+wXVLd+H+ON9TQ==
   dependencies:
     phoenix "^1.5.9"
 
