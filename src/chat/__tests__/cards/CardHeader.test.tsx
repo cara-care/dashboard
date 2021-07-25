@@ -6,7 +6,7 @@ import CardHeader from '../../components/cards/CardHeader';
 
 const testTitle = 'Test Title';
 
-describe('<CardHeader />', () => {
+describe.skip('<CardHeader />', () => {
   const CardHeaderWithUser = () => <CardHeader title={testTitle} />;
   it('renders title and settings icon correctly', () => {
     const CardHeaderWithProviders = withProviders(

@@ -1,20 +1,13 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { formatDistanceToNowStrict } from 'date-fns';
 import truncate from 'lodash/truncate';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearChatMessages,
-  setCurrentChatUserInit,
-  currentUserIdSelector,
-  loadingCurrentUserSelector,
-  ChatRoomPatient,
-} from '../../redux';
-import CloseIcon from '@material-ui/icons/Close';
+import { useDispatch } from 'react-redux';
+import { InboxRoom, selectRoom } from '../../redux';
+
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -62,75 +55,52 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   nickname: {
+    fontWeight: 'bold',
     whiteSpace: 'pre-wrap',
   },
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-export interface ChatRoomItemProps {
-  message: string;
-  sent: string;
-  patient: ChatRoomPatient;
+
+interface ChatRoomItemProps {
+  room: InboxRoom;
 }
 
-export default React.memo(function ChatRoomItem({
-  sent,
-  message,
-  patient,
-}: ChatRoomItemProps) {
-  const { nickname, username, id: userId } = patient;
+export default function ChatRoomItem({ room }: ChatRoomItemProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
-  const currentUserId = useSelector(currentUserIdSelector);
 
-  const setCurrentPatient = useCallback(
-    (patient: ChatRoomPatient, refetchMessages = false) => {
-      dispatch(setCurrentChatUserInit(patient, refetchMessages));
-    },
-    [dispatch]
-  );
-  const clearMessages = useCallback(() => {
-    dispatch(clearChatMessages());
-  }, [dispatch]);
-
-  const handleChatRoomSelected = () => {
-    if (currentUserId === patient.id) {
-      if (loadingUserData) {
-        setCurrentPatient(patient, true);
-      }
-    } else {
-      clearMessages();
-      setCurrentPatient(patient);
-    }
+  const handleClick = () => {
+    dispatch(selectRoom(room));
   };
 
   return (
     <NavLink
-      to={`/nutri/inbox/${userId}` + (username ? `/${username}` : '')}
+      to={`/nutri/inbox/${room.id}`}
       className={classes.link}
       activeClassName={classes.active}
-      onClick={handleChatRoomSelected}
+      onClick={handleClick}
     >
       <div className={classes.root}>
         <div className={classes.container}>
-          <Avatar className={classes.avatar} />
           <div className={classes.inner}>
-            <Typography variant="h6" className={classes.nickname}>
-              {nickname || <CloseIcon style={{ fontSize: 18 }} />}
+            <Typography className={classes.nickname}>
+              {room.user.name}
             </Typography>
-            {/* TODO: SHOW FILE NAME IF MESSAGE WAS A FILE? */}
             <Typography variant="body2">
-              {truncate(message, { length: 60 })}
+              {room.lastMessage
+                ? truncate(room.lastMessage.text, { length: 60 })
+                : ''}
             </Typography>
           </div>
         </div>
-        {/* TODO: INTL + units */}
         <Typography variant="caption">
-          {formatDistanceToNowStrict(new Date(sent))}
+          {room.lastMessage
+            ? formatDistanceToNowStrict(room.lastMessage.insertedAt)
+            : 'unknown'}
         </Typography>
       </div>
       <Divider className={classes.divder} />
     </NavLink>
   );
-});
+};

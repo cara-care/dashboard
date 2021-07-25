@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import { getRoom } from '../../redux';
 import UserInformation from './UserInformation';
 import Details from './Details';
 import HealthCard from './HealthCard';
@@ -19,7 +21,14 @@ const useStyles = makeStyles((_theme) => ({
 export default function ChatDetails() {
   const classes = useStyles();
 
-  // TODO: display error when error fetching user data
+  const selectedRoom = useSelector(getRoom);
+
+  if (!selectedRoom) {
+    return (
+      <>
+      </>
+    );
+  }
 
   return (
     <div className={classes.root}>

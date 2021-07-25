@@ -12,12 +12,9 @@ import CardHeaderComp from './CardHeader';
 import NotesInput from './NotesInput';
 import NotesList from './NotesList';
 import { useSelector } from 'react-redux';
-import {
-  currentUserSelector,
-  loadingCurrentUserSelector,
-  notesSelector,
-} from '../../redux';
+import { notesSelector, getPatient } from '../../redux';
 import { CardDetailSkeleton } from '../other/LoadingScreens';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,23 +39,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function NotesCard() {
   const classes = useStyles();
   const intl = useIntl();
-  const [expanded, setExpanded] = useState(false);
-  const user = useSelector(currentUserSelector);
+
   const notes = useSelector(notesSelector);
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
+  const patient = useSelector(getPatient);
+
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = useCallback(() => {
     setExpanded((s) => !s);
   }, [setExpanded]);
 
-  if (loadingUserData) {
+  if (!patient) {
     return <CardDetailSkeleton />;
-  }
-  if (!user) {
-    return null;
   }
 
   return (

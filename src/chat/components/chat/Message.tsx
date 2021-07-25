@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'classnames';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { getTime, padWith0 } from '../../../utils/dateUtils';
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 24,
     minWidth: 28,
     [theme.breakpoints.up('md')]: {
-      maxWidth: '50%',
+      maxWidth: '60%',
     },
   },
   bubbleLeft: {
@@ -86,12 +85,6 @@ export default function Message({
       })}
       data-testid={MESSAGE_CONTAINER}
     >
-      <Avatar
-        className={clsx(classes.avatar, {
-          [classes.avatarLeft]: position === 'left',
-          [classes.avatarRight]: position === 'right',
-        })}
-      />
       <div
         className={clsx(classes.bubble, {
           [classes.bubbleLeft]: position === 'left',

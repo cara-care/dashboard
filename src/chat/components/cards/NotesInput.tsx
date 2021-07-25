@@ -6,13 +6,14 @@ import { useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
 import { editNote, sendNote } from '../../../utils/api';
 import {
-  currentUserIdSelector,
   ChatUserNote,
   addChatUserNote,
+  getPatient,
   noteEditModeSelector,
   editChatUserNote,
   clearEditMode,
 } from '../../redux';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,11 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function NotesInput() {
   const intl = useIntl();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const userId = useSelector(currentUserIdSelector);
+  const patient = useSelector(getPatient);
   const { isEdit, message: editedMessage, noteId } = useSelector(
     noteEditModeSelector
   );
@@ -65,27 +67,31 @@ export default function NotesInput() {
   );
 
   const handleNoteUpdate = useCallback(
-    async (userId: number) => {
-      await editNote(userId, noteId, message);
-      dispatch(editChatUserNote(noteId, message));
-      dispatch(clearEditMode());
+    async () => {
+      if (patient) {
+        await editNote(patient.id, noteId, message);
+        dispatch(editChatUserNote(noteId, message));
+        dispatch(clearEditMode());
+      }
     },
-    [dispatch, noteId, message]
+    [dispatch, message, noteId, patient]
   );
 
   const handleNoteCreate = useCallback(
-    async (userId: number) => {
-      const res = await sendNote(userId, message);
-      sendNoteToStore(res.data);
-      setMessage('');
+    async () => {
+      if (patient) {
+        const res = await sendNote(patient.id, message);
+        sendNoteToStore(res.data);
+        setMessage('');
+      }
     },
-    [message, sendNoteToStore]
+    [message, patient, sendNoteToStore]
   );
 
   const handleSubmit = async () => {
-    if (!userId || !message) return;
+    if (!patient || !message) return;
     try {
-      isEdit ? handleNoteUpdate(userId) : handleNoteCreate(userId);
+      isEdit ? handleNoteUpdate() : handleNoteCreate();
     } catch (error) {}
   };
 

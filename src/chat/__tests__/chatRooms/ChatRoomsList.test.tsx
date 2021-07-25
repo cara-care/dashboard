@@ -6,7 +6,7 @@ import ChatRoomsList from '../../components/chatRooms/ChatRoomsList';
 import { chatRoomsMock } from '../../testHelpers';
 
 describe('<ChatRoomsList />', () => {
-  it('renders message and patient name correctly', async () => {
+  it.skip('renders message and patient name correctly', async () => {
     const ChatRoomsListWithProviders = withProviders(
       ChatRoomsList,
       MemoryRouter

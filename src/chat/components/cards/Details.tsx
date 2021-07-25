@@ -3,14 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Button, Card, CardActions, Collapse } from '@material-ui/core';
 import { CardDetailSkeleton } from '../other/LoadingScreens';
 import { useSelector } from 'react-redux';
-import {
-  currentUserSelector,
-  lastHeardFromSelector,
-  loadingCurrentUserSelector,
-} from '../../redux';
+import { getPatient } from '../../redux';
 import CardHeaderComp from './CardHeader';
 import CardBasicList from './CardBasicList';
 import { useIntl } from 'react-intl';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,23 +24,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function Details() {
   const classes = useStyles();
   const intl = useIntl();
-  const user = useSelector(currentUserSelector);
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
-  const lastHeardFrom = useSelector(lastHeardFromSelector);
+
   const [expanded, setExpanded] = useState(false);
+
+  const patient = useSelector(getPatient);
 
   const handleExpandClick = useCallback(() => {
     setExpanded((s) => !s);
   }, [setExpanded]);
 
-  if (loadingUserData) {
+  if (!patient) {
     return <CardDetailSkeleton />;
-  }
-  if (!user) {
-    return null;
   }
 
   const userDetails = [
@@ -52,36 +47,36 @@ export default function Details() {
         id: 'chat.key.backendID',
         defaultMessage: 'Back-end ID',
       }),
-      value: user.username,
+      value: patient.username,
     },
     {
       key: intl.formatMessage({
         id: 'chat.key.phoneOS',
         defaultMessage: 'Phone OS',
       }),
-      value: user.platform,
+      value: patient.platform,
     },
     {
       key: intl.formatMessage({
         id: 'chat.key.firstSeen',
         defaultMessage: 'First Seen',
       }),
-      value: user.dateJoined,
+      value: patient.dateJoined,
     },
     {
       key: intl.formatMessage({
         id: 'chat.key.lastSeen',
         defaultMessage: 'Last Seen',
       }),
-      value: user.lastSeen,
+      value: patient.lastSeen,
     },
-    {
-      key: intl.formatMessage({
-        id: 'chat.key.lastHeard',
-        defaultMessage: 'Last heard from',
-      }),
-      value: lastHeardFrom,
-    },
+    // {
+    //   key: intl.formatMessage({
+    //     id: 'chat.key.lastHeard',
+    //     defaultMessage: 'Last heard from',
+    //   }),
+    //   value: lastHeardFrom,
+    // },
   ];
 
   const userDetailsExpanded = [
@@ -91,7 +86,7 @@ export default function Details() {
         defaultMessage: 'Email',
       }),
       value:
-        user.email ??
+        patient.email ??
         intl.formatMessage({
           id: 'chat.key.notSpecified',
           defaultMessage: 'not specified',
@@ -102,7 +97,7 @@ export default function Details() {
         id: 'chat.key.timezone',
         defaultMessage: 'Timezone',
       }),
-      value: user.timezone,
+      value: patient.timezone,
     },
   ];
 

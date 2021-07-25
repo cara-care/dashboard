@@ -5,7 +5,7 @@ import { renderWithRedux } from '../../../utils/test-utils';
 import HealthCard from '../../components/cards/HealthCard';
 import { currentUserMock } from '../../testHelpers';
 
-describe('<HealthCard />', () => {
+describe.skip('<HealthCard />', () => {
   const HealthCardWithUser = () => <HealthCard />;
   it('renders user data correctly', () => {
     const HealthCardWithProviders = withProviders(

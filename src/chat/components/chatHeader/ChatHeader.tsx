@@ -1,12 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
-import { ChatUser, loadingCurrentUserSelector } from '../../redux';
+import {
+  getUserByEmailOrUsername,
+  getUserDataById,
+  getNotesList
+} from '../../../utils/api';
+import { getRoom, setChatUserNotes, updatePatient } from '../../redux';
 import { zIndexes } from '../../../theme';
-import { useSelector } from 'react-redux';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import ChatHeaderLeftBox from './ChatHeaderLeftBox';
 import ChatHeaderRightBox from './ChatHeaderRightBox';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,41 +28,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface ChatHeaderProps {
-  user: ChatUser;
-  assignUserToNutri: (slug: string, room?: string) => void;
-}
 
-export default function ChatHeader({
-  user,
-  assignUserToNutri,
-}: ChatHeaderProps) {
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
+export default function ChatHeader() {
   const classes = useStyles();
-  const ref = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(96);
+  const dispatch = useDispatch();
+
+  // the inbox item selected from the list to the left
+  const selectedRoom = useSelector(getRoom);
+
+  const [patient, setPatient] = useState(null);
 
   useEffect(() => {
-    if (ref.current?.clientHeight) {
-      // minus margin and border
-      setHeight(ref.current.clientHeight - 13);
-    }
-  }, [loadingUserData]);
+    // do nothing if no room is selected yet
+    if (!selectedRoom) return;
 
-  if (loadingUserData) {
+    // reset the patient
+    setPatient(null);
+    dispatch(updatePatient(null));
+    dispatch(setChatUserNotes([]));
+
+    getUserByEmailOrUsername(selectedRoom.user.key)
+      .then((res: any) => {
+        return getUserDataById(res.data.id);
+      })
+      .then((res: any) => {
+        setPatient(res.data);
+        dispatch(updatePatient(res.data));
+        return getNotesList(res.data.id);
+      })
+      .then((res: any) => {
+        dispatch(setChatUserNotes(res.data));
+      })
+      .catch((error: any) => {
+        console.error(error);
+      })
+  }, [
+    dispatch,
+    selectedRoom,
+  ]);
+
+  if (!selectedRoom) {
+    return (
+      <>
+      </>
+    );
+  } else if (selectedRoom && !patient) {
     return (
       <Box className={classes.root}>
-        <ChatHeaderSkeleton height={height} />
+        <ChatHeaderSkeleton height={96} />
       </Box>
     );
+  } else {
+    return (
+      <div>
+        <Box className={classes.root}>
+          <ChatHeaderLeftBox patient={patient} />
+          <ChatHeaderRightBox />
+        </Box>
+      </div>
+    );
   }
-
-  return (
-    <div ref={ref}>
-      <Box className={classes.root}>
-        <ChatHeaderLeftBox user={user} />
-        <ChatHeaderRightBox assignUserToNutri={assignUserToNutri} />
-      </Box>
-    </div>
-  );
 }

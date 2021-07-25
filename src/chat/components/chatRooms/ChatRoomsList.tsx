@@ -1,20 +1,15 @@
 import React, { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { chatRoomsSelector, ChatRoom } from '../../redux';
+import { getInboxRooms } from '../../redux';
 import ChatRoomItem from './ChatRoomItem';
 
 export default function ChatMessages() {
-  const data = useSelector(chatRoomsSelector);
+  const rooms = useSelector(getInboxRooms);
   return (
     <Fragment>
-      {data.map((room: ChatRoom) => {
+      {rooms.map((room: any) => {
         return (
-          <ChatRoomItem
-            key={room.patient.username}
-            patient={room.patient}
-            message={room.lastMessage.text}
-            sent={room.lastMessage.created}
-          />
+          <ChatRoomItem key={room.id} room={room} />
         );
       })}
     </Fragment>

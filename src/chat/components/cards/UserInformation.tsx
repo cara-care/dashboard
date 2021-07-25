@@ -1,16 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Button, Card } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 import { CardDetailSkeleton } from '../other/LoadingScreens';
 import { useSelector } from 'react-redux';
-import {
-  currentUserSelector,
-  lastContactSelector,
-  loadingCurrentUserSelector,
-} from '../../redux';
+import { getPatient } from '../../redux';
 import CardHeaderComp from './CardHeader';
 import CardBasicList from './CardBasicList';
 import { useIntl } from 'react-intl';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,46 +29,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function UserInformation() {
   const classes = useStyles();
   const intl = useIntl();
-  const user = useSelector(currentUserSelector);
-  const lastContact = useSelector(lastContactSelector);
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
 
-  if (loadingUserData) {
+  const patient = useSelector(getPatient);
+
+  if (!patient) {
     return <CardDetailSkeleton />;
-  }
-  if (!user) {
-    return null;
   }
 
   const userInformation = [
-    {
-      key: intl.formatMessage({
-        id: 'chat.key.userID',
-        defaultMessage: 'User ID',
-      }),
-      value: user.id,
-    },
-    {
-      key: intl.formatMessage({
-        id: 'chat.key.lastContact',
-        defaultMessage: 'Last Contact',
-      }),
-      value: lastContact,
-      component: lastContact ? (
-        <Avatar alt="nutri image" className={classes.avatar}>
-          A
-        </Avatar>
-      ) : undefined,
-    },
+    // {
+    //   key: intl.formatMessage({
+    //     id: 'chat.key.userID',
+    //     defaultMessage: 'User ID',
+    //   }),
+    //   value: patient.id,
+    // },
+    // {
+    //   key: intl.formatMessage({
+    //     id: 'chat.key.lastContact',
+    //     defaultMessage: 'Last Contact',
+    //   }),
+    //   value: lastContact,
+    //   component: lastContact ? (
+    //     <Avatar alt="nutri image" className={classes.avatar}>
+    //       A
+    //     </Avatar>
+    //   ) : undefined,
+    // },
     {
       key: intl.formatMessage({
         id: 'chat.key.age',
         defaultMessage: 'Age',
       }),
-      value: user.age,
+      value: patient.age,
     },
     {
       key: intl.formatMessage({
@@ -79,7 +73,7 @@ export default function UserInformation() {
         defaultMessage: 'Sex',
       }),
       value:
-        user.sex ??
+        patient.sex ??
         intl.formatMessage({
           id: 'chat.key.notSpecified',
           defaultMessage: 'not specified',
@@ -95,12 +89,12 @@ export default function UserInformation() {
           defaultMessage: 'User Information',
         })}
       />
-      <Button variant="outlined" size="small" className={classes.button}>
+      {/* <Button variant="outlined" size="small" className={classes.button}>
         {intl.formatMessage({
           id: 'chat.prescription',
           defaultMessage: 'Prescription',
         })}
-      </Button>
+      </Button> */}
       <CardBasicList cardDetailsValues={userInformation} />
     </Card>
   );

@@ -4,8 +4,8 @@ import { Divider, IconButton, Typography, useTheme } from '@material-ui/core';
 import {
   ChatUserNote,
   clearEditMode,
-  currentUserIdSelector,
   deleteChatUserNote,
+  getPatient,
   noteEditModeSelector,
   setNodeEditMode,
 } from '../../redux';
@@ -37,7 +37,7 @@ export default function NotesList({ notes }: { notes: ChatUserNote[] }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
-  const userId = useSelector(currentUserIdSelector);
+  const patient = useSelector(getPatient);
   const nutriName = useSelector(getNutriName);
   const { isEdit, noteId } = useSelector(noteEditModeSelector);
 
@@ -49,13 +49,13 @@ export default function NotesList({ notes }: { notes: ChatUserNote[] }) {
 
   const handleNoteDelete = useCallback(
     async (id: number) => {
-      if (!userId) return;
+      if (!patient) return;
       try {
-        await deleteNote(userId, id);
+        await deleteNote(patient.id, id);
         dispatch(deleteChatUserNote(id));
       } catch (error) {}
     },
-    [dispatch, userId]
+    [dispatch, patient]
   );
 
   const handleNoteEdit = useCallback(

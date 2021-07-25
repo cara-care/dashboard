@@ -4,6 +4,7 @@ import withProviders from '../../../components/withProviders';
 import { renderWithRedux } from '../../../utils/test-utils';
 import Conversations from '../../components/inboxSidebar/Conversations';
 import { chatConversationsMock } from '../../testHelpers';
+import { INBOXES } from '../../inboxes';
 
 describe('<Conversations />', () => {
   const ConversationsWithUser = () => <Conversations />;
@@ -22,9 +23,8 @@ describe('<Conversations />', () => {
         },
       },
     });
-    expect(getByText('You')).toBeInTheDocument();
-    chatConversationsMock.forEach((conversation) => {
-      expect(getByText(conversation.name)).toBeInTheDocument();
+    INBOXES.forEach((inbox) => {
+      expect(getByText(inbox.name)).toBeInTheDocument();
     });
   });
 });

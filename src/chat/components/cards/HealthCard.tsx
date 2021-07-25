@@ -3,13 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Card, Divider, Typography } from '@material-ui/core';
 import { CardDetailSkeleton } from '../other/LoadingScreens';
 import { useSelector } from 'react-redux';
-import {
-  ChatUser,
-  currentUserSelector,
-  loadingCurrentUserSelector,
-} from '../../redux';
+import { ChatUser, getPatient } from '../../redux';
 import CardHeaderComp from './CardHeader';
 import { useIntl } from 'react-intl';
+
 
 const useStyles = makeStyles((_theme) => ({
   root: {
@@ -23,9 +20,10 @@ const useStyles = makeStyles((_theme) => ({
   },
 }));
 
+
 const shortDiagnosisRegex = /\[(.*?)\]/;
-const prepareDiagnosis = (user: ChatUser) =>
-  user.diagnosis
+const prepareDiagnosis = (patient: ChatUser) =>
+  patient.diagnosis
     .split(':')
     .slice(1)
     .map((diagnosis) => {
@@ -34,17 +32,15 @@ const prepareDiagnosis = (user: ChatUser) =>
     })
     .join(', ');
 
+
 export default function HealthCard() {
   const classes = useStyles();
   const intl = useIntl();
-  const user = useSelector(currentUserSelector);
-  const loadingUserData = useSelector(loadingCurrentUserSelector);
 
-  if (loadingUserData) {
+  const patient = useSelector(getPatient);
+
+  if (!patient) {
     return <CardDetailSkeleton />;
-  }
-  if (!user) {
-    return null;
   }
 
   const healthInformation = [
@@ -53,23 +49,23 @@ export default function HealthCard() {
         id: 'chat.key.diagnosis',
         defaultMessage: 'Diagnosis',
       }),
-      value: prepareDiagnosis(user),
-      divider: true,
+      value: prepareDiagnosis(patient),
+      divider: false,
     },
-    {
-      key: intl.formatMessage({
-        id: 'chat.key.qualityOfLife',
-        defaultMessage: 'Quality of life',
-      }),
-      value: 'Mild improvement',
-    },
-    {
-      key: intl.formatMessage({
-        id: 'common.symptomScore',
-        defaultMessage: 'Symptom Score S',
-      }),
-      value: 'Diminished',
-    },
+    // {
+    //   key: intl.formatMessage({
+    //     id: 'chat.key.qualityOfLife',
+    //     defaultMessage: 'Quality of life',
+    //   }),
+    //   value: 'Mild improvement',
+    // },
+    // {
+    //   key: intl.formatMessage({
+    //     id: 'common.symptomScore',
+    //     defaultMessage: 'Symptom Score S',
+    //   }),
+    //   value: 'Diminished',
+    // },
   ];
 
   return (
@@ -80,8 +76,8 @@ export default function HealthCard() {
           defaultMessage: 'Health card',
         })}
       />
-      {healthInformation.map((inforamtion) => {
-        const { key, value, divider } = inforamtion;
+      {healthInformation.map((info) => {
+        const { key, value, divider } = info;
         return (
           <Fragment key={key}>
             <div

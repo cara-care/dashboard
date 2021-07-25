@@ -1,28 +1,15 @@
-import React, { useCallback, useRef } from 'react';
-import { useInfiniteQuery } from 'react-query';
+import React, { useEffect, useRef, useState } from 'react';
+import Kabelwerk from 'kabelwerk';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import times from 'lodash/times';
-import { v1 } from 'uuid';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import Spinner from '../../../components/Spinner';
-import MessageSkeleton from '../other/MessageSkeleton';
 import ChatRoomsList from './ChatRoomsList';
-import { getChatRooms } from '../../../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getChatRoomsSlug,
-  setChatRooms,
-  getChatRoomsFullName,
-  chatRoomsNumberSelector,
-  ChatRoom,
-} from '../../redux';
-import { ChatRoomsError } from '../other/Errors';
+import { InboxRoom, getInbox, updateInboxRooms } from '../../redux';
 import { Divider, Typography } from '@material-ui/core';
-import { getNutriName } from '../../../auth';
-import { useIntl } from 'react-intl';
-import getParams from '../../../utils/getParams';
+
 
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
@@ -40,97 +27,133 @@ const useStyles = makeStyles((_theme) => ({
   divider: {},
 }));
 
+
 export default function ChatRooms() {
   const classes = useStyles();
-  const intl = useIntl();
   const dispatch = useDispatch();
+
   const rootRef = useRef<HTMLDivElement>(null);
-  const fetchMoreButtonRef = useRef<HTMLButtonElement>(null);
-  const chatRoomsNumber = useSelector(chatRoomsNumberSelector);
-  const chatRoomsSlug = useSelector(getChatRoomsSlug);
-  const chatRoomName = useSelector(getChatRoomsFullName);
-  const nutriName = useSelector(getNutriName);
-  const previousSlug = useRef<string>('all');
+  const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
 
-  const setChatRoomsToStore = useCallback(
-    (chatRooms: ChatRoom[], isNewRoom) => {
-      dispatch(setChatRooms(chatRooms, isNewRoom));
-    },
-    [dispatch]
-  );
+  // the inbox selected from the sidebar to the very left
+  const selectedInbox = useSelector(getInbox);
 
-  const {
-    status,
-    error,
-    isFetchingMore,
-    refetch,
-    fetchMore,
-    canFetchMore,
-  } = useInfiniteQuery(
-    ['chatRooms', chatRoomsSlug],
-    async (
-      _key: string,
-      chatRoomsSlug: string,
-      url: string = '?limit=100&offset=0'
-    ) => {
-      const { limit, offset } = getParams(url);
-      const res = await getChatRooms({ chatRoomsSlug, limit, offset });
-      setChatRoomsToStore(
-        res.data.results,
-        chatRoomsSlug !== previousSlug.current
-      );
-      previousSlug.current = chatRoomsSlug;
-      return res.data;
-    },
-    {
-      cacheTime: 0,
-      refetchInterval: 10 * 3600,
-      refetchOnWindowFocus: true,
-      getFetchMore: (lastPage) => (lastPage.next ? lastPage.next : null),
+  // Kabelwerk's inbox object
+  const inboxRef = useRef<any>(null);
+
+  // whether we are awaiting Kabelwerk's loadMore() function
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // whether we have reached the bottom of the room list
+  const [canLoadMore, setCanLoadMore] = useState(true);
+
+  useEffect(() => {
+    if (!selectedInbox) {
+      return;  // do nothing if no inbox is selected yet
     }
-  );
 
-  const onIntersect = React.useCallback(() => {
-    if (!isFetchingMore) {
-      fetchMore();
+    let kabel;
+    try {
+      kabel = Kabelwerk.getKabel();
+    } catch (error) {
+      return;  // do nothing if the websocket is not connected yet
     }
-  }, [isFetchingMore, fetchMore]);
+
+    let params = {limit: 20};
+    switch (selectedInbox.slug) {
+      case 'personal':
+        params['assignedTo'] = kabel.getUser().id;
+        break;
+
+      case 'DE:free':
+        params['attributes'] = {country: 'DE', is_premium: false};
+        break;
+
+      case 'DE:premium':
+        params['attributes'] = {country: 'DE', is_premium: true};
+        break;
+
+      case 'UK:free':
+        params['attributes'] = {country: 'GB', is_premium: false};
+        break;
+
+      case 'UK:premium':
+        params['attributes'] = {country: 'GB', is_premium: true};
+        break;
+
+      case 'pilot_study':
+        params['attributes'] = {in_anwendertest_ibs: true};
+        break;
+
+      case '_':
+        params['attributes'] = {country: ''};
+        break;
+
+      case 'all':
+      default:
+        break;
+    }
+
+    if (inboxRef.current) {
+      inboxRef.current.off();  // clear the previously attached event listeners
+      inboxRef.current = null;
+    }
+
+    inboxRef.current = kabel.openInbox(params);
+
+    inboxRef.current.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
+      dispatch(updateInboxRooms(rooms));
+    });
+
+    inboxRef.current.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
+      dispatch(updateInboxRooms(rooms));
+    });
+
+    // reset the load more flags
+    setIsLoadingMore(false);
+    setCanLoadMore(true);
+  }, [
+    dispatch,
+    selectedInbox,
+  ]);
+
+  const handleIntersect = function() {
+    if (inboxRef.current && !isLoadingMore && canLoadMore) {
+      setIsLoadingMore(true);
+      inboxRef.current.loadMore().then(({ rooms }: { rooms: InboxRoom[] }) => {
+        if (rooms.length) {
+          dispatch(updateInboxRooms(rooms));
+        } else {
+          setCanLoadMore(false);
+        }
+        setIsLoadingMore(false);
+      }).catch((error: any) => {
+        console.error(error);
+        setIsLoadingMore(false);
+      });
+    }
+  };
 
   useIntersectionObserver({
-    targetRef: fetchMoreButtonRef,
+    targetRef: loadMoreButtonRef,
     rootRef: rootRef,
-    onIntersect,
+    onIntersect: handleIntersect,
     threshold: 0.5,
     rootMargin: '16px',
-    enabled: !!canFetchMore,
+    enabled: canLoadMore,
   });
 
   return (
     <div ref={rootRef} className={classes.sidebar}>
       <Box className={classes.headerBox}>
         <Typography variant="h6">
-          {chatRoomName === nutriName
-            ? intl.formatMessage({
-                id: 'common.you',
-                defaultMessage: 'You',
-              })
-            : chatRoomName}
+          {selectedInbox ? selectedInbox.name : 'Loading…'}
         </Typography>
-        <Typography variant="subtitle1">{chatRoomsNumber}</Typography>
+        <Typography variant="subtitle1"></Typography>
       </Box>
       <Divider className={classes.divider} />
-      {status === 'loading' ? (
-        times(5).map(() => (
-          <Box key={v1()} px={2} py={1}>
-            <MessageSkeleton />
-          </Box>
-        ))
-      ) : status === 'error' ? (
-        <ChatRoomsError {...{ error, refetch }} />
-      ) : (
-        <ChatRoomsList />
-      )}
-      {isFetchingMore ? (
+      <ChatRoomsList />
+      {isLoadingMore ? (
         <Box
           px={2}
           py={1}
@@ -140,13 +163,12 @@ export default function ChatRooms() {
         >
           <Spinner size={24} noText />
         </Box>
-      ) : canFetchMore ? (
+      ) : canLoadMore ? (
         <Button
-          ref={fetchMoreButtonRef}
-          disabled={isFetchingMore}
-          onClick={() => fetchMore()}
+          ref={loadMoreButtonRef}
+          disabled={true}
         >
-          {isFetchingMore ? 'Loading...' : 'Load more'}
+          {isLoadingMore ? 'Loading...' : 'Load more'}
         </Button>
       ) : null}
     </div>

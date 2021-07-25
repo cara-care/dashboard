@@ -1,21 +1,20 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Channel, Socket } from 'phoenix';
+import React, { useEffect, useRef } from 'react';
+import Kabelwerk from 'kabelwerk';
 import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
 import NutriNavigation from '../../components/NutriNavigation';
 import Chat from '../components/chat/Chat';
 import ChatRooms from '../components/chatRooms/ChatRooms';
 import ChatDetails from '../components/cards/ChatDetails';
-import {
-  addChatMessage,
-  addNewMessageToChatRoomInit,
-  currentUserSelector,
-} from '../redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { selectInbox } from '../redux';
+import { useDispatch } from 'react-redux';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
+import { INBOXES } from '../inboxes';
+import { KABELWERK_URL } from '../../utils/constants';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,73 +37,46 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     display: 'flex',
     flexDirection: 'column',
-
-    //
     position: 'relative',
   },
   details: {
     display: 'flex',
-    flex: '0 0 300px',
+    flex: '0 0 350px',
     marginLeft: 'auto',
   },
   inboxSidebar: {
     display: 'flex',
-    flex: '0 0 300px',
+    flex: '0 0 250px',
   },
 }));
+
 
 export default function Inbox() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const currentUser = useSelector(currentUserSelector);
 
-  const [open, setOpen] = useState(false);
+  const kabelRef = useRef<any>(null);
 
-  const socket = useRef<Socket | null>(null);
-  const channel = useRef<Channel | null>(null);
-
-  const establishSocketConnection = useCallback(async () => {
+  useEffect(() => {
     try {
-      const res = await getChatAuthorizationToken();
-      const ws = new Socket('wss://localhost:3000/api/mercury/socket', {
-        params: { token: res.data.token },
-      });
-      socket.current = ws;
-      ws.connect();
-      ws.onOpen(() => {
-        console.info('The socket was opened');
-        const nutriChannel = ws.channel('nutris:all');
-        nutriChannel.join().receive('ok', () => {
-          console.log('Joined to Channel');
-          channel.current = nutriChannel;
-          setOpen(true);
-        });
-        nutriChannel.on('message', (message) => {
-          dispatch(addChatMessage(message));
-          dispatch(addNewMessageToChatRoomInit(message));
-        });
-      });
+      kabelRef.current = Kabelwerk.getKabel();
     } catch (error) {
-      console.log(error);
-    }
-  }, [dispatch]);
+      getChatAuthorizationToken().then((res) => {
+        kabelRef.current = Kabelwerk.connect({
+          url: KABELWERK_URL,
+          token: res.data.token,
+          logging: 'info',
+        });
 
-  useEffect(() => {
-    if (open) return;
-    let interval = setInterval(() => {
-      establishSocketConnection();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [open, establishSocketConnection]);
-
-  useEffect(() => {
-    establishSocketConnection();
-    return () => {
-      socket.current?.disconnect(() => {
-        console.info('The socket was closed');
+        kabelRef.current.on('ready', () => {
+          dispatch(selectInbox(INBOXES[0]));
+        });
       });
-    };
-  }, [dispatch, establishSocketConnection]);
+    }
+  }, [
+    dispatch
+  ]);
+
 
   const [width, setWidth] = React.useState(320);
 
@@ -113,26 +85,6 @@ export default function Inbox() {
     setWidth(width + d.width);
   };
 
-  const assignUserToNutri = useCallback(
-    (slug: string, room: string = 'undefined') => {
-      channel.current?.push('inbox', {
-        room,
-        inbox: slug,
-      });
-    },
-    []
-  );
-
-  const sendMessage = useCallback(
-    (message: string) => {
-      channel.current?.push('message', {
-        room: currentUser?.username,
-        text: message,
-        sent: new Date().toISOString(),
-      });
-    },
-    [currentUser]
-  );
 
   return (
     <>
@@ -152,15 +104,10 @@ export default function Inbox() {
           <ChatRooms />
         </Resizable>
 
-        {currentUser && (
-          <div className={classes.main} data-testid={CHAT_WRAPPER}>
-            <ChatHeader
-              user={currentUser}
-              assignUserToNutri={assignUserToNutri}
-            />
-            <Chat user={currentUser} onSendMessage={sendMessage} />
-          </div>
-        )}
+        <div className={classes.main} data-testid={CHAT_WRAPPER}>
+          <ChatHeader />
+          <Chat />
+        </div>
         <div className={classes.details}>
           <ChatDetails />
         </div>

@@ -71,3 +71,31 @@ export interface ChatEditMode {
   noteId: number;
   message: string;
 }
+
+
+export interface User {
+  id: number;
+  key: string;
+  name: string;
+}
+
+export interface Inbox {
+  slug: string;
+  name: string;
+  icon: string;
+}
+
+export interface InboxRoom {
+  id: number;
+  lastMessage: Message | null;
+  user: User;
+}
+
+export interface Message {
+  id: number;
+  insertedAt: Date;
+  roomId: number;
+  text: string;
+  updatedAt: Date;
+  user: User | null;
+}

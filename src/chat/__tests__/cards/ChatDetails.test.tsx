@@ -4,7 +4,7 @@ import withProviders from '../../../components/withProviders';
 import { renderWithRedux } from '../../../utils/test-utils';
 import ChatDetails from '../../components/cards/ChatDetails';
 
-describe('<ChatDetails />', () => {
+describe.skip('<ChatDetails />', () => {
   it('does render correctly', () => {
     const ChatDetailsWithProviders = withProviders(ChatDetails, MemoryRouter);
     const { getByText } = renderWithRedux(<ChatDetailsWithProviders />);
