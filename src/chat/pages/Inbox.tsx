@@ -12,6 +12,7 @@ import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
 import { INBOXES } from '../inboxes';
+import { KABELWERK_URL } from '../../utils/constants';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
 
@@ -62,7 +63,7 @@ export default function Inbox() {
     } catch (error) {
       getChatAuthorizationToken().then((res) => {
         kabelRef.current = Kabelwerk.connect({
-          url: 'wss://eu-staging-chat.cara.care/socket/hub',
+          url: KABELWERK_URL,
           token: res.data.token,
           logging: 'info',
         });
