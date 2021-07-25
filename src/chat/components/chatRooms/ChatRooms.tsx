@@ -74,11 +74,11 @@ export default function ChatRooms() {
         break;
 
       case 'UK:free':
-        params['attributes'] = {country: 'UK', is_premium: false};
+        params['attributes'] = {country: 'GB', is_premium: false};
         break;
 
       case 'UK:premium':
-        params['attributes'] = {country: 'UK', is_premium: true};
+        params['attributes'] = {country: 'GB', is_premium: true};
         break;
 
       case 'pilot_study':
