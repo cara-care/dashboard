@@ -59,6 +59,9 @@ export default function Inbox() {
         Kabelwerk.config({
           url: KABELWERK_URL,
           token: res.data.token,
+          refreshToken: () => {
+            return getChatAuthorizationToken().then((res) => res.data.token);
+          },
           logging: 'info',
         });
 
