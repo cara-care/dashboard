@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Kabelwerk from 'kabelwerk';
 import { Resizable, ResizeCallback } from 're-resizable';
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,26 +55,24 @@ export default function Inbox() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const kabelRef = useRef<any>(null);
-
   useEffect(() => {
-    try {
-      kabelRef.current = Kabelwerk.getKabel();
-    } catch (error) {
+    if (!Kabelwerk.isConnected()) {
       getChatAuthorizationToken().then((res) => {
-        kabelRef.current = Kabelwerk.connect({
+        Kabelwerk.config({
           url: KABELWERK_URL,
           token: res.data.token,
           logging: 'info',
         });
 
-        kabelRef.current.on('ready', () => {
+        Kabelwerk.on('ready', () => {
           dispatch(selectInbox(INBOXES[0]));
         });
+
+        Kabelwerk.connect();
       });
     }
   }, [
-    dispatch
+    dispatch,
   ]);
 
 

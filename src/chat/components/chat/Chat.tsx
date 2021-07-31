@@ -61,9 +61,6 @@ export default function Chat() {
     // do nothing if no room is selected yet
     if (!selectedRoom) return;
 
-    // if we have selected a room, we have a connection
-    let kabel = Kabelwerk.getKabel();
-
     // clear the previous room object, if such
     if (roomRef.current) {
       roomRef.current.off();
@@ -71,7 +68,7 @@ export default function Chat() {
     }
 
     // init the new room object
-    roomRef.current = kabel.openRoom(selectedRoom.id);
+    roomRef.current = Kabelwerk.openRoom(selectedRoom.id);
 
     roomRef.current.on('ready', ({ messages }: { messages: Message[] }) => {
       dispatch(updateMessages(messages));
@@ -80,6 +77,8 @@ export default function Chat() {
     roomRef.current.on('message_posted', (message: Message) => {
       dispatch(updateMessages([message], 'append'));
     });
+
+    roomRef.current.connect();
 
     // reset the load more flags
     setIsLoadingMore(false);

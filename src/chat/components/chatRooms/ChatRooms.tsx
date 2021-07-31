@@ -52,17 +52,14 @@ export default function ChatRooms() {
       return;  // do nothing if no inbox is selected yet
     }
 
-    let kabel;
-    try {
-      kabel = Kabelwerk.getKabel();
-    } catch (error) {
+    if (!Kabelwerk.isConnected()) {
       return;  // do nothing if the websocket is not connected yet
     }
 
     let params = {limit: 20};
     switch (selectedInbox.slug) {
       case 'personal':
-        params['assignedTo'] = kabel.getUser().id;
+        params['assignedTo'] = Kabelwerk.getUser().id;
         break;
 
       case 'DE:free':
@@ -99,7 +96,7 @@ export default function ChatRooms() {
       inboxRef.current = null;
     }
 
-    inboxRef.current = kabel.openInbox(params);
+    inboxRef.current = Kabelwerk.openInbox(params);
 
     inboxRef.current.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
       dispatch(updateInboxRooms(rooms));
@@ -108,6 +105,8 @@ export default function ChatRooms() {
     inboxRef.current.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
       dispatch(updateInboxRooms(rooms));
     });
+
+    inboxRef.current.connect();
 
     // reset the load more flags
     setIsLoadingMore(false);
