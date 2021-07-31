@@ -4,7 +4,6 @@ import { Box, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 // import { ChatUser } from '../../redux';
 
-
 const useStyles = makeStyles((theme) => ({
   box: {
     display: 'flex',
@@ -28,14 +27,12 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: theme.palette.divider },
 }));
 
-
 export default function ChatHeaderLeftBox({ patient }: { patient: any }) {
   const classes = useStyles();
 
   return (
     <Box className={classes.box}>
-      <Box className={classes.photo}>
-      </Box>
+      <Box className={classes.photo}></Box>
       <Box>
         <Typography variant="h6">{patient.nickname}</Typography>
         <Typography variant="body2" className={classes.premiumBox}>
@@ -46,9 +43,7 @@ export default function ChatHeaderLeftBox({ patient }: { patient: any }) {
             patient.enrolledProgrammes[0].title
           )}
         </Typography>
-        <Typography variant="body2">
-          User ID: {patient.username}
-        </Typography>
+        <Typography variant="body2">User ID: {patient.username}</Typography>
       </Box>
       {/* Comment: uncomment it when backend ready
           <Box className={classes.assginedLabel}>

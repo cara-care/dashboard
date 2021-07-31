@@ -72,7 +72,6 @@ export interface ChatEditMode {
   message: string;
 }
 
-
 export interface User {
   id: number;
   key: string;

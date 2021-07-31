@@ -24,10 +24,7 @@ export default function ChatDetails() {
   const selectedRoom = useSelector(getRoom);
 
   if (!selectedRoom) {
-    return (
-      <>
-      </>
-    );
+    return <></>;
   }
 
   return (

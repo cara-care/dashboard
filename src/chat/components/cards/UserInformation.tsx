@@ -8,7 +8,6 @@ import CardHeaderComp from './CardHeader';
 import CardBasicList from './CardBasicList';
 import { useIntl } from 'react-intl';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 16,
@@ -28,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 4px',
   },
 }));
-
 
 export default function UserInformation() {
   const classes = useStyles();

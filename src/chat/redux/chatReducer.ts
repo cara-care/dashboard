@@ -62,7 +62,6 @@ export const chatInitialState = {
   noteEditMode: initialEditMode,
 };
 
-
 export const chatReducer: Reducer<ChatState, ChatActions> = (
   state = chatInitialState,
   action: ChatActions
@@ -256,7 +255,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
   }
 };
 
-
 export const loadingCurrentUserSelector = (state: RootState) =>
   state.chat.loadingCurrentUser;
 
@@ -319,7 +317,6 @@ export const noteEditModeSelector = (state: RootState) =>
 
 export const scrollToChatBottomSelector = (state: RootState) =>
   state.chat.scrollToChatBottom;
-
 
 // Kabelwerk
 

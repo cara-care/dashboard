@@ -9,7 +9,6 @@ import ChatMessagesList from './ChatMessagesList';
 import { useDispatch, useSelector } from 'react-redux';
 import { Message, getRoom, updateMessages } from '../../redux';
 
-
 const useStyles = makeStyles((theme) => ({
   messages: {
     flex: 1,
@@ -36,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
 }));
-
 
 export default function Chat() {
   const classes = useStyles();
@@ -83,12 +81,9 @@ export default function Chat() {
     // reset the load more flags
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [
-    dispatch,
-    selectedRoom,
-  ]);
+  }, [dispatch, selectedRoom]);
 
-  const postMessage = function(text: string) {
+  const postMessage = function (text: string) {
     if (roomRef.current) {
       // the message_posted hook above takes care of displaying it
       roomRef.current.postMessage({ text }).catch((error: any) => {
@@ -97,20 +92,23 @@ export default function Chat() {
     }
   };
 
-  const handleIntersect = function() {
+  const handleIntersect = function () {
     if (roomRef.current && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
-      roomRef.current.loadEarlier().then((messages: Message[]) => {
-        if (messages.length) {
-          dispatch(updateMessages(messages, 'prepend'));
-        } else {
-          setCanLoadMore(false);
-        }
-        setIsLoadingMore(false);
-      }).catch((error: any) => {
-        console.error(error);
-        setIsLoadingMore(false);
-      });
+      roomRef.current
+        .loadEarlier()
+        .then((messages: Message[]) => {
+          if (messages.length) {
+            dispatch(updateMessages(messages, 'prepend'));
+          } else {
+            setCanLoadMore(false);
+          }
+          setIsLoadingMore(false);
+        })
+        .catch((error: any) => {
+          console.error(error);
+          setIsLoadingMore(false);
+        });
     }
   };
 
@@ -129,12 +127,7 @@ export default function Chat() {
         <ChatMessagesList />
         <div ref={messagesTopRef} className={classes.top} />
         {isLoadingMore && (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            p={1}
-          >
+          <Box display="flex" alignItems="center" justifyContent="center" p={1}>
             <Spinner size={24} noText />
           </Box>
         )}
@@ -142,4 +135,4 @@ export default function Chat() {
       {selectedRoom && <InputToolbar onSubmit={postMessage} />}
     </>
   );
-};
+}

@@ -15,7 +15,6 @@ import { INBOXES } from '../inboxes';
 import { KABELWERK_URL } from '../../utils/constants';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -50,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function Inbox() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -71,10 +69,7 @@ export default function Inbox() {
         Kabelwerk.connect();
       });
     }
-  }, [
-    dispatch,
-  ]);
-
+  }, [dispatch]);
 
   const [width, setWidth] = React.useState(320);
 
@@ -82,7 +77,6 @@ export default function Inbox() {
     // FIXME: causes <Chat /> to scroll to bottom
     setWidth(width + d.width);
   };
-
 
   return (
     <>
