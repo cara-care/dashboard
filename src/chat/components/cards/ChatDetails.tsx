@@ -5,8 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { getRoom } from '../../redux';
 import UserInformation from './UserInformation';
-import Details from './Details';
-import HealthCard from './HealthCard';
 import Notes from './NotesCard';
 
 const useStyles = makeStyles((_theme) => ({
@@ -36,8 +34,6 @@ export default function ChatDetails() {
         />
       </Typography>
       <UserInformation />
-      <HealthCard />
-      <Details />
       <Notes />
     </div>
   );

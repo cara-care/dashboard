@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardHeader, IconButton } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { CardHeader } from '@material-ui/core';
 
 const useStyles = makeStyles((_theme) => ({
   headerRoot: {
@@ -25,11 +24,6 @@ export default function CardHeaderComp({ title }: CardHeaderCompProps) {
   return (
     <CardHeader
       className={classes.headerRoot}
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
-      }
       title={title}
       titleTypographyProps={{ className: classes.title }}
     />

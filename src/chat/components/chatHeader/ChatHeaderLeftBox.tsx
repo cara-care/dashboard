@@ -1,8 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Typography } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-// import { ChatUser } from '../../redux';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -35,25 +33,7 @@ export default function ChatHeaderLeftBox({ patient }: { patient: any }) {
       <Box className={classes.photo}></Box>
       <Box>
         <Typography variant="h6">{patient.nickname}</Typography>
-        <Typography variant="body2" className={classes.premiumBox}>
-          Programme:{' '}
-          {patient.enrolledProgrammes.length === 0 ? (
-            <CloseIcon style={{ fontSize: 18 }} />
-          ) : (
-            patient.enrolledProgrammes[0].title
-          )}
-        </Typography>
-        <Typography variant="body2">User ID: {patient.username}</Typography>
       </Box>
-      {/* Comment: uncomment it when backend ready
-          <Box className={classes.assginedLabel}>
-            <ChatHeaderLabel
-              label={intl.formatMessage({
-                id: 'common.verified',
-                defaultMessage: 'Verified',
-              })}
-            />
-          </Box> */}
     </Box>
   );
 }

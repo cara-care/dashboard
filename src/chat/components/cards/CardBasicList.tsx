@@ -1,19 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardContent, SvgIcon } from '@material-ui/core';
-import { ReactComponent as CardDetailsIcon } from '../../../assets/images/iconChatDetailsCard.svg';
+import { CardContent } from '@material-ui/core';
 
 const useStyles = makeStyles((_theme) => ({
-  cardItem: {
-    display: 'flex',
-    marginBottom: 4,
-  },
-  icon: {
-    marginRight: 8,
-  },
   cardItemText: {
     fontSize: 13,
-    display: 'flex',
+    marginBottom: 4,
   },
 }));
 
@@ -35,13 +27,8 @@ export default function CardBasicList({
   return (
     <CardContent>
       {cardDetailsValues.map((item) => (
-        <div key={item.key} className={classes.cardItem}>
-          <SvgIcon className={classes.icon}>
-            <CardDetailsIcon />
-          </SvgIcon>
-          <div className={classes.cardItemText}>
-            {item.key}: {item.component ?? null} {item.value}
-          </div>
+        <div key={item.key} className={classes.cardItemText}>
+          {item.key}: <strong>{item.value}</strong>
         </div>
       ))}
     </CardContent>

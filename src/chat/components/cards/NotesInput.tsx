@@ -110,7 +110,7 @@ export default function NotesInput() {
             })
           : intl.formatMessage({
               id: 'common.send',
-              defaultMessage: 'Send',
+              defaultMessage: 'Add',
             })}
       </Button>
     </div>
