@@ -8,9 +8,7 @@ export default function ChatMessages() {
   return (
     <Fragment>
       {rooms.map((room: any) => {
-        return (
-          <ChatRoomItem key={room.id} room={room} />
-        );
+        return <ChatRoomItem key={room.id} room={room} />;
       })}
     </Fragment>
   );

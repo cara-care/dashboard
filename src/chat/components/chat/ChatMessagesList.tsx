@@ -4,16 +4,14 @@ import { getMessages } from '../../redux';
 import Message from './Message';
 import MessageDivider from './MessageDivider';
 
-
-const getMessagePosition = function(username: string) {
+const getMessagePosition = function (username: string) {
   // app usernames start with u- or auto-
   return /^(u-|auto-).*/i.test(username) ? 'left' : 'right';
 };
 
-const getDate = function(datetime: Date) {
+const getDate = function (datetime: Date) {
   return datetime.toISOString().slice(0, 10);
 };
-
 
 export default function ChatMessagesList() {
   const data = useSelector(getMessages);
@@ -26,11 +24,10 @@ export default function ChatMessagesList() {
 
     let messageDate = getDate(message.insertedAt);
     if (lastDate && messageDate !== lastDate) {
-      output.push(
-        <MessageDivider key={lastDate} content={lastDate} />
-      )
+      output.push(<MessageDivider key={lastDate} content={lastDate} />);
       lastDate = messageDate;
-    } else if (!lastDate) {  // the first iteration
+    } else if (!lastDate) {
+      // the first iteration
       lastDate = messageDate;
     }
 

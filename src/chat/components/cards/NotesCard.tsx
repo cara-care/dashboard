@@ -15,7 +15,6 @@ import { useSelector } from 'react-redux';
 import { notesSelector, getPatient } from '../../redux';
 import { CardDetailSkeleton } from '../other/LoadingScreens';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 16,
@@ -38,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     height: 16,
   },
 }));
-
 
 export default function NotesCard() {
   const classes = useStyles();

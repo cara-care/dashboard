@@ -5,14 +5,13 @@ import { Box } from '@material-ui/core';
 import {
   getUserByEmailOrUsername,
   getUserDataById,
-  getNotesList
+  getNotesList,
 } from '../../../utils/api';
 import { getRoom, setChatUserNotes, updatePatient } from '../../redux';
 import { zIndexes } from '../../../theme';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import ChatHeaderLeftBox from './ChatHeaderLeftBox';
 import ChatHeaderRightBox from './ChatHeaderRightBox';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
 }));
-
 
 export default function ChatHeader() {
   const classes = useStyles();
@@ -61,17 +59,11 @@ export default function ChatHeader() {
       })
       .catch((error: any) => {
         console.error(error);
-      })
-  }, [
-    dispatch,
-    selectedRoom,
-  ]);
+      });
+  }, [dispatch, selectedRoom]);
 
   if (!selectedRoom) {
-    return (
-      <>
-      </>
-    );
+    return <></>;
   } else if (selectedRoom && !patient) {
     return (
       <Box className={classes.root}>

@@ -1,16 +1,10 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Box,
-  Button,
-  Popover,
-  Typography,
-} from '@material-ui/core';
+import { Box, Button, Popover, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignTeammate from './AssignTeammate';
 import { useSelector } from 'react-redux';
 import { selectedAssignmentSelector } from '../../redux';
-
 
 const useStyles = makeStyles({
   box: {
@@ -32,7 +26,6 @@ const useStyles = makeStyles({
     letterSpacing: '1.6px',
   },
 });
-
 
 export default function ChatHeaderRightBox() {
   const classes = useStyles();

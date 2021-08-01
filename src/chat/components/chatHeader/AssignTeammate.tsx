@@ -11,7 +11,6 @@ import {
   setSelectedAssignment,
 } from '../../redux';
 
-
 const useStyles = makeStyles({
   root: {
     padding: '16px 0 16px 16px',
@@ -27,12 +26,10 @@ const useStyles = makeStyles({
   avatar: { marginRight: 8, width: 20, height: 20 },
 });
 
-
 interface AssigneeWrapperProps {
   theme: Theme;
   active: boolean;
 }
-
 
 const AssigneeWrapper = styled.div<AssigneeWrapperProps>`
   display: flex;
@@ -50,7 +47,6 @@ const AssigneeWrapper = styled.div<AssigneeWrapperProps>`
     opacity: 1;
   }
 `;
-
 
 interface AssignTeammateProps {
   assignUserToNutri: (slug: string, room?: string) => void;

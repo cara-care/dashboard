@@ -43,7 +43,6 @@ export enum ChatActionTypes {
   UPDATE_PATIENT = 'chat/UPDATE_PATIENT',
 }
 
-
 // Chat User
 
 export interface SetCurrentUserLoading {
@@ -92,7 +91,6 @@ export const clearCurrentChatUser = (): ClearCurrentUserAction => ({
   type: ChatActionTypes.CLEAR_CURRENT_CHAT_USER,
 });
 
-
 // Chat Messages
 
 export interface AddChatMessage {
@@ -125,7 +123,6 @@ export const clearChatMessages = (): ClearChatMessages => ({
   type: ChatActionTypes.CLEAR_CHAT_MESSAGES,
 });
 
-
 // Chat Rooms
 
 export interface AddChatRoom {
@@ -153,7 +150,6 @@ export const setChatRooms = (
   isNewRoom,
 });
 
-
 // not used
 export interface ClearChatRooms {
   type: ChatActionTypes.CLEAR_CHAT_ROOMS;
@@ -162,7 +158,6 @@ export interface ClearChatRooms {
 export const clearChatRooms = (): ClearChatRooms => ({
   type: ChatActionTypes.CLEAR_CHAT_ROOMS,
 });
-
 
 // Add Msg to Chat Room
 
@@ -193,7 +188,6 @@ export const addNewMessageToChatRoom = (
   message,
 });
 
-
 // Chat Conversations
 
 export interface SetChatConversations {
@@ -207,7 +201,6 @@ export const setChatConversations = (
   type: ChatActionTypes.SET_CHAT_CONVERSATIONS,
   chatConversations,
 });
-
 
 // ChatUser Notes
 
@@ -274,7 +267,6 @@ export const clearEditMode = (): ClearEditMode => ({
   type: ChatActionTypes.CLEAR_NOTE_EDIT_MODE,
 });
 
-
 // Kabelwerk
 
 export interface SelectInbox {
@@ -309,12 +301,14 @@ export interface UpdateMessages {
   subtype: string;
   payload: Message[];
 }
-export const updateMessages = (payload: Message[], subtype: string = ''): UpdateMessages => ({
+export const updateMessages = (
+  payload: Message[],
+  subtype: string = ''
+): UpdateMessages => ({
   type: ChatActionTypes.UPDATE_MESSAGES,
   subtype,
   payload,
 });
-
 
 export interface UpdatePatient {
   type: ChatActionTypes.UPDATE_PATIENT;
@@ -324,7 +318,6 @@ export const updatePatient = (payload: ChatUser | null): UpdatePatient => ({
   type: ChatActionTypes.UPDATE_PATIENT,
   payload,
 });
-
 
 // Others
 
@@ -360,7 +353,6 @@ export const setScrollToBottom = (payload: boolean): SetScrollToBottom => ({
   payload,
 });
 
-
 export type ChatActions =
   | SetCurrentUserLoading
   | SetCurrentUserActionInit
@@ -388,4 +380,4 @@ export type ChatActions =
   | SelectRoom
   | UpdateInboxRooms
   | UpdateMessages
-  | UpdatePatient
+  | UpdatePatient;

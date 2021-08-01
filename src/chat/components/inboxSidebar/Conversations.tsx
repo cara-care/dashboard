@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux';
 import { selectInbox } from '../../redux';
 import { INBOXES } from '../../inboxes';
 
-
 const useStyles = makeStyles(() => ({
   avatar: {
     height: 22,
@@ -21,40 +20,32 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
 export default function Conversations() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const renderConversationItems = useCallback(() => {
-    return INBOXES.map(
-      (inbox, index) => {
-        return (
-          <ConverstaionsItem
-            key={inbox.slug}
-            icon={
-              <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
-                {inbox.icon}
-              </Avatar>
-            }
-            text={inbox.name}
-            // count={?}
-            active={selectedIndex === index}
-            handleSelected={() => {
-              setSelectedIndex(index);
-              dispatch(selectInbox(inbox));
-            }}
-          />
-        );
-      }
-    );
-  }, [
-    classes.avatar,
-    classes.avatarEmoji,
-    dispatch,
-    selectedIndex,
-  ]);
+    return INBOXES.map((inbox, index) => {
+      return (
+        <ConverstaionsItem
+          key={inbox.slug}
+          icon={
+            <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
+              {inbox.icon}
+            </Avatar>
+          }
+          text={inbox.name}
+          // count={?}
+          active={selectedIndex === index}
+          handleSelected={() => {
+            setSelectedIndex(index);
+            dispatch(selectInbox(inbox));
+          }}
+        />
+      );
+    });
+  }, [classes.avatar, classes.avatarEmoji, dispatch, selectedIndex]);
 
   return (
     <div>

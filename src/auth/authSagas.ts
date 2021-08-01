@@ -48,12 +48,16 @@ export function* logoutSaga() {
   }
 }
 
-export function* fetchPatientSaga({ email, history, route }: SelectPatientInitAction) {
+export function* fetchPatientSaga({
+  email,
+  history,
+  route,
+}: SelectPatientInitAction) {
   try {
     const res = yield call(() => getUserByEmailOrUsername(email));
     yield put(selectPatientSuccessAction(res.data));
     if (history && route) {
-      history.push(route)
+      history.push(route);
     }
   } catch (err) {
     yield put(selectPatientFailedAction(err));

@@ -9,7 +9,6 @@ import ChatMessagesList from './ChatMessagesList';
 import { useDispatch, useSelector } from 'react-redux';
 import { Message, getRoom, updateMessages } from '../../redux';
 
-
 const useStyles = makeStyles((theme) => ({
   messages: {
     flex: 1,
@@ -37,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function Chat() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -61,9 +59,6 @@ export default function Chat() {
     // do nothing if no room is selected yet
     if (!selectedRoom) return;
 
-    // if we have selected a room, we have a connection
-    let kabel = Kabelwerk.getKabel();
-
     // clear the previous room object, if such
     if (roomRef.current) {
       roomRef.current.off();
@@ -71,7 +66,7 @@ export default function Chat() {
     }
 
     // init the new room object
-    roomRef.current = kabel.openRoom(selectedRoom.id);
+    roomRef.current = Kabelwerk.openRoom(selectedRoom.id);
 
     roomRef.current.on('ready', ({ messages }: { messages: Message[] }) => {
       dispatch(updateMessages(messages));
@@ -81,15 +76,14 @@ export default function Chat() {
       dispatch(updateMessages([message], 'append'));
     });
 
+    roomRef.current.connect();
+
     // reset the load more flags
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [
-    dispatch,
-    selectedRoom,
-  ]);
+  }, [dispatch, selectedRoom]);
 
-  const postMessage = function(text: string) {
+  const postMessage = function (text: string) {
     if (roomRef.current) {
       // the message_posted hook above takes care of displaying it
       roomRef.current.postMessage({ text }).catch((error: any) => {
@@ -98,20 +92,23 @@ export default function Chat() {
     }
   };
 
-  const handleIntersect = function() {
+  const handleIntersect = function () {
     if (roomRef.current && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
-      roomRef.current.loadEarlier().then((messages: Message[]) => {
-        if (messages.length) {
-          dispatch(updateMessages(messages, 'prepend'));
-        } else {
-          setCanLoadMore(false);
-        }
-        setIsLoadingMore(false);
-      }).catch((error: any) => {
-        console.error(error);
-        setIsLoadingMore(false);
-      });
+      roomRef.current
+        .loadEarlier()
+        .then((messages: Message[]) => {
+          if (messages.length) {
+            dispatch(updateMessages(messages, 'prepend'));
+          } else {
+            setCanLoadMore(false);
+          }
+          setIsLoadingMore(false);
+        })
+        .catch((error: any) => {
+          console.error(error);
+          setIsLoadingMore(false);
+        });
     }
   };
 
@@ -130,12 +127,7 @@ export default function Chat() {
         <ChatMessagesList />
         <div ref={messagesTopRef} className={classes.top} />
         {isLoadingMore && (
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            p={1}
-          >
+          <Box display="flex" alignItems="center" justifyContent="center" p={1}>
             <Spinner size={24} noText />
           </Box>
         )}
@@ -143,4 +135,4 @@ export default function Chat() {
       {selectedRoom && <InputToolbar onSubmit={postMessage} />}
     </>
   );
-};
+}

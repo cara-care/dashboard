@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { InboxRoom, getInbox, updateInboxRooms } from '../../redux';
 import { Divider, Typography } from '@material-ui/core';
 
-
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
     display: 'flex',
@@ -26,7 +25,6 @@ const useStyles = makeStyles((_theme) => ({
   },
   divider: {},
 }));
-
 
 export default function ChatRooms() {
   const classes = useStyles();
@@ -49,44 +47,41 @@ export default function ChatRooms() {
 
   useEffect(() => {
     if (!selectedInbox) {
-      return;  // do nothing if no inbox is selected yet
+      return; // do nothing if no inbox is selected yet
     }
 
-    let kabel;
-    try {
-      kabel = Kabelwerk.getKabel();
-    } catch (error) {
-      return;  // do nothing if the websocket is not connected yet
+    if (!Kabelwerk.isConnected()) {
+      return; // do nothing if the websocket is not connected yet
     }
 
-    let params = {limit: 20};
+    let params = { limit: 20 };
     switch (selectedInbox.slug) {
       case 'personal':
-        params['assignedTo'] = kabel.getUser().id;
+        params['assignedTo'] = Kabelwerk.getUser().id;
         break;
 
       case 'DE:free':
-        params['attributes'] = {country: 'DE', is_premium: false};
+        params['attributes'] = { country: 'DE', is_premium: false };
         break;
 
       case 'DE:premium':
-        params['attributes'] = {country: 'DE', is_premium: true};
+        params['attributes'] = { country: 'DE', is_premium: true };
         break;
 
       case 'UK:free':
-        params['attributes'] = {country: 'GB', is_premium: false};
+        params['attributes'] = { country: 'GB', is_premium: false };
         break;
 
       case 'UK:premium':
-        params['attributes'] = {country: 'GB', is_premium: true};
+        params['attributes'] = { country: 'GB', is_premium: true };
         break;
 
       case 'pilot_study':
-        params['attributes'] = {in_anwendertest_ibs: true};
+        params['attributes'] = { in_anwendertest_ibs: true };
         break;
 
       case '_':
-        params['attributes'] = {country: ''};
+        params['attributes'] = { country: '' };
         break;
 
       case 'all':
@@ -95,11 +90,11 @@ export default function ChatRooms() {
     }
 
     if (inboxRef.current) {
-      inboxRef.current.off();  // clear the previously attached event listeners
+      inboxRef.current.off(); // clear the previously attached event listeners
       inboxRef.current = null;
     }
 
-    inboxRef.current = kabel.openInbox(params);
+    inboxRef.current = Kabelwerk.openInbox(params);
 
     inboxRef.current.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
       dispatch(updateInboxRooms(rooms));
@@ -109,28 +104,30 @@ export default function ChatRooms() {
       dispatch(updateInboxRooms(rooms));
     });
 
+    inboxRef.current.connect();
+
     // reset the load more flags
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [
-    dispatch,
-    selectedInbox,
-  ]);
+  }, [dispatch, selectedInbox]);
 
-  const handleIntersect = function() {
+  const handleIntersect = function () {
     if (inboxRef.current && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
-      inboxRef.current.loadMore().then(({ rooms }: { rooms: InboxRoom[] }) => {
-        if (rooms.length) {
-          dispatch(updateInboxRooms(rooms));
-        } else {
-          setCanLoadMore(false);
-        }
-        setIsLoadingMore(false);
-      }).catch((error: any) => {
-        console.error(error);
-        setIsLoadingMore(false);
-      });
+      inboxRef.current
+        .loadMore()
+        .then(({ rooms }: { rooms: InboxRoom[] }) => {
+          if (rooms.length) {
+            dispatch(updateInboxRooms(rooms));
+          } else {
+            setCanLoadMore(false);
+          }
+          setIsLoadingMore(false);
+        })
+        .catch((error: any) => {
+          console.error(error);
+          setIsLoadingMore(false);
+        });
     }
   };
 
@@ -164,10 +161,7 @@ export default function ChatRooms() {
           <Spinner size={24} noText />
         </Box>
       ) : canLoadMore ? (
-        <Button
-          ref={loadMoreButtonRef}
-          disabled={true}
-        >
+        <Button ref={loadMoreButtonRef} disabled={true}>
           {isLoadingMore ? 'Loading...' : 'Load more'}
         </Button>
       ) : null}

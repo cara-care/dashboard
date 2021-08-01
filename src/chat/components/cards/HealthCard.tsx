@@ -7,7 +7,6 @@ import { ChatUser, getPatient } from '../../redux';
 import CardHeaderComp from './CardHeader';
 import { useIntl } from 'react-intl';
 
-
 const useStyles = makeStyles((_theme) => ({
   root: {
     marginTop: 16,
@@ -20,7 +19,6 @@ const useStyles = makeStyles((_theme) => ({
   },
 }));
 
-
 const shortDiagnosisRegex = /\[(.*?)\]/;
 const prepareDiagnosis = (patient: ChatUser) =>
   patient.diagnosis
@@ -31,7 +29,6 @@ const prepareDiagnosis = (patient: ChatUser) =>
       return isShortDiagnosisName ? isShortDiagnosisName[1] : diagnosis;
     })
     .join(', ');
-
 
 export default function HealthCard() {
   const classes = useStyles();

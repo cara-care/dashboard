@@ -11,9 +11,7 @@ const testChannelSlug = 'Test Channel Slug';
 const testChannelName = 'Test Channel Name';
 
 describe.skip('<ChatHeaderRightBox />', () => {
-  const ChatHeaderRightBoxWithUser = () => (
-    <ChatHeaderRightBox />
-  );
+  const ChatHeaderRightBoxWithUser = () => <ChatHeaderRightBox />;
   it('renders elements correctly', () => {
     const ChatHeaderRightBoxWithProviders = withProviders(
       ChatHeaderRightBoxWithUser,

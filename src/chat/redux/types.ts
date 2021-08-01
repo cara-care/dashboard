@@ -1,18 +1,21 @@
 import { EnrolledProgram } from '../../auth';
 
 export interface ChatUser {
-  age: number;
+  age: number | null;
   allergies: string[];
+  appVersion: number | null;
+  code: string;
   dateJoined: string;
-  enrolledProgrammes: EnrolledProgram[];
   diagnosis: string;
+  diseases: string[];
+  email: string;
+  enrolledProgrammes: EnrolledProgram[];
   id: number;
   inbox: string;
-  lastSeen: string;
+  lastSeen: string | null;
   nickname: string;
   platform: string;
   sex: string | null;
-  email: string;
   timezone: string;
   username: string;
 }
@@ -71,7 +74,6 @@ export interface ChatEditMode {
   noteId: number;
   message: string;
 }
-
 
 export interface User {
   id: number;

@@ -14,7 +14,6 @@ import {
   clearEditMode,
 } from '../../redux';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '0 8px 12px',
@@ -36,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.body1,
   },
 }));
-
 
 export default function NotesInput() {
   const intl = useIntl();
@@ -66,27 +64,21 @@ export default function NotesInput() {
     []
   );
 
-  const handleNoteUpdate = useCallback(
-    async () => {
-      if (patient) {
-        await editNote(patient.id, noteId, message);
-        dispatch(editChatUserNote(noteId, message));
-        dispatch(clearEditMode());
-      }
-    },
-    [dispatch, message, noteId, patient]
-  );
+  const handleNoteUpdate = useCallback(async () => {
+    if (patient) {
+      await editNote(patient.id, noteId, message);
+      dispatch(editChatUserNote(noteId, message));
+      dispatch(clearEditMode());
+    }
+  }, [dispatch, message, noteId, patient]);
 
-  const handleNoteCreate = useCallback(
-    async () => {
-      if (patient) {
-        const res = await sendNote(patient.id, message);
-        sendNoteToStore(res.data);
-        setMessage('');
-      }
-    },
-    [message, patient, sendNoteToStore]
-  );
+  const handleNoteCreate = useCallback(async () => {
+    if (patient) {
+      const res = await sendNote(patient.id, message);
+      sendNoteToStore(res.data);
+      setMessage('');
+    }
+  }, [message, patient, sendNoteToStore]);
 
   const handleSubmit = async () => {
     if (!patient || !message) return;
@@ -118,7 +110,7 @@ export default function NotesInput() {
             })
           : intl.formatMessage({
               id: 'common.send',
-              defaultMessage: 'Send',
+              defaultMessage: 'Add',
             })}
       </Button>
     </div>

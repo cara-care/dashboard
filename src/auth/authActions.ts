@@ -37,12 +37,12 @@ export const loginInitAction = ({
 
 export interface LoginSuccessAction {
   type: AuthActionTypes.LOGIN_SUCCESS;
-  payload: MePayload
+  payload: MePayload;
 }
 
 export const loginSuccessAction = (payload: MePayload): LoginSuccessAction => ({
   type: AuthActionTypes.LOGIN_SUCCESS,
-  payload
+  payload,
 });
 
 export interface LoginFailedAction {
@@ -96,7 +96,7 @@ export const selectPatientInitAction = (
   type: AuthActionTypes.SELECT_PATIENT_INIT,
   email,
   history,
-  route
+  route,
 });
 
 export interface SelectPatientSuccessAction {

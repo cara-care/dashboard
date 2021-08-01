@@ -6,9 +6,7 @@ import ChatHeader from '../../components/chatHeader/ChatHeader';
 import { currentUserMock } from '../../testHelpers';
 
 describe.skip('<ChatHeader />', () => {
-  const ChatHeaderWithUser = () => (
-    <ChatHeader />
-  );
+  const ChatHeaderWithUser = () => <ChatHeader />;
   it('does render user data when user loaded', () => {
     const ChatHeaderWithProviders = withProviders(
       ChatHeaderWithUser,

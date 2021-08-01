@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { InboxRoom, selectRoom } from '../../redux';
 
-
 const useStyles = makeStyles((theme) => ({
   link: {
     color: 'inherit',
@@ -61,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-
 interface ChatRoomItemProps {
   room: InboxRoom;
 }
@@ -103,4 +101,4 @@ export default function ChatRoomItem({ room }: ChatRoomItemProps) {
       <Divider className={classes.divder} />
     </NavLink>
   );
-};
+}
