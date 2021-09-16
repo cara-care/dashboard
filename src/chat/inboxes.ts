@@ -4,5 +4,6 @@ export const INBOXES = [
   { slug: 'anwendertest_ibd', name: 'Anwendertest IBD', icon: '🦩' },
   { slug: 'anwendertest_ibs', name: 'Anwendertest IBS', icon: '🐢' },
   { slug: 'rct_ibs', name: 'RCT IBS', icon: '🌵' },
+  { slug: 'no_study', name: 'Not in a study', icon: '⭐' },
   { slug: 'all', name: 'All', icon: '🌍' },
 ];

@@ -76,6 +76,15 @@ export default function ChatRooms() {
         params['attributes'] = { in_rct_ibs: true };
         break;
 
+      case 'no_study':
+        params['attributes'] = {
+          in_anwendertest_hb: false,
+          in_anwendertest_ibd: false,
+          in_anwendertest_ibs: false,
+          in_rct_ibs: false,
+        };
+        break;
+
       case 'all':
       default:
         break;
