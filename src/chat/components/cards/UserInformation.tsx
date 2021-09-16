@@ -50,19 +50,30 @@ export default function UserInformation() {
       value: patient.code ? patient.code : '-',
     },
     {
-      key: 'Programme',
-      value:
-        patient.enrolledProgrammes.length === 0
-          ? '-'
-          : patient.enrolledProgrammes[0].title,
-    },
-    {
       key: 'First active',
       value: patient.dateJoined ?? '-',
     },
     {
       key: 'Last active',
       value: patient.lastSeen ?? '-',
+    },
+  ];
+
+  const programmeInfo = [
+    {
+      key: 'Programme',
+      value: patient.programme ?? '-',
+    },
+    {
+      key: 'Modules',
+      value:
+        patient.programmeModules.length === 0
+          ? '-'
+          : patient.programmeModules.join(', '),
+    },
+    {
+      key: 'Week',
+      value: patient.programmeWeek ?? '-',
     },
   ];
 
@@ -106,6 +117,11 @@ export default function UserInformation() {
       <Card className={classes.root}>
         <CardHeaderComp title={'User'} />
         <CardBasicList cardDetailsValues={userInfo} />
+      </Card>
+
+      <Card className={classes.root}>
+        <CardHeaderComp title={'Programme'} />
+        <CardBasicList cardDetailsValues={programmeInfo} />
       </Card>
 
       <Card className={classes.root}>
