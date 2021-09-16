@@ -1,5 +1,3 @@
-import { EnrolledProgram } from '../../auth';
-
 export interface ChatUser {
   age: number | null;
   allergies: string[];
@@ -9,12 +7,13 @@ export interface ChatUser {
   diagnosis: string;
   diseases: string[];
   email: string;
-  enrolledProgrammes: EnrolledProgram[];
   id: number;
-  inbox: string;
   lastSeen: string | null;
   nickname: string;
   platform: string;
+  programme: string;
+  programmeModules: string[];
+  programmeWeek: number | null;
   sex: string | null;
   timezone: string;
   username: string;

@@ -1,13 +1,4 @@
-import { capitalize } from 'lodash';
-import { ChatMessage, ChatUser } from './types';
-
-export const findLastContact = (
-  messages: ChatMessage[],
-  username: string | undefined
-) => {
-  const lastContact = messages.find((msg) => msg.author !== username);
-  return capitalize(lastContact?.author);
-};
+import { ChatUser } from './types';
 
 export const deletedUserData = (id: number, username: string): ChatUser => ({
   id,
@@ -19,12 +10,13 @@ export const deletedUserData = (id: number, username: string): ChatUser => ({
   dateJoined: '',
   diagnosis: '',
   diseases: [],
-  enrolledProgrammes: [],
-  inbox: '',
-  lastSeen: null,
-  platform: '',
-  sex: null,
   email: '',
-  timezone: '',
+  lastSeen: null,
   nickname: '',
+  platform: '',
+  programme: '',
+  programmeModules: [],
+  programmeWeek: null,
+  sex: null,
+  timezone: '',
 });

@@ -43,7 +43,6 @@ import {
   chatInitialState,
   chatReducer,
   ChatState,
-  rootChatSaga,
 } from '../chat/redux';
 
 export interface RootState {
@@ -88,7 +87,6 @@ export default function configureStore({
     yield all([
       watchSubmissionInitSaga(),
       rootAuthSaga(),
-      rootChatSaga(),
       ChartOverviewSagas.chartOverviewRootSaga(),
       TrackingOverviewSagas.trackingOverviewRootSaga(),
     ]);

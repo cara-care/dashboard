@@ -60,28 +60,29 @@ export default function ChatRooms() {
         params['assignedTo'] = Kabelwerk.getUser().id;
         break;
 
-      case 'DE:free':
-        params['attributes'] = { country: 'DE', is_premium: false };
+      case 'anwendertest_hb':
+        params['attributes'] = { in_anwendertest_hb: true };
         break;
 
-      case 'DE:premium':
-        params['attributes'] = { country: 'DE', is_premium: true };
+      case 'anwendertest_ibd':
+        params['attributes'] = { in_anwendertest_ibd: true };
         break;
 
-      case 'UK:free':
-        params['attributes'] = { country: 'GB', is_premium: false };
-        break;
-
-      case 'UK:premium':
-        params['attributes'] = { country: 'GB', is_premium: true };
-        break;
-
-      case 'pilot_study':
+      case 'anwendertest_ibs':
         params['attributes'] = { in_anwendertest_ibs: true };
         break;
 
-      case '_':
-        params['attributes'] = { country: '' };
+      case 'rct_ibs':
+        params['attributes'] = { in_rct_ibs: true };
+        break;
+
+      case 'no_study':
+        params['attributes'] = {
+          in_anwendertest_hb: false,
+          in_anwendertest_ibd: false,
+          in_anwendertest_ibs: false,
+          in_rct_ibs: false,
+        };
         break;
 
       case 'all':
