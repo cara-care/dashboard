@@ -12,8 +12,9 @@ export interface ChatUser {
   nickname: string;
   platform: string;
   programme: string;
+  programmeCurrentPhase: number | null;
   programmeModules: string[];
-  programmeWeek: number | null;
+  programmeStarted: string | null;
   sex: string | null;
   timezone: string;
   username: string;
