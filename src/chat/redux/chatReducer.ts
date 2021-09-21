@@ -22,7 +22,6 @@ export interface ChatState {
   noteEditMode: ChatEditMode;
   patient: ChatUser | null;
   room: InboxRoom | null;
-  selectedChatAssignment: string;
 }
 
 export const initialEditMode = {
@@ -42,7 +41,6 @@ export const chatInitialState = {
   noteEditMode: initialEditMode,
   patient: null,
   room: null,
-  selectedChatAssignment: '',
 };
 
 export const chatReducer: Reducer<ChatState, ChatActions> = (
@@ -93,13 +91,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
       return {
         ...state,
         noteEditMode: { ...initialEditMode },
-      };
-
-    // Other
-    case ChatActionTypes.SET_SELECTED_ASSIGNMENT:
-      return {
-        ...state,
-        selectedChatAssignment: action.payload,
       };
 
     // Kabelwerk
@@ -153,11 +144,6 @@ export const currentUserUsernameSelector = (state: RootState) =>
 
 export const chatConversationsSelector = (state: RootState) =>
   state.chat.chatConversations;
-
-export const selectedAssignmentSelector = (state: RootState) =>
-  state.chat.chatConversations?.find(
-    (conversation) => conversation.slug === state.chat.selectedChatAssignment
-  )?.name;
 
 export const notesSelector = (state: RootState) =>
   state.chat.currentChatUserNotes;

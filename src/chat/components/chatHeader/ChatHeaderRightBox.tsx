@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Popover, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignTeammate from './AssignTeammate';
-import { useSelector } from 'react-redux';
-import { selectedAssignmentSelector } from '../../redux';
 
 const useStyles = makeStyles({
   box: {
@@ -29,7 +27,6 @@ const useStyles = makeStyles({
 
 export default function ChatHeaderRightBox() {
   const classes = useStyles();
-  const selectedAssignment = useSelector(selectedAssignmentSelector);
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -57,9 +54,10 @@ export default function ChatHeaderRightBox() {
               <AccountCircleIcon style={{ marginRight: 4, fontSize: 20 }} />
             }
           >
-            <Typography variant="body2" className={classes.buttonText}>
-              {selectedAssignment}
-            </Typography>
+            <Typography
+              variant="body2"
+              className={classes.buttonText}
+            ></Typography>
           </Button>
         </div>
       </Box>
