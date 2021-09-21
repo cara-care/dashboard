@@ -1,3 +1,5 @@
+// Cara users
+
 export interface ChatUser {
   age: number | null;
   allergies: string[];
@@ -20,43 +22,7 @@ export interface ChatUser {
   username: string;
 }
 
-export interface ChatMessage {
-  author: string;
-  created: string;
-  id: number;
-  room: string;
-  sent: string;
-  text: string;
-  type: string;
-  upload: null;
-}
-
-export interface LastMessage {
-  author: string;
-  created: string;
-  id: number;
-  sent: string;
-  text: string;
-  upload: null;
-}
-
-export interface ChatRoomPatient {
-  id: number;
-  nickname: string;
-  username: string;
-}
-
-export interface ChatRoom {
-  lastMessage: LastMessage;
-  patient: ChatRoomPatient;
-}
-
-export interface ChatConversation {
-  name: string;
-  private: boolean;
-  slug: string;
-  rooms: number;
-}
+// Notes
 
 export interface ChatUserNote {
   author: {
@@ -74,6 +40,8 @@ export interface ChatEditMode {
   noteId: number;
   message: string;
 }
+
+// Kabelwerk
 
 export interface User {
   id: number;

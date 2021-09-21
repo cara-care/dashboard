@@ -4,10 +4,7 @@ import { Avatar, Paper, Theme, Typography, useTheme } from '@material-ui/core';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
-import {
-  chatConversationsSelector,
-  currentUserUsernameSelector,
-} from '../../redux';
+import { currentUserUsernameSelector } from '../../redux';
 
 const useStyles = makeStyles({
   root: {
@@ -58,7 +55,7 @@ export default function AssignTeammate({
   const classes = useStyles();
   const intl = useIntl();
   const theme = useTheme();
-  const chatConversations = useSelector(chatConversationsSelector);
+  const chatConversations: any[] = [];
   const username = useSelector(currentUserUsernameSelector);
 
   const handleClick = (slug: string) => {

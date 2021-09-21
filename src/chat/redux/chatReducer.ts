@@ -4,7 +4,6 @@ import { RootState } from '../../utils/store';
 import {
   ChatUser,
   ChatUserNote,
-  ChatConversation,
   ChatEditMode,
   Inbox,
   InboxRoom,
@@ -12,7 +11,6 @@ import {
 } from './types';
 
 export interface ChatState {
-  chatConversations: ChatConversation[];
   currentChatUser: ChatUser | null;
   currentChatUserNotes: ChatUserNote[];
   inbox: Inbox | null;
@@ -31,7 +29,6 @@ export const initialEditMode = {
 };
 
 export const chatInitialState = {
-  chatConversations: [],
   currentChatUser: null,
   currentChatUserNotes: [],
   inbox: null,
@@ -141,9 +138,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
 
 export const currentUserUsernameSelector = (state: RootState) =>
   state.chat.currentChatUser?.username;
-
-export const chatConversationsSelector = (state: RootState) =>
-  state.chat.chatConversations;
 
 export const notesSelector = (state: RootState) =>
   state.chat.currentChatUserNotes;
