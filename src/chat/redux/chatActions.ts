@@ -8,8 +8,6 @@ import {
 } from './types';
 
 export enum ChatActionTypes {
-  SET_SELECTED_ASSIGNMENT = 'chat/SET_SELECTED_ASSIGNMENT',
-
   // Kabelwerk
   SELECT_INBOX = 'chat/SELECT_INBOX',
   SELECT_ROOM = 'chat/SELECT_ROOM',
@@ -17,7 +15,7 @@ export enum ChatActionTypes {
   UPDATE_MESSAGES = 'chat/UPDATE_MESSAGES',
   UPDATE_PATIENT = 'chat/UPDATE_PATIENT',
 
-  // notes
+  // Notes
   SET_CHATUSER_NOTES = 'chat/SET_CHATUSER_NOTES',
   ADD_CHATUSER_NOTE = 'chat/ADD_CHATUSER_NOTE',
   EDIT_CHATUSER_NOTE = 'chat/EDIT_CHATUSER_NOTE',
@@ -143,22 +141,7 @@ export const updatePatient = (payload: ChatUser | null): UpdatePatient => ({
   payload,
 });
 
-// Others
-
-export interface SetSelectedAssignment {
-  type: ChatActionTypes.SET_SELECTED_ASSIGNMENT;
-  payload: string;
-}
-
-export const setSelectedAssignment = (
-  payload: string
-): SetSelectedAssignment => ({
-  type: ChatActionTypes.SET_SELECTED_ASSIGNMENT,
-  payload,
-});
-
 export type ChatActions =
-  | SetSelectedAssignment
   | SetChatUserNotes
   | AddChatUserNote
   | EditChatUserNote

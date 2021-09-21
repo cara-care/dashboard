@@ -65,15 +65,19 @@ export default function UserInformation() {
       value: patient.programme ?? '-',
     },
     {
+      key: 'Started',
+      value: patient.programmeStarted ?? '-',
+    },
+    {
+      key: 'Phase №',
+      value: patient.programmeCurrentPhase ?? '-',
+    },
+    {
       key: 'Modules',
       value:
         patient.programmeModules.length === 0
           ? '-'
           : patient.programmeModules.join(', '),
-    },
-    {
-      key: 'Week',
-      value: patient.programmeWeek ?? '-',
     },
   ];
 

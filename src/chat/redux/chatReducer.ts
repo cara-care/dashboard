@@ -4,7 +4,6 @@ import { RootState } from '../../utils/store';
 import {
   ChatUser,
   ChatUserNote,
-  ChatConversation,
   ChatEditMode,
   Inbox,
   InboxRoom,
@@ -12,7 +11,6 @@ import {
 } from './types';
 
 export interface ChatState {
-  chatConversations: ChatConversation[];
   currentChatUser: ChatUser | null;
   currentChatUserNotes: ChatUserNote[];
   inbox: Inbox | null;
@@ -22,7 +20,6 @@ export interface ChatState {
   noteEditMode: ChatEditMode;
   patient: ChatUser | null;
   room: InboxRoom | null;
-  selectedChatAssignment: string;
 }
 
 export const initialEditMode = {
@@ -32,7 +29,6 @@ export const initialEditMode = {
 };
 
 export const chatInitialState = {
-  chatConversations: [],
   currentChatUser: null,
   currentChatUserNotes: [],
   inbox: null,
@@ -42,7 +38,6 @@ export const chatInitialState = {
   noteEditMode: initialEditMode,
   patient: null,
   room: null,
-  selectedChatAssignment: '',
 };
 
 export const chatReducer: Reducer<ChatState, ChatActions> = (
@@ -95,13 +90,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         noteEditMode: { ...initialEditMode },
       };
 
-    // Other
-    case ChatActionTypes.SET_SELECTED_ASSIGNMENT:
-      return {
-        ...state,
-        selectedChatAssignment: action.payload,
-      };
-
     // Kabelwerk
     case ChatActionTypes.SELECT_INBOX:
       return {
@@ -150,14 +138,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
 
 export const currentUserUsernameSelector = (state: RootState) =>
   state.chat.currentChatUser?.username;
-
-export const chatConversationsSelector = (state: RootState) =>
-  state.chat.chatConversations;
-
-export const selectedAssignmentSelector = (state: RootState) =>
-  state.chat.chatConversations?.find(
-    (conversation) => conversation.slug === state.chat.selectedChatAssignment
-  )?.name;
 
 export const notesSelector = (state: RootState) =>
   state.chat.currentChatUserNotes;

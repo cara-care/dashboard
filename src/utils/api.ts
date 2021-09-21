@@ -157,46 +157,12 @@ export const changePassword = ({
   });
 };
 
-export const getChatRooms = ({
-  chatRoomsSlug = 'all',
-  limit,
-  offset,
-}: {
-  chatRoomsSlug: string;
-  limit: number | string;
-  offset: number | string;
-}) => {
-  const url =
-    chatRoomsSlug === 'all'
-      ? `/dashboard/chat/rooms/?limit=${limit}&offset=${offset}`
-      : `/dashboard/chat/rooms/?inbox=${chatRoomsSlug}&limit=${limit}&offset=${offset}`;
-  return api.get(url);
-};
-
-export const getMessages = ({
-  userId,
-  limit,
-  offset,
-}: {
-  userId: number | string;
-  limit: number | string;
-  offset: number | string;
-}) => {
-  return api.get(
-    `/dashboard/chat/rooms/${userId}/messages/?limit=${limit}&offset=${offset}`
-  );
-};
-
 export const getUserDataById = (userId: number) => {
   return api.get(`/dashboard/${userId}/`);
 };
 
 export const getChatAuthorizationToken = () => {
   return api.get(`/dashboard/kabelwerk/`);
-};
-
-export const getInboxesList = () => {
-  return api.get('/dashboard/chat/inboxes/');
 };
 
 export const getNotesList = (userId: number) => {

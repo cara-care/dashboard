@@ -1,15 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Paper, Theme, Typography, useTheme } from '@material-ui/core';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  chatConversationsSelector,
-  currentUserUsernameSelector,
-  selectedAssignmentSelector,
-  setSelectedAssignment,
-} from '../../redux';
+import { useSelector } from 'react-redux';
+import { currentUserUsernameSelector } from '../../redux';
 
 const useStyles = makeStyles({
   root: {
@@ -60,21 +55,11 @@ export default function AssignTeammate({
   const classes = useStyles();
   const intl = useIntl();
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const chatConversations = useSelector(chatConversationsSelector);
+  const chatConversations: any[] = [];
   const username = useSelector(currentUserUsernameSelector);
-  const selectedAssignment = useSelector(selectedAssignmentSelector);
-
-  const selectAssignment = useCallback(
-    (assignment: string) => {
-      dispatch(setSelectedAssignment(assignment));
-    },
-    [dispatch]
-  );
 
   const handleClick = (slug: string) => {
     assignUserToNutri(slug, username);
-    selectAssignment(slug);
     handleCloseAssignPopup();
   };
 
@@ -95,7 +80,7 @@ export default function AssignTeammate({
               <AssigneeWrapper
                 key={slug}
                 theme={theme}
-                active={name === selectedAssignment}
+                active={name === '?'}
                 onClick={() => handleClick(slug)}
               >
                 <Avatar className={classes.avatar} />
