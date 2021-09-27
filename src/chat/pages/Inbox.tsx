@@ -12,7 +12,6 @@ import ChatHeader from '../components/chatHeader/ChatHeader';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { getChatAuthorizationToken } from '../../utils/api';
 import { INBOXES } from '../inboxes';
-import { KABELWERK_URL } from '../../utils/constants';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'nowrap',
     width: '100vw',
-    height: `calc(100vh - 68px - 64px)`, // 100vh - nutri navigation height - appbar height
+    height: `calc(100vh - 10px - 64px)`, // 100vh - nutri navigation height - appbar height
   },
   resize: {
     display: 'flex',
@@ -57,7 +56,7 @@ export default function Inbox() {
     if (!Kabelwerk.isConnected()) {
       getChatAuthorizationToken().then((res) => {
         Kabelwerk.config({
-          url: KABELWERK_URL,
+          url: process.env.REACT_APP_KABELWERK_URL,
           token: res.data.token,
           refreshToken: () => {
             return getChatAuthorizationToken().then((res) => res.data.token);
