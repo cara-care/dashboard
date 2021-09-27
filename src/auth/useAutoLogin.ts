@@ -19,7 +19,11 @@ const useAutoLogin = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push('/nutri/inbox');
+      history.push(
+        process.env.REACT_APP_LOCATION === 'EU'
+          ? '/nutri/inbox'
+          : '/nutri/select-patient'
+      );
     }
   }, [isAuthenticated, history]);
 };

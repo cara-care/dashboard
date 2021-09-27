@@ -5,6 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NUTRI_NAVIGATION } from '../utils/test-helpers';
 
 const useStyles = makeStyles((theme) => ({
+  empty: {
+    backgroundColor: theme.palette.primary.light,
+    height: 10,
+  },
   root: {
     padding: `${theme.spacing(3)}px 0`,
     margin: '0 auto',
@@ -62,6 +66,11 @@ const useStyles = makeStyles((theme) => ({
 
 const NutriNavigation: React.FC = () => {
   const classes = useStyles();
+
+  if (process.env.REACT_APP_LOCATION === 'EU') {
+    return <nav className={classes.empty} data-testid={NUTRI_NAVIGATION}></nav>;
+  }
+
   return (
     <nav className={classes.root} data-testid={NUTRI_NAVIGATION}>
       <NavLink
@@ -93,13 +102,6 @@ const NutriNavigation: React.FC = () => {
         activeClassName={classes.activeLink}
       >
         <FormattedMessage id="nutriNavigation.graph" />
-      </NavLink>
-      <NavLink
-        to="/nutri/inbox"
-        className={classes.link}
-        activeClassName={classes.activeLink}
-      >
-        <FormattedMessage id="nutriNavigation.inbox" defaultMessage="Inbox" />
       </NavLink>
     </nav>
   );
