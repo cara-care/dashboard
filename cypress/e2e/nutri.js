@@ -5,6 +5,6 @@ describe('nutri', () => {
       password: Cypress.env('password'),
     })
       .url()
-      .should('eq', `${Cypress.config().baseUrl}/nutri/inbox`);
+      .should('eq', `${Cypress.config().baseUrl}/nutri/select-patient`);
   });
 });
