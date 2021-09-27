@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'nowrap',
     width: '100vw',
-    height: `calc(100vh - 68px - 64px)`, // 100vh - nutri navigation height - appbar height
+    height: `calc(100vh - 10px - 64px)`, // 100vh - nutri navigation height - appbar height
   },
   resize: {
     display: 'flex',
