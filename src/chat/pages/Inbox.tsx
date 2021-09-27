@@ -1,19 +1,18 @@
-import React, { useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Kabelwerk from 'kabelwerk';
 import { Resizable, ResizeCallback } from 're-resizable';
-import { makeStyles } from '@material-ui/core/styles';
-import NutriNavigation from '../../components/NutriNavigation';
-import Chat from '../components/chat/Chat';
-import ChatRooms from '../components/chatRooms/ChatRooms';
-import ChatDetails from '../components/cards/ChatDetails';
-import { selectInbox } from '../redux';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import ChatHeader from '../components/chatHeader/ChatHeader';
-import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
+import NutriNavigation from '../../components/NutriNavigation';
 import { getChatAuthorizationToken } from '../../utils/api';
-import { INBOXES } from '../inboxes';
 import { KABELWERK_URL } from '../../utils/constants';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
+import ChatDetails from '../components/cards/ChatDetails';
+import Chat from '../components/chat/Chat';
+import ChatHeader from '../components/chatHeader/ChatHeader';
+import ChatRooms from '../components/chatRooms/ChatRooms';
+import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
+import { Inbox as InboxType, selectInbox } from '../redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +65,7 @@ export default function Inbox() {
         });
 
         Kabelwerk.on('ready', () => {
-          dispatch(selectInbox(INBOXES[0]));
+          dispatch(selectInbox(InboxType.ALL));
         });
 
         Kabelwerk.connect();

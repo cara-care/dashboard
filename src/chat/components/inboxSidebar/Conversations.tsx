@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from 'react';
-import clsx from 'classnames';
+import { Avatar, makeStyles } from '@material-ui/core';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
-import { Avatar, makeStyles } from '@material-ui/core';
-import ConverstaionsItem from './ConversationsItem';
-import { useDispatch } from 'react-redux';
-import { selectInbox } from '../../redux';
+import clsx from 'classnames';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { INBOXES } from '../../inboxes';
+import { getInbox, Inbox as InboxType, selectInbox } from '../../redux';
+import ConverstaionsItem from './ConversationsItem';
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -23,29 +23,28 @@ const useStyles = makeStyles(() => ({
 export default function Conversations() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const selectedInbox = useSelector(getInbox);
 
   const renderConversationItems = useCallback(() => {
-    return INBOXES.map((inbox, index) => {
+    return Object.keys(INBOXES).map((inboxType: InboxType) => {
       return (
         <ConverstaionsItem
-          key={inbox.slug}
+          key={inboxType}
           icon={
             <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
-              {inbox.icon}
+              {INBOXES[inboxType].icon}
             </Avatar>
           }
-          text={inbox.name}
+          text={INBOXES[inboxType].name}
           // count={?}
-          active={selectedIndex === index}
+          active={selectedInbox === inboxType}
           handleSelected={() => {
-            setSelectedIndex(index);
-            dispatch(selectInbox(inbox));
+            dispatch(selectInbox(inboxType));
           }}
         />
       );
     });
-  }, [classes.avatar, classes.avatarEmoji, dispatch, selectedIndex]);
+  }, [classes.avatar, classes.avatarEmoji, dispatch, selectedInbox]);
 
   return (
     <div>
