@@ -3,7 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { v1 } from 'uuid';
 import GetApp from '@material-ui/icons/GetApp';
-import { getHost } from '../../utils/constants';
 import { formatDate } from '../../utils/dateUtils';
 import { useIntl } from 'react-intl';
 
@@ -88,7 +87,7 @@ const Field: React.FC<Props> = ({ type, value }) => {
             value.map((val: any) => (
               <a
                 key={val.id}
-                href={getHost() + '/api' + val.url}
+                href={process.env.REACT_APP_URL + '/api' + val.url}
                 target="_blank"
                 rel="nofollow noreferrer noopener"
                 className={classes.link}
