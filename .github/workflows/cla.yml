@@ -18,9 +18,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           path-to-signatures: 'signatures/version1/cla.json'
-          path-To-cladocument: 'https://github.com/cara-care/dashboard/blob/master/cla.md'
+          path-to-document: 'https://github.com/cara-care/dashboard/blob/master/cla.md'
           # branch should not be protected
           branch: 'cla-signatures'
-          whitelist: mikeger,pavelsof,dbilgin,ishan2788,bot*
-          empty-commit-flag: false
-          blockchain-storage-flag: false
+          allowlist: mikeger,pavelsof,dbilgin,ishan2788,bot*
