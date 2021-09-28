@@ -1,14 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Kabelwerk from 'kabelwerk';
-import { makeStyles } from '@material-ui/core/styles';
+import { Divider, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import Spinner from '../../../components/Spinner';
-import ChatRoomsList from './ChatRoomsList';
+import { makeStyles } from '@material-ui/core/styles';
+import Kabelwerk from 'kabelwerk';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { InboxRoom, getInbox, updateInboxRooms } from '../../redux';
-import { Divider, Typography } from '@material-ui/core';
+import Spinner from '../../../components/Spinner';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import { INBOXES } from '../../inboxes';
+import {
+  getInbox,
+  Inbox as InboxType,
+  InboxRoom,
+  updateInboxRooms,
+} from '../../redux';
+import ChatRoomsList from './ChatRoomsList';
 
 const useStyles = makeStyles((_theme) => ({
   sidebar: {
@@ -54,29 +60,30 @@ export default function ChatRooms() {
       return; // do nothing if the websocket is not connected yet
     }
 
-    let params = { limit: 20 };
-    switch (selectedInbox.slug) {
-      case 'personal':
+    const params = { limit: 20 };
+
+    switch (selectedInbox) {
+      case InboxType.PERSONAL:
         params['assignedTo'] = Kabelwerk.getUser().id;
         break;
 
-      case 'anwendertest_hb':
+      case InboxType.ANWENDERTEST_HB:
         params['attributes'] = { in_anwendertest_hb: true };
         break;
 
-      case 'anwendertest_ibd':
+      case InboxType.ANWENDERTEST_IBD:
         params['attributes'] = { in_anwendertest_ibd: true };
         break;
 
-      case 'anwendertest_ibs':
+      case InboxType.ANWENDERTEST_IBS:
         params['attributes'] = { in_anwendertest_ibs: true };
         break;
 
-      case 'rct_ibs':
+      case InboxType.RCT_IBS:
         params['attributes'] = { in_rct_ibs: true };
         break;
 
-      case 'no_study':
+      case InboxType.NO_STUDY:
         params['attributes'] = {
           in_anwendertest_hb: false,
           in_anwendertest_ibd: false,
@@ -85,7 +92,7 @@ export default function ChatRooms() {
         };
         break;
 
-      case 'all':
+      case InboxType.ALL:
       default:
         break;
     }
@@ -145,7 +152,7 @@ export default function ChatRooms() {
     <div ref={rootRef} className={classes.sidebar}>
       <Box className={classes.headerBox}>
         <Typography variant="h6">
-          {selectedInbox ? selectedInbox.name : 'Loading…'}
+          {selectedInbox !== null ? INBOXES[selectedInbox].name : 'Loading…'}
         </Typography>
         <Typography variant="subtitle1"></Typography>
       </Box>
