@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Kabelwerk from 'kabelwerk';
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import InputToolbar from './InputToolbar';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useRef, useState } from 'react';
 import Spinner from '../../../components/Spinner';
+import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useKabelwerk from '../../hooks/useKabelwerk';
 import ChatMessagesList from './ChatMessagesList';
-import { useDispatch, useSelector } from 'react-redux';
-import { Message, getRoom, updateMessages } from '../../redux';
+import InputToolbar from './InputToolbar';
+import { Message } from '../../KabelwerkContext';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -38,16 +37,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Chat() {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const messagesRootRef = useRef<HTMLDivElement>(null);
   const messagesTopRef = useRef<HTMLDivElement>(null);
 
   // the inbox item selected from the list to the left
-  const selectedRoom = useSelector(getRoom);
-
-  // Kabelwerk's room object
-  const roomRef = useRef<any>(null);
+  const { currentRoom, loadEarlierMessages, postMessage } = useKabelwerk();
 
   // whether we are awaiting Kabelwerk's loadEarlier() function
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -56,57 +51,21 @@ export default function Chat() {
   const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {
-    // do nothing if no room is selected yet
-    if (!selectedRoom) return;
-
-    // clear the previous room object, if such
-    if (roomRef.current) {
-      roomRef.current.off();
-      roomRef.current = null;
-    }
-
-    // init the new room object
-    roomRef.current = Kabelwerk.openRoom(selectedRoom.id);
-
-    roomRef.current.on('ready', ({ messages }: { messages: Message[] }) => {
-      dispatch(updateMessages(messages));
-    });
-
-    roomRef.current.on('message_posted', (message: Message) => {
-      dispatch(updateMessages([message], 'append'));
-    });
-
-    roomRef.current.connect();
-
-    // reset the load more flags
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [dispatch, selectedRoom]);
-
-  const postMessage = function (text: string) {
-    if (roomRef.current) {
-      // the message_posted hook above takes care of displaying it
-      roomRef.current.postMessage({ text }).catch((error: any) => {
-        console.error(error);
-      });
-    }
-  };
+  }, [currentRoom]);
 
   const handleIntersect = function () {
-    if (roomRef.current && !isLoadingMore && canLoadMore) {
+    if (currentRoom !== null && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
-      roomRef.current
-        .loadEarlier()
-        .then((messages: Message[]) => {
-          if (messages.length) {
-            dispatch(updateMessages(messages, 'prepend'));
-          } else {
+      loadEarlierMessages()
+        .then((newMessages?: Message[]) => {
+          if (!newMessages || newMessages.length === 0) {
             setCanLoadMore(false);
           }
           setIsLoadingMore(false);
         })
-        .catch((error: any) => {
-          console.error(error);
+        .catch(() => {
           setIsLoadingMore(false);
         });
     }
@@ -132,7 +91,7 @@ export default function Chat() {
           </Box>
         )}
       </div>
-      {selectedRoom && <InputToolbar onSubmit={postMessage} />}
+      {currentRoom && <InputToolbar onSubmit={postMessage} />}
     </>
   );
 }

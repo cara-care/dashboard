@@ -2,11 +2,11 @@ import { Avatar, makeStyles } from '@material-ui/core';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import clsx from 'classnames';
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import useKabelwerk from '../../hooks/useKabelwerk';
 import { INBOXES } from '../../inboxes';
-import { getInbox, Inbox as InboxType, selectInbox } from '../../redux';
 import ConverstaionsItem from './ConversationsItem';
+import { InboxType } from '../../pages/Inbox';
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -22,29 +22,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Conversations() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const selectedInbox = useSelector(getInbox);
-
-  const renderConversationItems = useCallback(() => {
-    return Object.keys(INBOXES).map((inboxType: InboxType) => {
-      return (
-        <ConverstaionsItem
-          key={inboxType}
-          icon={
-            <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
-              {INBOXES[inboxType].icon}
-            </Avatar>
-          }
-          text={INBOXES[inboxType].name}
-          // count={?}
-          active={selectedInbox === inboxType}
-          handleSelected={() => {
-            dispatch(selectInbox(inboxType));
-          }}
-        />
-      );
-    });
-  }, [classes.avatar, classes.avatarEmoji, dispatch, selectedInbox]);
+  const { currentInboxType, selectInbox } = useKabelwerk();
 
   return (
     <div>
@@ -56,7 +34,24 @@ export default function Conversations() {
         }}
       >
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-          {renderConversationItems()}
+          {Object.keys(INBOXES).map((inboxType: InboxType) => {
+            return (
+              <ConverstaionsItem
+                key={inboxType}
+                icon={
+                  <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
+                    {INBOXES[inboxType].icon}
+                  </Avatar>
+                }
+                text={INBOXES[inboxType].name}
+                // count={1}
+                active={currentInboxType === inboxType}
+                handleSelected={() => {
+                  selectInbox(inboxType);
+                }}
+              />
+            );
+          })}
         </AccordionDetails>
       </Accordion>
     </div>

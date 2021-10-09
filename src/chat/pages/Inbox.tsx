@@ -1,19 +1,26 @@
 import { makeStyles } from '@material-ui/core/styles';
-import Kabelwerk from 'kabelwerk';
 import { Resizable, ResizeCallback } from 're-resizable';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 import NutriNavigation from '../../components/NutriNavigation';
-import { getChatAuthorizationToken } from '../../utils/api';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 import ChatDetails from '../components/cards/ChatDetails';
 import Chat from '../components/chat/Chat';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import ChatRooms from '../components/chatRooms/ChatRooms';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
-import { Inbox as InboxType, selectInbox } from '../redux';
+import useKabelwerk from '../hooks/useKabelwerk';
 
-const useStyles = makeStyles((theme) => ({
+export enum InboxType {
+  PERSONAL = 'personal',
+  ANWENDERTEST_HB = 'anwendertest_hb',
+  ANWENDERTEST_IBD = 'anwendertest_ibd',
+  ANWENDERTEST_IBS = 'anwendertest_ibs',
+  RCT_IBS = 'rct_ibs',
+  NO_STUDY = 'no_study',
+  ALL = 'all',
+}
+
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexWrap: 'nowrap',
@@ -47,30 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Inbox() {
+const Inbox = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!Kabelwerk.isConnected()) {
-      getChatAuthorizationToken().then((res) => {
-        Kabelwerk.config({
-          url: process.env.REACT_APP_KABELWERK_URL,
-          token: res.data.token,
-          refreshToken: () => {
-            return getChatAuthorizationToken().then((res) => res.data.token);
-          },
-          logging: 'info',
-        });
-
-        Kabelwerk.on('ready', () => {
-          dispatch(selectInbox(InboxType.ALL));
-        });
-
-        Kabelwerk.connect();
-      });
-    }
-  }, [dispatch]);
+  const { connected } = useKabelwerk();
 
   const [width, setWidth] = React.useState(320);
 
@@ -83,28 +70,36 @@ export default function Inbox() {
     <>
       <NutriNavigation />
       <div className={classes.root}>
-        <div className={classes.inboxSidebar}>
-          <InboxSidebar />
-        </div>
-        <Resizable
-          className={classes.resize}
-          enable={{ right: true }}
-          size={{ width, height: '100%' }}
-          minWidth={180}
-          maxWidth={400}
-          onResizeStop={handleResizeStop}
-        >
-          <ChatRooms />
-        </Resizable>
+        {connected ? (
+          <>
+            <div className={classes.inboxSidebar}>
+              <InboxSidebar />
+            </div>
+            <Resizable
+              className={classes.resize}
+              enable={{ right: true }}
+              size={{ width, height: '100%' }}
+              minWidth={180}
+              maxWidth={400}
+              onResizeStop={handleResizeStop}
+            >
+              <ChatRooms />
+            </Resizable>
 
-        <div className={classes.main} data-testid={CHAT_WRAPPER}>
-          <ChatHeader />
-          <Chat />
-        </div>
-        <div className={classes.details}>
-          <ChatDetails />
-        </div>
+            <div className={classes.main} data-testid={CHAT_WRAPPER}>
+              <ChatHeader />
+              <Chat />
+            </div>
+            <div className={classes.details}>
+              <ChatDetails />
+            </div>
+          </>
+        ) : (
+          <>connecting..</>
+        )}
       </div>
     </>
   );
-}
+};
+
+export default Inbox;

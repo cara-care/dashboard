@@ -1,25 +1,14 @@
 import { Reducer } from 'redux';
 import { ChatActions, ChatActionTypes } from './chatActions';
 import { RootState } from '../../utils/store';
-import {
-  ChatUser,
-  ChatUserNote,
-  ChatEditMode,
-  Inbox,
-  InboxRoom,
-  Message,
-} from './types';
+import { ChatUser, ChatUserNote, ChatEditMode } from './types';
 
 export interface ChatState {
   currentChatUser: ChatUser | null;
   currentChatUserNotes: ChatUserNote[];
-  inbox: Inbox | null;
-  inboxRooms: any[];
   loadingCurrentUser: boolean;
-  messages: Message[];
   noteEditMode: ChatEditMode;
   patient: ChatUser | null;
-  room: InboxRoom | null;
 }
 
 export const initialEditMode = {
@@ -31,13 +20,9 @@ export const initialEditMode = {
 export const chatInitialState = {
   currentChatUser: null,
   currentChatUserNotes: [],
-  inbox: null,
-  inboxRooms: [],
   loadingCurrentUser: false,
-  messages: [],
   noteEditMode: initialEditMode,
   patient: null,
-  room: null,
 };
 
 export const chatReducer: Reducer<ChatState, ChatActions> = (
@@ -90,41 +75,6 @@ export const chatReducer: Reducer<ChatState, ChatActions> = (
         noteEditMode: { ...initialEditMode },
       };
 
-    // Kabelwerk
-    case ChatActionTypes.SELECT_INBOX:
-      return {
-        ...state,
-        inbox: action.payload,
-      };
-
-    case ChatActionTypes.SELECT_ROOM:
-      return {
-        ...state,
-        room: action.payload,
-      };
-
-    case ChatActionTypes.UPDATE_INBOX_ROOMS:
-      return {
-        ...state,
-        inboxRooms: action.payload,
-      };
-
-    case ChatActionTypes.UPDATE_MESSAGES:
-      let newMessages = [];
-
-      if (action.subtype === 'prepend') {
-        newMessages = action.payload.concat(state.messages);
-      } else if (action.subtype === 'append') {
-        newMessages = state.messages.concat(action.payload);
-      } else {
-        newMessages = action.payload;
-      }
-
-      return {
-        ...state,
-        messages: newMessages,
-      };
-
     case ChatActionTypes.UPDATE_PATIENT:
       return {
         ...state,
@@ -144,15 +94,5 @@ export const notesSelector = (state: RootState) =>
 
 export const noteEditModeSelector = (state: RootState) =>
   state.chat.noteEditMode;
-
-// Kabelwerk
-
-export const getInbox = (state: RootState) => state.chat.inbox;
-
-export const getInboxRooms = (state: RootState) => state.chat.inboxRooms;
-
-export const getRoom = (state: RootState) => state.chat.room;
-
-export const getMessages = (state: RootState) => state.chat.messages;
 
 export const getPatient = (state: RootState) => state.chat.patient;

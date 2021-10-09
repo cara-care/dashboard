@@ -40,36 +40,3 @@ export interface ChatEditMode {
   noteId: number;
   message: string;
 }
-
-// Kabelwerk
-
-export interface User {
-  id: number;
-  key: string;
-  name: string;
-}
-
-export enum Inbox {
-  PERSONAL = 'personal',
-  ANWENDERTEST_HB = 'anwendertest_hb',
-  ANWENDERTEST_IBD = 'anwendertest_ibd',
-  ANWENDERTEST_IBS = 'anwendertest_ibs',
-  RCT_IBS = 'rct_ibs',
-  NO_STUDY = 'no_study',
-  ALL = 'all',
-}
-
-export interface InboxRoom {
-  id: number;
-  lastMessage: Message | null;
-  user: User;
-}
-
-export interface Message {
-  id: number;
-  insertedAt: Date;
-  roomId: number;
-  text: string;
-  updatedAt: Date;
-  user: User | null;
-}
