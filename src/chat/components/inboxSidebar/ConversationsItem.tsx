@@ -2,63 +2,67 @@ import React from 'react';
 import { Theme, useTheme } from '@material-ui/core';
 import styled from 'styled-components';
 
-interface ConverstaionItemWrapperProps {
+interface ConversationItemWrapperProps {
   theme: Theme;
   active: boolean;
+  primary: boolean;
 }
 
-const ConverstaionItemWrapper = styled.div<ConverstaionItemWrapperProps>`
+const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
   display: flex;
   align-items: center;
-  width: 100%;
   color: ${({ active, theme }) =>
     active ? theme.palette.primary.main : theme.palette.text.primary};
   cursor: pointer;
   opacity: ${({ active }) => (active ? '1' : '0.8')};
   font-weight: ${({ active }) => (active ? '600' : '400')};
   transition: all 0.3 ease;
+  margin-top: '100';
 
   &:hover {
     opacity: 1;
   }
 `;
 
-interface ConverstaionsItemProps {
+interface ConversationsItemProps {
   icon: JSX.Element | string;
   text: string | undefined;
   handleSelected: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   count?: number;
   active?: boolean;
   type?: string;
+  isInboxCollapsed?: boolean;
 }
 
-function ConverstaionsItem({
+function ConversationsItem({
   icon,
   text,
   count,
   active = false,
   handleSelected,
   type = 'primary',
-}: ConverstaionsItemProps) {
+  isInboxCollapsed = false,
+}: ConversationsItemProps) {
   const theme = useTheme();
   return (
-    <ConverstaionItemWrapper
+    <ConversationItemWrapper
       theme={theme}
       active={active}
       onClick={handleSelected}
+      primary={type === 'primary'}
     >
-      <div
-        style={{
-          fontSize: 16,
-          marginTop: type === 'primary' ? 5 : 1,
-          minWidth: type === 'primary' ? 30 : 18,
-        }}
-      >
-        {icon}
-      </div>
-      <p style={{ marginLeft: 12, marginRight: 'auto' }}>{text}</p>
+      <div>{icon}</div>
+      {!isInboxCollapsed && (
+        <p
+          style={{
+            margin: 0,
+          }}
+        >
+          {text}
+        </p>
+      )}
       {count && <p>{count}</p>}
-    </ConverstaionItemWrapper>
+    </ConversationItemWrapper>
   );
 }
-export default ConverstaionsItem;
+export default ConversationsItem;

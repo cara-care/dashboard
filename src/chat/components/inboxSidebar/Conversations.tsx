@@ -1,4 +1,4 @@
-import { Avatar, makeStyles } from '@material-ui/core';
+import { Avatar, makeStyles, Button } from '@material-ui/core';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import clsx from 'classnames';
@@ -6,7 +6,9 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { INBOXES } from '../../inboxes';
 import { getInbox, Inbox as InboxType, selectInbox } from '../../redux';
-import ConverstaionsItem from './ConversationsItem';
+import ConversationsItem from './ConversationsItem';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import ArrowRight from '@material-ui/icons/ArrowRight';
 
 const useStyles = makeStyles(() => ({
   avatar: {
@@ -24,11 +26,12 @@ export default function Conversations() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selectedInbox = useSelector(getInbox);
+  const [isInboxCollapsed, setIsInboxCollapsed] = React.useState(false);
 
   const renderConversationItems = useCallback(() => {
     return Object.keys(INBOXES).map((inboxType: InboxType) => {
       return (
-        <ConverstaionsItem
+        <ConversationsItem
           key={inboxType}
           icon={
             <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
@@ -41,10 +44,17 @@ export default function Conversations() {
           handleSelected={() => {
             dispatch(selectInbox(inboxType));
           }}
+          isInboxCollapsed={isInboxCollapsed}
         />
       );
     });
-  }, [classes.avatar, classes.avatarEmoji, dispatch, selectedInbox]);
+  }, [
+    classes.avatar,
+    classes.avatarEmoji,
+    dispatch,
+    selectedInbox,
+    isInboxCollapsed,
+  ]);
 
   return (
     <div>
@@ -55,6 +65,16 @@ export default function Conversations() {
           boxShadow: 'none',
         }}
       >
+        <Button
+          onClick={() => setIsInboxCollapsed(!isInboxCollapsed)}
+          startIcon={
+            isInboxCollapsed ? (
+              <ArrowRight style={{ fontSize: 30 }} />
+            ) : (
+              <ArrowLeft style={{ fontSize: 30 }} />
+            )
+          }
+        />
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
           {renderConversationItems()}
         </AccordionDetails>

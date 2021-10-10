@@ -4,7 +4,7 @@ import AccordionSummary from '@material-ui/core/ExpansionPanelSummary';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Typography } from '@material-ui/core';
-import ConverstaionsItem from './ConversationsItem';
+import ConversationsItem from './ConversationsItem';
 
 interface SidebarProgramsProps {
   title: string;
@@ -47,7 +47,7 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
           </div>
         </AccordionSummary>
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-          <ConverstaionsItem
+          <ConversationsItem
             type="secondary"
             icon="🐻"
             text="Cara Care Premium"
@@ -59,7 +59,7 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
               handleListItemClick(e, 0);
             }}
           />
-          <ConverstaionsItem
+          <ConversationsItem
             type="secondary"
             icon="🐙"
             text="Cara Care Free"
@@ -71,7 +71,7 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
               handleListItemClick(e, 1);
             }}
           />
-          <ConverstaionsItem
+          <ConversationsItem
             type="secondary"
             icon="💩"
             text="Technical Support"
