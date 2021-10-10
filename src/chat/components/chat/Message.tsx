@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     bottom: '-24px',
     display: 'block',
-    width: '200%',
+    minWidth: 100,
     color: theme.palette.primary.main,
   },
   timestampLeft: {

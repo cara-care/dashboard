@@ -6,6 +6,7 @@ interface ConversationItemWrapperProps {
   theme: Theme;
   active: boolean;
   primary: boolean;
+  isMenuCollapsed: boolean;
 }
 
 const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
@@ -18,7 +19,8 @@ const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
   font-weight: 400;
   margin: ${({ primary }) => (primary ? '18px 5px' : '18px 1px')};
   transition: all 0.3 ease;
-  width: fit-content;
+  width: ${({ isMenuCollapsed }) =>
+    isMenuCollapsed ? 'fit-content' : '160px'};
 
   &:hover {
     opacity: 1;
@@ -32,7 +34,7 @@ interface ConversationsItemProps {
   count?: number;
   active?: boolean;
   type?: string;
-  isInboxCollapsed?: boolean;
+  isMenuCollapsed?: boolean;
 }
 
 function ConversationsItem({
@@ -42,7 +44,7 @@ function ConversationsItem({
   active = false,
   handleSelected,
   type = 'primary',
-  isInboxCollapsed = false,
+  isMenuCollapsed = false,
 }: ConversationsItemProps) {
   const theme = useTheme();
 
@@ -52,18 +54,17 @@ function ConversationsItem({
       active={active}
       onClick={handleSelected}
       primary={type === 'primary'}
+      isMenuCollapsed={isMenuCollapsed}
     >
       <div title={text}>{icon}</div>
-      {!isInboxCollapsed && (
-        <p
+      {!isMenuCollapsed && (
+        <div
           style={{
-            marginTop: 0,
-            marginBottom: 0,
             marginLeft: 8,
           }}
         >
           {text}
-        </p>
+        </div>
       )}
       {count && <p>{count}</p>}
     </ConversationItemWrapper>

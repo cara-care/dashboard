@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Conversations() {
   const classes = useStyles();
   const { currentInboxType, selectInbox } = useKabelwerk();
-  const [isInboxCollapsed, setIsInboxCollapsed] = React.useState(false);
+  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
 
   return (
     <div>
@@ -55,11 +55,11 @@ export default function Conversations() {
         }}
       >
         <div
-          onClick={() => setIsInboxCollapsed(!isInboxCollapsed)}
+          onClick={() => setIsMenuCollapsed(!isMenuCollapsed)}
           className={classes.collapsibleButtonWrapper}
-          title={isInboxCollapsed ? 'expand menu' : 'collapse menu'}
+          title={isMenuCollapsed ? 'expand menu' : 'collapse menu'}
         >
-          {isInboxCollapsed ? (
+          {isMenuCollapsed ? (
             <ArrowRight style={{ fontSize: 30 }} />
           ) : (
             <>
@@ -84,7 +84,7 @@ export default function Conversations() {
                 handleSelected={() => {
                   selectInbox(inboxType);
                 }}
-                isInboxCollapsed={isInboxCollapsed}
+                isMenuCollapsed={isMenuCollapsed}
               />
             );
           })}
