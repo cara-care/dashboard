@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { getInboxRooms } from '../../redux';
 import ChatRoomItem from './ChatRoomItem';
+import useKabelwerk from '../../hooks/useKabelwerk';
 
 export default function ChatMessages() {
-  const rooms = useSelector(getInboxRooms);
+  const { rooms } = useKabelwerk();
+
   return (
     <Fragment>
       {rooms.map((room: any) => {

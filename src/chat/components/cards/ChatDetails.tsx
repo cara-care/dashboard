@@ -1,11 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import { getRoom } from '../../redux';
 import UserInformation from './UserInformation';
 import Notes from './NotesCard';
+import useKabelwerk from '../../hooks/useKabelwerk';
 
 const useStyles = makeStyles((_theme) => ({
   root: {
@@ -19,9 +18,9 @@ const useStyles = makeStyles((_theme) => ({
 export default function ChatDetails() {
   const classes = useStyles();
 
-  const selectedRoom = useSelector(getRoom);
+  const { currentRoom } = useKabelwerk();
 
-  if (!selectedRoom) {
+  if (!currentRoom) {
     return <></>;
   }
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { formatDistanceToNowStrict } from 'date-fns';
-import truncate from 'lodash/truncate';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
-import { InboxRoom, selectRoom } from '../../redux';
+import Typography from '@material-ui/core/Typography';
+import { formatDistanceToNowStrict } from 'date-fns';
+import truncate from 'lodash/truncate';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import useKabelwerk from '../../hooks/useKabelwerk';
+import { InboxRoom } from '../../KabelwerkContext';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -66,18 +66,17 @@ interface ChatRoomItemProps {
 
 export default function ChatRoomItem({ room }: ChatRoomItemProps) {
   const classes = useStyles();
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch(selectRoom(room));
-  };
+  const { selectRoom, selectCurrentInboxRoom } = useKabelwerk();
 
   return (
     <NavLink
       to={`/nutri/inbox/${room.id}`}
       className={classes.link}
       activeClassName={classes.active}
-      onClick={handleClick}
+      onClick={() => {
+        selectRoom(room.id);
+        selectCurrentInboxRoom(room);
+      }}
     >
       <div className={classes.root}>
         <div className={classes.container}>

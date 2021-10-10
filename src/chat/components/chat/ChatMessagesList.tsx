@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import { getMessages } from '../../redux';
 import Message from './Message';
 import MessageDivider from './MessageDivider';
+import useKabelwerk from '../../hooks/useKabelwerk';
 
 const getMessagePosition = function (username: string) {
   // app usernames start with u- or auto-
@@ -14,13 +13,13 @@ const getDate = function (datetime: Date) {
 };
 
 export default function ChatMessagesList() {
-  const data = useSelector(getMessages);
+  const { messages } = useKabelwerk();
 
   let output = [];
   let lastDate = null;
 
-  for (let i = data.length - 1; i >= 0; i--) {
-    let message = data[i];
+  for (let i = messages.length - 1; i >= 0; i--) {
+    let message = messages[i];
 
     let messageDate = getDate(message.insertedAt);
     if (lastDate && messageDate !== lastDate) {
