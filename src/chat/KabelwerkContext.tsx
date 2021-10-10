@@ -57,7 +57,7 @@ export const KabelwerkContext = React.createContext<{
   selectCurrentInboxRoom: (room: InboxRoom) => void;
   loadMoreRooms: () => void;
   postMessage: (text: string) => Promise<Message | void>;
-  loadEarlierMessages: () => Promise<Message[] | void>;
+  loadEarlierMessages: () => Promise<boolean | void>;
 }>({
   connected: false,
   currentInboxType: InboxType.ALL,
@@ -112,10 +112,27 @@ export const KabelwerkProvider: React.FC<{
       return currentRoom
         .loadEarlier()
         .then(({ messages: newMessages }: { messages: Message[] }) => {
-          if (newMessages !== undefined && newMessages.length > 0) {
-            setMessages([...newMessages, ...messages]);
-          }
-          return Promise.resolve(newMessages);
+          // the sdk keeps the id of the earliest message shown to know which earlier messages to load
+          // when transitioning the old chat database to kabelwerk, it was inserted using bulk import
+          // which also overwrote the old ids with new ones causing losing the original id order
+          // this means that a new message might end up having an id that is smaller meaning the message was earlier in time than an old messages
+          // such messages will be returned by the `loadEarlier()` function which results in message repetition
+          // that is why the new messages need to be filtered and the duplicates need to be removed
+          const uniqueIds = new Set([
+            ...messages.map((message) => message.id),
+            ...newMessages.map((message) => message.id),
+          ]);
+
+          const uniqueMessages = [
+            ...messages,
+            ...newMessages.filter((message) => !uniqueIds.has(message.id)),
+          ];
+
+          const hasNewMessages = uniqueMessages.length > messages.length;
+
+          setMessages(uniqueMessages);
+
+          return Promise.resolve(hasNewMessages);
         })
         .catch((err: Error) => {
           return Promise.reject(err);

@@ -6,7 +6,6 @@ import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import ChatMessagesList from './ChatMessagesList';
 import InputToolbar from './InputToolbar';
-import { Message } from '../../KabelwerkContext';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -59,8 +58,8 @@ export default function Chat() {
     if (currentRoom !== null && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
       loadEarlierMessages()
-        .then((newMessages?: Message[]) => {
-          if (!newMessages || newMessages.length === 0) {
+        .then((hasNewMessages: boolean) => {
+          if (!hasNewMessages) {
             setCanLoadMore(false);
           }
           setIsLoadingMore(false);
