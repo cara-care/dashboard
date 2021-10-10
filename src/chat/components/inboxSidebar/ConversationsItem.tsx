@@ -1,64 +1,73 @@
-import React from 'react';
 import { Theme, useTheme } from '@material-ui/core';
+import React from 'react';
 import styled from 'styled-components';
 
-interface ConverstaionItemWrapperProps {
+interface ConversationItemWrapperProps {
   theme: Theme;
   active: boolean;
+  primary: boolean;
+  isMenuCollapsed: boolean;
 }
 
-const ConverstaionItemWrapper = styled.div<ConverstaionItemWrapperProps>`
+const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
   display: flex;
   align-items: center;
-  width: 100%;
   color: ${({ active, theme }) =>
     active ? theme.palette.primary.main : theme.palette.text.primary};
   cursor: pointer;
   opacity: ${({ active }) => (active ? '1' : '0.8')};
-  font-weight: ${({ active }) => (active ? '600' : '400')};
+  font-weight: 400;
+  margin: ${({ primary }) => (primary ? '18px 5px' : '18px 1px')};
   transition: all 0.3 ease;
+  width: ${({ isMenuCollapsed }) =>
+    isMenuCollapsed ? 'fit-content' : '160px'};
 
   &:hover {
     opacity: 1;
   }
 `;
 
-interface ConverstaionsItemProps {
+interface ConversationsItemProps {
   icon: JSX.Element | string;
   text: string | undefined;
   handleSelected: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   count?: number;
   active?: boolean;
   type?: string;
+  isMenuCollapsed?: boolean;
 }
 
-function ConverstaionsItem({
+function ConversationsItem({
   icon,
   text,
   count,
   active = false,
   handleSelected,
   type = 'primary',
-}: ConverstaionsItemProps) {
+  isMenuCollapsed = false,
+}: ConversationsItemProps) {
   const theme = useTheme();
+
   return (
-    <ConverstaionItemWrapper
+    <ConversationItemWrapper
       theme={theme}
       active={active}
       onClick={handleSelected}
+      primary={type === 'primary'}
+      isMenuCollapsed={isMenuCollapsed}
     >
-      <div
-        style={{
-          fontSize: 16,
-          marginTop: type === 'primary' ? 5 : 1,
-          minWidth: type === 'primary' ? 30 : 18,
-        }}
-      >
-        {icon}
-      </div>
-      <p style={{ marginLeft: 12, marginRight: 'auto' }}>{text}</p>
+      <div title={text}>{icon}</div>
+      {!isMenuCollapsed && (
+        <div
+          style={{
+            marginLeft: 8,
+          }}
+        >
+          {text}
+        </div>
+      )}
       {count && <p>{count}</p>}
-    </ConverstaionItemWrapper>
+    </ConversationItemWrapper>
   );
 }
-export default ConverstaionsItem;
+export default ConversationsItem;

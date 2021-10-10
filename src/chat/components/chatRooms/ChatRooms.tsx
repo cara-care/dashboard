@@ -15,7 +15,7 @@ const useStyles = makeStyles((_theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    overflowY: 'scroll',
+    overflowY: 'auto',
   },
   headerBox: {
     display: 'flex',

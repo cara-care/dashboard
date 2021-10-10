@@ -1,28 +1,49 @@
 import { Avatar, makeStyles } from '@material-ui/core';
 import Accordion from '@material-ui/core/ExpansionPanel';
 import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import ArrowRight from '@material-ui/icons/ArrowRight';
 import clsx from 'classnames';
 import React from 'react';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import { INBOXES } from '../../inboxes';
-import ConverstaionsItem from './ConversationsItem';
+import ConversationsItem from './ConversationsItem';
 import { InboxType } from '../../pages/Inbox';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     height: 22,
-    width: 22,
-    marginTop: -4,
+    width: 26,
+    padding: 5,
   },
   avatarEmoji: {
     backgroundColor: 'transparent',
     paddingLeft: 3,
+  },
+  collapsibleButtonWrapper: {
+    display: 'flex',
+    padding: 8,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    cursor: 'pointer',
+    color: theme.palette.text.primary,
+    opacity: 0.7,
+    margin: '10px 0 4px 8px',
+    '&:hover': {
+      opacity: 1,
+    },
+  },
+  collapseText: {
+    color: theme.palette.text.primary,
+    fontSize: 12,
+    opacity: 0.7,
   },
 }));
 
 export default function Conversations() {
   const classes = useStyles();
   const { currentInboxType, selectInbox } = useKabelwerk();
+  const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
 
   return (
     <div>
@@ -33,10 +54,24 @@ export default function Conversations() {
           boxShadow: 'none',
         }}
       >
+        <div
+          onClick={() => setIsMenuCollapsed(!isMenuCollapsed)}
+          className={classes.collapsibleButtonWrapper}
+          title={isMenuCollapsed ? 'expand menu' : 'collapse menu'}
+        >
+          {isMenuCollapsed ? (
+            <ArrowRight style={{ fontSize: 30 }} />
+          ) : (
+            <>
+              <ArrowLeft style={{ fontSize: 30 }} />
+              <span className={classes.collapseText}>collapse</span>
+            </>
+          )}
+        </div>
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
           {Object.keys(INBOXES).map((inboxType: InboxType) => {
             return (
-              <ConverstaionsItem
+              <ConversationsItem
                 key={inboxType}
                 icon={
                   <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
@@ -49,6 +84,7 @@ export default function Conversations() {
                 handleSelected={() => {
                   selectInbox(inboxType);
                 }}
+                isMenuCollapsed={isMenuCollapsed}
               />
             );
           })}
