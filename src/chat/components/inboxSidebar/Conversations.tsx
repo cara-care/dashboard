@@ -4,11 +4,11 @@ import AccordionDetails from '@material-ui/core/ExpansionPanelDetails';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import clsx from 'classnames';
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import useKabelwerk from '../../hooks/useKabelwerk';
 import { INBOXES } from '../../inboxes';
-import { getInbox, Inbox as InboxType, selectInbox } from '../../redux';
 import ConversationsItem from './ConversationsItem';
+import { InboxType } from '../../pages/Inbox';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -42,37 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Conversations() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const selectedInbox = useSelector(getInbox);
+  const { currentInboxType, selectInbox } = useKabelwerk();
   const [isInboxCollapsed, setIsInboxCollapsed] = React.useState(false);
-
-  const renderConversationItems = useCallback(() => {
-    return Object.keys(INBOXES).map((inboxType: InboxType) => {
-      return (
-        <ConversationsItem
-          key={inboxType}
-          icon={
-            <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
-              {INBOXES[inboxType].icon}
-            </Avatar>
-          }
-          text={INBOXES[inboxType].name}
-          // count={?}
-          active={selectedInbox === inboxType}
-          handleSelected={() => {
-            dispatch(selectInbox(inboxType));
-          }}
-          isInboxCollapsed={isInboxCollapsed}
-        />
-      );
-    });
-  }, [
-    classes.avatar,
-    classes.avatarEmoji,
-    dispatch,
-    selectedInbox,
-    isInboxCollapsed,
-  ]);
 
   return (
     <div>
@@ -98,7 +69,25 @@ export default function Conversations() {
           )}
         </div>
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-          {renderConversationItems()}
+          {Object.keys(INBOXES).map((inboxType: InboxType) => {
+            return (
+              <ConversationsItem
+                key={inboxType}
+                icon={
+                  <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
+                    {INBOXES[inboxType].icon}
+                  </Avatar>
+                }
+                text={INBOXES[inboxType].name}
+                // count={1}
+                active={currentInboxType === inboxType}
+                handleSelected={() => {
+                  selectInbox(inboxType);
+                }}
+                isInboxCollapsed={isInboxCollapsed}
+              />
+            );
+          })}
         </AccordionDetails>
       </Accordion>
     </div>

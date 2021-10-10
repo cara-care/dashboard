@@ -23,8 +23,8 @@ describe('<Conversations />', () => {
         },
       },
     });
-    INBOXES.forEach((inbox) => {
-      expect(getByText(inbox.name)).toBeInTheDocument();
+    Object.keys(INBOXES).forEach((key) => {
+      expect(getByText(INBOXES[key].name)).toBeInTheDocument();
     });
   });
 });

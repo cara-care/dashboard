@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import {
@@ -7,11 +7,12 @@ import {
   getUserDataById,
   getNotesList,
 } from '../../../utils/api';
-import { getRoom, setChatUserNotes, updatePatient } from '../../redux';
+import { setChatUserNotes, updatePatient } from '../../redux';
 import { zIndexes } from '../../../theme';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import ChatHeaderLeftBox from './ChatHeaderLeftBox';
 import ChatHeaderRightBox from './ChatHeaderRightBox';
+import useKabelwerk from '../../hooks/useKabelwerk';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,21 +32,20 @@ export default function ChatHeader() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  // the inbox item selected from the list to the left
-  const selectedRoom = useSelector(getRoom);
+  const { currentInboxRoom } = useKabelwerk();
 
   const [patient, setPatient] = useState(null);
 
   useEffect(() => {
     // do nothing if no room is selected yet
-    if (!selectedRoom) return;
+    if (!currentInboxRoom) return;
 
     // reset the patient
     setPatient(null);
     dispatch(updatePatient(null));
     dispatch(setChatUserNotes([]));
 
-    getUserByEmailOrUsername(selectedRoom.user.key)
+    getUserByEmailOrUsername(currentInboxRoom.user.key)
       .then((res: any) => {
         return getUserDataById(res.data.id);
       })
@@ -60,11 +60,11 @@ export default function ChatHeader() {
       .catch((error: any) => {
         console.error(error);
       });
-  }, [dispatch, selectedRoom]);
+  }, [dispatch, currentInboxRoom]);
 
-  if (!selectedRoom) {
+  if (!currentInboxRoom) {
     return <></>;
-  } else if (selectedRoom && !patient) {
+  } else if (currentInboxRoom && !patient) {
     return (
       <Box className={classes.root}>
         <ChatHeaderSkeleton height={96} />

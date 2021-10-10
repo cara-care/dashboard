@@ -103,7 +103,7 @@
       "^src/(.*)$": "<rootDir>/src/$1"
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!intl-messageformat|intl-messageformat-parser).+\\.js$"
+      "/node_modules/(?!intl-messageformat|intl-messageformat-parser|kabelwerk).+\\.js$"
     ],
     "snapshotSerializers": []
   },

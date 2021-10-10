@@ -1,11 +1,4 @@
-import {
-  ChatEditMode,
-  ChatUser,
-  ChatUserNote,
-  Inbox,
-  InboxRoom,
-  Message,
-} from './types';
+import { ChatEditMode, ChatUser, ChatUserNote } from './types';
 
 export enum ChatActionTypes {
   // Kabelwerk
@@ -89,49 +82,6 @@ export const clearEditMode = (): ClearEditMode => ({
   type: ChatActionTypes.CLEAR_NOTE_EDIT_MODE,
 });
 
-// Kabelwerk
-
-export interface SelectInbox {
-  type: ChatActionTypes.SELECT_INBOX;
-  payload: Inbox;
-}
-export const selectInbox = (payload: Inbox): SelectInbox => ({
-  type: ChatActionTypes.SELECT_INBOX,
-  payload,
-});
-
-export interface SelectRoom {
-  type: ChatActionTypes.SELECT_ROOM;
-  payload: InboxRoom;
-}
-export const selectRoom = (payload: InboxRoom): SelectRoom => ({
-  type: ChatActionTypes.SELECT_ROOM,
-  payload,
-});
-
-export interface UpdateInboxRooms {
-  type: ChatActionTypes.UPDATE_INBOX_ROOMS;
-  payload: any[];
-}
-export const updateInboxRooms = (payload: any[]): UpdateInboxRooms => ({
-  type: ChatActionTypes.UPDATE_INBOX_ROOMS,
-  payload,
-});
-
-export interface UpdateMessages {
-  type: ChatActionTypes.UPDATE_MESSAGES;
-  subtype: string;
-  payload: Message[];
-}
-export const updateMessages = (
-  payload: Message[],
-  subtype: string = ''
-): UpdateMessages => ({
-  type: ChatActionTypes.UPDATE_MESSAGES,
-  subtype,
-  payload,
-});
-
 export interface UpdatePatient {
   type: ChatActionTypes.UPDATE_PATIENT;
   payload: ChatUser | null;
@@ -148,8 +98,4 @@ export type ChatActions =
   | DeleteChatUserNote
   | SetNoteEditMode
   | ClearEditMode
-  | SelectInbox
-  | SelectRoom
-  | UpdateInboxRooms
-  | UpdateMessages
   | UpdatePatient;
