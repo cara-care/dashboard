@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
     padding: '4px 8px',
     width: '100%',
-    overflowY: 'scroll',
+    overflowY: 'auto',
   },
 }));
 

@@ -1,5 +1,5 @@
-import React from 'react';
 import { Theme, useTheme } from '@material-ui/core';
+import React from 'react';
 import styled from 'styled-components';
 
 interface ConversationItemWrapperProps {
@@ -15,9 +15,10 @@ const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
     active ? theme.palette.primary.main : theme.palette.text.primary};
   cursor: pointer;
   opacity: ${({ active }) => (active ? '1' : '0.8')};
-  font-weight: ${({ active }) => (active ? '600' : '400')};
+  font-weight: 400;
+  margin: ${({ primary }) => (primary ? '18px 5px' : '18px 1px')};
   transition: all 0.3 ease;
-  margin-top: '100';
+  width: fit-content;
 
   &:hover {
     opacity: 1;
@@ -44,6 +45,7 @@ function ConversationsItem({
   isInboxCollapsed = false,
 }: ConversationsItemProps) {
   const theme = useTheme();
+
   return (
     <ConversationItemWrapper
       theme={theme}
@@ -51,11 +53,13 @@ function ConversationsItem({
       onClick={handleSelected}
       primary={type === 'primary'}
     >
-      <div>{icon}</div>
+      <div title={text}>{icon}</div>
       {!isInboxCollapsed && (
         <p
           style={{
-            margin: 0,
+            marginTop: 0,
+            marginBottom: 0,
+            marginLeft: 8,
           }}
         >
           {text}

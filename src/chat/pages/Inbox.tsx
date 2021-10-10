@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    overflowY: 'scroll',
+    overflowY: 'auto',
   },
   main: {
     flex: '1 1 auto',
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inboxSidebar: {
     display: 'flex',
-    // flex: '0 0 250px',
   },
 }));
 
