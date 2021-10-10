@@ -169,6 +169,7 @@ export const KabelwerkProvider: React.FC<{
     });
 
     inbox.connect();
+    /* eslint-disable-next-line */
   }, [currentInboxType]);
 
   const loadMoreRooms = () => {
@@ -204,6 +205,7 @@ export const KabelwerkProvider: React.FC<{
         Kabelwerk.connect();
       });
     }
+    /* eslint-disable-next-line */
   }, []);
 
   React.useEffect(() => {
