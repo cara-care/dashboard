@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     paddingLeft: 3,
   },
-  arrowIcon: {
+  collapsibleButtonWrapper: {
     display: 'flex',
     padding: 8,
     justifyContent: 'flex-start',
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: 'pointer',
     color: theme.palette.text.primary,
     opacity: 0.7,
-    margin: '10px 0 0 8px',
+    margin: '10px 0 4px 8px',
     '&:hover': {
       opacity: 1,
     },
@@ -85,7 +85,7 @@ export default function Conversations() {
       >
         <div
           onClick={() => setIsInboxCollapsed(!isInboxCollapsed)}
-          className={classes.arrowIcon}
+          className={classes.collapsibleButtonWrapper}
           title={isInboxCollapsed ? 'expand menu' : 'collapse menu'}
         >
           {isInboxCollapsed ? (
