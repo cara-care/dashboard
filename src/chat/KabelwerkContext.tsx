@@ -93,15 +93,9 @@ export const KabelwerkProvider: React.FC<{
 
   const postMessage = (text: string) => {
     if (currentRoom !== null) {
-      return currentRoom
-        .postMessage({ text })
-        .then((newMessage: Message) => {
-          setMessages([...messages, newMessage]);
-          return Promise.resolve(newMessage);
-        })
-        .catch((error: Error) => {
-          return Promise.reject(error);
-        });
+      return currentRoom.postMessage({ text }).catch((error: Error) => {
+        return Promise.reject(error);
+      });
     }
 
     return Promise.resolve();
@@ -150,35 +144,37 @@ export const KabelwerkProvider: React.FC<{
     const room = Kabelwerk.openRoom(roomId);
 
     room.on('ready', ({ messages }: { messages: Message[] }) => {
-      setCurrentRoom(room);
       setMessages(messages);
     });
 
     room.on('message_posted', (message: Message) => {
-      setMessages([...messages, message]);
+      setMessages((messages) => {
+        return [...messages, message];
+      });
     });
 
     room.connect();
+
+    setCurrentRoom(room);
   };
 
   const openInbox = React.useCallback(() => {
     const inbox = Kabelwerk.openInbox({
       limit: 20,
       attributes: INBOXES[currentInboxType].attributes,
-      assignedTo:
-        currentInboxType === InboxType.PERSONAL && currentUser !== null
-          ? currentUser.id
-          : undefined,
+      // needs to be disabled temporarily because the sdk cannot handle undefined
+      // at the moment assigning users to hub users does not work
+      // assignedTo:
+      //   currentInboxType === InboxType.PERSONAL && currentUser !== null
+      //     ? currentUser.id
+      //     : undefined,
     });
 
     setCurrentInbox(inbox);
 
     inbox.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
       setRooms(rooms);
-      if (rooms.length > 0) {
-        openRoom(rooms[0].id);
-        setCurrentInboxRoom(rooms[0]);
-      }
+      setMessages([]);
     });
 
     inbox.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
