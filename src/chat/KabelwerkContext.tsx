@@ -4,6 +4,8 @@ import { ReactElement } from 'react';
 import { getChatAuthorizationToken } from '../utils/api';
 import { INBOXES } from './inboxes';
 import { InboxType } from './pages/Inbox';
+import { useSelector } from 'react-redux';
+import { isAuthenticated as isAuthenticatedSelector } from '../auth';
 
 export interface Inbox {
   loadMore: () => Promise<{ rooms: InboxRoom[] }>;
@@ -13,13 +15,17 @@ export interface InboxRoom {
   id: number;
   lastMessage: Message | null;
   user: User;
+  isArchived: () => boolean;
 }
 
 export interface Room {
   loadEarlier: () => Promise<{ messages: Message[] }>;
+  isArchived: () => boolean;
   postMessage: (message: { text: string }) => Promise<Message>;
-  off: () => {};
-  user: User;
+  off: () => void;
+  archive: () => Promise<void>;
+  unarchive: () => Promise<void>;
+  getUser: () => User;
 }
 
 export interface Message {
@@ -78,6 +84,8 @@ export const KabelwerkContext = React.createContext<{
 export const KabelwerkProvider: React.FC<{
   children: ReactElement;
 }> = ({ children }) => {
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
+
   const [connected, setConnected] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState<User | null>(null);
   const [
@@ -144,6 +152,7 @@ export const KabelwerkProvider: React.FC<{
     const room = Kabelwerk.openRoom(roomId);
 
     room.on('ready', ({ messages }: { messages: Message[] }) => {
+      setCurrentRoom(room);
       setMessages(messages);
     });
 
@@ -154,14 +163,13 @@ export const KabelwerkProvider: React.FC<{
     });
 
     room.connect();
-
-    setCurrentRoom(room);
   };
 
   const openInbox = React.useCallback(() => {
     const inbox = Kabelwerk.openInbox({
       limit: 20,
       attributes: INBOXES[currentInboxType].attributes,
+      archived: INBOXES[currentInboxType].archived,
       // needs to be disabled temporarily because the sdk cannot handle undefined
       // at the moment assigning users to hub users does not work
       // assignedTo:
@@ -175,6 +183,8 @@ export const KabelwerkProvider: React.FC<{
     inbox.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
       setRooms(rooms);
       setMessages([]);
+      setCurrentRoom(null);
+      setCurrentInboxRoom(null);
     });
 
     inbox.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
@@ -196,30 +206,31 @@ export const KabelwerkProvider: React.FC<{
 
   React.useEffect(() => {
     if (!Kabelwerk.isConnected()) {
-      getChatAuthorizationToken().then((res) => {
-        Kabelwerk.config({
-          url: process.env.REACT_APP_KABELWERK_URL,
-          token: res.data.token,
-          refreshToken: () => {
-            return getChatAuthorizationToken().then((res) => res.data.token);
-          },
-          logging: 'info',
-        });
+      isAuthenticated &&
+        getChatAuthorizationToken().then((res) => {
+          Kabelwerk.config({
+            url: process.env.REACT_APP_KABELWERK_URL,
+            token: res.data.token,
+            refreshToken: () => {
+              return getChatAuthorizationToken().then((res) => res.data.token);
+            },
+            logging: 'info',
+          });
 
-        Kabelwerk.on('ready', () => {
-          setConnected(true);
-          setCurrentUser(Kabelwerk.getUser());
-          openInbox();
-          Kabelwerk.loadHubInfo()
-            .then((response: HubInfo) => setHubUsers(response.users))
-            .catch((err: Error) => console.error(err));
-        });
+          Kabelwerk.on('ready', () => {
+            setConnected(true);
+            setCurrentUser(Kabelwerk.getUser());
+            openInbox();
+            Kabelwerk.loadHubInfo()
+              .then((response: HubInfo) => setHubUsers(response.users))
+              .catch((err: Error) => console.error(err));
+          });
 
-        Kabelwerk.connect();
-      });
+          Kabelwerk.connect();
+        });
     }
     /* eslint-disable-next-line */
-  }, []);
+  }, [isAuthenticated]);
 
   React.useEffect(() => {
     // open inbox
