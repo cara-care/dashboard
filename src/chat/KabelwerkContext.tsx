@@ -29,11 +29,17 @@ export interface Room {
   getUser: () => User;
 }
 
+enum MessageType {
+  Text = 'text',
+  RoomMove = 'room_move',
+}
+
 export interface Message {
   id: number;
   insertedAt: Date;
   roomId: number;
   text: string;
+  type: MessageType;
   updatedAt: Date;
   user: User | null;
 }
@@ -60,7 +66,7 @@ export const KabelwerkContext = React.createContext<{
   rooms: InboxRoom[];
   hubUsers: User[];
   selectInbox: (inbox: InboxType) => void;
-  selectRoom: (roomId: number) => void;
+  selectRoom: (roomId: number | null) => void;
   selectCurrentInboxRoom: (room: InboxRoom) => void;
   loadMoreRooms: () => void;
   postMessage: (text: string) => Promise<Message | void>;
@@ -203,7 +209,9 @@ export const KabelwerkProvider: React.FC<{
       .then((response: { rooms: InboxRoom[] }) => {
         setRooms(response.rooms);
       })
-      .catch((error: Error) => notification.showError(error.message));
+      .catch((error: Error) => console.error(error));
+    // temporary disabled because load more is called all the time in smaller inboxes
+    // .catch((error: Error) => notification.showError(error.message));
   };
 
   React.useEffect(() => {

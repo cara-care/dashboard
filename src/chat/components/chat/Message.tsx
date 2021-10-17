@@ -6,6 +6,7 @@ import { getTime, padWith0 } from '../../../utils/dateUtils';
 import { MESSAGE_CONTAINER } from '../../../utils/test-helpers';
 import Linkify from 'react-linkify';
 import ExternalLink from '../../../components/ExternalLink';
+import { Message as MessageType } from '../../KabelwerkContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: '60%',
     },
   },
+  serviceBubble: {
+    maxWidth: '100%',
+  },
   bubbleLeft: {
     backgroundColor: '#eef4f3',
   },
@@ -44,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
   message: {
     whiteSpace: 'pre-wrap',
+  },
+  serviceMessage: {
+    fontStyle: 'italic',
+    color: theme.palette.primary.main,
+    fontSize: 14,
   },
   timestamp: {
     position: 'absolute',
@@ -64,19 +73,14 @@ const useStyles = makeStyles((theme) => ({
 
 export interface MessageProps {
   position?: 'left' | 'right';
-  message: string;
-  created: string | Date;
+  message: MessageType;
 }
 
 const componentDecorator = (href: string, text: string) => (
   <ExternalLink href={href}>{text}</ExternalLink>
 );
 
-export default function Message({
-  message,
-  created,
-  position = 'left',
-}: MessageProps) {
+export default function Message({ message, position = 'left' }: MessageProps) {
   const classes = useStyles();
   return (
     <div
@@ -87,12 +91,20 @@ export default function Message({
     >
       <div
         className={clsx(classes.bubble, {
+          [classes.serviceBubble]: message.type === 'room_move',
           [classes.bubbleLeft]: position === 'left',
-          [classes.bubbleRight]: position === 'right',
+          [classes.bubbleRight]:
+            position === 'right' && message.type === 'text',
         })}
       >
         <Linkify componentDecorator={componentDecorator}>
-          <Typography className={classes.message}>{message}</Typography>
+          <Typography
+            className={
+              message.type === 'text' ? classes.message : classes.serviceMessage
+            }
+          >
+            {message.text}
+          </Typography>
         </Linkify>
         <Typography
           variant="caption"
@@ -101,7 +113,7 @@ export default function Message({
             [classes.timestampRight]: position === 'right',
           })}
         >
-          {padWith0(getTime(created))}
+          {padWith0(getTime(message.insertedAt))}
         </Typography>
       </div>
     </div>
