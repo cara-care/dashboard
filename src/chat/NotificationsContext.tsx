@@ -32,17 +32,12 @@ const Notification: React.FC<{
   message: string;
   severity?: Severity;
   isShowing: (open: boolean) => void;
-}> = (props) => {
+}> = ({ message, severity, isShowing }) => {
   const [open, setOpen] = React.useState<boolean>(true);
-  const [message, setMessage] = React.useState<string | null>(props.message);
 
   React.useEffect(() => {
-    setMessage(props.message);
-  }, [props]);
-
-  React.useEffect(() => {
-    props.isShowing(open);
-  }, [open, props]);
+    isShowing(open);
+  }, [open, isShowing]);
 
   const handleClose = () => {
     setOpen(false);
@@ -60,7 +55,7 @@ const Notification: React.FC<{
     >
       <Alert
         onClose={handleClose}
-        severity={props.severity || 'info'}
+        severity={severity || 'info'}
         variant="filled"
       >
         {message}
@@ -76,33 +71,33 @@ export const NotificationsProvider: React.FC<{
     null
   );
 
-  const showError = (text: string) => {
+  const showError = React.useCallback((text: string) => {
     setNotification({
       message: text,
       severity: Severity.Error,
     });
-  };
+  }, []);
 
-  const showWarning = (text: string) => {
+  const showWarning = React.useCallback((text: string) => {
     setNotification({
       message: text,
       severity: Severity.Warning,
     });
-  };
+  }, []);
 
-  const showSuccess = (text: string) => {
+  const showSuccess = React.useCallback((text: string) => {
     setNotification({
       message: text,
       severity: Severity.Success,
     });
-  };
+  }, []);
 
-  const showInfo = (text: string) => {
+  const showInfo = React.useCallback((text: string) => {
     setNotification({
       message: text,
       severity: Severity.Info,
     });
-  };
+  }, []);
 
   const isShowing = (open: boolean) => {
     if (!open) {

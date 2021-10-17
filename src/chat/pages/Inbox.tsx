@@ -9,6 +9,7 @@ import ChatHeader from '../components/chatHeader/ChatHeader';
 import ChatRooms from '../components/chatRooms/ChatRooms';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import useKabelwerk from '../hooks/useKabelwerk';
+import useNotification from '../hooks/useNotification';
 
 export enum InboxType {
   PERSONAL = 'personal',
@@ -57,6 +58,7 @@ const Inbox = () => {
   const classes = useStyles();
 
   const { connected } = useKabelwerk();
+  const { showInfo, showSuccess } = useNotification();
 
   const [width, setWidth] = React.useState(320);
 
@@ -64,6 +66,15 @@ const Inbox = () => {
     // FIXME: causes <Chat /> to scroll to bottom
     setWidth(width + d.width);
   };
+
+  React.useEffect(() => {
+    if (connected === false) {
+      showInfo('Connecting to Kabelwerk...');
+      return;
+    }
+
+    showSuccess('Connected to Kabelwerk!');
+  }, [connected, showInfo, showSuccess]);
 
   return (
     <>

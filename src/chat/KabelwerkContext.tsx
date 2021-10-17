@@ -202,7 +202,6 @@ export const KabelwerkProvider: React.FC<{
 
   React.useEffect(() => {
     if (!Kabelwerk.isConnected()) {
-      notification.showInfo('Connecting to Kabelwerk...');
       isAuthenticated &&
         getChatAuthorizationToken().then((res) => {
           Kabelwerk.config({
@@ -215,7 +214,6 @@ export const KabelwerkProvider: React.FC<{
           });
 
           Kabelwerk.on('ready', () => {
-            notification.showSuccess('Connected to Kabelwerk!');
             setConnected(true);
             setCurrentUser(Kabelwerk.getUser());
             openInbox();

@@ -52,9 +52,10 @@ export default function ChatHeaderRightBox() {
           style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
         >
           <Button
-            onClick={() =>
-              notification.showInfo('Assignment feature is coming soon! ')
-            }
+            onClick={(e) => {
+              handleOpenAssignPopup(e);
+              notification.showInfo('Assignment feature is coming soon! ');
+            }}
             className={classes.button}
             startIcon={
               <AccountCircleIcon style={{ marginRight: 4, fontSize: 20 }} />
