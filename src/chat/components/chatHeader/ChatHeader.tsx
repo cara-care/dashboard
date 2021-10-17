@@ -13,6 +13,7 @@ import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import ChatHeaderLeftBox from './ChatHeaderLeftBox';
 import ChatHeaderRightBox from './ChatHeaderRightBox';
 import useKabelwerk from '../../hooks/useKabelwerk';
+import useNotification from '../../hooks/useNotification';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,7 @@ export default function ChatHeader() {
   const dispatch = useDispatch();
 
   const { currentInboxRoom } = useKabelwerk();
+  const notification = useNotification();
 
   const [patient, setPatient] = useState(null);
 
@@ -57,8 +59,8 @@ export default function ChatHeader() {
       .then((res: any) => {
         dispatch(setChatUserNotes(res.data));
       })
-      .catch((error: any) => {
-        console.error(error);
+      .catch((error: Error) => {
+        notification.showError(error.message);
       });
   }, [dispatch, currentInboxRoom]);
 

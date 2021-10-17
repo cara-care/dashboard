@@ -197,7 +197,7 @@ export const KabelwerkProvider: React.FC<{
       .then((response: { rooms: InboxRoom[] }) => {
         setRooms(response.rooms);
       })
-      .catch((err: Error) => console.error(err));
+      .catch((error: Error) => notification.showError(error.message));
   };
 
   React.useEffect(() => {
@@ -221,7 +221,7 @@ export const KabelwerkProvider: React.FC<{
             openInbox();
             Kabelwerk.loadHubInfo()
               .then((response: HubInfo) => setHubUsers(response.users))
-              .catch((err: Error) => console.error(err));
+              .catch((error: Error) => notification.showError(error.message));
           });
 
           Kabelwerk.connect();
