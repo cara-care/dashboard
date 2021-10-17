@@ -36,7 +36,7 @@ export default function ChatHeaderRightBox() {
   const handleOpenAssignPopup = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    notification.showInfo('Assignment feature is coming soon! ');
+    notification.showInfo('Assignment feature is coming soon!');
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
@@ -54,7 +54,6 @@ export default function ChatHeaderRightBox() {
           <Button
             onClick={(e) => {
               handleOpenAssignPopup(e);
-              notification.showInfo('Assignment feature is coming soon! ');
             }}
             className={classes.button}
             startIcon={
