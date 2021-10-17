@@ -39,7 +39,7 @@ export default function ChatHeader() {
 
   const [patient, setPatient] = useState<null | ChatUser>(null);
   const { currentRoom } = useKabelwerk();
-  const { showError, showInfo, showSuccess } = useNotification();
+  const { showError, showInfo } = useNotification();
 
   useEffect(() => {
     // do nothing if no room is selected yet
@@ -98,14 +98,7 @@ export default function ChatHeader() {
           <IconButton
             title="Unarchive this room"
             onClick={() => {
-              currentRoom
-                .unarchive()
-                .then(() => {
-                  showSuccess('The room was unarchived.');
-                })
-                .catch((error) => {
-                  showError(error.message);
-                });
+              showInfo('Archiving rooms feature is coming soon!');
             }}
             color="primary"
           >
@@ -115,14 +108,7 @@ export default function ChatHeader() {
           <IconButton
             title="Archive this room"
             onClick={() => {
-              currentRoom
-                ?.archive()
-                .then(() => {
-                  showSuccess('The room was archived.');
-                })
-                .catch((error) => {
-                  showError(error.message);
-                });
+              showInfo('Archiving rooms feature is coming soon!');
             }}
             color="primary"
           >
