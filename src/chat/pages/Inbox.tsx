@@ -93,9 +93,7 @@ const Inbox = () => {
               <ChatDetails />
             </div>
           </>
-        ) : (
-          <>connecting..</>
-        )}
+        ) : null}
       </div>
     </>
   );

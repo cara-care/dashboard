@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box, Button, Popover, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AssignTeammate from './AssignTeammate';
+import useNotification from '../../hooks/useNotification';
 
 const useStyles = makeStyles({
   box: {
@@ -30,9 +31,12 @@ export default function ChatHeaderRightBox() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
+  const notification = useNotification();
+
   const handleOpenAssignPopup = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
+    notification.showInfo('Assignment feature is coming soon! ');
     setAnchorEl(event.currentTarget);
     setOpen(true);
   };
@@ -48,7 +52,9 @@ export default function ChatHeaderRightBox() {
           style={{ margin: '5px 8px', display: 'flex', alignItems: 'center' }}
         >
           <Button
-            onClick={handleOpenAssignPopup}
+            onClick={() =>
+              notification.showInfo('Assignment feature is coming soon! ')
+            }
             className={classes.button}
             startIcon={
               <AccountCircleIcon style={{ marginRight: 4, fontSize: 20 }} />
