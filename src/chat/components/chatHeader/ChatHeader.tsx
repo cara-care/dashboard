@@ -12,6 +12,7 @@ import {
   getUserDataById,
 } from '../../../utils/api';
 import useKabelwerk from '../../hooks/useKabelwerk';
+import useNotification from '../../hooks/useNotification';
 import { setChatUserNotes, updatePatient } from '../../redux';
 import { ChatUser } from '../../redux/types';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
@@ -38,6 +39,7 @@ export default function ChatHeader() {
 
   const [patient, setPatient] = useState<null | ChatUser>(null);
   const { currentRoom } = useKabelwerk();
+  const { showError, showInfo } = useNotification();
 
   useEffect(() => {
     // do nothing if no room is selected yet
@@ -62,10 +64,10 @@ export default function ChatHeader() {
       .then((res: any) => {
         dispatch(setChatUserNotes(res.data));
       })
-      .catch((error: any) => {
-        console.error(error);
+      .catch((error: Error) => {
+        showError(error.message);
       });
-  }, [dispatch, currentRoom]);
+  }, [dispatch, currentRoom, showError]);
 
   if (!currentRoom) {
     return <></>;
@@ -85,7 +87,9 @@ export default function ChatHeader() {
       <div>
         <IconButton
           title="Assign to teammate"
-          // onClick={handleOpenAssignPopup}
+          onClick={() => {
+            showInfo('Assignment feature is coming soon!');
+          }}
           color="primary"
         >
           <AccountCircleIcon />

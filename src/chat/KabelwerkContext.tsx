@@ -1,11 +1,12 @@
 import Kabelwerk from 'kabelwerk';
 import * as React from 'react';
 import { ReactElement } from 'react';
+import { useSelector } from 'react-redux';
+import { isAuthenticated as isAuthenticatedSelector } from '../auth/authReducer';
 import { getChatAuthorizationToken } from '../utils/api';
 import { INBOXES } from './inboxes';
 import { InboxType } from './pages/Inbox';
-import { useSelector } from 'react-redux';
-import { isAuthenticated as isAuthenticatedSelector } from '../auth';
+import useNotification from './hooks/useNotification';
 
 export interface Inbox {
   loadMore: () => Promise<{ rooms: InboxRoom[] }>;
@@ -85,6 +86,7 @@ export const KabelwerkProvider: React.FC<{
   children: ReactElement;
 }> = ({ children }) => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const notification = useNotification();
 
   const [connected, setConnected] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState<User | null>(null);
@@ -201,7 +203,7 @@ export const KabelwerkProvider: React.FC<{
       .then((response: { rooms: InboxRoom[] }) => {
         setRooms(response.rooms);
       })
-      .catch((err: Error) => console.error(err));
+      .catch((error: Error) => notification.showError(error.message));
   };
 
   React.useEffect(() => {
@@ -223,7 +225,7 @@ export const KabelwerkProvider: React.FC<{
             openInbox();
             Kabelwerk.loadHubInfo()
               .then((response: HubInfo) => setHubUsers(response.users))
-              .catch((err: Error) => console.error(err));
+              .catch((error: Error) => notification.showError(error.message));
           });
 
           Kabelwerk.connect();
