@@ -31,28 +31,18 @@ export const NotificationsContext = React.createContext<{
 const Notification: React.FC<{
   message: string;
   severity?: Severity;
+  isShowing: (open: boolean) => void;
 }> = (props) => {
-  console.log('message', props.message);
   const [open, setOpen] = React.useState<boolean>(true);
-  const [message, setMessage] = React.useState<string | null>(null);
-  console.log('message2', message);
+  const [message, setMessage] = React.useState<string | null>(props.message);
 
-  // the Notification component does not get unmounted if another notif arrived before the first is closed
   React.useEffect(() => {
     setMessage(props.message);
   }, [props]);
 
   React.useEffect(() => {
-    if (message === null) {
-      setOpen(false);
-    }
-  }, [message]);
-
-  React.useEffect(() => {
-    if (open === false) {
-      setMessage(null);
-    }
-  }, [open]);
+    props.isShowing(open);
+  }, [open, props]);
 
   const handleClose = () => {
     setOpen(false);
@@ -114,6 +104,12 @@ export const NotificationsProvider: React.FC<{
     });
   };
 
+  const isShowing = (open: boolean) => {
+    if (!open) {
+      setNotification(null);
+    }
+  };
+
   return (
     <NotificationsContext.Provider
       value={{
@@ -127,6 +123,9 @@ export const NotificationsProvider: React.FC<{
         <Notification
           message={notification.message}
           severity={notification.severity}
+          isShowing={(open: boolean) => {
+            isShowing(open);
+          }}
         />
       ) : null}
       {children}
