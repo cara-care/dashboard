@@ -1,18 +1,19 @@
+import { Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { zIndexes } from '../../../theme';
 import {
+  getNotesList,
   getUserByEmailOrUsername,
   getUserDataById,
-  getNotesList,
 } from '../../../utils/api';
+import useKabelwerk from '../../hooks/useKabelwerk';
+import useNotification from '../../hooks/useNotification';
 import { setChatUserNotes, updatePatient } from '../../redux';
-import { zIndexes } from '../../../theme';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import ChatHeaderLeftBox from './ChatHeaderLeftBox';
 import ChatHeaderRightBox from './ChatHeaderRightBox';
-import useKabelwerk from '../../hooks/useKabelwerk';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +34,7 @@ export default function ChatHeader() {
   const dispatch = useDispatch();
 
   const { currentInboxRoom } = useKabelwerk();
+  const { showError } = useNotification();
 
   const [patient, setPatient] = useState(null);
 
@@ -57,10 +59,10 @@ export default function ChatHeader() {
       .then((res: any) => {
         dispatch(setChatUserNotes(res.data));
       })
-      .catch((error: any) => {
-        console.error(error);
+      .catch((error: Error) => {
+        showError(error.message);
       });
-  }, [dispatch, currentInboxRoom]);
+  }, [dispatch, currentInboxRoom, showError]);
 
   if (!currentInboxRoom) {
     return <></>;
