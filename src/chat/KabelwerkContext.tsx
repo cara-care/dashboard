@@ -29,7 +29,7 @@ export interface Room {
   getUser: () => User;
 }
 
-enum MessageType {
+export enum MessageType {
   Text = 'text',
   RoomMove = 'room_move',
 }
