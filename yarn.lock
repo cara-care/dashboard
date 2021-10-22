@@ -8616,12 +8616,12 @@ jsx-ast-utils@^2.2.3:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
 
-kabelwerk@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/kabelwerk/-/kabelwerk-0.1.4.tgz#5ddd33a62624b371425bdf11882ca876ed6bc95e"
-  integrity sha512-ycOVlK44+zzr+5GY72D1HTVzBG16cVJJ9qMlck2qF2KWEIEaS+2y4SdjYJKk0WP/SYSn/x0PPZI+GdzuY384zA==
+kabelwerk@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/kabelwerk/-/kabelwerk-0.1.6.tgz#59ff6d122c8e7992e3eaa2811e5780b21398318b"
+  integrity sha512-sXquEvRNXWc9U9hRLrhBRnuGsFH7ydxeRk5fg3TBq5i6ipmmvbi06WE13Vyq2+HC47MiOypzWY9SH39jl37gkQ==
   dependencies:
-    phoenix "^1.5.9"
+    phoenix "~1.5.13"
 
 killable@^1.0.1:
   version "1.0.1"
@@ -10217,10 +10217,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-phoenix@^1.5.9:
-  version "1.5.9"
-  resolved "https://registry.yarnpkg.com/phoenix/-/phoenix-1.5.9.tgz#5aad82072c8d90e7e20a187063c5db9b9ab9b5cd"
-  integrity sha512-NBRQaCYIrXL/wd5+OoO+DLlNTIdRvxKat0DSkfJ/c8qwYqKK7jNrf1GWPBOPzSVJ9HNMPjgmniJ87m9Os9IQGg==
+phoenix@~1.5.13:
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/phoenix/-/phoenix-1.5.13.tgz#ae141abb664fb2ae2001752ed61ae0faf3af7f8e"
+  integrity sha512-aJKbnuCTtgH8qT7AzHhPwhOP3bqhja3ogFMQmUdY7jNzl/91nsUtpnz0M3HDW7j+IvfjiM2/TIkOaGwzW9BKhg==
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.0.7:
   version "2.2.2"

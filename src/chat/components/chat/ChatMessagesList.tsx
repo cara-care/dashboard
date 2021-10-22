@@ -34,8 +34,7 @@ export default function ChatMessagesList() {
       <Fragment key={message.id}>
         <Message
           position={getMessagePosition(message.user ? message.user.key : '')}
-          message={message.text}
-          created={message.insertedAt}
+          message={message}
         />
       </Fragment>
     );

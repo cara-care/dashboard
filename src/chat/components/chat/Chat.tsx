@@ -82,7 +82,7 @@ export default function Chat() {
   return (
     <>
       <div ref={messagesRootRef} className={classes.messages}>
-        <ChatMessagesList />
+        {currentRoom && <ChatMessagesList />}
         <div ref={messagesTopRef} className={classes.top} />
         {isLoadingMore && (
           <Box display="flex" alignItems="center" justifyContent="center" p={1}>

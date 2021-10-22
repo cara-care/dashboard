@@ -1,5 +1,8 @@
-import { Box } from '@material-ui/core';
+import { Box, IconButton, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ArchiveIcon from '@material-ui/icons/Archive';
+import UnarchiveIcon from '@material-ui/icons/Unarchive';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { zIndexes } from '../../../theme';
@@ -11,9 +14,8 @@ import {
 import useKabelwerk from '../../hooks/useKabelwerk';
 import useNotification from '../../hooks/useNotification';
 import { setChatUserNotes, updatePatient } from '../../redux';
+import { ChatUser } from '../../redux/types';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
-import ChatHeaderLeftBox from './ChatHeaderLeftBox';
-import ChatHeaderRightBox from './ChatHeaderRightBox';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +26,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     width: '100%',
     display: 'flex',
+    justifyContent: 'space-between',
     borderBottom: `1px solid ${theme.palette.divider}`,
-    marginBottom: 12,
+    padding: '8px 12px',
+    alignItems: 'center',
   },
 }));
 
@@ -33,21 +37,22 @@ export default function ChatHeader() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const { currentInboxRoom } = useKabelwerk();
-  const { showError } = useNotification();
-
-  const [patient, setPatient] = useState(null);
+  const [patient, setPatient] = useState<null | ChatUser>(null);
+  const { currentRoom } = useKabelwerk();
+  const { showError, showInfo } = useNotification();
 
   useEffect(() => {
     // do nothing if no room is selected yet
-    if (!currentInboxRoom) return;
+    if (!currentRoom) {
+      return;
+    }
 
     // reset the patient
     setPatient(null);
     dispatch(updatePatient(null));
     dispatch(setChatUserNotes([]));
 
-    getUserByEmailOrUsername(currentInboxRoom.user.key)
+    getUserByEmailOrUsername(currentRoom.getUser().key)
       .then((res: any) => {
         return getUserDataById(res.data.id);
       })
@@ -62,24 +67,55 @@ export default function ChatHeader() {
       .catch((error: Error) => {
         showError(error.message);
       });
-  }, [dispatch, currentInboxRoom, showError]);
+  }, [dispatch, currentRoom, showError]);
 
-  if (!currentInboxRoom) {
+  if (!currentRoom) {
     return <></>;
-  } else if (currentInboxRoom && !patient) {
+  }
+
+  if (currentRoom && !patient) {
     return (
       <Box className={classes.root}>
-        <ChatHeaderSkeleton height={96} />
+        <ChatHeaderSkeleton />
       </Box>
     );
-  } else {
-    return (
-      <div>
-        <Box className={classes.root}>
-          <ChatHeaderLeftBox patient={patient} />
-          <ChatHeaderRightBox />
-        </Box>
-      </div>
-    );
   }
+
+  return (
+    <Box className={classes.root}>
+      <Typography variant="h6">{patient?.nickname}</Typography>
+      <div>
+        <IconButton
+          title="Assign to teammate"
+          onClick={() => {
+            showInfo('Assignment feature is coming soon!');
+          }}
+          color="primary"
+        >
+          <AccountCircleIcon />
+        </IconButton>
+        {currentRoom !== null && currentRoom.isArchived() ? (
+          <IconButton
+            title="Unarchive this room"
+            onClick={() => {
+              showInfo('Archiving rooms feature is coming soon!');
+            }}
+            color="primary"
+          >
+            <UnarchiveIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            title="Archive this room"
+            onClick={() => {
+              showInfo('Archiving rooms feature is coming soon!');
+            }}
+            color="primary"
+          >
+            <ArchiveIcon />
+          </IconButton>
+        )}
+      </div>
+    </Box>
+  );
 }

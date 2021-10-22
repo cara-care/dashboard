@@ -34,14 +34,15 @@ export function CardDetailSkeleton() {
   );
 }
 
-export const ChatHeaderSkeleton = memo(({ height }: { height: number }) => {
+export const ChatHeaderSkeleton = memo(() => {
   return (
     <Box
       display="flex"
       alignItems="center"
       justifyContent="center"
-      height={height}
+      height="100%"
       width="100%"
+      paddingTop="12px"
     >
       <Spinner size={24} noText />
     </Box>
