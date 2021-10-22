@@ -16,13 +16,22 @@ export interface InboxRoom {
   id: number;
   lastMessage: Message | null;
   user: User;
+  isArchived: () => boolean;
 }
 
 export interface Room {
   loadEarlier: () => Promise<{ messages: Message[] }>;
+  isArchived: () => boolean;
   postMessage: (message: { text: string }) => Promise<Message>;
-  off: () => {};
-  user: User;
+  off: () => void;
+  archive: () => Promise<void>;
+  unarchive: () => Promise<void>;
+  getUser: () => User;
+}
+
+enum MessageType {
+  Text = 'text',
+  RoomMove = 'room_move',
 }
 
 export interface Message {
@@ -30,6 +39,7 @@ export interface Message {
   insertedAt: Date;
   roomId: number;
   text: string;
+  type: MessageType;
   updatedAt: Date;
   user: User | null;
 }
@@ -56,7 +66,7 @@ export const KabelwerkContext = React.createContext<{
   rooms: InboxRoom[];
   hubUsers: User[];
   selectInbox: (inbox: InboxType) => void;
-  selectRoom: (roomId: number) => void;
+  selectRoom: (roomId: number | null) => void;
   selectCurrentInboxRoom: (room: InboxRoom) => void;
   loadMoreRooms: () => void;
   postMessage: (text: string) => Promise<Message | void>;
@@ -150,6 +160,7 @@ export const KabelwerkProvider: React.FC<{
     const room = Kabelwerk.openRoom(roomId);
 
     room.on('ready', ({ messages }: { messages: Message[] }) => {
+      setCurrentRoom(room);
       setMessages(messages);
     });
 
@@ -160,14 +171,13 @@ export const KabelwerkProvider: React.FC<{
     });
 
     room.connect();
-
-    setCurrentRoom(room);
   };
 
   const openInbox = React.useCallback(() => {
     const inbox = Kabelwerk.openInbox({
       limit: 20,
       attributes: INBOXES[currentInboxType].attributes,
+      archived: INBOXES[currentInboxType].archived,
       // needs to be disabled temporarily because the sdk cannot handle undefined
       // at the moment assigning users to hub users does not work
       // assignedTo:
@@ -181,6 +191,8 @@ export const KabelwerkProvider: React.FC<{
     inbox.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
       setRooms(rooms);
       setMessages([]);
+      setCurrentRoom(null);
+      setCurrentInboxRoom(null);
     });
 
     inbox.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
@@ -197,7 +209,9 @@ export const KabelwerkProvider: React.FC<{
       .then((response: { rooms: InboxRoom[] }) => {
         setRooms(response.rooms);
       })
-      .catch((error: Error) => notification.showError(error.message));
+      .catch((error: Error) => console.error(error));
+    // temporary disabled because load more is called all the time in smaller inboxes
+    // .catch((error: Error) => notification.showError(error.message));
   };
 
   React.useEffect(() => {
