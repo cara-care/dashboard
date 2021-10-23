@@ -4,9 +4,10 @@ module.exports = function (app) {
   app.use(
     '/api/**',
     createProxyMiddleware({
-      target: 'https://eu-staging.cara.care',
-      // ws: true, // <-- broken tests but needed for chat development
-      ws: process.env.NODE_ENV === 'production',
+      target:
+        process.env.REACT_APP_LOCATION === 'EU'
+          ? 'https://eu-staging.cara.care'
+          : 'https://global-staging.cara.care',
       changeOrigin: true,
       pathRewrite: {
         '^/api/': '',

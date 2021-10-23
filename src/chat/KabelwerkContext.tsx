@@ -29,7 +29,7 @@ export interface Room {
   getUser: () => User;
 }
 
-enum MessageType {
+export enum MessageType {
   Text = 'text',
   RoomMove = 'room_move',
 }
@@ -94,18 +94,35 @@ export const KabelwerkProvider: React.FC<{
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const notification = useNotification();
 
+  // whether the websocket connection to the Kabelwerk backend is open
   const [connected, setConnected] = React.useState(false);
+
+  // the connected Kabelwerk user
   const [currentUser, setCurrentUser] = React.useState<User | null>(null);
+
+  // the list of all care team members, including the connected user
+  const [hubUsers, setHubUsers] = React.useState<User[]>([]);
+
+  // the currently selected inbox from the left-most menu
+  const [currentInboxType, setCurrentInboxType] = React.useState(InboxType.ALL);
+
+  // the currently active Kabelwerk inbox object
+  const [currentInbox, setCurrentInbox] = React.useState<Inbox | null>(null);
+
+  // the above's list of rooms
+  const [rooms, setRooms] = React.useState<InboxRoom[]>([]);
+
+  // the currently selected room from the inbox room list
   const [
     currentInboxRoom,
     setCurrentInboxRoom,
   ] = React.useState<InboxRoom | null>(null);
-  const [currentInbox, setCurrentInbox] = React.useState<Inbox | null>(null);
-  const [currentInboxType, setCurrentInboxType] = React.useState(InboxType.ALL);
+
+  // the currently active Kabelwerk room object
   const [currentRoom, setCurrentRoom] = React.useState<Room | null>(null);
+
+  // the above's messages
   const [messages, setMessages] = React.useState<Message[]>([]);
-  const [hubUsers, setHubUsers] = React.useState<User[]>([]);
-  const [rooms, setRooms] = React.useState<InboxRoom[]>([]);
 
   const postMessage = (text: string) => {
     if (currentRoom !== null) {
@@ -215,39 +232,31 @@ export const KabelwerkProvider: React.FC<{
   };
 
   React.useEffect(() => {
-    if (!Kabelwerk.isConnected()) {
-      isAuthenticated &&
-        getChatAuthorizationToken().then((res) => {
-          Kabelwerk.config({
-            url: process.env.REACT_APP_KABELWERK_URL,
-            token: res.data.token,
-            refreshToken: () => {
-              return getChatAuthorizationToken().then((res) => res.data.token);
-            },
-            logging: 'info',
-          });
-
-          Kabelwerk.on('ready', () => {
-            setConnected(true);
-            setCurrentUser(Kabelwerk.getUser());
-            openInbox();
-            Kabelwerk.loadHubInfo()
-              .then((response: HubInfo) => setHubUsers(response.users))
-              .catch((error: Error) => notification.showError(error.message));
-          });
-
-          Kabelwerk.connect();
+    if (isAuthenticated && !Kabelwerk.isConnected()) {
+      getChatAuthorizationToken().then((res) => {
+        Kabelwerk.config({
+          url: process.env.REACT_APP_KABELWERK_URL,
+          token: res.data.token,
+          refreshToken: () => {
+            return getChatAuthorizationToken().then((res) => res.data.token);
+          },
+          logging: process.env.NOVE_ENV === 'production' ? 'error' : 'info',
         });
+
+        Kabelwerk.on('ready', () => {
+          setConnected(true);
+          setCurrentUser(Kabelwerk.getUser());
+          openInbox();
+          Kabelwerk.loadHubInfo()
+            .then((response: HubInfo) => setHubUsers(response.users))
+            .catch((error: Error) => notification.showError(error.message));
+        });
+
+        Kabelwerk.connect();
+      });
     }
     /* eslint-disable-next-line */
   }, [isAuthenticated]);
-
-  React.useEffect(() => {
-    // open inbox
-    if (connected && currentInboxType !== null) {
-      openInbox();
-    }
-  }, [currentInboxType, openInbox, connected]);
 
   return (
     <KabelwerkContext.Provider
