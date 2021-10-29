@@ -169,7 +169,16 @@ export const KabelwerkProvider: React.FC<{
     return Promise.resolve();
   };
 
-  const openRoom = (roomId: number) => {
+  const openRoom = (roomId: number | null) => {
+    // TODO remove with selectRoom refactor
+    // ideally we want to set the currentRoom to the topmost room from the roomlist
+    // this is not possible at that moment, that is why when archiving for example, the currentRoom needs to be deselected
+    if (roomId === null) {
+      currentRoom?.off();
+      setCurrentRoom(null);
+      return;
+    }
+
     if (currentRoom !== null) {
       currentRoom.off();
     }
@@ -257,6 +266,13 @@ export const KabelwerkProvider: React.FC<{
     }
     /* eslint-disable-next-line */
   }, [isAuthenticated]);
+
+  // opens a new inbox when it changes
+  React.useEffect(() => {
+    if (connected && currentInboxType !== null) {
+      openInbox();
+    }
+  }, [currentInboxType, openInbox, connected]);
 
   return (
     <KabelwerkContext.Provider
