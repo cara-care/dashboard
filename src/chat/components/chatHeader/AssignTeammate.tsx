@@ -1,8 +1,8 @@
-import React from 'react';
+import { Paper, Theme, Typography, useTheme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Paper, Theme, Typography, useTheme } from '@material-ui/core';
-import styled from 'styled-components';
+import React from 'react';
 import { useIntl } from 'react-intl';
+import styled from 'styled-components';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import useNotification from '../../hooks/useNotification';
 
