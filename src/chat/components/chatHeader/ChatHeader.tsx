@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from '@material-ui/core';
+import { Box, IconButton, Popover, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ArchiveIcon from '@material-ui/icons/Archive';
@@ -16,6 +16,7 @@ import useNotification from '../../hooks/useNotification';
 import { setChatUserNotes, updatePatient } from '../../redux';
 import { ChatUser } from '../../redux/types';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
+import AssignTeammate from './AssignTeammate';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,8 +39,10 @@ export default function ChatHeader() {
   const dispatch = useDispatch();
 
   const [patient, setPatient] = useState<null | ChatUser>(null);
-  const { currentRoom, selectRoom } = useKabelwerk();
-  const { showError, showSuccess, showInfo } = useNotification();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [isAssigning, setIsAssigning] = useState(false);
+  const { currentRoom, selectRoom, hubUsers } = useKabelwerk();
+  const { showError, showSuccess } = useNotification();
 
   useEffect(() => {
     // do nothing if no room is selected yet
@@ -86,11 +89,18 @@ export default function ChatHeader() {
       <Typography variant="h6">{patient?.nickname}</Typography>
       <div>
         <IconButton
-          title="Assign to teammate"
-          onClick={() => {
-            showInfo('Assignment feature is coming soon!');
+          // disabled when the hub user is only one
+          disabled={hubUsers.length === 1}
+          onClick={(event) => {
+            setAnchorEl(event.currentTarget);
+            setIsAssigning(true);
           }}
           color="primary"
+          title={
+            hubUsers.length === 1
+              ? 'No other hub users yet.'
+              : 'Assign this room to one of your teammates.'
+          }
         >
           <AccountCircleIcon />
         </IconButton>
@@ -130,6 +140,30 @@ export default function ChatHeader() {
           </IconButton>
         )}
       </div>
+      {isAssigning && (
+        <Popover
+          id="assign-popover"
+          open={isAssigning}
+          anchorEl={anchorEl}
+          onClose={() => {
+            setIsAssigning(false);
+          }}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <AssignTeammate
+            handleCloseAssignPopup={() => {
+              setIsAssigning(false);
+            }}
+          />
+        </Popover>
+      )}
     </Box>
   );
 }

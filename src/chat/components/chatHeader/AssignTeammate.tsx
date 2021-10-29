@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Paper, Theme, Typography, useTheme } from '@material-ui/core';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
-import { useSelector } from 'react-redux';
-import { currentUserUsernameSelector } from '../../redux';
+import useKabelwerk from '../../hooks/useKabelwerk';
+import useNotification from '../../hooks/useNotification';
 
 const useStyles = makeStyles({
   root: {
@@ -44,50 +44,49 @@ const AssigneeWrapper = styled.div<AssigneeWrapperProps>`
 `;
 
 interface AssignTeammateProps {
-  assignUserToNutri: (slug: string, room?: string) => void;
   handleCloseAssignPopup: () => void;
 }
 
 export default function AssignTeammate({
-  assignUserToNutri,
   handleCloseAssignPopup,
 }: AssignTeammateProps) {
   const classes = useStyles();
   const intl = useIntl();
   const theme = useTheme();
-  const chatConversations: any[] = [];
-  const username = useSelector(currentUserUsernameSelector);
-
-  const handleClick = (slug: string) => {
-    assignUserToNutri(slug, username);
-    handleCloseAssignPopup();
-  };
+  const { hubUsers, currentRoom } = useKabelwerk();
+  const { showSuccess, showError } = useNotification();
 
   return (
     <Paper elevation={3} className={classes.root}>
       <Typography className={classes.header}>
         {intl.formatMessage({
           id: 'chat.assignToTeammate',
-          defaultMessage: 'Assign to teammate',
+          defaultMessage: 'Assign to a teammate',
         })}
       </Typography>
       <div className={classes.container}>
-        {chatConversations
-          .filter((conversation) => conversation.name !== 'All')
-          .map((conversation) => {
-            const { slug, name } = conversation;
-            return (
-              <AssigneeWrapper
-                key={slug}
-                theme={theme}
-                active={name === '?'}
-                onClick={() => handleClick(slug)}
-              >
-                <Avatar className={classes.avatar} />
-                <Typography variant="body2">{name}</Typography>
-              </AssigneeWrapper>
-            );
-          })}
+        {hubUsers.map((user) => {
+          return (
+            <AssigneeWrapper
+              key={user.key}
+              theme={theme}
+              active={user.name === '?'}
+              onClick={() => {
+                currentRoom
+                  ?.updateHubUser(user.id)
+                  .then(() => {
+                    showSuccess(`Room successfully assigned to ${user.name}`);
+                  })
+                  .catch((error: Error) => showError(error.message))
+                  .finally(() => {
+                    handleCloseAssignPopup();
+                  });
+              }}
+            >
+              <Typography variant="body2">{user.name}</Typography>
+            </AssigneeWrapper>
+          );
+        })}
       </div>
     </Paper>
   );
