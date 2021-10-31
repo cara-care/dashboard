@@ -6,7 +6,7 @@
   "changePassword.failedToChangePassword": "Failed to change your password, make sure you entered your current password correctly.",
   "changePassword.goBack": "Go back",
   "changePassword.yourPasswordHasBeenUpdated": "Your password has been updated",
-  "chat.assignToTeammate": "Assign to teammate",
+  "chat.assignToTeammate": "Assign to a teammate",
   "chat.addNote": "Add Note",
   "chat.conversationDetails": "Details",
   "chat.conversations": " Conversations",

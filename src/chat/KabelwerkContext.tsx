@@ -27,6 +27,8 @@ export interface Room {
   archive: () => Promise<void>;
   unarchive: () => Promise<void>;
   getUser: () => User;
+  updateHubUser: (userId: number | null) => Promise<void>;
+  getHubUser: () => User;
 }
 
 export enum MessageType {
@@ -204,12 +206,10 @@ export const KabelwerkProvider: React.FC<{
       limit: 20,
       attributes: INBOXES[currentInboxType].attributes,
       archived: INBOXES[currentInboxType].archived,
-      // needs to be disabled temporarily because the sdk cannot handle undefined
-      // at the moment assigning users to hub users does not work
-      // assignedTo:
-      //   currentInboxType === InboxType.PERSONAL && currentUser !== null
-      //     ? currentUser.id
-      //     : undefined,
+      assignedTo:
+        currentInboxType === InboxType.PERSONAL && currentUser !== null
+          ? currentUser.id
+          : undefined,
     });
 
     setCurrentInbox(inbox);
