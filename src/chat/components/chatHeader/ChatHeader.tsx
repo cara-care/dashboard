@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '8px 12px',
     alignItems: 'center',
   },
+  assignee: {
+    fontWeight: 400,
+  },
 }));
 
 export default function ChatHeader() {
@@ -86,7 +89,12 @@ export default function ChatHeader() {
 
   return (
     <Box className={classes.root}>
-      <Typography variant="h6">{patient?.nickname}</Typography>
+      <Typography variant="h6">
+        {patient?.nickname}
+        {currentRoom.getHubUser() && (
+          <small className={classes.assignee}> ↔ {currentRoom.getHubUser().name}</small>
+        )}
+      </Typography>
       <div>
         <IconButton
           // disabled when the hub user is only one

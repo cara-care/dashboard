@@ -41,13 +41,13 @@ export const INBOXES = {
     archived: false,
   },
   all: {
-    name: 'All',
+    name: 'All open',
     icon: '🌍',
     attributes: {},
     archived: false,
   },
   archived: {
-    name: 'Archived',
+    name: 'All closed',
     icon: '🗂️',
     attributes: {},
     archived: true,
