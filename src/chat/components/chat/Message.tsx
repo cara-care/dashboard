@@ -6,7 +6,7 @@ import { getTime, padWith0 } from '../../../utils/dateUtils';
 import { MESSAGE_CONTAINER } from '../../../utils/test-helpers';
 import Linkify from 'react-linkify';
 import ExternalLink from '../../../components/ExternalLink';
-import { Message as MessageType } from '../../KabelwerkContext';
+import { Message as MessageType } from '../../interfaces';
 
 const useStyles = makeStyles((theme) => ({
   root: {

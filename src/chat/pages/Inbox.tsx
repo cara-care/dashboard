@@ -11,16 +11,6 @@ import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
 
-export enum InboxType {
-  PERSONAL = 'personal',
-  ANWENDERTEST_HB = 'anwendertest_hb',
-  ANWENDERTEST_IBD = 'anwendertest_ibd',
-  ANWENDERTEST_IBS = 'anwendertest_ibs',
-  RCT_IBS = 'rct_ibs',
-  NO_STUDY = 'no_study',
-  ALL = 'all',
-}
-
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',

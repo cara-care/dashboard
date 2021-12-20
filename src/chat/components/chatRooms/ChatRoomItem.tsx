@@ -6,7 +6,7 @@ import truncate from 'lodash/truncate';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import useKabelwerk from '../../hooks/useKabelwerk';
-import { InboxItem } from '../../KabelwerkContext';
+import { InboxItem } from '../../interfaces';
 
 const useStyles = makeStyles((theme) => ({
   link: {

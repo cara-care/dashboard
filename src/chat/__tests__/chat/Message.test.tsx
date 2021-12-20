@@ -4,7 +4,7 @@ import withProviders from '../../../components/withProviders';
 import { MESSAGE_CONTAINER } from '../../../utils/test-helpers';
 import { renderWithRedux } from '../../../utils/test-utils';
 import Message from '../../components/chat/Message';
-import { MessageType } from '../../KabelwerkContext';
+import { MessageType } from '../../interfaces';
 
 const testMessage = {
   id: 1,
