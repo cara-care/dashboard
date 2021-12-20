@@ -9,14 +9,19 @@ import { InboxType } from './pages/Inbox';
 import useNotification from './hooks/useNotification';
 
 export interface Inbox {
-  loadMore: () => Promise<{ rooms: InboxRoom[] }>;
+  loadMore: () => Promise<{ items: InboxItem[] }>;
 }
 
-export interface InboxRoom {
-  id: number;
-  lastMessage: Message | null;
-  user: User;
-  isArchived: () => boolean;
+export interface InboxItem {
+  room: {
+    archived: boolean;
+    assignedTo: number | null;
+    attributes: any;
+    id: number;
+    user: User;
+  };
+  message: Message | null;
+  isNew: boolean;
 }
 
 export interface Room {
@@ -63,14 +68,14 @@ export const KabelwerkContext = React.createContext<{
   currentInboxType: InboxType;
   currentUser: User | null;
   currentRoom: Room | null;
-  currentInboxRoom: InboxRoom | null;
+  currentInboxRoom: InboxItem | null;
   messages: Message[];
-  rooms: InboxRoom[];
+  inboxItems: InboxItem[];
   hubUsers: User[];
   selectInbox: (inbox: InboxType) => void;
   selectRoom: (roomId: number | null) => void;
-  selectCurrentInboxRoom: (room: InboxRoom) => void;
-  loadMoreRooms: () => void;
+  selectCurrentInboxRoom: (room: InboxItem) => void;
+  loadMoreInboxItems: () => void;
   postMessage: (text: string) => Promise<Message | void>;
   loadEarlierMessages: () => Promise<boolean | void>;
 }>({
@@ -80,12 +85,12 @@ export const KabelwerkContext = React.createContext<{
   currentRoom: null,
   currentInboxRoom: null,
   messages: [],
-  rooms: [],
+  inboxItems: [],
   hubUsers: [],
   selectInbox: () => {},
   selectRoom: () => {},
   selectCurrentInboxRoom: () => {},
-  loadMoreRooms: () => {},
+  loadMoreInboxItems: () => {},
   postMessage: () => new Promise(() => {}),
   loadEarlierMessages: () => new Promise(() => {}),
 });
@@ -111,14 +116,14 @@ export const KabelwerkProvider: React.FC<{
   // the currently active Kabelwerk inbox object
   const [currentInbox, setCurrentInbox] = React.useState<Inbox | null>(null);
 
-  // the above's list of rooms
-  const [rooms, setRooms] = React.useState<InboxRoom[]>([]);
+  // the above's list of inbox items
+  const [inboxItems, setInboxItems] = React.useState<InboxItem[]>([]);
 
   // the currently selected room from the inbox room list
   const [
     currentInboxRoom,
     setCurrentInboxRoom,
-  ] = React.useState<InboxRoom | null>(null);
+  ] = React.useState<InboxItem | null>(null);
 
   // the currently active Kabelwerk room object
   const [currentRoom, setCurrentRoom] = React.useState<Room | null>(null);
@@ -214,26 +219,26 @@ export const KabelwerkProvider: React.FC<{
 
     setCurrentInbox(inbox);
 
-    inbox.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
-      setRooms(rooms);
+    inbox.on('ready', ({ items }: { items: InboxItem[] }) => {
+      setInboxItems(items);
       setMessages([]);
       setCurrentRoom(null);
       setCurrentInboxRoom(null);
     });
 
-    inbox.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
-      setRooms(rooms);
+    inbox.on('updated', ({ items }: { items: InboxItem[] }) => {
+      setInboxItems(items);
     });
 
     inbox.connect();
     /* eslint-disable-next-line */
   }, [currentInboxType]);
 
-  const loadMoreRooms = () => {
+  const loadMoreInboxItems = () => {
     currentInbox
       ?.loadMore()
-      .then((response: { rooms: InboxRoom[] }) => {
-        setRooms(response.rooms);
+      .then(({ items }: { items: InboxItem[] }) => {
+        setInboxItems(items);
       })
       .catch((error: Error) => console.error(error));
     // temporary disabled because load more is called all the time in smaller inboxes
@@ -287,10 +292,10 @@ export const KabelwerkProvider: React.FC<{
         loadEarlierMessages,
         selectInbox: (inbox: InboxType) => setCurrentInboxType(inbox),
         selectRoom: (roomId: number) => openRoom(roomId),
-        selectCurrentInboxRoom: (room: InboxRoom) => setCurrentInboxRoom(room),
-        rooms,
+        selectCurrentInboxRoom: (room: InboxItem) => setCurrentInboxRoom(room),
+        inboxItems,
         hubUsers,
-        loadMoreRooms,
+        loadMoreInboxItems,
       }}
     >
       {children}

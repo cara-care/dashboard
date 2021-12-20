@@ -34,7 +34,7 @@ export default function ChatRooms() {
   const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
 
   // the inbox selected from the sidebar to the very left
-  const { currentInboxType, loadMoreRooms } = React.useContext(
+  const { currentInboxType, loadMoreInboxItems } = React.useContext(
     KabelwerkContext
   );
 
@@ -52,7 +52,7 @@ export default function ChatRooms() {
 
   const handleIntersect = function () {
     if (!isLoadingMore && canLoadMore) {
-      loadMoreRooms();
+      loadMoreInboxItems();
     }
   };
 

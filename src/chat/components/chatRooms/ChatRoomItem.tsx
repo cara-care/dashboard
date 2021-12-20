@@ -6,7 +6,7 @@ import truncate from 'lodash/truncate';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import useKabelwerk from '../../hooks/useKabelwerk';
-import { InboxRoom } from '../../KabelwerkContext';
+import { InboxItem } from '../../KabelwerkContext';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -61,39 +61,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ChatRoomItemProps {
-  room: InboxRoom;
+  inboxItem: InboxItem;
 }
 
-export default function ChatRoomItem({ room }: ChatRoomItemProps) {
+export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
   const classes = useStyles();
   const { selectRoom, selectCurrentInboxRoom } = useKabelwerk();
 
   return (
     <NavLink
-      to={`/nutri/inbox/${room.id}`}
+      to={`/nutri/inbox/${inboxItem.room.id}`}
       className={classes.link}
       activeClassName={classes.active}
       onClick={() => {
-        selectRoom(room.id);
-        selectCurrentInboxRoom(room);
+        selectRoom(inboxItem.room.id);
+        selectCurrentInboxRoom(inboxItem);
       }}
     >
       <div className={classes.root}>
         <div className={classes.container}>
           <div className={classes.inner}>
             <Typography className={classes.nickname}>
-              {room.user.name}
+              {inboxItem.room.user.name}
             </Typography>
             <Typography variant="body2">
-              {room.lastMessage
-                ? truncate(room.lastMessage.text, { length: 60 })
+              {inboxItem.message
+                ? truncate(inboxItem.message.text, { length: 60 })
                 : ''}
             </Typography>
           </div>
         </div>
         <Typography variant="caption">
-          {room.lastMessage
-            ? formatDistanceToNowStrict(room.lastMessage.insertedAt)
+          {inboxItem.message
+            ? formatDistanceToNowStrict(inboxItem.message.insertedAt)
             : 'unknown'}
         </Typography>
       </div>
