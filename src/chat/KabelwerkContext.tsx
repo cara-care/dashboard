@@ -179,6 +179,18 @@ export const KabelwerkProvider: React.FC<{
 
     inbox.on('updated', ({ items }: { items: InboxItem[] }) => {
       setInboxItems(items);
+
+      for (const item of items) {
+        if (
+          item.isNew &&
+          item.message &&
+          item.message.user &&
+          item.message.user.id !== Kabelwerk.getUser().id &&
+          new Date().getTime() - item.message.insertedAt.getTime() < 5000
+        ) {
+          notification.triggerDesktopNotification(item.message);
+        }
+      }
     });
 
     inbox.connect();
