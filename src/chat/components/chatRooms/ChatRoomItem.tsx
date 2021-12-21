@@ -57,6 +57,14 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     whiteSpace: 'pre-wrap',
   },
+  dot: {
+    backgroundColor: '#d8eceb',
+    borderRadius: 15,
+    display: 'inline-block',
+    height: 15,
+    marginLeft: 5,
+    width: 15,
+  },
   divder: { backgroundColor: '#d8eceb' },
 }));
 
@@ -83,6 +91,7 @@ export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
           <div className={classes.inner}>
             <Typography className={classes.nickname}>
               {inboxItem.room.user.name}
+              {inboxItem.isNew ? <span className={classes.dot}></span> : ''}
             </Typography>
             <Typography variant="body2">
               {inboxItem.message

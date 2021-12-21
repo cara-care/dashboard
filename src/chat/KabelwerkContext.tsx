@@ -140,12 +140,18 @@ export const KabelwerkProvider: React.FC<{
     room.on('ready', ({ messages }: { messages: Message[] }) => {
       setCurrentRoom(room);
       setMessages(messages);
+
+      if (messages.length) {
+        room.moveMarker(messages[messages.length - 1].id);
+      }
     });
 
     room.on('message_posted', (message: Message) => {
       setMessages((messages) => {
         return [...messages, message];
       });
+
+      room.moveMarker(message.id);
     });
 
     room.connect();
