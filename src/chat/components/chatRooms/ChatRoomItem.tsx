@@ -11,11 +11,15 @@ const toISODate = (dateTime: Date) => {
   return dateTime.toISOString().substring(0, 10);
 };
 
+const padTwo = (input: any) => {
+  return input.toString().padStart(2, '0');
+};
+
 const formatDateTime = (dateTime: Date) => {
   const today = new Date();
 
   if (toISODate(today) === toISODate(dateTime)) {
-    return `${dateTime.getHours()}:${dateTime.getMinutes()}`;
+    return `${padTwo(dateTime.getHours())}:${padTwo(dateTime.getMinutes())}`;
   } else {
     // @ts-ignore
     const formatter = new Intl.DateTimeFormat([], { month: 'short' });
