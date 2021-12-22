@@ -215,51 +215,55 @@ const NavBar: React.FC = () => {
             >
               <IconButton onClick={toggleTheme}>
                 {isDarkMode ? (
-                  <Brightness7Icon data-testid={DARK_MODE_ICON} />
+                  <Brightness4Icon data-testid={DARK_MODE_ICON} />
                 ) : (
-                  <Brightness4Icon data-testid={LIGHT_MODE_ICON} />
+                  <Brightness7Icon data-testid={LIGHT_MODE_ICON} />
                 )}
               </IconButton>
             </Tooltip>
             {isAuthenticated && (
               <>
-                <Tooltip
-                  title={intl.formatMessage({
-                    id: 'navbar.toggleNotifications',
-                    defaultMessage: 'Toggle notifications',
-                  })}
-                  aria-label={intl.formatMessage({
-                    id: 'navbar.toggleNotifications',
-                    defaultMessage: 'Toggle notifications',
-                  })}
-                >
-                  <IconButton onClick={toggleNotifications}>
-                    {notificationsEnabled ? (
-                      <NotificationsActiveIcon />
-                    ) : (
-                      <NotificationsOffIcon />
-                    )}
-                  </IconButton>
-                </Tooltip>
-                <Hidden
-                  mdDown
-                  // https://material-ui.com/components/use-media-query/#testing
-                  implementation={
-                    process.env.NODE_ENV === 'test' ? 'css' : undefined
-                  }
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={handleSelectPatientPress}
+                {process.env.REACT_APP_LOCATION === 'EU' && (
+                  <Tooltip
+                    title={intl.formatMessage({
+                      id: 'navbar.toggleNotifications',
+                      defaultMessage: 'Toggle notifications',
+                    })}
+                    aria-label={intl.formatMessage({
+                      id: 'navbar.toggleNotifications',
+                      defaultMessage: 'Toggle notifications',
+                    })}
                   >
-                    <FormattedMessage
-                      id="navbar.selectDifferentPatient"
-                      defaultMessage="Select different patient"
-                    />
-                  </Button>
-                </Hidden>
+                    <IconButton onClick={toggleNotifications}>
+                      {notificationsEnabled ? (
+                        <NotificationsActiveIcon />
+                      ) : (
+                        <NotificationsOffIcon />
+                      )}
+                    </IconButton>
+                  </Tooltip>
+                )}
+                {process.env.REACT_APP_LOCATION === 'GLOBAL' && (
+                  <Hidden
+                    mdDown
+                    // https://material-ui.com/components/use-media-query/#testing
+                    implementation={
+                      process.env.NODE_ENV === 'test' ? 'css' : undefined
+                    }
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={handleSelectPatientPress}
+                    >
+                      <FormattedMessage
+                        id="navbar.selectDifferentPatient"
+                        defaultMessage="Select different patient"
+                      />
+                    </Button>
+                  </Hidden>
+                )}
                 <Tooltip
                   title={
                     <FormattedMessage
