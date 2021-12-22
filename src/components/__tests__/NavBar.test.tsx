@@ -38,18 +38,20 @@ describe('<NavBar />', () => {
   });
 
   it('renders select different patient button when patient is selected', () => {
-    const { getByText } = renderWithRedux(<NavBarWithProviders />, {
-      preloadedState: {
-        auth: {
-          ...authInitialState,
-          status: AuthStatus.AUTHENTICATED,
-          patientId: 1,
+    if (process.env.REACT_APP_LOCATION === 'GLOBAL') {
+      const { getByText } = renderWithRedux(<NavBarWithProviders />, {
+        preloadedState: {
+          auth: {
+            ...authInitialState,
+            status: AuthStatus.AUTHENTICATED,
+            patientId: 1,
+          },
         },
-      },
-    });
-    expect(
-      getByText(new RegExp(en['navbar.selectDifferentPatient'], 'i'))
-    ).toBeVisible();
+      });
+      expect(
+        getByText(new RegExp(en['navbar.selectDifferentPatient'], 'i'))
+      ).toBeVisible();
+    }
   });
 
   it('changes language when selecting a diffrent language in menu', () => {
