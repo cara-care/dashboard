@@ -6,9 +6,8 @@ import ArrowRight from '@material-ui/icons/ArrowRight';
 import clsx from 'classnames';
 import React from 'react';
 import useKabelwerk from '../../hooks/useKabelwerk';
-import { INBOXES } from '../../inboxes';
+import { INBOXES, InboxType } from '../../inboxes';
 import ConversationsItem from './ConversationsItem';
-import { InboxType } from '../../pages/Inbox';
 
 const useStyles = makeStyles((theme) => ({
   avatar: {

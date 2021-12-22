@@ -92,7 +92,10 @@ export default function ChatHeader() {
       <Typography variant="h6">
         {patient?.nickname}
         {currentRoom.getHubUser() && (
-          <small className={classes.assignee}> ↔ {currentRoom.getHubUser().name}</small>
+          <small className={classes.assignee}>
+            {' '}
+            ↔ {currentRoom.getHubUser().name}
+          </small>
         )}
       </Typography>
       <div>

@@ -1,12 +1,29 @@
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import { formatDistanceToNowStrict } from 'date-fns';
 import truncate from 'lodash/truncate';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import useKabelwerk from '../../hooks/useKabelwerk';
-import { InboxRoom } from '../../KabelwerkContext';
+import { InboxItem } from '../../interfaces';
+
+const toISODate = (dateTime: Date) => {
+  return dateTime.toISOString().substring(0, 10);
+};
+
+const formatDateTime = (dateTime: Date) => {
+  const today = new Date();
+
+  if (toISODate(today) === toISODate(dateTime)) {
+    return `${dateTime.getHours()}:${dateTime.getMinutes()}`;
+  } else {
+    // @ts-ignore
+    const formatter = new Intl.DateTimeFormat([], { month: 'short' });
+    const month = formatter.format(dateTime);
+
+    return `${dateTime.getDate()} ${month}`;
+  }
+};
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -26,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
     paddingBottom: theme.spacing(),
+    position: 'relative',
   },
   active: {
     position: 'relative',
@@ -54,47 +72,67 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   nickname: {
-    fontWeight: 'bold',
+    fontWeight: 500,
     whiteSpace: 'pre-wrap',
+  },
+  unread: {
+    fontWeight: 600,
+  },
+  dot: {
+    backgroundColor: '#a6d2d1',
+    borderRadius: 10,
+    display: 'inline-block',
+    height: 10,
+    marginLeft: 5,
+    width: 10,
+  },
+  timestamp: {
+    position: 'absolute',
+    right: 8,
+    top: 10,
   },
   divder: { backgroundColor: '#d8eceb' },
 }));
 
 interface ChatRoomItemProps {
-  room: InboxRoom;
+  inboxItem: InboxItem;
 }
 
-export default function ChatRoomItem({ room }: ChatRoomItemProps) {
+export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
   const classes = useStyles();
   const { selectRoom, selectCurrentInboxRoom } = useKabelwerk();
 
   return (
     <NavLink
-      to={`/nutri/inbox/${room.id}`}
+      to={`/nutri/inbox/${inboxItem.room.id}`}
       className={classes.link}
       activeClassName={classes.active}
       onClick={() => {
-        selectRoom(room.id);
-        selectCurrentInboxRoom(room);
+        selectRoom(inboxItem.room.id);
+        selectCurrentInboxRoom(inboxItem);
       }}
     >
       <div className={classes.root}>
         <div className={classes.container}>
           <div className={classes.inner}>
             <Typography className={classes.nickname}>
-              {room.user.name}
+              {inboxItem.room.user.name}
+              {inboxItem.isNew ? <span className={classes.dot}></span> : ''}
             </Typography>
-            <Typography variant="body2">
-              {room.lastMessage
-                ? truncate(room.lastMessage.text, { length: 60 })
+            <Typography
+              variant="body2"
+              className={inboxItem.isNew ? classes.unread : ''}
+            >
+              {inboxItem.message
+                ? truncate(inboxItem.message.text, { length: 60 })
                 : ''}
             </Typography>
           </div>
         </div>
-        <Typography variant="caption">
-          {room.lastMessage
-            ? formatDistanceToNowStrict(room.lastMessage.insertedAt)
-            : 'unknown'}
+        <Typography variant="caption" className={classes.timestamp}>
+          {inboxItem.message
+            ? formatDateTime(inboxItem.message.insertedAt)
+            : ''}
         </Typography>
       </div>
       <Divider className={classes.divder} />

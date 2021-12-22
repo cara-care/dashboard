@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+import { Message } from './interfaces';
 
 enum Severity {
   Info = 'info',
@@ -21,11 +22,13 @@ export const NotificationsContext = React.createContext<{
   showWarning: (text: string) => void;
   showInfo: (text: string) => void;
   showSuccess: (text: string) => void;
+  triggerDesktopNotification: (message: Message) => void;
 }>({
   showError: () => {},
   showWarning: () => {},
   showInfo: () => {},
   showSuccess: () => {},
+  triggerDesktopNotification: () => {},
 });
 
 const Notification: React.FC<{
@@ -105,6 +108,15 @@ export const NotificationsProvider: React.FC<{
     }
   };
 
+  const triggerDesktopNotification = React.useCallback((message: Message) => {
+    if (localStorage.getItem('notifications') === 'on') {
+      new window.Notification(message.user ? message.user.name : '', {
+        body: message.text,
+        silent: false,
+      });
+    }
+  }, []);
+
   return (
     <NotificationsContext.Provider
       value={{
@@ -112,6 +124,7 @@ export const NotificationsProvider: React.FC<{
         showWarning,
         showInfo,
         showSuccess,
+        triggerDesktopNotification,
       }}
     >
       {notification !== null ? (

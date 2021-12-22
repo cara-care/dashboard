@@ -4,73 +4,23 @@ import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import { isAuthenticated as isAuthenticatedSelector } from '../auth/authReducer';
 import { getChatAuthorizationToken } from '../utils/api';
-import { INBOXES } from './inboxes';
-import { InboxType } from './pages/Inbox';
+import { INBOXES, InboxType } from './inboxes';
 import useNotification from './hooks/useNotification';
-
-export interface Inbox {
-  loadMore: () => Promise<{ rooms: InboxRoom[] }>;
-}
-
-export interface InboxRoom {
-  id: number;
-  lastMessage: Message | null;
-  user: User;
-  isArchived: () => boolean;
-}
-
-export interface Room {
-  loadEarlier: () => Promise<{ messages: Message[] }>;
-  isArchived: () => boolean;
-  postMessage: (message: { text: string }) => Promise<Message>;
-  off: () => void;
-  archive: () => Promise<void>;
-  unarchive: () => Promise<void>;
-  getUser: () => User;
-  updateHubUser: (userId: number | null) => Promise<void>;
-  getHubUser: () => User;
-}
-
-export enum MessageType {
-  Text = 'text',
-  RoomMove = 'room_move',
-}
-
-export interface Message {
-  id: number;
-  insertedAt: Date;
-  roomId: number;
-  text: string;
-  type: MessageType;
-  updatedAt: Date;
-  user: User | null;
-}
-
-interface HubInfo {
-  id: number;
-  name: string;
-  users: User[];
-}
-
-interface User {
-  id: number;
-  key: string;
-  name: string;
-}
+import { HubInfo, User, Inbox, InboxItem, Room, Message } from './interfaces';
 
 export const KabelwerkContext = React.createContext<{
   connected: boolean;
   currentInboxType: InboxType;
   currentUser: User | null;
   currentRoom: Room | null;
-  currentInboxRoom: InboxRoom | null;
+  currentInboxRoom: InboxItem | null;
   messages: Message[];
-  rooms: InboxRoom[];
+  inboxItems: InboxItem[];
   hubUsers: User[];
   selectInbox: (inbox: InboxType) => void;
   selectRoom: (roomId: number | null) => void;
-  selectCurrentInboxRoom: (room: InboxRoom) => void;
-  loadMoreRooms: () => void;
+  selectCurrentInboxRoom: (room: InboxItem) => void;
+  loadMoreInboxItems: () => void;
   postMessage: (text: string) => Promise<Message | void>;
   loadEarlierMessages: () => Promise<boolean | void>;
 }>({
@@ -80,12 +30,12 @@ export const KabelwerkContext = React.createContext<{
   currentRoom: null,
   currentInboxRoom: null,
   messages: [],
-  rooms: [],
+  inboxItems: [],
   hubUsers: [],
   selectInbox: () => {},
   selectRoom: () => {},
   selectCurrentInboxRoom: () => {},
-  loadMoreRooms: () => {},
+  loadMoreInboxItems: () => {},
   postMessage: () => new Promise(() => {}),
   loadEarlierMessages: () => new Promise(() => {}),
 });
@@ -111,14 +61,14 @@ export const KabelwerkProvider: React.FC<{
   // the currently active Kabelwerk inbox object
   const [currentInbox, setCurrentInbox] = React.useState<Inbox | null>(null);
 
-  // the above's list of rooms
-  const [rooms, setRooms] = React.useState<InboxRoom[]>([]);
+  // the above's list of inbox items
+  const [inboxItems, setInboxItems] = React.useState<InboxItem[]>([]);
 
   // the currently selected room from the inbox room list
   const [
     currentInboxRoom,
     setCurrentInboxRoom,
-  ] = React.useState<InboxRoom | null>(null);
+  ] = React.useState<InboxItem | null>(null);
 
   // the currently active Kabelwerk room object
   const [currentRoom, setCurrentRoom] = React.useState<Room | null>(null);
@@ -190,12 +140,18 @@ export const KabelwerkProvider: React.FC<{
     room.on('ready', ({ messages }: { messages: Message[] }) => {
       setCurrentRoom(room);
       setMessages(messages);
+
+      if (messages.length) {
+        room.moveMarker(messages[messages.length - 1].id);
+      }
     });
 
     room.on('message_posted', (message: Message) => {
       setMessages((messages) => {
         return [...messages, message];
       });
+
+      room.moveMarker(message.id);
     });
 
     room.connect();
@@ -214,26 +170,38 @@ export const KabelwerkProvider: React.FC<{
 
     setCurrentInbox(inbox);
 
-    inbox.on('ready', ({ rooms }: { rooms: InboxRoom[] }) => {
-      setRooms(rooms);
+    inbox.on('ready', ({ items }: { items: InboxItem[] }) => {
+      setInboxItems(items);
       setMessages([]);
       setCurrentRoom(null);
       setCurrentInboxRoom(null);
     });
 
-    inbox.on('updated', ({ rooms }: { rooms: InboxRoom[] }) => {
-      setRooms(rooms);
+    inbox.on('updated', ({ items }: { items: InboxItem[] }) => {
+      setInboxItems(items);
+
+      for (const item of items) {
+        if (
+          item.isNew &&
+          item.message &&
+          item.message.user &&
+          item.message.user.id !== Kabelwerk.getUser().id &&
+          new Date().getTime() - item.message.insertedAt.getTime() < 5000
+        ) {
+          notification.triggerDesktopNotification(item.message);
+        }
+      }
     });
 
     inbox.connect();
     /* eslint-disable-next-line */
   }, [currentInboxType]);
 
-  const loadMoreRooms = () => {
+  const loadMoreInboxItems = () => {
     currentInbox
       ?.loadMore()
-      .then((response: { rooms: InboxRoom[] }) => {
-        setRooms(response.rooms);
+      .then(({ items }: { items: InboxItem[] }) => {
+        setInboxItems(items);
       })
       .catch((error: Error) => console.error(error));
     // temporary disabled because load more is called all the time in smaller inboxes
@@ -287,10 +255,10 @@ export const KabelwerkProvider: React.FC<{
         loadEarlierMessages,
         selectInbox: (inbox: InboxType) => setCurrentInboxType(inbox),
         selectRoom: (roomId: number) => openRoom(roomId),
-        selectCurrentInboxRoom: (room: InboxRoom) => setCurrentInboxRoom(room),
-        rooms,
+        selectCurrentInboxRoom: (room: InboxItem) => setCurrentInboxRoom(room),
+        inboxItems,
         hubUsers,
-        loadMoreRooms,
+        loadMoreInboxItems,
       }}
     >
       {children}

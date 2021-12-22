@@ -1,3 +1,13 @@
+export enum InboxType {
+  PERSONAL = 'personal',
+  ANWENDERTEST_HB = 'anwendertest_hb',
+  ANWENDERTEST_IBD = 'anwendertest_ibd',
+  ANWENDERTEST_IBS = 'anwendertest_ibs',
+  RCT_IBS = 'rct_ibs',
+  NO_STUDY = 'no_study',
+  ALL = 'all',
+}
+
 export const INBOXES = {
   personal: {
     name: 'Assigned to me',

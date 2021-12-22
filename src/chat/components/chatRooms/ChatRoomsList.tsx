@@ -3,12 +3,12 @@ import ChatRoomItem from './ChatRoomItem';
 import useKabelwerk from '../../hooks/useKabelwerk';
 
 export default function ChatMessages() {
-  const { rooms } = useKabelwerk();
+  const { inboxItems } = useKabelwerk();
 
   return (
     <Fragment>
-      {rooms.map((room: any) => {
-        return <ChatRoomItem key={room.id} room={room} />;
+      {inboxItems.map((item: any) => {
+        return <ChatRoomItem key={item.room.id} inboxItem={item} />;
       })}
     </Fragment>
   );
