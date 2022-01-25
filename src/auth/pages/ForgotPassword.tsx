@@ -54,7 +54,7 @@ const ForgotPassword = () => {
     setIsFetching(true);
 
     try {
-      await requestResetPassword(username);
+      await requestResetPassword(username.toLowerCase());
       setIsFetching(false);
       setResult(Result.SUCCESS);
       setIsSnackbarOpen(true);
