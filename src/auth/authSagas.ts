@@ -34,8 +34,8 @@ export function* loginSaga({ username, password }: LoginInitAction) {
     yield call(() => login({ username, password }));
     const res = yield call(getMe);
     yield put(loginSuccessAction(res.data));
-  } catch (err) {
-    yield put(loginFailedAction(err));
+  } catch (error) {
+    yield put(loginFailedAction(error));
   }
 }
 

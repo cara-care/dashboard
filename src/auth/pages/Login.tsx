@@ -48,9 +48,30 @@ const Login: React.FC = () => {
   const { register, handleSubmit } = useForm<FormData>();
   const isFetching = useSelector(isAuthenticating);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const authenticationErrorMessage = useSelector<RootState, string>(
-    (state) => state.auth.error?.message || ''
-  );
+  const authenticationErrorMessage = useSelector<RootState, string>((state) => {
+    if (state.auth.error) {
+      const error = state.auth.error;
+
+      if (error.response && error.response.data) {
+        const field = Object.keys(error.response.data)[0];
+        const message = error.response.data[field][0];
+
+        if (field === 'username' || field === 'password') {
+          // ideally, this would show the error next to the erroneous field
+          let label = intl.formatMessage({ id: `nutri.login.${field}` });
+          return `${label}: ${message}`;
+        } else {
+          // the "bad credentials" message
+          return message;
+        }
+      }
+
+      // fallback: the axios error message
+      return error.message;
+    } else {
+      return '';
+    }
+  });
   const dispatch = useDispatch();
   const login = useCallback(
     (data: FormData) => {
