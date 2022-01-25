@@ -54,7 +54,12 @@ const Login: React.FC = () => {
   const dispatch = useDispatch();
   const login = useCallback(
     (data: FormData) => {
-      dispatch(loginInitAction(data));
+      dispatch(
+        loginInitAction({
+          username: data.username.toLowerCase(),
+          password: data.password,
+        })
+      );
     },
     [dispatch]
   );
