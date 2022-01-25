@@ -47,10 +47,10 @@ export const loginSuccessAction = (payload: MePayload): LoginSuccessAction => ({
 
 export interface LoginFailedAction {
   type: AuthActionTypes.LOGIN_FAILED;
-  error: Error;
+  error: any;
 }
 
-export const loginFailedAction = (error: Error): LoginFailedAction => ({
+export const loginFailedAction = (error: any): LoginFailedAction => ({
   type: AuthActionTypes.LOGIN_FAILED,
   error,
 });

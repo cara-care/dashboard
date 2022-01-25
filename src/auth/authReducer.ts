@@ -18,7 +18,7 @@ export interface MePayload {
 export interface AuthState {
   status: AuthStatus;
   nutriName: string;
-  error: Error | null;
+  error: any | null;
   patientId: number | null;
   isSelectingPatient: boolean;
   patientNickname: string | null;
