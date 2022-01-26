@@ -20,7 +20,7 @@ export const KabelwerkContext = React.createContext<{
   selectInbox: (inbox: InboxType) => void;
   selectRoom: (roomId: number | null) => void;
   selectCurrentInboxRoom: (room: InboxItem) => void;
-  loadMoreInboxItems: () => void;
+  loadMoreInboxItems: () => Promise<boolean>;
   postMessage: (text: string) => Promise<Message | void>;
   loadEarlierMessages: () => Promise<boolean | void>;
 }>({
@@ -35,7 +35,7 @@ export const KabelwerkContext = React.createContext<{
   selectInbox: () => {},
   selectRoom: () => {},
   selectCurrentInboxRoom: () => {},
-  loadMoreInboxItems: () => {},
+  loadMoreInboxItems: () => new Promise(() => {}),
   postMessage: () => new Promise(() => {}),
   loadEarlierMessages: () => new Promise(() => {}),
 });
@@ -159,7 +159,7 @@ export const KabelwerkProvider: React.FC<{
 
   const openInbox = React.useCallback(() => {
     const inbox = Kabelwerk.openInbox({
-      limit: 20,
+      limit: 5,
       attributes: INBOXES[currentInboxType].attributes,
       archived: INBOXES[currentInboxType].archived,
       assignedTo:
@@ -198,14 +198,22 @@ export const KabelwerkProvider: React.FC<{
   }, [currentInboxType]);
 
   const loadMoreInboxItems = () => {
-    currentInbox
+    if (currentInbox === null) {
+      return Promise.resolve(false);
+    }
+    return currentInbox
       ?.loadMore()
       .then(({ items }: { items: InboxItem[] }) => {
-        setInboxItems(items);
+        if (items.length > inboxItems.length) {
+          setInboxItems(items);
+          return true;
+        }
+        return false;
       })
-      .catch((error: Error) => console.error(error));
-    // temporary disabled because load more is called all the time in smaller inboxes
-    // .catch((error: Error) => notification.showError(error.message));
+      .catch((error: Error) => {
+        notification.showError(error.message);
+        return false;
+      });
   };
 
   React.useEffect(() => {
