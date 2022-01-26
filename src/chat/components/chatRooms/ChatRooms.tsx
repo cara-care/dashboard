@@ -1,16 +1,14 @@
 import { Divider, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Spinner from '../../../components/Spinner';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { INBOXES } from '../../inboxes';
 import { KabelwerkContext } from '../../KabelwerkContext';
-import ChatRoomsList from './ChatRoomsList';
+import ChatRoomItem from './ChatRoomItem';
 
-const useStyles = makeStyles((_theme) => ({
+const useStyles = makeStyles((theme) => ({
   sidebar: {
     display: 'flex',
     flexDirection: 'column',
@@ -23,18 +21,20 @@ const useStyles = makeStyles((_theme) => ({
     justifyContent: 'space-between',
     padding: '24px 16px',
   },
-  divider: {},
+  emptyInboxMessage: {
+    textAlign: 'center',
+    color: theme.palette.primary.main,
+  },
 }));
 
 export default function ChatRooms() {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const rootRef = useRef<HTMLDivElement>(null);
-  const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
+  const loadMoreButtonRef = useRef<HTMLDivElement>(null);
 
   // the inbox selected from the sidebar to the very left
-  const { currentInboxType, loadMoreInboxItems } = React.useContext(
+  const { currentInboxType, inboxItems, loadMoreInboxItems } = React.useContext(
     KabelwerkContext
   );
 
@@ -45,15 +45,16 @@ export default function ChatRooms() {
   const [canLoadMore, setCanLoadMore] = useState(true);
 
   useEffect(() => {
-    // reset the load more flags
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [dispatch, currentInboxType]);
+  }, [currentInboxType]);
 
   const handleIntersect = function () {
-    if (!isLoadingMore && canLoadMore) {
-      loadMoreInboxItems();
-    }
+    setIsLoadingMore(true);
+    loadMoreInboxItems().then((hasMore) => {
+      setIsLoadingMore(false);
+      setCanLoadMore(hasMore);
+    });
   };
 
   useIntersectionObserver({
@@ -75,8 +76,14 @@ export default function ChatRooms() {
         </Typography>
         <Typography variant="subtitle1"></Typography>
       </Box>
-      <Divider className={classes.divider} />
-      <ChatRoomsList />
+      <Divider />
+      {inboxItems.length === 0 ? (
+        <p className={classes.emptyInboxMessage}>this inbox is empty</p>
+      ) : (
+        inboxItems.map((item: any) => {
+          return <ChatRoomItem key={item.room.id} inboxItem={item} />;
+        })
+      )}
       {isLoadingMore ? (
         <Box
           px={2}
@@ -87,11 +94,9 @@ export default function ChatRooms() {
         >
           <Spinner size={24} noText />
         </Box>
-      ) : canLoadMore ? (
-        <Button ref={loadMoreButtonRef} disabled={true}>
-          {isLoadingMore ? 'Loading...' : 'Load more'}
-        </Button>
-      ) : null}
+      ) : (
+        <div ref={loadMoreButtonRef} />
+      )}
     </div>
   );
 }
