@@ -159,7 +159,7 @@ export const KabelwerkProvider: React.FC<{
 
   const openInbox = React.useCallback(() => {
     const inbox = Kabelwerk.openInbox({
-      limit: 5,
+      limit: 20,
       attributes: INBOXES[currentInboxType].attributes,
       archived: INBOXES[currentInboxType].archived,
       assignedTo:
