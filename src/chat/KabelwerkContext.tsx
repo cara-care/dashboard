@@ -171,6 +171,8 @@ export const KabelwerkProvider: React.FC<{
     setCurrentInbox(inbox);
 
     inbox.on('ready', ({ items }: { items: InboxItem[] }) => {
+      items = items.filter((item) => item.message !== null);
+
       setInboxItems(items);
       setMessages([]);
       setCurrentRoom(null);
@@ -178,6 +180,8 @@ export const KabelwerkProvider: React.FC<{
     });
 
     inbox.on('updated', ({ items }: { items: InboxItem[] }) => {
+      items = items.filter((item) => item.message !== null);
+
       setInboxItems(items);
     });
 
@@ -192,10 +196,13 @@ export const KabelwerkProvider: React.FC<{
     return currentInbox
       ?.loadMore()
       .then(({ items }: { items: InboxItem[] }) => {
+        items = items.filter((item) => item.message !== null);
+
         if (items.length > inboxItems.length) {
           setInboxItems(items);
           return true;
         }
+
         return false;
       })
       .catch((error: Error) => {
