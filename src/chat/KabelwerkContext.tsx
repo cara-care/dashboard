@@ -10,31 +10,25 @@ import { HubInfo, User, Inbox, InboxItem, Room, Message } from './interfaces';
 
 export const KabelwerkContext = React.createContext<{
   connected: boolean;
-  currentInboxType: InboxType;
   currentUser: User | null;
   currentRoom: Room | null;
-  currentInboxRoom: InboxItem | null;
   messages: Message[];
   inboxItems: InboxItem[];
   hubUsers: User[];
-  selectInbox: (inbox: InboxType) => void;
-  selectRoom: (roomId: number | null) => void;
-  selectCurrentInboxRoom: (room: InboxItem) => void;
+  openInbox: (inbox: InboxType) => void;
+  openRoom: (roomId: number | null) => void;
   loadMoreInboxItems: () => Promise<boolean>;
   postMessage: (text: string) => Promise<Message | void>;
   loadEarlierMessages: () => Promise<boolean | void>;
 }>({
   connected: false,
-  currentInboxType: InboxType.ALL,
   currentUser: null,
   currentRoom: null,
-  currentInboxRoom: null,
   messages: [],
   inboxItems: [],
   hubUsers: [],
-  selectInbox: () => {},
-  selectRoom: () => {},
-  selectCurrentInboxRoom: () => {},
+  openInbox: () => {},
+  openRoom: () => {},
   loadMoreInboxItems: () => new Promise(() => {}),
   postMessage: () => new Promise(() => {}),
   loadEarlierMessages: () => new Promise(() => {}),
@@ -55,20 +49,11 @@ export const KabelwerkProvider: React.FC<{
   // the list of all care team members, including the connected user
   const [hubUsers, setHubUsers] = React.useState<User[]>([]);
 
-  // the currently selected inbox from the left-most menu
-  const [currentInboxType, setCurrentInboxType] = React.useState(InboxType.ALL);
-
   // the currently active Kabelwerk inbox object
   const [currentInbox, setCurrentInbox] = React.useState<Inbox | null>(null);
 
   // the above's list of inbox items
   const [inboxItems, setInboxItems] = React.useState<InboxItem[]>([]);
-
-  // the currently selected room from the inbox room list
-  const [
-    currentInboxRoom,
-    setCurrentInboxRoom,
-  ] = React.useState<InboxItem | null>(null);
 
   // the currently active Kabelwerk room object
   const [currentRoom, setCurrentRoom] = React.useState<Room | null>(null);
@@ -157,13 +142,13 @@ export const KabelwerkProvider: React.FC<{
     room.connect();
   };
 
-  const openInbox = React.useCallback(() => {
+  const openInbox = React.useCallback((inboxType: InboxType) => {
     const inbox = Kabelwerk.openInbox({
       limit: 20,
-      attributes: INBOXES[currentInboxType].attributes,
-      archived: INBOXES[currentInboxType].archived,
+      attributes: INBOXES[inboxType].attributes,
+      archived: INBOXES[inboxType].archived,
       assignedTo:
-        currentInboxType === InboxType.PERSONAL && currentUser !== null
+      inboxType === InboxType.PERSONAL && currentUser !== null
           ? currentUser.id
           : undefined,
     });
@@ -173,8 +158,7 @@ export const KabelwerkProvider: React.FC<{
     inbox.on('ready', ({ items }: { items: InboxItem[] }) => {
       setInboxItems(items);
       setMessages([]);
-      setCurrentRoom(null);
-      setCurrentInboxRoom(null);
+      openRoom(items.length > 0 ? items[0].room.id : null);
     });
 
     inbox.on('updated', ({ items }: { items: InboxItem[] }) => {
@@ -194,8 +178,7 @@ export const KabelwerkProvider: React.FC<{
     });
 
     inbox.connect();
-    /* eslint-disable-next-line */
-  }, [currentInboxType]);
+  }, []);
 
   const loadMoreInboxItems = () => {
     if (currentInbox === null) {
@@ -231,7 +214,7 @@ export const KabelwerkProvider: React.FC<{
         Kabelwerk.on('ready', () => {
           setConnected(true);
           setCurrentUser(Kabelwerk.getUser());
-          openInbox();
+          openInbox(InboxType.ALL);
           Kabelwerk.loadHubInfo()
             .then((response: HubInfo) => setHubUsers(response.users))
             .catch((error: Error) => notification.showError(error.message));
@@ -245,27 +228,24 @@ export const KabelwerkProvider: React.FC<{
 
   // opens a new inbox when it changes
   React.useEffect(() => {
-    if (connected && currentInboxType !== null) {
-      openInbox();
+    if (connected) {
+      openInbox(InboxType.ALL);
     }
-  }, [currentInboxType, openInbox, connected]);
+  }, [openInbox, connected]);
 
   return (
     <KabelwerkContext.Provider
       value={{
         connected,
-        currentInboxType,
         currentUser,
         currentRoom,
-        currentInboxRoom,
         messages,
-        postMessage,
-        loadEarlierMessages,
-        selectInbox: (inbox: InboxType) => setCurrentInboxType(inbox),
-        selectRoom: (roomId: number) => openRoom(roomId),
-        selectCurrentInboxRoom: (room: InboxItem) => setCurrentInboxRoom(room),
         inboxItems,
         hubUsers,
+        postMessage,
+        loadEarlierMessages,
+        openInbox: (inbox: InboxType) => openInbox(inbox),
+        openRoom: (roomId: number) => openRoom(roomId),
         loadMoreInboxItems,
       }}
     >

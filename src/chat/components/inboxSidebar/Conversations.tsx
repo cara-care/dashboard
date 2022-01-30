@@ -41,8 +41,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Conversations() {
   const classes = useStyles();
-  const { currentInboxType, selectInbox } = useKabelwerk();
+  const { openInbox } = useKabelwerk();
   const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
+  const [currentInbox, setCurrentInbox] = React.useState(InboxType.ALL)
 
   return (
     <div>
@@ -79,9 +80,10 @@ export default function Conversations() {
                 }
                 text={INBOXES[inboxType].name}
                 // count={1}
-                active={currentInboxType === inboxType}
+                active={currentInbox === inboxType}
                 handleSelected={() => {
-                  selectInbox(inboxType);
+                  setCurrentInbox(inboxType)
+                  openInbox(inboxType);
                 }}
                 isMenuCollapsed={isMenuCollapsed}
               />

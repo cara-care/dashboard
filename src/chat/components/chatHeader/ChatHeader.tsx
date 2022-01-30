@@ -44,7 +44,7 @@ export default function ChatHeader() {
   const [patient, setPatient] = useState<null | ChatUser>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [isAssigning, setIsAssigning] = useState(false);
-  const { currentRoom, selectRoom, hubUsers } = useKabelwerk();
+  const { currentRoom, openRoom, hubUsers } = useKabelwerk();
   const { showError, showSuccess } = useNotification();
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function ChatHeader() {
                 .unarchive()
                 .then(() => {
                   // TODO remove with selectRoom refactor
-                  selectRoom(null);
+                  openRoom(null);
                   showSuccess('Room successfully moved back to its Inbox!');
                 })
                 .catch((error: Error) => showError(error.message));
@@ -140,7 +140,7 @@ export default function ChatHeader() {
                 .archive()
                 .then(() => {
                   // TODO remove with selectRoom refactor
-                  selectRoom(null);
+                  openRoom(null);
                   showSuccess('Room successfully archived!');
                 })
                 .catch((error: Error) => showError(error.message));
