@@ -74,7 +74,7 @@ export default function AssignTeammate({
               active={user.name === '?'}
               onClick={() => {
                 currentRoom
-                  ?.updateHubUser(currentHubUser ? null : user.id)
+                  ?.updateHubUser(currentHubUser?.id === user.id ? null : user.id)
                   .then(() => {
                     showSuccess(`Room successfully assigned to ${user.name}`);
                   })
