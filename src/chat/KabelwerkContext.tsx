@@ -156,25 +156,17 @@ export const KabelwerkProvider: React.FC<{
     setCurrentInbox(inbox);
 
     inbox.on('ready', ({ items }: { items: InboxItem[] }) => {
+      items = items.filter((item) => item.message !== null);
+
       setInboxItems(items);
       setMessages([]);
       openRoom(items.length > 0 ? items[0].room.id : null);
     });
 
     inbox.on('updated', ({ items }: { items: InboxItem[] }) => {
-      setInboxItems(items);
+      items = items.filter((item) => item.message !== null);
 
-      for (const item of items) {
-        if (
-          item.isNew &&
-          item.message &&
-          item.message.user &&
-          item.message.user.id !== Kabelwerk.getUser().id &&
-          new Date().getTime() - item.message.insertedAt.getTime() < 5000
-        ) {
-          notification.triggerDesktopNotification(item.message);
-        }
-      }
+      setInboxItems(items);
     });
 
     inbox.connect();
@@ -187,10 +179,13 @@ export const KabelwerkProvider: React.FC<{
     return currentInbox
       ?.loadMore()
       .then(({ items }: { items: InboxItem[] }) => {
+        items = items.filter((item) => item.message !== null);
+
         if (items.length > inboxItems.length) {
           setInboxItems(items);
           return true;
         }
+
         return false;
       })
       .catch((error: Error) => {
@@ -218,6 +213,14 @@ export const KabelwerkProvider: React.FC<{
           Kabelwerk.loadHubInfo()
             .then((response: HubInfo) => setHubUsers(response.users))
             .catch((error: Error) => notification.showError(error.message));
+
+          const notifier = Kabelwerk.openNotifier();
+
+          notifier.on('updated', ({ message }: { message: Message }) => {
+            notification.triggerDesktopNotification(message);
+          });
+
+          notifier.connect();
         });
 
         Kabelwerk.connect();
