@@ -104,7 +104,7 @@ interface ChatRoomItemProps {
 
 export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
   const classes = useStyles();
-  const { openRoom, currentRoom } = useKabelwerk();
+  const { openRoom } = useKabelwerk();
 
   return (
     <NavLink

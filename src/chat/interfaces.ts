@@ -48,7 +48,6 @@ export interface Room {
   getUser: () => User;
   updateHubUser: (userId: number | null) => Promise<void>;
   getHubUser: () => User;
-  id: number;
 }
 
 export enum MessageType {
