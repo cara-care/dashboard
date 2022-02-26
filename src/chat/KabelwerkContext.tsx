@@ -170,6 +170,7 @@ export const KabelwerkProvider: React.FC<{
     });
 
     inbox.connect();
+    /* eslint-disable-next-line */
   }, []);
 
   const loadMoreInboxItems = () => {
