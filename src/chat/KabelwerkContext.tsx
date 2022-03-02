@@ -113,6 +113,7 @@ export const KabelwerkProvider: React.FC<{
     if (roomId === null) {
       currentRoom?.off();
       setCurrentRoom(null);
+      setMessages([]);
       return;
     }
 
@@ -159,7 +160,6 @@ export const KabelwerkProvider: React.FC<{
       items = items.filter((item) => item.message !== null);
 
       setInboxItems(items);
-      setMessages([]);
       openRoom(items.length > 0 ? items[0].room.id : null);
     });
 
