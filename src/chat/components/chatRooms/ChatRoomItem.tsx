@@ -104,7 +104,7 @@ interface ChatRoomItemProps {
 
 export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
   const classes = useStyles();
-  const { selectRoom, selectCurrentInboxRoom } = useKabelwerk();
+  const { openRoom } = useKabelwerk();
 
   return (
     <NavLink
@@ -112,8 +112,7 @@ export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
       className={classes.link}
       activeClassName={classes.active}
       onClick={() => {
-        selectRoom(inboxItem.room.id);
-        selectCurrentInboxRoom(inboxItem);
+        openRoom(inboxItem.room.id);
       }}
     >
       <div className={classes.root}>

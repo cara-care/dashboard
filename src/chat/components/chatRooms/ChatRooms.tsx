@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 import Spinner from '../../../components/Spinner';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import { INBOXES } from '../../inboxes';
+import { InboxItem } from '../../interfaces';
 import { KabelwerkContext } from '../../KabelwerkContext';
 import ChatRoomItem from './ChatRoomItem';
 
@@ -34,7 +34,7 @@ export default function ChatRooms() {
   const loadMoreButtonRef = useRef<HTMLDivElement>(null);
 
   // the inbox selected from the sidebar to the very left
-  const { currentInboxType, inboxItems, loadMoreInboxItems } = React.useContext(
+  const { inboxItems, loadMoreInboxItems } = React.useContext(
     KabelwerkContext
   );
 
@@ -47,7 +47,7 @@ export default function ChatRooms() {
   useEffect(() => {
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [currentInboxType]);
+  }, [inboxItems]);
 
   const handleIntersect = function () {
     setIsLoadingMore(true);
@@ -69,18 +69,18 @@ export default function ChatRooms() {
   return (
     <div ref={rootRef} className={classes.sidebar}>
       <Box className={classes.headerBox}>
-        <Typography variant="h6">
+        {/* <Typography variant="h6">
           {currentInboxType !== null
             ? INBOXES[currentInboxType].name
             : 'Loading…'}
-        </Typography>
+        </Typography> */}
         <Typography variant="subtitle1"></Typography>
       </Box>
       <Divider />
       {inboxItems.length === 0 ? (
         <p className={classes.emptyInboxMessage}>this inbox is empty</p>
       ) : (
-        inboxItems.map((item: any) => {
+        inboxItems.map((item: InboxItem) => {
           return <ChatRoomItem key={item.room.id} inboxItem={item} />;
         })
       )}
