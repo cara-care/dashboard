@@ -87,7 +87,7 @@ const RevokeAccess: React.FC<RouteComponentProps<{
   const handleSubmit = (event: { preventDefault: () => void; })=> {
     event.preventDefault();
 
-    if (usersCodes == '' ){
+    if (usersCodes === '' ){
       setIsSnackbarOpen(true)
       setMessage('Please provide comma separated users access codes')
       return
