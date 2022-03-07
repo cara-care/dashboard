@@ -9,7 +9,7 @@ import {
 import NotFound from './NotFound';
 
 const Dashboard = React.lazy(() => import('../dashboard/Dashboard'));
-const InvokeAccess = React.lazy(() => import('../users/InvokeAccess'));
+const RevokeAccess = React.lazy(() => import('../users/RevokeAccess'));
 const Questionnaires = React.lazy(() =>
   import('../questionnaires/pages/Questionnaires')
 );
@@ -87,8 +87,8 @@ const routes = [
     authRequired: true,
   },
   {
-    path: '/nutri/invoke-access',
-    component: InvokeAccess,
+    path: '/nutri/revoke-access',
+    component: RevokeAccess,
     exact: false,
     authRequired: true,
   },

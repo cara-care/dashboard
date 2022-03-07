@@ -285,16 +285,16 @@ const NavBar: React.FC = () => {
                 <Tooltip
                   title={
                     <FormattedMessage
-                      id="users.invokeAccess"
-                      defaultMessage="Invoke Users Access"
+                      id="users.revokeAccess"
+                      defaultMessage="Revoke Users Access"
                     />
                   }
                   aria-label={intl.formatMessage({
-                    id: 'users.invokeAccess',
-                    defaultMessage: 'Invoke Users Access',
+                    id: 'users.revokeAccess',
+                    defaultMessage: 'Revoke Users Access',
                   })}
                 >
-                  <IconButton to="/nutri/invoke-access" component={Link}>
+                  <IconButton to="/nutri/revoke-access" component={Link}>
                     <CancelIcon />
                   </IconButton>
                 </Tooltip>

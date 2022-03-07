@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {Redirect, RouteComponentProps, useHistory} from 'react-router-dom';
-import {FormattedMessage, useIntl} from "react-intl";
+import {FormattedMessage} from "react-intl";
 
 import {makeStyles} from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,6 +13,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import Paper from "@material-ui/core/Paper";
 
 import {isAuthenticated as isAuthenticatedSelector} from '../auth';
+import {revokeAccess} from "../utils/api";
+import {RevokeUsersAccessFailed, RevokeUsersAccessSuccess} from "./userActions";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -63,24 +65,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const InvokeAccess: React.FC<RouteComponentProps<{
+const RevokeAccess: React.FC<RouteComponentProps<{
   token?: string;
-}>> = ({ match }) => {
+}>> = () => {
   const classes = useStyles();
-  const intl = useIntl();
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { token } = match.params;
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  const [userIds, setUserIds] = useState('')
-  const goBack = useCallback(() => {
-    history.go(-1);
-  }, [history]);
+  const [usersCodes, setUserCodes] = useState('')
+  const [message, setMessage] = useState('')
+  const goBack = useCallback(() => { history.go(-1);}, [history]);
 
   const handleSubmit = (event: { preventDefault: () => void; })=> {
-    alert('User Ids submitted: ' + userIds);
     event.preventDefault();
+
+    revokeAccess(usersCodes)
+      .then((res: any) => {
+        dispatch(RevokeUsersAccessSuccess(res.data));
+        setMessage(res.data.detail)
+      })
+      .catch((error: Error) => {
+        dispatch(RevokeUsersAccessFailed(error));
+      });
+
   }
 
   if (!isAuthenticated) {
@@ -96,18 +104,25 @@ const InvokeAccess: React.FC<RouteComponentProps<{
         </Avatar>
         <Typography component="h1" variant="h5">
           <FormattedMessage
-            id="users.invokeAccess"
-            defaultMessage="Invoke Users Access"
+            id="users.revokeAccess"
+            defaultMessage="Revoke Users Access"
           />
+
         </Typography>
+        {message ? (
+          <FormattedMessage
+            id="revokeAccess.userAccessRevokedSuccess"
+            defaultMessage={message}
+          />
+        ): ''}
         <form
           className={classes.form}
           onSubmit={handleSubmit}
         >
           <TextareaAutosize
-            placeholder="Please provide comma separated user ids here..."
-            value={userIds}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserIds(e.target.value)}
+            placeholder="Please provide comma separated users access codes here..."
+            value={usersCodes}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserCodes(e.target.value)}
             className={classes.input}
             rows={4}
           />
@@ -120,8 +135,8 @@ const InvokeAccess: React.FC<RouteComponentProps<{
             color="primary"
           >
             <FormattedMessage
-              id="invokeAccess.invokeAccess"
-              defaultMessage="Invoke Access"
+              id="revokeAccess.revokeAccess"
+              defaultMessage="Revoke Access"
             />
           </Button>
           <Link
@@ -132,7 +147,7 @@ const InvokeAccess: React.FC<RouteComponentProps<{
             onClick={goBack}
           >
             <FormattedMessage
-              id="invokeAccess.goBack"
+              id="revokeAccess.goBack"
               defaultMessage="Go back"
             />
           </Link>
@@ -142,4 +157,4 @@ const InvokeAccess: React.FC<RouteComponentProps<{
   );
 };
 
-export default InvokeAccess;
+export default RevokeAccess;
