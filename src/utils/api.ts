@@ -185,4 +185,10 @@ export const deleteNote = (userId: number, noteId: number) => {
   return api.delete(`/dashboard/${userId}/notes/${noteId}/`);
 };
 
+export const revokeAccess = (codes: string) => {
+  return api.post(`/dashboard/revoke-users-access/`, {
+    codes,
+  });
+};
+
 export default api;

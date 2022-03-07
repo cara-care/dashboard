@@ -45,6 +45,13 @@ import {
   ChatState,
 } from '../chat/redux';
 
+import {
+  revokeAccessReducer,
+  UsersActions,
+  RevokeAccessState,
+  revokeAccessInitialState
+} from "../users";
+
 export interface RootState {
   locale: LocaleState;
   auth: AuthState;
@@ -53,6 +60,7 @@ export interface RootState {
   trackingOverview: TrackingOverviewState;
   questionnaires: QuestionnairesState;
   theme: ThemeState;
+  revokeAccess: RevokeAccessState;
 }
 
 export type RootActions =
@@ -62,7 +70,8 @@ export type RootActions =
   | ChartOverviewActions
   | TrackingOverviewActions
   | QuestionnairesActions
-  | ThemeActions;
+  | ThemeActions
+  | UsersActions;
 
 export default function configureStore({
   preloadedLocale,
@@ -81,6 +90,7 @@ export default function configureStore({
     trackingOverview: trackingOverviewReducer,
     questionnaires: questionnairesReducer,
     theme: themeReducer,
+    revokeAccess: revokeAccessReducer,
   });
 
   function* rootSaga() {
@@ -118,6 +128,7 @@ export default function configureStore({
       questionnaires: questionnairesInitialState,
       trackingOverview: trackingOverviewInitalState,
       theme: { theme: preloadedTheme },
+      revokeAccess: revokeAccessInitialState,
       ...preloadedState,
     },
     composeEnhancers(applyMiddleware(...middlewares))

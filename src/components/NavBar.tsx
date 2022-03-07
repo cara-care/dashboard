@@ -11,6 +11,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import Translate from '@material-ui/icons/Translate';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import CancelIcon from '@material-ui/icons/Cancel';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -280,6 +281,24 @@ const NavBar: React.FC = () => {
                     <VpnKeyIcon />
                   </IconButton>
                 </Tooltip>
+
+                <Tooltip
+                  title={
+                    <FormattedMessage
+                      id="users.revokeAccess"
+                      defaultMessage="Revoke Users Access"
+                    />
+                  }
+                  aria-label={intl.formatMessage({
+                    id: 'users.revokeAccess',
+                    defaultMessage: 'Revoke Users Access',
+                  })}
+                >
+                  <IconButton to="/nutri/revoke-access" component={Link}>
+                    <CancelIcon />
+                  </IconButton>
+                </Tooltip>
+
                 <Tooltip
                   title={
                     <FormattedMessage
