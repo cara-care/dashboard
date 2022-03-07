@@ -7,6 +7,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 import Link from "@material-ui/core/Link";
 import {TextareaAutosize} from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -75,15 +77,27 @@ const RevokeAccess: React.FC<RouteComponentProps<{
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const [usersCodes, setUserCodes] = useState('')
   const [message, setMessage] = useState('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
   const goBack = useCallback(() => { history.go(-1);}, [history]);
+  const closeSnackbar = () => {
+    setIsSnackbarOpen(false)
+    setMessage('')
+  };
 
   const handleSubmit = (event: { preventDefault: () => void; })=> {
     event.preventDefault();
+
+    if (usersCodes == '' ){
+      setIsSnackbarOpen(true)
+      setMessage('Please provide comma separated users access codes')
+      return
+    }
 
     revokeAccess(usersCodes)
       .then((res: any) => {
         dispatch(RevokeUsersAccessSuccess(res.data));
         setMessage(res.data.detail)
+        setIsSnackbarOpen(true)
       })
       .catch((error: Error) => {
         dispatch(RevokeUsersAccessFailed(error));
@@ -109,12 +123,18 @@ const RevokeAccess: React.FC<RouteComponentProps<{
           />
 
         </Typography>
-        {message ? (
-          <FormattedMessage
-            id="revokeAccess.userAccessRevokedSuccess"
-            defaultMessage={message}
-          />
-        ): ''}
+        <Snackbar
+          open={isSnackbarOpen}
+          autoHideDuration={6000}
+          onClose={closeSnackbar}
+        >
+          <Alert onClose={closeSnackbar}>
+            <FormattedMessage
+              id="revokeAccess.userAccessRevokedSuccess"
+              defaultMessage={message}
+            />
+          </Alert>
+        </Snackbar>
         <form
           className={classes.form}
           onSubmit={handleSubmit}
