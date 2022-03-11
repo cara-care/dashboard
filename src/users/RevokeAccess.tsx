@@ -13,6 +13,7 @@ import Link from "@material-ui/core/Link";
 import {TextareaAutosize} from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Paper from "@material-ui/core/Paper";
+import {FormLabel, FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
 
 import {isAuthenticated as isAuthenticatedSelector} from '../auth';
 import {revokeAccess} from "../utils/api";
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.paper,
     ...theme.typography.body1,
+    marginBottom: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -77,6 +79,7 @@ const RevokeAccess: React.FC<RouteComponentProps<{
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const [usersCodes, setUserCodes] = useState('')
   const [message, setMessage] = useState('')
+  const [deactivationType, setDeactivationType] = useState('study_completed')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
   const goBack = useCallback(() => { history.go(-1);}, [history]);
   const closeSnackbar = () => {
@@ -93,7 +96,7 @@ const RevokeAccess: React.FC<RouteComponentProps<{
       return
     }
 
-    revokeAccess(usersCodes)
+    revokeAccess(usersCodes, deactivationType)
       .then((res: any) => {
         dispatch(RevokeUsersAccessSuccess(res.data));
         setMessage(res.data.detail)
@@ -139,7 +142,9 @@ const RevokeAccess: React.FC<RouteComponentProps<{
           className={classes.form}
           onSubmit={handleSubmit}
         >
+          <FormLabel id="users_codes">Users Access Codes</FormLabel>
           <TextareaAutosize
+            aria-labelledby="users_codes"
             placeholder="Please provide comma separated users access codes here..."
             value={usersCodes}
             onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserCodes(e.target.value)}
@@ -147,11 +152,23 @@ const RevokeAccess: React.FC<RouteComponentProps<{
             rows={4}
           />
 
+          <FormLabel id="deactivation_type">Users Type</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="deactivation_type"
+            name="deactivation_type"
+            value={deactivationType}
+            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDeactivationType(e.target.value)}
+          >
+            <FormControlLabel value="study_completed" control={<Radio />} label="Study Completed" />
+            <FormControlLabel value="dropout" control={<Radio />} label="Dropout" />
+          </RadioGroup>
+
           <Button
             className={classes.submit}
             type="submit"
-            fullWidth
             variant="contained"
+            fullWidth
             color="primary"
           >
             <FormattedMessage
