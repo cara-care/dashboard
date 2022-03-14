@@ -185,9 +185,10 @@ export const deleteNote = (userId: number, noteId: number) => {
   return api.delete(`/dashboard/${userId}/notes/${noteId}/`);
 };
 
-export const revokeAccess = (codes: string) => {
+export const revokeAccess = (codes: string, deactivation_type: string) => {
   return api.post(`/dashboard/revoke-users-access/`, {
     codes,
+    deactivation_type
   });
 };
 
