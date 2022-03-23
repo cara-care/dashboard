@@ -62,12 +62,14 @@ Cypress.Commands.add('setDatePickerDateTo', ({ year, month, day }) => {
   cy.findByText(new RegExp(`^${day}$`, 'i')).click();
 });
 
-Cypress.Commands.add('login', ({ username, password }) => {
+Cypress.Commands.add('login', ({ username, password, otp_token }) => {
   cy.visit('/nutri/login')
     .findByLabelText(/username/i)
     .type(username)
     .findByLabelText(/^password/i)
     .type(password)
+    .findByLabelText(/token/i)
+    .type(otp_token)
     .findByText(/login/i)
     .click();
 });

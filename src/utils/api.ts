@@ -46,10 +46,12 @@ api.interceptors.request.use(
 export const login = ({
   username,
   password,
+  otp_token,
 }: {
   username: string;
   password: string;
-}) => api.post<{}>('/dashboard/login/', { username, password });
+  otp_token: string;
+}) => api.post<{}>('/dashboard/login/', { username, password, otp_token });
 
 export const logout = () => {
   return api.delete('/dashboard/logout/');

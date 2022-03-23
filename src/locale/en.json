@@ -102,6 +102,7 @@
   "nutri.login.password": "Password",
   "nutri.login.signIn": "Sign in",
   "nutri.login.username": "Username",
+  "nutri.login.otp_token": "Token",
   "nutri.selectPatient.button": "Get patient",
   "nutri.selectPatient.label": "Patient's email or username",
   "nutriMenu.booking.agreeOnTime": "Agree on an appropiate time to have your session",

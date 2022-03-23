@@ -37,7 +37,7 @@ describe('authReducer', () => {
     expect(
       authReducer(
         undefined,
-        actions.loginInitAction({ username: 'username', password: 'password' })
+        actions.loginInitAction({ username: 'username', password: 'password', otp_token: 'otp_token' })
       )
     ).toEqual(
       Object.assign({}, authInitialState, { status: AuthStatus.FETCHING })

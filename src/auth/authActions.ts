@@ -21,18 +21,22 @@ export interface LoginInitAction {
   type: AuthActionTypes.LOGIN_INIT;
   username: string;
   password: string;
+  otp_token: string;
 }
 
 export const loginInitAction = ({
   username,
   password,
+  otp_token,
 }: {
   username: string;
   password: string;
+  otp_token: string;
 }): LoginInitAction => ({
   type: AuthActionTypes.LOGIN_INIT,
   username,
   password,
+  otp_token,
 });
 
 export interface LoginSuccessAction {

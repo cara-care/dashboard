@@ -29,9 +29,9 @@ export function* autoLoginSaga() {
   }
 }
 
-export function* loginSaga({ username, password }: LoginInitAction) {
+export function* loginSaga({ username, password, otp_token }: LoginInitAction) {
   try {
-    yield call(() => login({ username, password }));
+    yield call(() => login({ username, password, otp_token }));
     const res = yield call(getMe);
     yield put(loginSuccessAction(res.data));
   } catch (error) {
