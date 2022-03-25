@@ -10,6 +10,7 @@ import NotFound from './NotFound';
 
 const Dashboard = React.lazy(() => import('../dashboard/Dashboard'));
 const RevokeAccess = React.lazy(() => import('../users/RevokeAccess'));
+const UserQrCode = React.lazy(() => import('../users/UserQrCode'));
 const Questionnaires = React.lazy(() =>
   import('../questionnaires/pages/Questionnaires')
 );
@@ -89,6 +90,12 @@ const routes = [
   {
     path: '/nutri/revoke-access',
     component: RevokeAccess,
+    exact: false,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/user-qr-code',
+    component: UserQrCode,
     exact: false,
     authRequired: true,
   },

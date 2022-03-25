@@ -194,4 +194,8 @@ export const revokeAccess = (codes: string, deactivation_type: string) => {
   });
 };
 
+export const getUserQrCode = () => {
+  return api.get(`/dashboard/user-qr-code/`);
+};
+
 export default api;

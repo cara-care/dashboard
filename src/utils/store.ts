@@ -46,10 +46,13 @@ import {
 } from '../chat/redux';
 
 import {
+  revokeAccessInitialState,
   revokeAccessReducer,
-  UsersActions,
   RevokeAccessState,
-  revokeAccessInitialState
+  UsersActions,
+  userQrCodeInitialState,
+  userQrCodeReducer,
+  UserQrCodeState,
 } from "../users";
 
 export interface RootState {
@@ -61,6 +64,7 @@ export interface RootState {
   questionnaires: QuestionnairesState;
   theme: ThemeState;
   revokeAccess: RevokeAccessState;
+  userQrCode: UserQrCodeState;
 }
 
 export type RootActions =
@@ -91,6 +95,7 @@ export default function configureStore({
     questionnaires: questionnairesReducer,
     theme: themeReducer,
     revokeAccess: revokeAccessReducer,
+    userQrCode: userQrCodeReducer,
   });
 
   function* rootSaga() {
@@ -129,6 +134,7 @@ export default function configureStore({
       trackingOverview: trackingOverviewInitalState,
       theme: { theme: preloadedTheme },
       revokeAccess: revokeAccessInitialState,
+      userQrCode: userQrCodeInitialState,
       ...preloadedState,
     },
     composeEnhancers(applyMiddleware(...middlewares))
