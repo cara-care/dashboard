@@ -11,7 +11,10 @@ import Paper from "@material-ui/core/Paper";
 
 import {isAuthenticated as isAuthenticatedSelector} from '../auth';
 import {getUserQrCode} from "../utils/api";
-import {RevokeUsersAccessFailed, RevokeUsersAccessSuccess} from "./userActions";
+import {
+  FetchUsersQrCodeFailed,
+  FetchUsersQrCodeSuccess
+} from "./userActions";
 import useNotification from "../chat/hooks/useNotification";
 import Link from "@material-ui/core/Link";
 
@@ -64,11 +67,11 @@ const UserQrCode: React.FC<RouteComponentProps<{
 
     getUserQrCode()
       .then((res: any) => {
-        dispatch(RevokeUsersAccessSuccess(res.data));
-        setUrl(res.data)
+        dispatch(FetchUsersQrCodeSuccess(res.data));
+        setUrl(res.data.url)
       })
       .catch((error: Error) => {
-        dispatch(RevokeUsersAccessFailed(error));
+        dispatch(FetchUsersQrCodeFailed(error));
         showError(error.message);
       });
 
