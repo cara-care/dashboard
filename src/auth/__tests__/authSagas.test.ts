@@ -47,6 +47,7 @@ describe('authSagas', () => {
       actions.loginInitAction({
         username: 'user',
         password: 'password',
+        otp_token: 'otp_token',
       })
     ).toPromise();
     mockAxios.mockResponseFor({ url: '/dashboard/login/' }, successResponse);
@@ -61,6 +62,7 @@ describe('authSagas', () => {
       actions.loginInitAction({
         username: 'user',
         password: 'password',
+        otp_token: 'otp_token',
       })
     ).toPromise();
     const err = { name: 'Error', message: 'login failed' };

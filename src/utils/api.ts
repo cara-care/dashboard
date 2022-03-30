@@ -46,10 +46,12 @@ api.interceptors.request.use(
 export const login = ({
   username,
   password,
+  otp_token,
 }: {
   username: string;
   password: string;
-}) => api.post<{}>('/dashboard/login/', { username, password });
+  otp_token: string;
+}) => api.post<{}>('/dashboard/login/', { username, password, otp_token });
 
 export const logout = () => {
   return api.delete('/dashboard/logout/');
@@ -190,6 +192,10 @@ export const revokeAccess = (codes: string, deactivation_type: string) => {
     codes,
     deactivation_type
   });
+};
+
+export const getUserQrCode = () => {
+  return api.get(`/dashboard/user-qr-code/`);
 };
 
 export default api;

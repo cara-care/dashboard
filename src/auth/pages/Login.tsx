@@ -22,6 +22,7 @@ import useAutoLogin from '../useAutoLogin';
 interface FormData {
   username: string;
   password: string;
+  otp_token: string;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +57,7 @@ const Login: React.FC = () => {
         const field = Object.keys(error.response.data)[0];
         const message = error.response.data[field][0];
 
-        if (field === 'username' || field === 'password') {
+        if (field === 'username' || field === 'password' || field === 'otp_token') {
           // ideally, this would show the error next to the erroneous field
           let label = intl.formatMessage({ id: `nutri.login.${field}` });
           return `${label}: ${message}`;
@@ -79,6 +80,7 @@ const Login: React.FC = () => {
         loginInitAction({
           username: data.username.toLowerCase(),
           password: data.password,
+          otp_token: data.otp_token,
         })
       );
     },
@@ -134,6 +136,17 @@ const Login: React.FC = () => {
               </InputAdornment>
             ),
           }}
+        />
+        <TextField
+          id="otp_token"
+          name="otp_token"
+          inputRef={register}
+          label={intl.formatMessage({
+            id: 'nutri.login.otp_token',
+          })}
+          margin="normal"
+          required
+          fullWidth
         />
         <Button
           disabled={isFetching}
