@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {Redirect, RouteComponentProps, useHistory} from 'react-router-dom';
 import {FormattedMessage} from "react-intl";
+import QRCode from "react-qr-code";
 
 import {makeStyles} from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -96,8 +97,10 @@ const UserQrCode: React.FC<RouteComponentProps<{
 
         </Typography>
         <p>Install <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">
-          Google Authenticator</a> and use the URL below:</p>
+          Google Authenticator</a> and use the URL below or scan QR Code:</p>
         <p>{url}</p>
+        {url ? <QRCode value={url} /> : null}
+        <br/>
 
         <Link
           component="button"
