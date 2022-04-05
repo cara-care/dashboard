@@ -10497,6 +10497,11 @@ q@^1.1.2:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
+qr.js@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+  integrity sha1-ys6GOG9ZoNuAUPqQ2baw6IoeNk8=
+
 qs@6.9.6:
   version "6.9.6"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.6.tgz#26ed3c8243a431b2924aca84cc90471f35d5a0ee"
@@ -10684,6 +10689,14 @@ react-linkify@^1.0.0-alpha:
   dependencies:
     linkify-it "^2.0.3"
     tlds "^1.199.0"
+
+react-qr-code@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-qr-code/-/react-qr-code-2.0.5.tgz#ceb470d441230e93f676d070a15f1354b2c5c1ad"
+  integrity sha512-8R/n/5X9n5JsND+npJYYCcrf1jEcphG7o0d5aXl7cx/tpDF0kfSoYucG8BUG3EN/LCzf5Ehf2yl7zdnxdpKGBQ==
+  dependencies:
+    prop-types "^15.7.2"
+    qr.js "0.0.0"
 
 react-query-devtools@^2.6.3:
   version "2.6.3"
