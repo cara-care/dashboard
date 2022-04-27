@@ -196,36 +196,33 @@ export const KabelwerkProvider: React.FC<{
   };
 
   React.useEffect(() => {
-    if (isAuthenticated && !Kabelwerk.isConnected()) {
-      getChatAuthorizationToken().then((res) => {
-        Kabelwerk.config({
-          url: process.env.REACT_APP_KABELWERK_URL,
-          token: res.data.token,
-          refreshToken: () => {
-            return getChatAuthorizationToken().then((res) => res.data.token);
-          },
-          logging: process.env.NOVE_ENV === 'production' ? 'error' : 'info',
-        });
-
-        Kabelwerk.on('ready', () => {
-          setConnected(true);
-          setCurrentUser(Kabelwerk.getUser());
-          openInbox(InboxType.ALL);
-          Kabelwerk.loadHubInfo()
-            .then((response: HubInfo) => setHubUsers(response.users))
-            .catch((error: Error) => notification.showError(error.message));
-
-          const notifier = Kabelwerk.openNotifier();
-
-          notifier.on('updated', ({ message }: { message: Message }) => {
-            notification.triggerDesktopNotification(message);
-          });
-
-          notifier.connect();
-        });
-
-        Kabelwerk.connect();
+    if (isAuthenticated && Kabelwerk.getState() === Kabelwerk.INACTIVE) {
+      Kabelwerk.config({
+        url: process.env.REACT_APP_KABELWERK_URL,
+        refreshToken: () => {
+          return getChatAuthorizationToken().then((res) => res.data.token);
+        },
+        logging: process.env.NOVE_ENV === 'production' ? 'error' : 'info',
       });
+
+      Kabelwerk.on('ready', () => {
+        setConnected(true);
+        setCurrentUser(Kabelwerk.getUser());
+        openInbox(InboxType.ALL);
+        Kabelwerk.loadHubInfo()
+          .then((response: HubInfo) => setHubUsers(response.users))
+          .catch((error: Error) => notification.showError(error.message));
+
+        const notifier = Kabelwerk.openNotifier();
+
+        notifier.on('updated', ({ message }: { message: Message }) => {
+          notification.triggerDesktopNotification(message);
+        });
+
+        notifier.connect();
+      });
+
+      Kabelwerk.connect();
     }
     /* eslint-disable-next-line */
   }, [isAuthenticated]);
