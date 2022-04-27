@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl';
 import styled from 'styled-components';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import useNotification from '../../hooks/useNotification';
+import { RoomContext } from '../../RoomContext';
 
 const useStyles = makeStyles({
   root: {
@@ -53,9 +54,10 @@ export default function AssignTeammate({
   const classes = useStyles();
   const intl = useIntl();
   const theme = useTheme();
-  const { hubUsers, currentRoom } = useKabelwerk();
+  const { hubUsers } = useKabelwerk();
+  const { room } = React.useContext(RoomContext);
   const { showSuccess, showError } = useNotification();
-  const currentHubUser = currentRoom?.getHubUser();
+  const currentHubUser = room?.getHubUser();
 
   return (
     <Paper elevation={3} className={classes.root}>
@@ -73,7 +75,7 @@ export default function AssignTeammate({
               theme={theme}
               active={user.name === '?'}
               onClick={() => {
-                currentRoom
+                room
                   ?.updateHubUser(
                     currentHubUser?.id === user.id ? null : user.id
                   )

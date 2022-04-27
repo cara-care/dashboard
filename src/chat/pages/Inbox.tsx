@@ -1,6 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Resizable, ResizeCallback } from 're-resizable';
 import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import NutriNavigation from '../../components/NutriNavigation';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 import ChatDetails from '../components/cards/ChatDetails';
@@ -8,6 +10,7 @@ import Chat from '../components/chat/Chat';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import ChatRooms from '../components/chatRooms/ChatRooms';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
+import { RoomProvider } from '../RoomContext';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
 
@@ -46,6 +49,10 @@ const useStyles = makeStyles(() => ({
 
 const Inbox = () => {
   const classes = useStyles();
+
+  // which room is currently open is determined by the URL
+  const { roomId } = useParams();
+  const roomIdInt = roomId ? parseInt(roomId) : null;
 
   const { connected } = useKabelwerk();
   const { showInfo, showSuccess } = useNotification();
@@ -86,13 +93,17 @@ const Inbox = () => {
               <ChatRooms />
             </Resizable>
 
-            <div className={classes.main} data-testid={CHAT_WRAPPER}>
-              <ChatHeader />
-              <Chat />
-            </div>
-            <div className={classes.details}>
-              <ChatDetails />
-            </div>
+            {roomIdInt && (
+              <RoomProvider id={roomIdInt}>
+                <div className={classes.main} data-testid={CHAT_WRAPPER}>
+                  <ChatHeader />
+                  <Chat />
+                </div>
+                <div className={classes.details}>
+                  <ChatDetails />
+                </div>
+              </RoomProvider>
+            )}
           </>
         ) : null}
       </div>

@@ -3,8 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+
 import { zIndexes } from '../../../theme';
 import {
   getNotesList,
@@ -13,6 +14,7 @@ import {
 } from '../../../utils/api';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import useNotification from '../../hooks/useNotification';
+import { RoomContext } from '../../RoomContext';
 import { setChatUserNotes, updatePatient } from '../../redux';
 import { ChatUser } from '../../redux/types';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
@@ -41,45 +43,47 @@ export default function ChatHeader() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [patient, setPatient] = useState<null | ChatUser>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [isAssigning, setIsAssigning] = useState(false);
-  const { currentRoom, openRoom, hubUsers } = useKabelwerk();
+  const [patient, setPatient] = React.useState<null | ChatUser>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+  const [isAssigning, setIsAssigning] = React.useState(false);
+  const { openRoom, hubUsers } = useKabelwerk();
+  const { room, roomUser, isReady } = React.useContext(RoomContext);
   const { showError, showSuccess } = useNotification();
 
-  useEffect(() => {
-    // do nothing if no room is selected yet
-    if (!currentRoom) {
-      return;
+  React.useEffect(() => {
+    if (roomUser) {
+      getUserByEmailOrUsername(roomUser.key)
+        .then((res: any) => {
+          return getUserDataById(res.data.id);
+        })
+        .then((res: any) => {
+          setPatient(res.data);
+          dispatch(updatePatient(res.data));
+          return getNotesList(res.data.id);
+        })
+        .then((res: any) => {
+          dispatch(setChatUserNotes(res.data));
+        })
+        .catch((error: Error) => {
+          showError(error.message);
+        });
     }
 
-    // reset the patient
-    setPatient(null);
-    dispatch(updatePatient(null));
-    dispatch(setChatUserNotes([]));
+    return () => {
+      // reset the patient
+      setPatient(null);
+      dispatch(updatePatient(null));
+      dispatch(setChatUserNotes([]));
+    };
+  }, [dispatch, showError, roomUser]);
 
-    getUserByEmailOrUsername(currentRoom.getUser().key)
-      .then((res: any) => {
-        return getUserDataById(res.data.id);
-      })
-      .then((res: any) => {
-        setPatient(res.data);
-        dispatch(updatePatient(res.data));
-        return getNotesList(res.data.id);
-      })
-      .then((res: any) => {
-        dispatch(setChatUserNotes(res.data));
-      })
-      .catch((error: Error) => {
-        showError(error.message);
-      });
-  }, [dispatch, currentRoom, showError]);
-
-  if (!currentRoom) {
+  if (!isReady) {
     return <></>;
   }
 
-  if (currentRoom && !patient) {
+  if (isReady && !patient) {
     return (
       <Box className={classes.root}>
         <ChatHeaderSkeleton />
@@ -91,10 +95,10 @@ export default function ChatHeader() {
     <Box className={classes.root}>
       <Typography variant="h6">
         {patient?.nickname}
-        {currentRoom.getHubUser() && (
+        {room!.getHubUser() && (
           <small className={classes.assignee}>
             {' '}
-            ↔ {currentRoom.getHubUser().name}
+            ↔ {room!.getHubUser().name}
           </small>
         )}
       </Typography>
@@ -115,11 +119,11 @@ export default function ChatHeader() {
         >
           <AccountCircleIcon />
         </IconButton>
-        {currentRoom !== null && currentRoom.isArchived() ? (
+        {room && room.isArchived() ? (
           <IconButton
             title="Unarchive this room"
             onClick={() => {
-              currentRoom
+              room!
                 .unarchive()
                 .then(() => {
                   // TODO remove with selectRoom refactor
@@ -136,7 +140,7 @@ export default function ChatHeader() {
           <IconButton
             title="Archive this room"
             onClick={() => {
-              currentRoom
+              room!
                 .archive()
                 .then(() => {
                   // TODO remove with selectRoom refactor

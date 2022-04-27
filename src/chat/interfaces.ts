@@ -39,15 +39,19 @@ export interface InboxItem {
 //
 
 export interface Room {
-  loadEarlier: () => Promise<{ messages: Message[] }>;
-  isArchived: () => boolean;
-  postMessage: (message: { text: string }) => Promise<Message>;
-  off: () => void;
   archive: () => Promise<void>;
-  unarchive: () => Promise<void>;
-  getUser: () => User;
-  updateHubUser: (userId: number | null) => Promise<void>;
+  connect: () => void;
+  disconnect: () => void;
   getHubUser: () => User;
+  getUser: () => User;
+  isArchived: () => boolean;
+  loadEarlier: () => Promise<{ messages: Message[] }>;
+  moveMarker: () => Promise<any>;
+  on: (event: string, callback: Function) => void;
+  off: () => void;
+  postMessage: (message: { text: string }) => Promise<Message>;
+  unarchive: () => Promise<void>;
+  updateHubUser: (userId: number | null) => Promise<void>;
 }
 
 export enum MessageType {

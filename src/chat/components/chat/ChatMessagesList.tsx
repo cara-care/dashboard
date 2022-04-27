@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+
 import Message from './Message';
 import MessageDivider from './MessageDivider';
-import useKabelwerk from '../../hooks/useKabelwerk';
+import { RoomContext } from '../../RoomContext';
 
 const getMessagePosition = function (username: string) {
   // app usernames start with u- or auto-
@@ -13,7 +14,7 @@ const getDate = function (datetime: Date) {
 };
 
 export default function ChatMessagesList() {
-  const { messages } = useKabelwerk();
+  const { messages } = React.useContext(RoomContext);
 
   let output = [];
   let lastDate = null;
@@ -31,12 +32,12 @@ export default function ChatMessagesList() {
     }
 
     output.push(
-      <Fragment key={message.id}>
+      <React.Fragment key={message.id}>
         <Message
           position={getMessagePosition(message.user ? message.user.key : '')}
           message={message}
         />
-      </Fragment>
+      </React.Fragment>
     );
   }
 
