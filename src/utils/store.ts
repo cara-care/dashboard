@@ -53,7 +53,7 @@ import {
   userQrCodeInitialState,
   userQrCodeReducer,
   UserQrCodeState,
-} from "../users";
+} from '../users';
 
 export interface RootState {
   locale: LocaleState;

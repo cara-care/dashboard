@@ -55,7 +55,7 @@ export default function AssignTeammate({
   const theme = useTheme();
   const { hubUsers, currentRoom } = useKabelwerk();
   const { showSuccess, showError } = useNotification();
-  const currentHubUser = currentRoom?.getHubUser()
+  const currentHubUser = currentRoom?.getHubUser();
 
   return (
     <Paper elevation={3} className={classes.root}>
@@ -74,7 +74,9 @@ export default function AssignTeammate({
               active={user.name === '?'}
               onClick={() => {
                 currentRoom
-                  ?.updateHubUser(currentHubUser?.id === user.id ? null : user.id)
+                  ?.updateHubUser(
+                    currentHubUser?.id === user.id ? null : user.id
+                  )
                   .then(() => {
                     showSuccess(`Room successfully assigned to ${user.name}`);
                   })
@@ -84,7 +86,11 @@ export default function AssignTeammate({
                   });
               }}
             >
-              {currentHubUser?.id === user.id ? <Typography color='primary'>{user.name}</Typography> : <Typography variant="body2">{user.name}</Typography>}
+              {currentHubUser?.id === user.id ? (
+                <Typography color="primary">{user.name}</Typography>
+              ) : (
+                <Typography variant="body2">{user.name}</Typography>
+              )}
             </AssigneeWrapper>
           );
         })}

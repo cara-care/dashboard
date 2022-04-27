@@ -149,7 +149,7 @@ export const KabelwerkProvider: React.FC<{
       attributes: INBOXES[inboxType].attributes,
       archived: INBOXES[inboxType].archived,
       assignedTo:
-      inboxType === InboxType.PERSONAL && currentUser !== null
+        inboxType === InboxType.PERSONAL && currentUser !== null
           ? currentUser.id
           : undefined,
     });

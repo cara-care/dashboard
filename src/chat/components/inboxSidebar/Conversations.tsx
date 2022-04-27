@@ -43,7 +43,7 @@ export default function Conversations() {
   const classes = useStyles();
   const { openInbox } = useKabelwerk();
   const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
-  const [currentInbox, setCurrentInbox] = React.useState(InboxType.ALL)
+  const [currentInbox, setCurrentInbox] = React.useState(InboxType.ALL);
 
   return (
     <div>
@@ -82,7 +82,7 @@ export default function Conversations() {
                 // count={1}
                 active={currentInbox === inboxType}
                 handleSelected={() => {
-                  setCurrentInbox(inboxType)
+                  setCurrentInbox(inboxType);
                   openInbox(inboxType);
                 }}
                 isMenuCollapsed={isMenuCollapsed}

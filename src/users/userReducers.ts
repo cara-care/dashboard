@@ -1,5 +1,5 @@
-import {Reducer} from "redux";
-import {UsersActions, UsersActionTypes} from "./userActions";
+import { Reducer } from 'redux';
+import { UsersActions, UsersActionTypes } from './userActions';
 
 export const revokeAccessInitialState = {
   error: null,
@@ -8,13 +8,13 @@ export const revokeAccessInitialState = {
 
 export interface RevokeAccessState {
   error: Error | null;
-  message: string,
+  message: string;
 }
 
-export const revokeAccessReducer: Reducer<
-  RevokeAccessState,
-  UsersActions
-  > = (state = revokeAccessInitialState, action) => {
+export const revokeAccessReducer: Reducer<RevokeAccessState, UsersActions> = (
+  state = revokeAccessInitialState,
+  action
+) => {
   switch (action.type) {
     case UsersActionTypes.REVOKE_USERS_ACCESS_SUCCESS:
       return {
@@ -32,7 +32,6 @@ export const revokeAccessReducer: Reducer<
   }
 };
 
-
 export const userQrCodeInitialState = {
   error: null,
   url: '',
@@ -40,13 +39,13 @@ export const userQrCodeInitialState = {
 
 export interface UserQrCodeState {
   error: Error | null;
-  url: string,
+  url: string;
 }
 
-export const userQrCodeReducer: Reducer<
-  UserQrCodeState,
-  UsersActions
-  > = (state = userQrCodeInitialState, action) => {
+export const userQrCodeReducer: Reducer<UserQrCodeState, UsersActions> = (
+  state = userQrCodeInitialState,
+  action
+) => {
   switch (action.type) {
     case UsersActionTypes.FETCH_USER_QR_CODE_SUCCESS:
       return {

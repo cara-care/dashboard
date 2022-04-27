@@ -34,9 +34,7 @@ export default function ChatRooms() {
   const loadMoreButtonRef = useRef<HTMLDivElement>(null);
 
   // the inbox selected from the sidebar to the very left
-  const { inboxItems, loadMoreInboxItems } = React.useContext(
-    KabelwerkContext
-  );
+  const { inboxItems, loadMoreInboxItems } = React.useContext(KabelwerkContext);
 
   // whether we are awaiting Kabelwerk's loadMore() function
   const [isLoadingMore, setIsLoadingMore] = useState(false);
