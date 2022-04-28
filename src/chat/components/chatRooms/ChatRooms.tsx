@@ -7,7 +7,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import Spinner from '../../../components/Spinner';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { InboxItem } from '../../interfaces';
-import { KabelwerkContext } from '../../KabelwerkContext';
+import { InboxContext } from '../../InboxContext';
 import ChatRoomItem from './ChatRoomItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +36,12 @@ export default function ChatRooms() {
   const loadMoreButtonRef = React.useRef<HTMLDivElement>(null);
 
   const history = useHistory();
-  const { roomId } = useParams();
+  const { inboxSlug, roomId } = useParams();
 
   // the inbox selected from the sidebar to the very left
-  const { inboxItems, loadMoreInboxItems } = React.useContext(KabelwerkContext);
+  const { loadedSlug, inboxItems, loadMoreInboxItems } = React.useContext(
+    InboxContext
+  );
 
   // whether we are awaiting Kabelwerk's loadMore() function
   const [isLoadingMore, setIsLoadingMore] = React.useState(false);
@@ -72,11 +74,11 @@ export default function ChatRooms() {
   // open the first room if there is no room ID specified in the URL and the
   // inbox is not empty
   React.useEffect(() => {
-    if (roomId === undefined && inboxItems.length) {
+    if (loadedSlug === inboxSlug && roomId === undefined && inboxItems.length) {
       const id = inboxItems[0].room.id;
-      history.push(`/nutri/inbox/${id}`);
+      history.push(`/nutri/inbox/${inboxSlug}/${id}`);
     }
-  }, [history, inboxItems, roomId]);
+  }, [history, inboxSlug, roomId, loadedSlug, inboxItems]);
 
   return (
     <div ref={rootRef} className={classes.sidebar}>

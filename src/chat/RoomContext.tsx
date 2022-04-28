@@ -100,9 +100,13 @@ const RoomProvider = function ({
           setMessages(uniqueMessages);
 
           return Promise.resolve(hasNewMessages);
+        })
+        .catch((error: Error) => {
+          console.error(error);
+          return false;
         });
     } else {
-      return Promise.reject();
+      return Promise.resolve(false);
     }
   };
 

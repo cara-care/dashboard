@@ -100,7 +100,7 @@ const routes = [
     authRequired: true,
   },
   {
-    path: '/nutri/inbox/:roomId?',
+    path: '/nutri/inbox/:inboxSlug/:roomId?',
     component: Inbox,
     exact: false,
     authRequired: true,

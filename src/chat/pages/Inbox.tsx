@@ -10,6 +10,7 @@ import Chat from '../components/chat/Chat';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import ChatRooms from '../components/chatRooms/ChatRooms';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
+import { InboxProvider } from '../InboxContext';
 import { RoomProvider } from '../RoomContext';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
@@ -51,7 +52,7 @@ const Inbox = () => {
   const classes = useStyles();
 
   // which room is currently open is determined by the URL
-  const { roomId } = useParams();
+  const { inboxSlug, roomId } = useParams();
   const roomIdInt = roomId ? parseInt(roomId) : null;
 
   const { connected } = useKabelwerk();
@@ -90,7 +91,11 @@ const Inbox = () => {
               maxWidth={400}
               onResizeStop={handleResizeStop}
             >
-              <ChatRooms />
+              {inboxSlug && (
+                <InboxProvider slug={inboxSlug}>
+                  <ChatRooms />
+                </InboxProvider>
+              )}
             </Resizable>
 
             {roomIdInt && (

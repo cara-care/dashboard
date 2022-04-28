@@ -12,8 +12,6 @@ interface ConversationItemWrapperProps {
 const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
   display: flex;
   align-items: center;
-  color: ${({ active, theme }) =>
-    active ? theme.palette.primary.main : theme.palette.text.primary};
   cursor: pointer;
   opacity: ${({ active }) => (active ? '1' : '0.8')};
   font-weight: 400;
@@ -30,7 +28,6 @@ const ConversationItemWrapper = styled.div<ConversationItemWrapperProps>`
 interface ConversationsItemProps {
   icon: JSX.Element | string;
   text: string | undefined;
-  handleSelected: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   count?: number;
   active?: boolean;
   type?: string;
@@ -42,7 +39,6 @@ function ConversationsItem({
   text,
   count,
   active = false,
-  handleSelected,
   type = 'primary',
   isMenuCollapsed = false,
 }: ConversationsItemProps) {
@@ -52,7 +48,6 @@ function ConversationsItem({
     <ConversationItemWrapper
       theme={theme}
       active={active}
-      onClick={handleSelected}
       primary={type === 'primary'}
       isMenuCollapsed={isMenuCollapsed}
     >

@@ -21,7 +21,7 @@ const useAutoLogin = () => {
     if (isAuthenticated) {
       history.push(
         process.env.REACT_APP_LOCATION === 'EU'
-          ? '/nutri/inbox'
+          ? '/nutri/inbox/all'
           : '/nutri/select-patient'
       );
     }

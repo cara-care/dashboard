@@ -19,7 +19,10 @@ export interface User {
 //
 
 export interface Inbox {
+  connect: () => void;
+  disconnect: () => void;
   loadMore: () => Promise<{ items: InboxItem[] }>;
+  on: (event: string, callback: Function) => void;
 }
 
 export interface InboxItem {
@@ -48,7 +51,6 @@ export interface Room {
   loadEarlier: () => Promise<{ messages: Message[] }>;
   moveMarker: () => Promise<any>;
   on: (event: string, callback: Function) => void;
-  off: () => void;
   postMessage: (message: { text: string }) => Promise<Message>;
   unarchive: () => Promise<void>;
   updateHubUser: (userId: number | null) => Promise<void>;
