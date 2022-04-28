@@ -48,7 +48,7 @@ export default function ChatHeader() {
     null
   );
   const [isAssigning, setIsAssigning] = React.useState(false);
-  const { openRoom, hubUsers } = useKabelwerk();
+  const { hubUsers } = useKabelwerk();
   const { room, roomUser, isReady } = React.useContext(RoomContext);
   const { showError, showSuccess } = useNotification();
 
@@ -126,8 +126,6 @@ export default function ChatHeader() {
               room!
                 .unarchive()
                 .then(() => {
-                  // TODO remove with selectRoom refactor
-                  openRoom(null);
                   showSuccess('Room successfully moved back to its Inbox!');
                 })
                 .catch((error: Error) => showError(error.message));
@@ -143,8 +141,6 @@ export default function ChatHeader() {
               room!
                 .archive()
                 .then(() => {
-                  // TODO remove with selectRoom refactor
-                  openRoom(null);
                   showSuccess('Room successfully archived!');
                 })
                 .catch((error: Error) => showError(error.message));

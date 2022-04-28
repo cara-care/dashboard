@@ -9,7 +9,7 @@ const RoomContext = React.createContext<{
   isReady: boolean;
   messages: Message[];
   loadEarlierMessages: () => Promise<boolean>;
-  postMessage: (text: string) => Promise<any>;
+  postMessage: (text: string) => Promise<Message>;
 }>({
   room: null,
   roomUser: null,
