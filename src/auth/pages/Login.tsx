@@ -57,7 +57,11 @@ const Login: React.FC = () => {
         const field = Object.keys(error.response.data)[0];
         const message = error.response.data[field][0];
 
-        if (field === 'username' || field === 'password' || field === 'otp_token') {
+        if (
+          field === 'username' ||
+          field === 'password' ||
+          field === 'otp_token'
+        ) {
           // ideally, this would show the error next to the erroneous field
           let label = intl.formatMessage({ id: `nutri.login.${field}` });
           return `${label}: ${message}`;

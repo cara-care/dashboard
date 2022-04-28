@@ -5,6 +5,7 @@ import { useIntl } from 'react-intl';
 import styled from 'styled-components';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import useNotification from '../../hooks/useNotification';
+import { RoomContext } from '../../RoomContext';
 
 const useStyles = makeStyles({
   root: {
@@ -53,9 +54,10 @@ export default function AssignTeammate({
   const classes = useStyles();
   const intl = useIntl();
   const theme = useTheme();
-  const { hubUsers, currentRoom } = useKabelwerk();
+  const { hubUsers } = useKabelwerk();
+  const { room } = React.useContext(RoomContext);
   const { showSuccess, showError } = useNotification();
-  const currentHubUser = currentRoom?.getHubUser()
+  const currentHubUser = room?.getHubUser();
 
   return (
     <Paper elevation={3} className={classes.root}>
@@ -73,8 +75,10 @@ export default function AssignTeammate({
               theme={theme}
               active={user.name === '?'}
               onClick={() => {
-                currentRoom
-                  ?.updateHubUser(currentHubUser?.id === user.id ? null : user.id)
+                room
+                  ?.updateHubUser(
+                    currentHubUser?.id === user.id ? null : user.id
+                  )
                   .then(() => {
                     showSuccess(`Room successfully assigned to ${user.name}`);
                   })
@@ -84,7 +88,11 @@ export default function AssignTeammate({
                   });
               }}
             >
-              {currentHubUser?.id === user.id ? <Typography color='primary'>{user.name}</Typography> : <Typography variant="body2">{user.name}</Typography>}
+              {currentHubUser?.id === user.id ? (
+                <Typography color="primary">{user.name}</Typography>
+              ) : (
+                <Typography variant="body2">{user.name}</Typography>
+              )}
             </AssigneeWrapper>
           );
         })}

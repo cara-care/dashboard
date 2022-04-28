@@ -1,23 +1,31 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {Redirect, RouteComponentProps, useHistory} from 'react-router-dom';
-import {FormattedMessage} from "react-intl";
+import { Redirect, RouteComponentProps, useHistory } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 
-import {makeStyles} from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import Link from "@material-ui/core/Link";
-import {TextareaAutosize} from "@material-ui/core";
-import CancelIcon from "@material-ui/icons/Cancel";
-import Paper from "@material-ui/core/Paper";
-import {FormLabel, FormControlLabel, Radio, RadioGroup} from "@material-ui/core";
+import Link from '@material-ui/core/Link';
+import { TextareaAutosize } from '@material-ui/core';
+import CancelIcon from '@material-ui/icons/Cancel';
+import Paper from '@material-ui/core/Paper';
+import {
+  FormLabel,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from '@material-ui/core';
 
-import {isAuthenticated as isAuthenticatedSelector} from '../auth';
-import {revokeAccess} from "../utils/api";
-import {RevokeUsersAccessFailed, RevokeUsersAccessSuccess} from "./userActions";
+import { isAuthenticated as isAuthenticatedSelector } from '../auth';
+import { revokeAccess } from '../utils/api';
+import {
+  RevokeUsersAccessFailed,
+  RevokeUsersAccessSuccess,
+} from './userActions';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -68,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const RevokeAccess: React.FC<RouteComponentProps<{
   token?: string;
 }>> = () => {
@@ -77,43 +84,43 @@ const RevokeAccess: React.FC<RouteComponentProps<{
   const history = useHistory();
 
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  const [usersCodes, setUserCodes] = useState('')
-  const [message, setMessage] = useState('')
-  const [deactivationType, setDeactivationType] = useState('study_completed')
+  const [usersCodes, setUserCodes] = useState('');
+  const [message, setMessage] = useState('');
+  const [deactivationType, setDeactivationType] = useState('study_completed');
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
-  const goBack = useCallback(() => { history.go(-1);}, [history]);
+  const goBack = useCallback(() => {
+    history.go(-1);
+  }, [history]);
   const closeSnackbar = () => {
-    setIsSnackbarOpen(false)
-    setMessage('')
+    setIsSnackbarOpen(false);
+    setMessage('');
   };
 
-  const handleSubmit = (event: { preventDefault: () => void; })=> {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    if (usersCodes === '' ){
-      setIsSnackbarOpen(true)
-      setMessage('Please provide comma separated users access codes')
-      return
+    if (usersCodes === '') {
+      setIsSnackbarOpen(true);
+      setMessage('Please provide comma separated users access codes');
+      return;
     }
 
     revokeAccess(usersCodes, deactivationType)
       .then((res: any) => {
         dispatch(RevokeUsersAccessSuccess(res.data));
-        setMessage(res.data.detail)
-        setIsSnackbarOpen(true)
+        setMessage(res.data.detail);
+        setIsSnackbarOpen(true);
       })
       .catch((error: Error) => {
         dispatch(RevokeUsersAccessFailed(error));
       });
-
-  }
+  };
 
   if (!isAuthenticated) {
     return <Redirect to="/nutri/login" />;
   }
 
   return (
-
     <div className={classes.wrapper}>
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -124,7 +131,6 @@ const RevokeAccess: React.FC<RouteComponentProps<{
             id="users.revokeAccess"
             defaultMessage="Revoke Users Access"
           />
-
         </Typography>
         <Snackbar
           open={isSnackbarOpen}
@@ -138,16 +144,15 @@ const RevokeAccess: React.FC<RouteComponentProps<{
             />
           </Alert>
         </Snackbar>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit}
-        >
+        <form className={classes.form} onSubmit={handleSubmit}>
           <FormLabel id="users_codes">Users Access Codes</FormLabel>
           <TextareaAutosize
             aria-labelledby="users_codes"
             placeholder="Please provide comma separated users access codes here..."
             value={usersCodes}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setUserCodes(e.target.value)}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setUserCodes(e.target.value)}
             className={classes.input}
             rows={4}
           />
@@ -158,10 +163,20 @@ const RevokeAccess: React.FC<RouteComponentProps<{
             aria-labelledby="deactivation_type"
             name="deactivation_type"
             value={deactivationType}
-            onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setDeactivationType(e.target.value)}
+            onChange={(e: {
+              target: { value: React.SetStateAction<string> };
+            }) => setDeactivationType(e.target.value)}
           >
-            <FormControlLabel value="study_completed" control={<Radio />} label="Study Completed" />
-            <FormControlLabel value="dropout" control={<Radio />} label="Dropout" />
+            <FormControlLabel
+              value="study_completed"
+              control={<Radio />}
+              label="Study Completed"
+            />
+            <FormControlLabel
+              value="dropout"
+              control={<Radio />}
+              label="Dropout"
+            />
           </RadioGroup>
 
           <Button

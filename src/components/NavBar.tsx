@@ -12,7 +12,7 @@ import Translate from '@material-ui/icons/Translate';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import CancelIcon from '@material-ui/icons/Cancel';
-import CodeIcon from "@material-ui/icons/Code";
+import CodeIcon from '@material-ui/icons/Code';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 import Tooltip from '@material-ui/core/Tooltip';

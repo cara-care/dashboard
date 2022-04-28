@@ -1,11 +1,13 @@
 import { Divider, Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+
 import Spinner from '../../../components/Spinner';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
 import { InboxItem } from '../../interfaces';
-import { KabelwerkContext } from '../../KabelwerkContext';
+import { InboxContext } from '../../InboxContext';
 import ChatRoomItem from './ChatRoomItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,21 +32,24 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatRooms() {
   const classes = useStyles();
 
-  const rootRef = useRef<HTMLDivElement>(null);
-  const loadMoreButtonRef = useRef<HTMLDivElement>(null);
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const loadMoreButtonRef = React.useRef<HTMLDivElement>(null);
+
+  const history = useHistory();
+  const { inboxSlug, roomId } = useParams();
 
   // the inbox selected from the sidebar to the very left
-  const { inboxItems, loadMoreInboxItems } = React.useContext(
-    KabelwerkContext
+  const { loadedSlug, inboxItems, loadMoreInboxItems } = React.useContext(
+    InboxContext
   );
 
   // whether we are awaiting Kabelwerk's loadMore() function
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = React.useState(false);
 
   // whether we have reached the bottom of the room list
-  const [canLoadMore, setCanLoadMore] = useState(true);
+  const [canLoadMore, setCanLoadMore] = React.useState(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setIsLoadingMore(false);
     setCanLoadMore(true);
   }, [inboxItems]);
@@ -65,6 +70,15 @@ export default function ChatRooms() {
     rootMargin: '16px',
     enabled: canLoadMore,
   });
+
+  // open the first room if there is no room ID specified in the URL and the
+  // inbox is not empty
+  React.useEffect(() => {
+    if (loadedSlug === inboxSlug && roomId === undefined && inboxItems.length) {
+      const id = inboxItems[0].room.id;
+      history.push(`/nutri/inbox/${inboxSlug}/${id}`);
+    }
+  }, [history, inboxSlug, roomId, loadedSlug, inboxItems]);
 
   return (
     <div ref={rootRef} className={classes.sidebar}>

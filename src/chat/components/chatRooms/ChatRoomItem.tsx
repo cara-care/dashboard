@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import truncate from 'lodash/truncate';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import useKabelwerk from '../../hooks/useKabelwerk';
+import { NavLink, useParams } from 'react-router-dom';
+
 import { InboxItem } from '../../interfaces';
 
 const toISODate = (dateTime: Date) => {
@@ -104,16 +104,13 @@ interface ChatRoomItemProps {
 
 export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
   const classes = useStyles();
-  const { openRoom } = useKabelwerk();
+  const { inboxSlug } = useParams();
 
   return (
     <NavLink
-      to={`/nutri/inbox/${inboxItem.room.id}`}
+      to={`/nutri/inbox/${inboxSlug}/${inboxItem.room.id}`}
       className={classes.link}
       activeClassName={classes.active}
-      onClick={() => {
-        openRoom(inboxItem.room.id);
-      }}
     >
       <div className={classes.root}>
         <div className={classes.container}>

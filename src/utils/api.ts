@@ -190,7 +190,7 @@ export const deleteNote = (userId: number, noteId: number) => {
 export const revokeAccess = (codes: string, deactivation_type: string) => {
   return api.post(`/dashboard/revoke-users-access/`, {
     codes,
-    deactivation_type
+    deactivation_type,
   });
 };
 
