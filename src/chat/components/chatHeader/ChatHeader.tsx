@@ -4,19 +4,11 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ArchiveIcon from '@material-ui/icons/Archive';
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
 import { zIndexes } from '../../../theme';
-import {
-  getNotesList,
-  getUserByEmailOrUsername,
-  getUserDataById,
-} from '../../../utils/api';
 import useKabelwerk from '../../hooks/useKabelwerk';
 import useNotification from '../../hooks/useNotification';
 import { RoomContext } from '../../RoomContext';
-import { setChatUserNotes, updatePatient } from '../../redux';
-import { ChatUser } from '../../redux/types';
 import { ChatHeaderSkeleton } from '../other/LoadingScreens';
 import AssignTeammate from './AssignTeammate';
 
@@ -41,9 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatHeader() {
   const classes = useStyles();
-  const dispatch = useDispatch();
 
-  const [patient, setPatient] = React.useState<null | ChatUser>(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -52,38 +42,7 @@ export default function ChatHeader() {
   const { room, roomUser, isReady } = React.useContext(RoomContext);
   const { showError, showSuccess } = useNotification();
 
-  React.useEffect(() => {
-    if (roomUser) {
-      getUserByEmailOrUsername(roomUser.key)
-        .then((res: any) => {
-          return getUserDataById(res.data.id);
-        })
-        .then((res: any) => {
-          setPatient(res.data);
-          dispatch(updatePatient(res.data));
-          return getNotesList(res.data.id);
-        })
-        .then((res: any) => {
-          dispatch(setChatUserNotes(res.data));
-        })
-        .catch((error: Error) => {
-          showError(error.message);
-        });
-    }
-
-    return () => {
-      // reset the patient
-      setPatient(null);
-      dispatch(updatePatient(null));
-      dispatch(setChatUserNotes([]));
-    };
-  }, [dispatch, showError, roomUser]);
-
   if (!isReady) {
-    return <></>;
-  }
-
-  if (isReady && !patient) {
     return (
       <Box className={classes.root}>
         <ChatHeaderSkeleton />
@@ -94,7 +53,7 @@ export default function ChatHeader() {
   return (
     <Box className={classes.root}>
       <Typography variant="h6">
-        {patient?.nickname}
+        {roomUser!.name}
         {room!.getHubUser() && (
           <small className={classes.assignee}>
             {' '}
