@@ -2,11 +2,11 @@ import React from 'react';
 import clsx from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { getTime, padWith0 } from '../../../utils/dateUtils';
 import { MESSAGE_CONTAINER } from '../../../utils/test-helpers';
-import Linkify from 'react-linkify';
-import ExternalLink from '../../../components/ExternalLink';
-import { Message as MessageType } from '../../interfaces';
+
+import * as interfaces from '../../interfaces';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bubble: {
     position: 'relative',
-    padding: theme.spacing(),
+    padding: '0 16px',
     color: '#150b2c',
     borderRadius: theme.shape.borderRadius,
     marginBottom: 24,
@@ -39,15 +39,13 @@ const useStyles = makeStyles((theme) => ({
   },
   serviceBubble: {
     maxWidth: '100%',
+    padding: 0,
   },
   bubbleLeft: {
     backgroundColor: '#eef4f3',
   },
   bubbleRight: {
     backgroundColor: '#f3f1f1',
-  },
-  message: {
-    whiteSpace: 'pre-wrap',
   },
   serviceMessage: {
     fontStyle: 'italic',
@@ -73,15 +71,12 @@ const useStyles = makeStyles((theme) => ({
 
 export interface MessageProps {
   position?: 'left' | 'right';
-  message: MessageType;
+  message: interfaces.Message;
 }
-
-const componentDecorator = (href: string, text: string) => (
-  <ExternalLink href={href}>{text}</ExternalLink>
-);
 
 export default function Message({ message, position = 'left' }: MessageProps) {
   const classes = useStyles();
+
   return (
     <div
       className={clsx(classes.root, {
@@ -97,15 +92,12 @@ export default function Message({ message, position = 'left' }: MessageProps) {
             position === 'right' && message.type === 'text',
         })}
       >
-        <Linkify componentDecorator={componentDecorator}>
-          <Typography
-            className={
-              message.type === 'text' ? classes.message : classes.serviceMessage
-            }
-          >
-            {message.text}
-          </Typography>
-        </Linkify>
+        <Typography
+          className={clsx({
+            [classes.serviceMessage]: message.type === 'room_move',
+          })}
+          dangerouslySetInnerHTML={{ __html: message.html }}
+        ></Typography>
         <Typography
           variant="caption"
           className={clsx(classes.timestamp, {

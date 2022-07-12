@@ -62,11 +62,12 @@ export enum MessageType {
 }
 
 export interface Message {
+  html: string;
   id: number;
   insertedAt: Date;
   roomId: number;
   text: string;
   type: MessageType;
   updatedAt: Date;
-  user: User | null;
+  user: User;
 }
