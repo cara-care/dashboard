@@ -1,8 +1,8 @@
-// import { ReactQueryDevtools } from 'react-query-devtools';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { v1 } from 'uuid';
+
 import { KabelwerkProvider } from './chat/KabelwerkContext';
 import Layout from './components/Layout';
 import Placeholder from './components/Placeholder';
@@ -41,9 +41,6 @@ export const App = () => (
         </KabelwerkProvider>
       </NotificationsProvider>
     </Layout>
-    {/* <ReactQueryDevtools
-      initialIsOpen={process.env.NODE_ENV === 'development'}
-    /> */}
   </>
 );
 
