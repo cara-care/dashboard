@@ -16,16 +16,6 @@ const useStyles = makeStyles((theme) => ({
   reverse: {
     flexDirection: 'row-reverse',
   },
-  avatar: {
-    width: 32,
-    height: 32,
-  },
-  avatarLeft: {
-    marginRight: theme.spacing(),
-  },
-  avatarRight: {
-    marginLeft: theme.spacing(),
-  },
   bubble: {
     position: 'relative',
     padding: '0 16px',
@@ -53,11 +43,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
   },
   timestamp: {
-    position: 'absolute',
-    bottom: '-24px',
-    display: 'block',
-    minWidth: 100,
     color: theme.palette.primary.main,
+    display: 'block',
+    marginBottom: 16,
   },
   timestampLeft: {
     left: 0,
