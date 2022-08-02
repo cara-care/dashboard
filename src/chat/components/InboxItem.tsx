@@ -5,7 +5,7 @@ import truncate from 'lodash/truncate';
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 
-import { InboxItem } from '../../interfaces';
+import * as interfaces from '../interfaces';
 
 const toISODate = (dateTime: Date) => {
   return dateTime.toISOString().substring(0, 10);
@@ -98,11 +98,11 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-interface ChatRoomItemProps {
-  inboxItem: InboxItem;
+interface InboxItemProps {
+  inboxItem: interfaces.InboxItem;
 }
 
-export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
+const InboxItem = function ({ inboxItem }: InboxItemProps) {
   const classes = useStyles();
   const { inboxSlug } = useParams();
 
@@ -138,4 +138,6 @@ export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
       <Divider className={classes.divder} />
     </NavLink>
   );
-}
+};
+
+export default InboxItem;

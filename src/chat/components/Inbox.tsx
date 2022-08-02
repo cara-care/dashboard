@@ -4,11 +4,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import Spinner from '../../../components/Spinner';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import { InboxItem } from '../../interfaces';
-import { InboxContext } from '../../InboxContext';
-import ChatRoomItem from './ChatRoomItem';
+import Spinner from '../../components/Spinner';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+
+import { InboxContext } from '../InboxContext';
+import * as interfaces from '../interfaces';
+
+import InboxItem from './InboxItem';
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -29,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatRooms() {
+const Inbox = function () {
   const classes = useStyles();
 
   const rootRef = React.useRef<HTMLDivElement>(null);
@@ -94,8 +96,8 @@ export default function ChatRooms() {
       {inboxItems.length === 0 ? (
         <p className={classes.emptyInboxMessage}>this inbox is empty</p>
       ) : (
-        inboxItems.map((item: InboxItem) => {
-          return <ChatRoomItem key={item.room.id} inboxItem={item} />;
+        inboxItems.map((item: interfaces.InboxItem) => {
+          return <InboxItem key={item.room.id} inboxItem={item} />;
         })
       )}
       {isLoadingMore ? (
@@ -113,4 +115,6 @@ export default function ChatRooms() {
       )}
     </div>
   );
-}
+};
+
+export default Inbox;

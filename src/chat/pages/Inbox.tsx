@@ -8,7 +8,7 @@ import { CHAT_WRAPPER } from '../../utils/test-helpers';
 import ChatDetails from '../components/cards/ChatDetails';
 import Chat from '../components/chat/Chat';
 import ChatHeader from '../components/chatHeader/ChatHeader';
-import ChatRooms from '../components/chatRooms/ChatRooms';
+import Inbox from '../components/Inbox';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { InboxProvider } from '../InboxContext';
 import { RoomProvider } from '../RoomContext';
@@ -48,7 +48,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Inbox = () => {
+const ChatPage = () => {
   const classes = useStyles();
 
   // which room is currently open is determined by the URL
@@ -93,7 +93,7 @@ const Inbox = () => {
             >
               {inboxSlug && (
                 <InboxProvider slug={inboxSlug}>
-                  <ChatRooms />
+                  <Inbox />
                 </InboxProvider>
               )}
             </Resizable>
@@ -116,4 +116,4 @@ const Inbox = () => {
   );
 };
 
-export default Inbox;
+export default ChatPage;
