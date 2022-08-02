@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom';
 import NutriNavigation from '../../components/NutriNavigation';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
-import ChatDetails from '../components/cards/ChatDetails';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import Inbox from '../components/Inbox';
+import RoomDetails from '../components/RoomDetails';
 import RoomHeader from '../components/RoomHeader';
 import Room from '../components/Room';
 import useKabelwerk from '../hooks/useKabelwerk';
@@ -106,7 +106,7 @@ const Chat = () => {
                   <Room />
                 </div>
                 <div className={classes.details}>
-                  <ChatDetails />
+                  <RoomDetails />
                 </div>
               </RoomProvider>
             )}
