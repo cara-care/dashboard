@@ -7,7 +7,7 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 import { RoomContext } from '../RoomContext';
 
-import ChatMessagesList from './chat/ChatMessagesList';
+import MessagesList from './MessagesList';
 import InputToolbar from './chat/InputToolbar';
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +87,7 @@ const Room = function () {
   return (
     <>
       <div ref={messagesRootRef} className={classes.messages}>
-        {isReady && <ChatMessagesList />}
+        {isReady && <MessagesList />}
         <div ref={messagesTopRef} className={classes.top} />
         {isLoadingMore && (
           <Box display="flex" alignItems="center" justifyContent="center" p={1}>

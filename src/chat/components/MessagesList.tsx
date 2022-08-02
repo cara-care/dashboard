@@ -1,8 +1,9 @@
 import React from 'react';
 
-import Message from './Message';
-import MessageDivider from './MessageDivider';
-import { RoomContext } from '../../RoomContext';
+import { RoomContext } from '../RoomContext';
+
+import Message from './chat/Message';
+import MessageDivider from './chat/MessageDivider';
 
 const getMessagePosition = function (username: string) {
   // app usernames start with u- or auto-
@@ -13,7 +14,7 @@ const getDate = function (datetime: Date) {
   return datetime.toISOString().slice(0, 10);
 };
 
-export default function ChatMessagesList() {
+const MessagesList = function () {
   const { messages } = React.useContext(RoomContext);
 
   let output = [];
@@ -47,4 +48,6 @@ export default function ChatMessagesList() {
       {lastDate && <MessageDivider key={lastDate} content={lastDate} />}
     </>
   );
-}
+};
+
+export default MessagesList;
