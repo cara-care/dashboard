@@ -1,7 +1,8 @@
-import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import React from 'react';
 import { useIntl } from 'react-intl';
+
 import InputToolbarTab from './InputToolbarTab';
 
 const useStyles = makeStyles((theme) => ({

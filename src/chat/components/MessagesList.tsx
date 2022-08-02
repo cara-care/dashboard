@@ -2,8 +2,8 @@ import React from 'react';
 
 import { RoomContext } from '../RoomContext';
 
-import Message from './chat/Message';
-import MessageDivider from './chat/MessageDivider';
+import Message from './Message';
+import MessageDivider from './MessageDivider';
 
 const getMessagePosition = function (username: string) {
   // app usernames start with u- or auto-

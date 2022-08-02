@@ -7,8 +7,8 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 import { RoomContext } from '../RoomContext';
 
+import InputToolbar from './InputToolbar';
 import MessagesList from './MessagesList';
-import InputToolbar from './chat/InputToolbar';
 
 const useStyles = makeStyles((theme) => ({
   messages: {

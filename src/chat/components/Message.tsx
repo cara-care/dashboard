@@ -3,10 +3,10 @@ import clsx from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { getTime, padWith0 } from '../../../utils/dateUtils';
-import { MESSAGE_CONTAINER } from '../../../utils/test-helpers';
+import { getTime, padWith0 } from '../../utils/dateUtils';
+import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
 
-import * as interfaces from '../../interfaces';
+import * as interfaces from '../interfaces';
 
 const useStyles = makeStyles((theme) => ({
   root: {
