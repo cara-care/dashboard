@@ -6,15 +6,15 @@ import { useParams } from 'react-router-dom';
 import NutriNavigation from '../../components/NutriNavigation';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
-import { RoomProvider } from '../RoomContext';
 import ChatDetails from '../components/cards/ChatDetails';
-import Inbox from '../components/Inbox';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
-import { InboxProvider } from '../InboxContext';
+import Inbox from '../components/Inbox';
 import RoomHeader from '../components/RoomHeader';
 import Room from '../components/Room';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
+import { InboxProvider } from '../InboxContext';
+import { RoomProvider } from '../RoomContext';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ChatPage = () => {
+const Chat = () => {
   const classes = useStyles();
 
   // which room is currently open is determined by the URL
@@ -117,4 +117,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default Chat;
