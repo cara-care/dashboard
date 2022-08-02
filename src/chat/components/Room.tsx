@@ -2,11 +2,13 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 
-import Spinner from '../../../components/Spinner';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import ChatMessagesList from './ChatMessagesList';
-import InputToolbar from './InputToolbar';
-import { RoomContext } from '../../RoomContext';
+import Spinner from '../../components/Spinner';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+
+import { RoomContext } from '../RoomContext';
+
+import ChatMessagesList from './chat/ChatMessagesList';
+import InputToolbar from './chat/InputToolbar';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Chat() {
+const Room = function () {
   const classes = useStyles();
 
   const messagesRootRef = useRef<HTMLDivElement>(null);
@@ -96,4 +98,6 @@ export default function Chat() {
       {isReady && <InputToolbar onSubmit={postMessage} />}
     </>
   );
-}
+};
+
+export default Room;

@@ -5,13 +5,14 @@ import { useParams } from 'react-router-dom';
 
 import NutriNavigation from '../../components/NutriNavigation';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
+
+import { RoomProvider } from '../RoomContext';
 import ChatDetails from '../components/cards/ChatDetails';
-import Chat from '../components/chat/Chat';
 import ChatHeader from '../components/chatHeader/ChatHeader';
 import Inbox from '../components/Inbox';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { InboxProvider } from '../InboxContext';
-import { RoomProvider } from '../RoomContext';
+import Room from '../components/Room';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
 
@@ -102,7 +103,7 @@ const ChatPage = () => {
               <RoomProvider id={roomIdInt}>
                 <div className={classes.main} data-testid={CHAT_WRAPPER}>
                   <ChatHeader />
-                  <Chat />
+                  <Room />
                 </div>
                 <div className={classes.details}>
                   <ChatDetails />
