@@ -20,33 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 (async function start() {
-  const locale = browserLocale() || 'en';
-
-  try {
-    if (!Intl.PluralRules) {
-      // @ts-ignore
-      await import('@formatjs/intl-pluralrules/polyfill');
-      // @ts-ignore
-      await import('@formatjs/intl-pluralrules/dist/locale-data/en');
-      // @ts-ignore
-      await import('@formatjs/intl-pluralrules/dist/locale-data/de');
-    }
-
-    // https://github.com/microsoft/TypeScript/pull/36084
-    // @ts-ignore
-    if (!Intl.RelativeTimeFormat) {
-      // @ts-ignore
-      await import('@formatjs/intl-relativetimeformat/polyfill');
-      // @ts-ignore
-      await import('@formatjs/intl-relativetimeformat/dist/locale-data/en');
-      // @ts-ignore
-      await import('@formatjs/intl-relativetimeformat/dist/locale-data/de');
-    }
-  } catch (err) {
-    Sentry.captureException(err);
-  }
-
-  runApp(locale);
+  runApp(browserLocale() || 'en');
 })();
 
 function runApp(browserLanguage: string) {

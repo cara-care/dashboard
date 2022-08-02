@@ -1436,13 +1436,6 @@
   dependencies:
     "@formatjs/intl-utils" "^2.3.0"
 
-"@formatjs/intl-pluralrules@^1.5.9":
-  version "1.5.9"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-1.5.9.tgz#c363c833c0ccde11eb508de4c09d3eaa232e819a"
-  integrity sha512-37E1ZG+Oqo3qrpUfumzNcFTV+V+NCExmTkkQ9Zw4FSlvJ4WhbbeYdieVapUVz9M0cLy8XrhCkfuM/Kn03iKReg==
-  dependencies:
-    "@formatjs/intl-utils" "^2.3.0"
-
 "@formatjs/intl-relativetimeformat@^4.5.16":
   version "4.5.16"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-relativetimeformat/-/intl-relativetimeformat-4.5.16.tgz#7449cef3213dd66d25924ca41f125f87b58df95a"
