@@ -8,10 +8,10 @@ import { CHAT_WRAPPER } from '../../utils/test-helpers';
 
 import { RoomProvider } from '../RoomContext';
 import ChatDetails from '../components/cards/ChatDetails';
-import ChatHeader from '../components/chatHeader/ChatHeader';
 import Inbox from '../components/Inbox';
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
 import { InboxProvider } from '../InboxContext';
+import RoomHeader from '../components/RoomHeader';
 import Room from '../components/Room';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
@@ -102,7 +102,7 @@ const ChatPage = () => {
             {roomIdInt && (
               <RoomProvider id={roomIdInt}>
                 <div className={classes.main} data-testid={CHAT_WRAPPER}>
-                  <ChatHeader />
+                  <RoomHeader />
                   <Room />
                 </div>
                 <div className={classes.details}>
