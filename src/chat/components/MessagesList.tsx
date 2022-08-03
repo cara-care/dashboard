@@ -15,7 +15,7 @@ const getDate = function (datetime: Date) {
 };
 
 const MessagesList = function () {
-  const { messages } = React.useContext(RoomContext);
+  const { messages, roomUserMarker } = React.useContext(RoomContext);
 
   let output = [];
   let lastDate = null;
@@ -33,12 +33,14 @@ const MessagesList = function () {
     }
 
     output.push(
-      <React.Fragment key={message.id}>
-        <Message
-          position={getMessagePosition(message.user ? message.user.key : '')}
-          message={message}
-        />
-      </React.Fragment>
+      <Message
+        key={message.id}
+        position={getMessagePosition(message.user ? message.user.key : '')}
+        message={message}
+        seenByRoomUser={
+          roomUserMarker != null && message.id <= roomUserMarker.messageId
+        }
+      />
     );
   }
 

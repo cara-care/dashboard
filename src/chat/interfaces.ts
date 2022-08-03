@@ -59,6 +59,7 @@ export interface Room {
 export enum MessageType {
   Text = 'text',
   RoomMove = 'room_move',
+  Image = 'image',
 }
 
 export interface Message {
@@ -70,4 +71,10 @@ export interface Message {
   type: MessageType;
   updatedAt: Date;
   user: User;
+}
+
+export interface Marker {
+  messageId: number;
+  updatedAt: Date;
+  userId: number;
 }

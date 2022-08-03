@@ -2,6 +2,8 @@ import React from 'react';
 import clsx from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import DoneIcon from '@material-ui/icons/Done';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 
 import { getTime, padWith0 } from '../../utils/dateUtils';
 import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
@@ -55,14 +57,24 @@ const useStyles = makeStyles((theme) => ({
     right: 0,
     textAlign: 'right',
   },
+  checkmarks: {
+    fontSize: '1.2rem',
+    marginLeft: 8,
+    verticalAlign: 'text-bottom',
+  },
 }));
 
 export interface MessageProps {
   position?: 'left' | 'right';
   message: interfaces.Message;
+  seenByRoomUser: boolean;
 }
 
-export default function Message({ message, position = 'left' }: MessageProps) {
+export default function Message({
+  message,
+  position,
+  seenByRoomUser,
+}: MessageProps) {
   const classes = useStyles();
 
   return (
@@ -94,6 +106,13 @@ export default function Message({ message, position = 'left' }: MessageProps) {
           })}
         >
           {padWith0(getTime(message.insertedAt))}
+          {message.type !== 'room_move' &&
+            position === 'right' &&
+            (seenByRoomUser ? (
+              <DoneAllIcon className={classes.checkmarks} />
+            ) : (
+              <DoneIcon className={classes.checkmarks} />
+            ))}
         </Typography>
       </div>
     </div>
