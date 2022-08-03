@@ -1,13 +1,14 @@
 import Kabelwerk from 'kabelwerk';
 import React from 'react';
 
-import { Message, Room, User } from './interfaces';
+import { Marker, Message, Room, User } from './interfaces';
 
 const RoomContext = React.createContext<{
   room: Room | null;
   roomUser: User | null;
   isReady: boolean;
   messages: Message[];
+  roomUserMarker: Marker | null;
   loadEarlierMessages: () => Promise<boolean>;
   postMessage: (text: string) => Promise<Message>;
 }>({
@@ -15,6 +16,7 @@ const RoomContext = React.createContext<{
   roomUser: null,
   isReady: false,
   messages: [],
+  roomUserMarker: null,
   loadEarlierMessages: () => Promise.reject(),
   postMessage: () => Promise.reject(),
 });
@@ -38,19 +40,31 @@ const RoomProvider = function ({
   // the room's messages
   const [messages, setMessages] = React.useState<Message[]>([]);
 
+  // the marker of the room's end user
+  const [roomUserMarker, setRoomUserMarker] = React.useState<Marker | null>(
+    null
+  );
+
   React.useEffect(() => {
     room.current = Kabelwerk.openRoom(id);
 
-    room.current!.on('ready', ({ messages }: { messages: Message[] }) => {
-      setMessages(messages);
+    room.current!.on(
+      'ready',
+      ({ messages, markers }: { messages: Message[]; markers: Marker[] }) => {
+        setMessages(messages);
 
-      if (messages.length) {
-        room.current!.moveMarker();
+        if (messages.length) {
+          room.current!.moveMarker();
+        }
+
+        if (markers[1]) {
+          setRoomUserMarker(markers[1]);
+        }
+
+        setRoomUser(room.current!.getUser());
+        setIsReady(true);
       }
-
-      setRoomUser(room.current!.getUser());
-      setIsReady(true);
-    });
+    );
 
     room.current!.on('message_posted', (message: Message) => {
       setMessages((messages) => {
@@ -58,6 +72,12 @@ const RoomProvider = function ({
       });
 
       room.current!.moveMarker();
+    });
+
+    room.current!.on('marker_moved', (marker: Marker) => {
+      if (marker.userId === room.current!.getUser().id) {
+        setRoomUserMarker(marker);
+      }
     });
 
     room.current!.connect();
@@ -68,8 +88,9 @@ const RoomProvider = function ({
         room.current = null;
       }
 
-      setRoomUser(null);
       setIsReady(false);
+      setRoomUser(null);
+      setRoomUserMarker(null);
       setMessages([]);
     };
   }, [id]);
@@ -125,6 +146,7 @@ const RoomProvider = function ({
         roomUser,
         isReady,
         messages,
+        roomUserMarker,
         loadEarlierMessages,
         postMessage,
       }}

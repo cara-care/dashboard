@@ -5,11 +5,13 @@ import ArchiveIcon from '@material-ui/icons/Archive';
 import UnarchiveIcon from '@material-ui/icons/Unarchive';
 import React from 'react';
 
-import { zIndexes } from '../../../theme';
-import useKabelwerk from '../../hooks/useKabelwerk';
-import useNotification from '../../hooks/useNotification';
-import { RoomContext } from '../../RoomContext';
-import { ChatHeaderSkeleton } from '../other/LoadingScreens';
+import { zIndexes } from '../../theme';
+
+import useKabelwerk from '../hooks/useKabelwerk';
+import useNotification from '../hooks/useNotification';
+import { RoomContext } from '../RoomContext';
+
+import { ChatHeaderSkeleton } from './other/LoadingScreens';
 import AssignTeammate from './AssignTeammate';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatHeader() {
+const RoomHeader = function () {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -136,4 +138,6 @@ export default function ChatHeader() {
       )}
     </Box>
   );
-}
+};
+
+export default RoomHeader;

@@ -18,7 +18,7 @@ const Questionnaire = React.lazy(() =>
   import('../questionnaires/pages/Questionnaire')
 );
 const Programs = React.lazy(() => import('../programs/pages/Programs'));
-const Inbox = React.lazy(() => import('../chat/pages/Inbox'));
+const Chat = React.lazy(() => import('../chat/pages/Chat'));
 
 const routes = [
   {
@@ -101,7 +101,7 @@ const routes = [
   },
   {
     path: '/nutri/inbox/:inboxSlug/:roomId?',
-    component: Inbox,
+    component: Chat,
     exact: false,
     authRequired: true,
   },

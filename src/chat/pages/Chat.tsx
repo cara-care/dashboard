@@ -5,15 +5,16 @@ import { useParams } from 'react-router-dom';
 
 import NutriNavigation from '../../components/NutriNavigation';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
-import ChatDetails from '../components/cards/ChatDetails';
-import Chat from '../components/chat/Chat';
-import ChatHeader from '../components/chatHeader/ChatHeader';
-import ChatRooms from '../components/chatRooms/ChatRooms';
+
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
-import { InboxProvider } from '../InboxContext';
-import { RoomProvider } from '../RoomContext';
+import Inbox from '../components/Inbox';
+import RoomDetails from '../components/RoomDetails';
+import RoomHeader from '../components/RoomHeader';
+import Room from '../components/Room';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
+import { InboxProvider } from '../InboxContext';
+import { RoomProvider } from '../RoomContext';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Inbox = () => {
+const Chat = () => {
   const classes = useStyles();
 
   // which room is currently open is determined by the URL
@@ -93,7 +94,7 @@ const Inbox = () => {
             >
               {inboxSlug && (
                 <InboxProvider slug={inboxSlug}>
-                  <ChatRooms />
+                  <Inbox />
                 </InboxProvider>
               )}
             </Resizable>
@@ -101,11 +102,11 @@ const Inbox = () => {
             {roomIdInt && (
               <RoomProvider id={roomIdInt}>
                 <div className={classes.main} data-testid={CHAT_WRAPPER}>
-                  <ChatHeader />
-                  <Chat />
+                  <RoomHeader />
+                  <Room />
                 </div>
                 <div className={classes.details}>
-                  <ChatDetails />
+                  <RoomDetails />
                 </div>
               </RoomProvider>
             )}
@@ -116,4 +117,4 @@ const Inbox = () => {
   );
 };
 
-export default Inbox;
+export default Chat;

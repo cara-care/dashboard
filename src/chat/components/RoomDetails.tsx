@@ -8,13 +8,14 @@ import {
   getNotesList,
   getUserByEmailOrUsername,
   getUserDataById,
-} from '../../../utils/api';
-import { setChatUserNotes, updatePatient } from '../../redux';
-import useNotification from '../../hooks/useNotification';
-import { RoomContext } from '../../RoomContext';
+} from '../../utils/api';
 
-import UserInformation from './UserInformation';
-import Notes from './NotesCard';
+import useNotification from '../hooks/useNotification';
+import { setChatUserNotes, updatePatient } from '../redux';
+import { RoomContext } from '../RoomContext';
+
+import UserInformation from './cards/UserInformation';
+import Notes from './cards/NotesCard';
 
 const useStyles = makeStyles((_theme) => ({
   root: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((_theme) => ({
   },
 }));
 
-export default function ChatDetails() {
+const RoomDetails = function () {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -71,4 +72,6 @@ export default function ChatDetails() {
       <Notes />
     </div>
   );
-}
+};
+
+export default RoomDetails;

@@ -3,9 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import styled from 'styled-components';
-import useKabelwerk from '../../hooks/useKabelwerk';
-import useNotification from '../../hooks/useNotification';
-import { RoomContext } from '../../RoomContext';
+
+import useKabelwerk from '../hooks/useKabelwerk';
+import useNotification from '../hooks/useNotification';
+import { RoomContext } from '../RoomContext';
 
 const useStyles = makeStyles({
   root: {
@@ -48,7 +49,7 @@ interface AssignTeammateProps {
   handleCloseAssignPopup: () => void;
 }
 
-export default function AssignTeammate({
+const AssignTeammate = function ({
   handleCloseAssignPopup,
 }: AssignTeammateProps) {
   const classes = useStyles();
@@ -99,4 +100,6 @@ export default function AssignTeammate({
       </div>
     </Paper>
   );
-}
+};
+
+export default AssignTeammate;
