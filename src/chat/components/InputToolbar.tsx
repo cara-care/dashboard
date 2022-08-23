@@ -9,6 +9,8 @@ import { useIntl } from 'react-intl';
 
 import TabPanel from '../../components/TabPanel';
 
+import { RoomContext } from '../contexts/RoomContext';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2),
@@ -40,13 +42,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface InputToolbarProps {
-  postMessage: (text: string) => void;
-}
-
-const InputToolbar = function ({ postMessage }: InputToolbarProps) {
+const InputToolbar = function () {
   const classes = useStyles();
   const intl = useIntl();
+
+  const { postText } = React.useContext(RoomContext);
 
   // the draft message
   const [message, setMessage] = React.useState('');
@@ -54,7 +54,7 @@ const InputToolbar = function ({ postMessage }: InputToolbarProps) {
   // called when the send button is presed
   const handleSubmit = function () {
     if (message) {
-      postMessage(message);
+      postText(message);
       setMessage('');
     }
   };
