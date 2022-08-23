@@ -10,9 +10,9 @@ import {
   getUserDataById,
 } from '../../utils/api';
 
+import { RoomContext } from '../contexts/RoomContext';
 import useNotification from '../hooks/useNotification';
 import { setChatUserNotes, updatePatient } from '../redux';
-import { RoomContext } from '../RoomContext';
 
 import UserInformation from './cards/UserInformation';
 import Notes from './cards/NotesCard';

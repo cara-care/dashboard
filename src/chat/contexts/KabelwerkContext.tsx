@@ -3,10 +3,11 @@ import React from 'react';
 import { ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 
-import { isAuthenticated as isAuthenticatedSelector } from '../auth/authReducer';
-import { getChatAuthorizationToken } from '../utils/api';
-import useNotification from './hooks/useNotification';
-import { HubInfo, Message, User } from './interfaces';
+import { isAuthenticated as isAuthenticatedSelector } from '../../auth/authReducer';
+import { getChatAuthorizationToken } from '../../utils/api';
+
+import useNotification from '../hooks/useNotification';
+import { HubInfo, Message, User } from '../interfaces';
 
 export const KabelwerkContext = React.createContext<{
   connected: boolean;

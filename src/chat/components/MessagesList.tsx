@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RoomContext } from '../RoomContext';
+import { RoomContext } from '../contexts/RoomContext';
 
 import Message from './Message';
 import MessageDivider from './MessageDivider';

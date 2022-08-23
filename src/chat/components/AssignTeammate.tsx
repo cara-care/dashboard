@@ -4,9 +4,9 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import styled from 'styled-components';
 
+import { RoomContext } from '../contexts/RoomContext';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
-import { RoomContext } from '../RoomContext';
 
 const useStyles = makeStyles({
   root: {

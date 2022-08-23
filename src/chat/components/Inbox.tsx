@@ -5,9 +5,9 @@ import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import Spinner from '../../components/Spinner';
+import { InboxContext } from '../contexts/InboxContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
-import { InboxContext } from '../InboxContext';
 import * as interfaces from '../interfaces';
 
 import InboxItem from './InboxItem';

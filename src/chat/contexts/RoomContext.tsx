@@ -1,7 +1,7 @@
 import Kabelwerk from 'kabelwerk';
 import React from 'react';
 
-import { Marker, Message, Room, User } from './interfaces';
+import { Marker, Message, Room, User } from '../interfaces';
 
 const RoomContext = React.createContext<{
   room: Room | null;

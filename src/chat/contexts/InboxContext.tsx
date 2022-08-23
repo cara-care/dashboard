@@ -1,8 +1,8 @@
 import Kabelwerk from 'kabelwerk';
 import React from 'react';
 
-import { INBOXES, InboxType } from './inboxes';
-import { Inbox, InboxItem } from './interfaces';
+import { INBOXES, InboxType } from '../inboxes';
+import { Inbox, InboxItem } from '../interfaces';
 
 const InboxContext = React.createContext<{
   isReady: boolean;

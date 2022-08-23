@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Spinner from '../../components/Spinner';
+import { RoomContext } from '../contexts/RoomContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-
-import { RoomContext } from '../RoomContext';
 
 import InputToolbar from './InputToolbar';
 import MessagesList from './MessagesList';
