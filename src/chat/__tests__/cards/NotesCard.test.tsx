@@ -3,13 +3,12 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
+import { currentUserMock, notesMock } from '../../../utils/test-helpers';
 import { renderWithRedux } from '../../../utils/test-utils';
 
 import withProviders from '../../../components/withProviders';
 import NotesCard from '../../components/cards/NotesCard';
 import { initialEditMode } from '../../redux';
-
-import { currentUserMock, notesMock } from '../testHelpers';
 
 describe.skip('<NotesCard />', () => {
   const NotesCardWithUser = () => <NotesCard />;

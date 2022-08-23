@@ -1,12 +1,11 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
+import { chatMessagesMock, currentUserMock } from '../../../utils/test-helpers';
 import { renderWithRedux } from '../../../utils/test-utils';
 
 import withProviders from '../../../components/withProviders';
 import UserInformation from '../../components/cards/UserInformation';
-
-import { chatMessagesMock, currentUserMock } from '../testHelpers';
 
 describe.skip('<UserInformation />', () => {
   const UserInformationWithUser = () => <UserInformation />;

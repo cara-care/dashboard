@@ -2,14 +2,13 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
+import { currentUserMock, notesMock } from '../../../utils/test-helpers';
 import { renderWithRedux } from '../../../utils/test-utils';
 import { sendNote, editNote } from '../../../utils/api';
 
 import withProviders from '../../../components/withProviders';
 import NotesInput from '../../components/cards/NotesInput';
 import { initialEditMode } from '../../redux';
-
-import { currentUserMock, notesMock } from '../testHelpers';
 
 jest.mock('../../../utils/api');
 const sendNoteMock = sendNote as jest.Mock;
