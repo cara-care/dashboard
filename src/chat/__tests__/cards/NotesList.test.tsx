@@ -1,10 +1,13 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import withProviders from '../../../components/withProviders';
+
 import { renderWithRedux } from '../../../utils/test-utils';
+
+import withProviders from '../../../components/withProviders';
 import NotesList from '../../components/cards/NotesList';
 import { initialEditMode } from '../../redux';
-import { currentUserMock, notesMock } from '../../testHelpers';
+
+import { currentUserMock, notesMock } from '../testHelpers';
 
 describe.skip('<NotesList />', () => {
   const NotesListWithUser = () => <NotesList notes={notesMock} />;
