@@ -22,7 +22,7 @@ export interface Inbox {
   connect: () => void;
   disconnect: () => void;
   loadMore: () => Promise<{ items: InboxItem[] }>;
-  on: (event: string, callback: Function) => void;
+  on: (event: string, callback: Function) => string;
 }
 
 export interface InboxItem {
@@ -50,7 +50,7 @@ export interface Room {
   isArchived: () => boolean;
   loadEarlier: () => Promise<{ messages: Message[] }>;
   moveMarker: () => Promise<any>;
-  on: (event: string, callback: Function) => void;
+  on: (event: string, callback: Function) => string;
   postMessage: (message: { text: string }) => Promise<Message>;
   unarchive: () => Promise<void>;
   updateHubUser: (userId: number | null) => Promise<void>;
