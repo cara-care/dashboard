@@ -94,7 +94,7 @@ const Room = function () {
           </Box>
         )}
       </div>
-      {isReady && <InputToolbar onSubmit={postMessage} />}
+      {isReady && <InputToolbar postMessage={postMessage} />}
     </>
   );
 };
