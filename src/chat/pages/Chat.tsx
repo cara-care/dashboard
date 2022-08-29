@@ -11,10 +11,10 @@ import Inbox from '../components/Inbox';
 import RoomDetails from '../components/RoomDetails';
 import RoomHeader from '../components/RoomHeader';
 import Room from '../components/Room';
+import { InboxProvider } from '../contexts/InboxContext';
+import { RoomProvider } from '../contexts/RoomContext';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
-import { InboxProvider } from '../InboxContext';
-import { RoomProvider } from '../RoomContext';
 
 const useStyles = makeStyles(() => ({
   root: {

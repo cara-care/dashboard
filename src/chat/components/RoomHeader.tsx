@@ -7,9 +7,9 @@ import React from 'react';
 
 import { zIndexes } from '../../theme';
 
+import { RoomContext } from '../contexts/RoomContext';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
-import { RoomContext } from '../RoomContext';
 
 import { ChatHeaderSkeleton } from './other/LoadingScreens';
 import AssignTeammate from './AssignTeammate';

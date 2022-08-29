@@ -90,6 +90,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     width: 10,
   },
+  image: {
+    height: 'auto',
+    maxHeight: 32,
+    maxWidth: '100%',
+    verticalAlign: 'middle',
+  },
   timestamp: {
     position: 'absolute',
     right: 8,
@@ -123,9 +129,22 @@ const InboxItem = function ({ inboxItem }: InboxItemProps) {
               variant="body2"
               className={inboxItem.isNew ? classes.unread : ''}
             >
-              {inboxItem.message
-                ? truncate(inboxItem.message.text, { length: 60 })
-                : ''}
+              {inboxItem.message ? (
+                <>
+                  {inboxItem.message.type === 'image' &&
+                  inboxItem.message.upload !== null ? (
+                    <img
+                      src={inboxItem.message.upload.preview.url}
+                      alt={inboxItem.message.upload.preview.url}
+                      className={classes.image}
+                    />
+                  ) : (
+                    truncate(inboxItem.message.text, { length: 60 })
+                  )}
+                </>
+              ) : (
+                '—'
+              )}
             </Typography>
           </div>
         </div>

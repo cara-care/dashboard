@@ -8,21 +8,11 @@ export interface HubInfo {
   users: User[];
 }
 
-export interface User {
-  id: number;
-  key: string;
-  name: string;
-}
-
-//
-// inboxes
-//
-
 export interface Inbox {
   connect: () => void;
   disconnect: () => void;
   loadMore: () => Promise<{ items: InboxItem[] }>;
-  on: (event: string, callback: Function) => void;
+  on: (event: string, callback: Function) => string;
 }
 
 export interface InboxItem {
@@ -37,29 +27,10 @@ export interface InboxItem {
   isNew: boolean;
 }
 
-//
-// rooms and messages
-//
-
-export interface Room {
-  archive: () => Promise<void>;
-  connect: () => void;
-  disconnect: () => void;
-  getHubUser: () => User;
-  getUser: () => User;
-  isArchived: () => boolean;
-  loadEarlier: () => Promise<{ messages: Message[] }>;
-  moveMarker: () => Promise<any>;
-  on: (event: string, callback: Function) => void;
-  postMessage: (message: { text: string }) => Promise<Message>;
-  unarchive: () => Promise<void>;
-  updateHubUser: (userId: number | null) => Promise<void>;
-}
-
-export enum MessageType {
-  Text = 'text',
-  RoomMove = 'room_move',
-  Image = 'image',
+export interface Marker {
+  messageId: number;
+  updatedAt: Date;
+  userId: number;
 }
 
 export interface Message {
@@ -70,11 +41,53 @@ export interface Message {
   text: string;
   type: MessageType;
   updatedAt: Date;
+  upload: Upload | null;
   user: User;
 }
 
-export interface Marker {
-  messageId: number;
-  updatedAt: Date;
-  userId: number;
+export enum MessageType {
+  Text = 'text',
+  RoomMove = 'room_move',
+  Image = 'image',
+}
+
+export interface Room {
+  archive: () => Promise<void>;
+  connect: () => void;
+  disconnect: () => void;
+  getHubUser: () => User;
+  getUser: () => User;
+  isArchived: () => boolean;
+  loadEarlier: () => Promise<{ messages: Message[] }>;
+  moveMarker: () => Promise<Marker>;
+  on: (event: string, callback: Function) => string;
+  postMessage: (params: {
+    text?: string;
+    uploadId?: number;
+  }) => Promise<Message>;
+  postUpload: (file: File) => Promise<Upload>;
+  unarchive: () => Promise<void>;
+  updateHubUser: (hubUserId: number | null) => Promise<void>;
+}
+
+export interface Upload {
+  id: number;
+  mimeType: string;
+  name: string;
+  original: {
+    height: number;
+    url: string;
+    width: number;
+  };
+  preview: {
+    height: number;
+    url: string;
+    width: number;
+  };
+}
+
+export interface User {
+  id: number;
+  key: string;
+  name: string;
 }

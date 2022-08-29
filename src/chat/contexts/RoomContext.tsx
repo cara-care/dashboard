@@ -1,7 +1,8 @@
 import Kabelwerk from 'kabelwerk';
 import React from 'react';
 
-import { Marker, Message, Room, User } from './interfaces';
+import { NotificationsContext } from '../contexts/NotificationsContext';
+import { Marker, Message, Room, Upload, User } from '../interfaces';
 
 const RoomContext = React.createContext<{
   room: Room | null;
@@ -10,7 +11,8 @@ const RoomContext = React.createContext<{
   messages: Message[];
   roomUserMarker: Marker | null;
   loadEarlierMessages: () => Promise<boolean>;
-  postMessage: (text: string) => Promise<Message>;
+  postText: (text: string) => Promise<Message>;
+  postImage: (file: File) => Promise<Message>;
 }>({
   room: null,
   roomUser: null,
@@ -18,7 +20,8 @@ const RoomContext = React.createContext<{
   messages: [],
   roomUserMarker: null,
   loadEarlierMessages: () => Promise.reject(),
-  postMessage: () => Promise.reject(),
+  postText: () => Promise.reject(),
+  postImage: () => Promise.reject(),
 });
 
 const RoomProvider = function ({
@@ -28,6 +31,8 @@ const RoomProvider = function ({
   children: any;
   id: number;
 }) {
+  const { showError } = React.useContext(NotificationsContext);
+
   // the currently active room object
   const room = React.useRef<Room | null>(null);
 
@@ -131,11 +136,34 @@ const RoomProvider = function ({
     }
   };
 
-  const postMessage = function (text: string) {
+  const postText = function (text: string) {
     if (room.current) {
-      return room.current.postMessage({ text });
+      return room.current.postMessage({ text }).catch((error: Error) => {
+        showError('Error posting your last message. ' + error.message);
+        return Promise.reject(error);
+      });
     } else {
-      return Promise.reject();
+      return Promise.reject(new Error('Room is already closed.'));
+    }
+  };
+
+  const postImage = function (file: File) {
+    if (room.current) {
+      return room.current
+        .postUpload(file)
+        .then((upload: Upload) => {
+          if (room.current) {
+            return room.current.postMessage({ uploadId: upload.id });
+          } else {
+            return Promise.reject(new Error('Room is already closed.'));
+          }
+        })
+        .catch((error: Error) => {
+          showError('Error uploading your image. ' + error.message);
+          return Promise.reject(error);
+        });
+    } else {
+      return Promise.reject(new Error('Room is already closed.'));
     }
   };
 
@@ -148,7 +176,8 @@ const RoomProvider = function ({
         messages,
         roomUserMarker,
         loadEarlierMessages,
-        postMessage,
+        postText,
+        postImage,
       }}
     >
       {children}

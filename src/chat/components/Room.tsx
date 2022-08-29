@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 
 import Spinner from '../../components/Spinner';
+import { RoomContext } from '../contexts/RoomContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-
-import { RoomContext } from '../RoomContext';
 
 import InputToolbar from './InputToolbar';
 import MessagesList from './MessagesList';
@@ -43,10 +42,7 @@ const Room = function () {
   const messagesRootRef = useRef<HTMLDivElement>(null);
   const messagesTopRef = useRef<HTMLDivElement>(null);
 
-  // the inbox item selected from the list to the left
-  const { isReady, loadEarlierMessages, postMessage } = React.useContext(
-    RoomContext
-  );
+  const { isReady, loadEarlierMessages } = React.useContext(RoomContext);
 
   // whether we are awaiting Kabelwerk's loadEarlier() function
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -95,7 +91,7 @@ const Room = function () {
           </Box>
         )}
       </div>
-      {isReady && <InputToolbar onSubmit={postMessage} />}
+      {isReady && <InputToolbar />}
     </>
   );
 };

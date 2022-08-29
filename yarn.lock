@@ -8075,10 +8075,10 @@ jsx-ast-utils@^2.2.1, jsx-ast-utils@^2.2.3:
     array-includes "^3.1.1"
     object.assign "^4.1.0"
 
-kabelwerk@0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/kabelwerk/-/kabelwerk-0.3.2.tgz#0a7cb63447e7273ee13658a3adb148584809deb2"
-  integrity sha512-Z2mpBEEfmqDGxUsKI0E6zLJhZQUdhaABKnogEYigaSJp4LkGUDjJ+Dd/WEOz3NbF60EC4GRwNh/Yn0EaGxnTqQ==
+kabelwerk@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/kabelwerk/-/kabelwerk-0.3.3.tgz#0a38de486842c97bdae5b321d72523eea347e640"
+  integrity sha512-hif2UymkaYvf32A9wi1MRU2975Aq7YWVLcYidH+hUwur1HL5U5UHcb4hEDP7MgZxOJFgO8TUz1hQQeFQ3DcicA==
   dependencies:
     phoenix "1.6.10"
 
