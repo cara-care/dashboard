@@ -111,8 +111,8 @@ export const NotificationsProvider: React.FC<{
 
   const triggerDesktopNotification = React.useCallback((message: Message) => {
     if (localStorage.getItem('notifications') === 'on') {
-      new window.Notification(message.user ? message.user.name : '', {
-        body: message.text,
+      new window.Notification(message.user.name, {
+        body: message.type === 'image' ? '(sent an image)' : message.text,
         silent: false,
       });
     }
