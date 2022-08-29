@@ -7,6 +7,7 @@ import BookmarkIcon from '@material-ui/icons/BookmarkBorder';
 import React from 'react';
 import { useIntl } from 'react-intl';
 
+import Modal from '../../components/Modal';
 import TabPanel from '../../components/TabPanel';
 
 import { RoomContext } from '../contexts/RoomContext';
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     overflow: 'hidden' /* to prevent input borders from overflowing */,
   },
-  input: {
+  textarea: {
     marginTop: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     outline: 0,
     border: 0,
     ...theme.typography.body1,
+  },
+  fileInput: {
+    display: 'none',
   },
   footer: {
     paddingRight: theme.spacing(2),
@@ -46,16 +50,52 @@ const InputToolbar = function () {
   const classes = useStyles();
   const intl = useIntl();
 
-  const { postText } = React.useContext(RoomContext);
+  const { postText, postImage } = React.useContext(RoomContext);
 
-  // the draft message
-  const [message, setMessage] = React.useState('');
+  // the <input> for uploading files
+  const fileInput = React.useRef(null);
+
+  // the value of the <textarea> for posting messages
+  const [draft, setDraft] = React.useState('');
+
+  // whether to show the upload preview <Modal>
+  const [showUploadPreview, setShowUploadPreview] = React.useState(false);
+
+  // the src of the upload preview <img>
+  const [uploadPreviewUrl, setUploadPreviewUrl] = React.useState('');
 
   // called when the send button is presed
-  const handleSubmit = function () {
-    if (message) {
-      postText(message);
-      setMessage('');
+  const submitText = function () {
+    if (draft.length > 0) {
+      postText(draft);
+      setDraft('');
+    }
+  };
+
+  // called when the send button on an image preview dialog is pressed
+  const submitImage = function () {
+    // @ts-ignore
+    if (fileInput.current && fileInput.current.files.length) {
+      // @ts-ignore
+      postImage(fileInput.current.files[0]);
+      setShowUploadPreview(false);
+    }
+  };
+
+  // called when the user selects a file from the browser's file picker
+  const handleFileInputChange = function () {
+    // @ts-ignore
+    if (fileInput.current && fileInput.current.files.length) {
+      setUploadPreviewUrl((prevUrl) => {
+        if (prevUrl) {
+          URL.revokeObjectURL(prevUrl);
+        }
+
+        // @ts-ignore
+        return URL.createObjectURL(fileInput.current.files[0]);
+      });
+
+      setShowUploadPreview(true);
     }
   };
 
@@ -64,15 +104,28 @@ const InputToolbar = function () {
       <Paper elevation={0} className={classes.card}>
         <TabPanel value={0} index={0}>
           <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className={classes.input}
+            value={draft}
             rows={4}
+            className={classes.textarea}
+            onChange={(e) => setDraft(e.target.value)}
+          />
+          <input
+            type="file"
+            name="upload"
+            accept="image/*"
+            className={classes.fileInput}
+            ref={fileInput}
+            onChange={handleFileInputChange}
           />
           <div className={classes.footer}>
             <div>
               <IconButton>
-                <AttachIcon />
+                <AttachIcon
+                  onClick={() => {
+                    // @ts-ignore
+                    fileInput.current.click();
+                  }}
+                />
               </IconButton>
               <IconButton>
                 <BookmarkIcon />
@@ -81,8 +134,8 @@ const InputToolbar = function () {
             <Button
               variant="contained"
               color="primary"
-              disabled={!message}
-              onClick={handleSubmit}
+              disabled={!draft}
+              onClick={submitText}
             >
               {intl.formatMessage({
                 id: 'common.send',
@@ -92,6 +145,19 @@ const InputToolbar = function () {
           </div>
         </TabPanel>
       </Paper>
+
+      <Modal
+        open={showUploadPreview}
+        onClose={() => setShowUploadPreview(false)}
+        actions={
+          <>
+            <Button onClick={() => setShowUploadPreview(false)}>Close</Button>
+            <Button onClick={submitImage}>Send</Button>
+          </>
+        }
+      >
+        <img src={uploadPreviewUrl} alt="Preview" />
+      </Modal>
     </div>
   );
 };
