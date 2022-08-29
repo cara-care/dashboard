@@ -6,7 +6,6 @@ import DoneIcon from '@material-ui/icons/Done';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 
 import { getTime, padWith0 } from '../../utils/dateUtils';
-import { MESSAGE_CONTAINER } from '../../utils/test-helpers';
 
 import * as interfaces from '../interfaces';
 
@@ -82,22 +81,39 @@ export default function Message({
       className={clsx(classes.root, {
         [classes.reverse]: position === 'right',
       })}
-      data-testid={MESSAGE_CONTAINER}
     >
       <div
         className={clsx(classes.bubble, {
           [classes.serviceBubble]: message.type === 'room_move',
           [classes.bubbleLeft]: position === 'left',
           [classes.bubbleRight]:
-            position === 'right' && message.type === 'text',
+            position === 'right' && message.type !== 'room_move',
         })}
       >
-        <Typography
-          className={clsx({
-            [classes.serviceMessage]: message.type === 'room_move',
-          })}
-          dangerouslySetInnerHTML={{ __html: message.html }}
-        ></Typography>
+        {message.type === 'image' && message.upload !== null ? (
+          <p>
+            <a
+              href={message.upload.original.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={message.upload.name + ' — click to open in a new tab'}
+            >
+              <img
+                src={message.upload.preview.url}
+                width={message.upload.preview.width}
+                height={message.upload.preview.height}
+                alt={message.upload.name}
+              />
+            </a>
+          </p>
+        ) : (
+          <Typography
+            className={clsx({
+              [classes.serviceMessage]: message.type === 'room_move',
+            })}
+            dangerouslySetInnerHTML={{ __html: message.html }}
+          ></Typography>
+        )}
         <Typography
           variant="caption"
           className={clsx(classes.timestamp, {
