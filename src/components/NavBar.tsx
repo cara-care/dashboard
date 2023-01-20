@@ -11,13 +11,12 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import Translate from '@material-ui/icons/Translate';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CodeIcon from '@material-ui/icons/Code';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import HomeIcon from '@material-ui/icons/Home';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import { makeStyles } from '@material-ui/core/styles';
@@ -73,6 +72,51 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+  navbar: {
+    overflow: 'hidden',
+    backgroundColor: '#333',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+  },
+  navbar_a: {
+    float: 'left',
+    fontSize: '16px',
+    color: 'white',
+    textAlign: 'center',
+    padding: '14px 16px',
+    textDecoration: 'none',
+  },
+  dropdown: {
+    float: 'left',
+    overflow: 'hidden',
+  },
+  .dropbtn: {
+    cursor: 'pointer',
+    fontSize: '16px',
+    border: 'none',
+    outline: 'none',
+    color: 'white',
+    padding: '14px 16px',
+    backgroundColor: 'inherit',
+    fontFamily: 'inherit',
+    margin: '0',
+  },
+  content: {
+    display: 'none',
+    position: 'absolute',
+    backgroundColor: '#f9f9f9',
+    minWidth: '160px',
+    boxShadow: '0px 8px 16px 0px',
+    zIndex: '1',
+  },
+  dropDownAnchor: {
+    float: 'none',
+    color: 'black',
+    padding: '12px 16px',
+    textDecoration: 'none',
+    display: 'block',
+    textAlign: 'left',
+  },
+
 }));
 
 const NavBar: React.FC = () => {
@@ -144,13 +188,16 @@ const NavBar: React.FC = () => {
       <Toolbar>
         <div className={classes.inner}>
           <div className={classes.flex}>
-            <img
-              src={Logo}
-              className={classes.logo}
-              width="40"
-              height="40"
-              alt="Cara"
-            />
+            <Link to="/nutri/home">
+              <img
+                src={Logo}
+                className={classes.logo}
+                width="40"
+                height="40"
+                alt="Cara"
+              />
+            </Link>
+            <h1>Care Panel</h1>
             <Hidden xsDown>
               <Typography variant="body2">
                 {isAuthenticated ? (
@@ -205,6 +252,19 @@ const NavBar: React.FC = () => {
                 </MenuItem>
               ))}
             </Menu>
+            <Tooltip
+              title={
+                <FormattedMessage id="caraPanel.home" defaultMessage="Home" />
+              }
+              aria-label={intl.formatMessage({
+                id: 'caraPanel.home',
+                defaultMessage: 'Home',
+              })}
+            >
+              <IconButton to="/nutri/home" component={Link}>
+                <HomeIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip
               title={intl.formatMessage({
                 id: 'navbar.toggleTheme',
@@ -266,6 +326,7 @@ const NavBar: React.FC = () => {
                     </Button>
                   </Hidden>
                 )}
+
                 <Tooltip
                   title={
                     <FormattedMessage
@@ -282,41 +343,6 @@ const NavBar: React.FC = () => {
                     <VpnKeyIcon />
                   </IconButton>
                 </Tooltip>
-
-                <Tooltip
-                  title={
-                    <FormattedMessage
-                      id="users.revokeAccess"
-                      defaultMessage="Revoke Users Access"
-                    />
-                  }
-                  aria-label={intl.formatMessage({
-                    id: 'users.revokeAccess',
-                    defaultMessage: 'Revoke Users Access',
-                  })}
-                >
-                  <IconButton to="/nutri/revoke-access" component={Link}>
-                    <CancelIcon />
-                  </IconButton>
-                </Tooltip>
-
-                <Tooltip
-                  title={
-                    <FormattedMessage
-                      id="users.getQrCode"
-                      defaultMessage="Get QR Code"
-                    />
-                  }
-                  aria-label={intl.formatMessage({
-                    id: 'users.getQrCode',
-                    defaultMessage: 'Get QR Code',
-                  })}
-                >
-                  <IconButton to="/nutri/user-qr-code" component={Link}>
-                    <CodeIcon />
-                  </IconButton>
-                </Tooltip>
-
                 <Tooltip
                   title={
                     <FormattedMessage
@@ -333,6 +359,19 @@ const NavBar: React.FC = () => {
                     <ExitToApp />
                   </IconButton>
                 </Tooltip>
+
+                <div className="navbar">
+                  <div className="dropdown">
+                    <button className="dropbtn">
+                      Dropdown<i className="fa fa-caret-down"></i>
+                    </button>
+                    <div className="dropdown-content" id="myDropdown">
+                      <a className={classes.dropdown_a} href="#">Link 1</a>
+                      <a href="#">Link 2</a>
+                      <a href="#">Link 3</a>
+                    </div>
+                  </div>
+                </div>
               </>
             )}
           </nav>
