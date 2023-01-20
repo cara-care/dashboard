@@ -77,46 +77,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#333',
     fontFamily: 'Arial, Helvetica, sans-serif',
   },
-  navbar_a: {
-    float: 'left',
-    fontSize: '16px',
-    color: 'white',
-    textAlign: 'center',
-    padding: '14px 16px',
-    textDecoration: 'none',
-  },
-  dropdown: {
-    float: 'left',
-    overflow: 'hidden',
-  },
-  .dropbtn: {
-    cursor: 'pointer',
-    fontSize: '16px',
-    border: 'none',
-    outline: 'none',
-    color: 'white',
-    padding: '14px 16px',
-    backgroundColor: 'inherit',
-    fontFamily: 'inherit',
-    margin: '0',
-  },
-  content: {
-    display: 'none',
-    position: 'absolute',
-    backgroundColor: '#f9f9f9',
-    minWidth: '160px',
-    boxShadow: '0px 8px 16px 0px',
-    zIndex: '1',
-  },
-  dropDownAnchor: {
-    float: 'none',
-    color: 'black',
-    padding: '12px 16px',
-    textDecoration: 'none',
-    display: 'block',
-    textAlign: 'left',
-  },
-
 }));
 
 const NavBar: React.FC = () => {
@@ -163,7 +123,14 @@ const NavBar: React.FC = () => {
   const toggleTheme = useCallback(() => {
     handleThemeChange(isDarkMode ? 'light' : 'dark');
   }, [handleThemeChange, isDarkMode]);
-
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   // desktop notifications
   const [notificationsEnabled, setNotificationsEnabled] = React.useState<
     boolean
@@ -359,21 +326,39 @@ const NavBar: React.FC = () => {
                     <ExitToApp />
                   </IconButton>
                 </Tooltip>
-
-                <div className="navbar">
-                  <div className="dropdown">
-                    <button className="dropbtn">
-                      Dropdown<i className="fa fa-caret-down"></i>
-                    </button>
-                    <div className="dropdown-content" id="myDropdown">
-                      <a className={classes.dropdown_a} href="#">Link 1</a>
-                      <a href="#">Link 2</a>
-                      <a href="#">Link 3</a>
-                    </div>
-                  </div>
-                </div>
               </>
             )}
+
+            <div>
+              <Button
+                id="demo-positioned-button"
+                aria-controls={open ? 'demo-positioned-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+              >
+                Dashboard
+              </Button>
+              <Menu
+                id="demo-positioned-menu"
+                aria-labelledby="demo-positioned-button"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
+            </div>
           </nav>
         </div>
       </Toolbar>
