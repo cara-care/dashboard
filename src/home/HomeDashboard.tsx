@@ -70,53 +70,51 @@ const HomeDashboard: React.FC<RouteComponentProps<{
   }
 
   return (
-    <div>
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <DashboardIcon />
-        </Avatar>
+    <Paper className={classes.paper} elevation={0}>
+      <Avatar className={classes.avatar}>
+        <DashboardIcon />
+      </Avatar>
 
-        <h1>Home Dashboard</h1>
-        <div className={classes.grid}>
-          <div className={classes.gridArticle}>
-            <div className={classes.text}>
-              <h3>Chat Board</h3>
-              <p>Users correspondence with Cara Team.</p>
-              <Link className={classes.link} to="/nutri/inbox/all">
-                <button className={classes.textButton}>More details</button>
-              </Link>
-            </div>
-          </div>
-          <div className={classes.gridArticle}>
-            <div className={classes.text}>
-              <h3>Analytics</h3>
-              <p>User related analytics and data queries.</p>
-              <Link className={classes.link} to="/nutri/analytics">
-                <button className={classes.textButton}>More details</button>
-              </Link>
-            </div>
-          </div>
-          <div className={classes.gridArticle}>
-            <div className={classes.text}>
-              <h3>Revoke Access</h3>
-              <p>Revoke user's access to cara care app.</p>
-              <Link className={classes.link} to="/nutri/revoke-access">
-                <button className={classes.textButton}>More details</button>
-              </Link>
-            </div>
-          </div>
-          <div className={classes.gridArticle}>
-            <div className={classes.text}>
-              <h3>Get QR Code</h3>
-              <p>Two factor authentication setup.</p>
-              <Link className={classes.link} to="/nutri/user-qr-code">
-                <button className={classes.textButton}>More details</button>
-              </Link>
-            </div>
+      <h1>Home Dashboard</h1>
+      <div className={classes.grid}>
+        <div className={classes.gridArticle}>
+          <div className={classes.text}>
+            <h3>Chat Board</h3>
+            <p>Users correspondence with Cara Team.</p>
+            <Link className={classes.link} to="/nutri/inbox/all">
+              <button className={classes.textButton}>More details</button>
+            </Link>
           </div>
         </div>
-      </Paper>
-    </div>
+        <div className={classes.gridArticle}>
+          <div className={classes.text}>
+            <h3>Analytics</h3>
+            <p>User related analytics and data queries.</p>
+            <Link className={classes.link} to="/nutri/analytics">
+              <button className={classes.textButton}>More details</button>
+            </Link>
+          </div>
+        </div>
+        <div className={classes.gridArticle}>
+          <div className={classes.text}>
+            <h3>Revoke Access</h3>
+            <p>Revoke user's access to cara care app.</p>
+            <Link className={classes.link} to="/nutri/revoke-access">
+              <button className={classes.textButton}>More details</button>
+            </Link>
+          </div>
+        </div>
+        <div className={classes.gridArticle}>
+          <div className={classes.text}>
+            <h3>Get QR Code</h3>
+            <p>Two factor authentication setup.</p>
+            <Link className={classes.link} to="/nutri/user-qr-code">
+              <button className={classes.textButton}>More details</button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Paper>
   );
 };
 

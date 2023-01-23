@@ -71,8 +71,8 @@ const routes = [
   {
     path: '/nutri/change-password',
     component: ChangePassword,
-    exact: false,
-    authRequired: false,
+    exact: true,
+    authRequired: true,
   },
   {
     path: '/nutri/select-patient',
