@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useIntl, FormattedMessage } from 'react-intl';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hidden from '@material-ui/core/Hidden';
@@ -32,7 +34,6 @@ import Logo from '../assets/images/logo.svg';
 import { LOCALES } from '../utils/constants';
 import { LANGUAGE_MENU_BUTTON } from '../utils/test-helpers';
 import { DARK_MODE_ICON, LIGHT_MODE_ICON } from '../utils/test-helpers';
-import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -164,7 +165,7 @@ const NavBar: React.FC = () => {
                 alt="Cara"
               />
             </Link>
-            <h1>Care Panel</h1>
+            {isAuthenticated ? <h1>Care Panel</h1> : ''}
             <Hidden xsDown>
               <Typography variant="body2">
                 {isAuthenticated ? (
@@ -310,55 +311,52 @@ const NavBar: React.FC = () => {
                     <VpnKeyIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip
-                  title={
-                    <FormattedMessage
-                      id="_.common.logout"
-                      defaultMessage="Logout"
-                    />
-                  }
-                  aria-label={intl.formatMessage({
-                    id: '_.common.logout',
-                    defaultMessage: 'Logout',
-                  })}
-                >
-                  <IconButton onClick={handleLogout}>
-                    <ExitToApp />
-                  </IconButton>
-                </Tooltip>
+                <div>
+                  <Button
+                    id="profile-settings-button"
+                    aria-controls={open ? 'profile-settings-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClick}
+                  >
+                    <AccountCircleIcon />
+                  </Button>
+                  <Menu
+                    id="profile-settings-menu"
+                    aria-labelledby="profile-settings-button"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                  >
+                    <MenuItem onClick={handleClose}>
+                      <IconButton to="/nutri/profile-settings" component={Link}>
+                        <Brightness4Icon data-testid={LIGHT_MODE_ICON} />
+                      </IconButton>
+                      Profile
+                    </MenuItem>
+                    <MenuItem>
+                      <IconButton
+                        onClick={() => {
+                          handleClose();
+                          handleLogout();
+                        }}
+                      >
+                        <ExitToApp />
+                      </IconButton>
+                      Logout
+                    </MenuItem>
+                  </Menu>
+                </div>
               </>
             )}
-
-            <div>
-              <Button
-                id="demo-positioned-button"
-                aria-controls={open ? 'demo-positioned-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-              >
-                Dashboard
-              </Button>
-              <Menu
-                id="demo-positioned-menu"
-                aria-labelledby="demo-positioned-button"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
-              </Menu>
-            </div>
           </nav>
         </div>
       </Toolbar>
