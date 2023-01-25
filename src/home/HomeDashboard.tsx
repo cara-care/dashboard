@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -28,17 +28,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     width: '100%',
   },
-  column: {
-    float: 'left',
-    width: '25%',
-    padding: '0 10px',
-  },
   gridArticle: {
     border: '1px solid #ccc',
     boxShadow: '2px 2px 6px 0px  grey',
-  },
-  row: {
-    margin: '0 -5px',
   },
   grid: {
     display: 'grid',
@@ -50,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '0 20px 20px',
   },
   textButton: {
-    background: 'green',
+    background: '#45aeb3',
     border: '0',
     color: 'white',
     padding: '10px',
@@ -58,11 +50,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HomeDashboard: React.FC<RouteComponentProps<{
-  token?: string;
-}>> = () => {
+const HomeDashboard = () => {
   const classes = useStyles();
-
   const isAuthenticated = useSelector(isAuthenticatedSelector);
 
   if (!isAuthenticated) {

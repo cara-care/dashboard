@@ -41,22 +41,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
-  link: {
-    display: 'block',
-    textAlign: 'center',
-    width: '100%',
-  },
-  column: {
-    float: 'left',
-    width: '25%',
-    padding: '0 10px',
-  },
   gridArticle: {
     border: '1px solid #ccc',
     boxShadow: '2px 2px 6px 0px  grey',
-  },
-  row: {
-    margin: '0 -5px',
   },
   grid: {
     display: 'grid',
