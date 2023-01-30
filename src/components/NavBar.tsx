@@ -89,7 +89,9 @@ const NavBar: React.FC = () => {
                 alt="Cara"
               />
             </Link>
-            {patientNickname ? patientNickname : <h1>Care Panel</h1>}
+            <span className={classes.button}>
+              {patientNickname ? patientNickname : <h1>Care Panel</h1>}
+            </span>
           </div>
           <nav className={classes.nav}>
             {isAuthenticated && (

@@ -198,4 +198,10 @@ export const getUserQrCode = () => {
   return api.get(`/dashboard/user-qr-code/`);
 };
 
+export const searchUser = (search_term: string) => {
+  return api.post(`/dashboard/search-user/`, {
+    search_term,
+  });
+};
+
 export default api;
