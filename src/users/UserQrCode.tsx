@@ -1,20 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, RouteComponentProps, useHistory } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import QRCode from 'react-qr-code';
+import {Redirect, RouteComponentProps, useHistory} from 'react-router-dom';
+import {FormattedMessage} from "react-intl";
+import QRCode from "react-qr-code";
 
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import CodeIcon from '@material-ui/icons/Code';
-import Paper from '@material-ui/core/Paper';
+import {makeStyles} from "@material-ui/core/styles";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import CodeIcon from "@material-ui/icons/Code";
+import Paper from "@material-ui/core/Paper";
 
-import { isAuthenticated as isAuthenticatedSelector } from '../auth';
-import { getUserQrCode } from '../utils/api';
-import { FetchUsersQrCodeFailed, FetchUsersQrCodeSuccess } from './userActions';
-import useNotification from '../chat/hooks/useNotification';
-import Link from '@material-ui/core/Link';
+import {isAuthenticated as isAuthenticatedSelector} from '../auth';
+import {getUserQrCode} from "../utils/api";
+import {
+  FetchUsersQrCodeFailed,
+  FetchUsersQrCodeSuccess
+} from "./userActions";
+import useNotification from "../chat/hooks/useNotification";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -99,7 +102,6 @@ const UserQrCode: React.FC<RouteComponentProps<{
         <p>{url}</p>
         {url ? <QRCode value={url} /> : null}
         <br />
-
         <Link
           component="button"
           type="button"

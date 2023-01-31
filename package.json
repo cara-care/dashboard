@@ -44,6 +44,7 @@
     "react-dom": "16.13.1",
     "react-hook-form": "^5.2.0",
     "react-intl": "^4.5.5",
+    "react-linkify": "^1.0.0-alpha",
     "react-qr-code": "^2.0.5",
     "react-query": "^2.26.1",
     "react-redux": "^7.2.0",
