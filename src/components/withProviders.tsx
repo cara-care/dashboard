@@ -19,7 +19,7 @@ const messages = {
 export const queryCache = new QueryCache();
 
 const withProviders = (
-  Component: React.ComponentType,
+  Component: React.ComponentType<any>,
   Router = BrowserRouter
 ) => {
   const WithProviders = (props: any) => {
