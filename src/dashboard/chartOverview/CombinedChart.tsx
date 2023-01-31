@@ -210,7 +210,7 @@ const CombinedChart: React.FC<Props> = ({
           return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
             .tag;
         },
-        // remove title
+        // @ts-ignore && remove title
         title: () => null,
       },
     },

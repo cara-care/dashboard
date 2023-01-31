@@ -17,6 +17,9 @@ import api from '../utils/api';
 import CheckPatientWrapper from '../components/IsPatientWrapper';
 
 const useStyles = makeStyles({
+  container: {
+    marginTop: 20,
+  },
   trackingOverview: {
     marginTop: 64,
   },
@@ -49,7 +52,7 @@ const Dashboard: React.FC<RouteComponentProps<{
 
   const renderDashboard = useCallback(() => {
     return (
-      <Container>
+      <Container className={classes.container}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <ChartOverview />
@@ -60,7 +63,7 @@ const Dashboard: React.FC<RouteComponentProps<{
         </Grid>
       </Container>
     );
-  }, [classes.trackingOverview]);
+  }, [classes.container, classes.trackingOverview]);
 
   // Comment: sb can access this component by /export-token/${token} route, without authentication
   if (!isAuthenticated) {
