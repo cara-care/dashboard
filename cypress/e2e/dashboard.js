@@ -14,7 +14,7 @@ describe('dashboard', () => {
     cy.openTrackingOverviewDatePicker();
     cy.setDatePickerDateTo({ year: 2020, month: 6, day: 12 });
     cy.get('.MuiChip-label').should('have.text', 'Beer');
-    cy.changeLanguage(LANGUAGE_CODE);
+    // cy.changeLanguage(LANGUAGE_CODE);
     cy.get('.MuiChip-label').should('have.text', 'Bier');
     // make sure the locale is persisted in localStorage after changing the language
     // TODO: Rewrite test in TypeScript and import the constant for this

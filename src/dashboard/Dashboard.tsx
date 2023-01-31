@@ -17,6 +17,9 @@ import api from '../utils/api';
 import CheckPatientWrapper from '../components/IsPatientWrapper';
 
 const useStyles = makeStyles({
+  container: {
+    marginTop: 20,
+  },
   trackingOverview: {
     marginTop: 64,
   },
@@ -50,14 +53,16 @@ const Dashboard: React.FC<RouteComponentProps<{
   const renderDashboard = useCallback(() => {
     return (
       <Container>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
-            <ChartOverview />
+        <div className={classes.container}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={8}>
+              <ChartOverview />
+            </Grid>
+            <Grid item xs={12} md={4} className={classes.trackingOverview}>
+              <TrackingOverview />
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={4} className={classes.trackingOverview}>
-            <TrackingOverview />
-          </Grid>
-        </Grid>
+        </div>
       </Container>
     );
   }, [classes.trackingOverview]);
