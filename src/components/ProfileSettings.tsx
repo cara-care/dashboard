@@ -174,7 +174,14 @@ const ProfileSettings: React.FC<RouteComponentProps<{
           </div>
         </div>
         <div className={classes.gridArticle}>
-          <div className={classes.text}>
+          <div
+            className={classes.text}
+            id="changePassword.changePassword"
+            aria-label={intl.formatMessage({
+              id: 'changePassword.changePassword',
+              defaultMessage: 'Change Password',
+            })}
+          >
             <h3>
               Change Password
               <IconButton to="/nutri/change-password" component={Link}>
