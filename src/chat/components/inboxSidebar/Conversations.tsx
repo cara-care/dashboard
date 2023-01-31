@@ -5,7 +5,8 @@ import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import ArrowRight from '@material-ui/icons/ArrowRight';
 import clsx from 'classnames';
 import React from 'react';
-import useKabelwerk from '../../hooks/useKabelwerk';
+import { NavLink } from 'react-router-dom';
+
 import { INBOXES, InboxType } from '../../inboxes';
 import ConversationsItem from './ConversationsItem';
 
@@ -37,13 +38,19 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 12,
     opacity: 0.7,
   },
+  navLink: {
+    color: theme.palette.text.primary,
+    textDecoration: 'none',
+  },
+  navLinkActive: {
+    color: theme.palette.primary.main,
+  },
 }));
 
 export default function Conversations() {
   const classes = useStyles();
-  const { openInbox } = useKabelwerk();
   const [isMenuCollapsed, setIsMenuCollapsed] = React.useState(false);
-  const [currentInbox, setCurrentInbox] = React.useState(InboxType.ALL)
+  // const [currentInbox, setCurrentInbox] = React.useState(InboxType.ALL);
 
   return (
     <div>
@@ -71,22 +78,25 @@ export default function Conversations() {
         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
           {Object.keys(INBOXES).map((inboxType: InboxType) => {
             return (
-              <ConversationsItem
+              <NavLink
+                to={`/nutri/inbox/${inboxType}`}
                 key={inboxType}
-                icon={
-                  <Avatar className={clsx(classes.avatar, classes.avatarEmoji)}>
-                    {INBOXES[inboxType].icon}
-                  </Avatar>
-                }
-                text={INBOXES[inboxType].name}
-                // count={1}
-                active={currentInbox === inboxType}
-                handleSelected={() => {
-                  setCurrentInbox(inboxType)
-                  openInbox(inboxType);
-                }}
-                isMenuCollapsed={isMenuCollapsed}
-              />
+                className={classes.navLink}
+                activeClassName={classes.navLinkActive}
+              >
+                <ConversationsItem
+                  icon={
+                    <Avatar
+                      className={clsx(classes.avatar, classes.avatarEmoji)}
+                    >
+                      {INBOXES[inboxType].icon}
+                    </Avatar>
+                  }
+                  text={INBOXES[inboxType].name}
+                  // count={1}
+                  isMenuCollapsed={isMenuCollapsed}
+                />
+              </NavLink>
             );
           })}
         </AccordionDetails>

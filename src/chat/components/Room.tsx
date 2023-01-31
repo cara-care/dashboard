@@ -1,11 +1,13 @@
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
-import Spinner from '../../../components/Spinner';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-import useKabelwerk from '../../hooks/useKabelwerk';
-import ChatMessagesList from './ChatMessagesList';
+
+import Spinner from '../../components/Spinner';
+import { RoomContext } from '../contexts/RoomContext';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
+
 import InputToolbar from './InputToolbar';
+import MessagesList from './MessagesList';
 
 const useStyles = makeStyles((theme) => ({
   messages: {
@@ -34,14 +36,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Chat() {
+const Room = function () {
   const classes = useStyles();
 
   const messagesRootRef = useRef<HTMLDivElement>(null);
   const messagesTopRef = useRef<HTMLDivElement>(null);
 
-  // the inbox item selected from the list to the left
-  const { currentRoom, loadEarlierMessages, postMessage } = useKabelwerk();
+  const { isReady, loadEarlierMessages } = React.useContext(RoomContext);
 
   // whether we are awaiting Kabelwerk's loadEarlier() function
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -52,10 +53,10 @@ export default function Chat() {
   useEffect(() => {
     setIsLoadingMore(false);
     setCanLoadMore(true);
-  }, [currentRoom]);
+  }, [isReady]);
 
   const handleIntersect = function () {
-    if (currentRoom !== null && !isLoadingMore && canLoadMore) {
+    if (isReady && !isLoadingMore && canLoadMore) {
       setIsLoadingMore(true);
       loadEarlierMessages()
         .then((hasNewMessages: boolean) => {
@@ -82,7 +83,7 @@ export default function Chat() {
   return (
     <>
       <div ref={messagesRootRef} className={classes.messages}>
-        {currentRoom && <ChatMessagesList />}
+        {isReady && <MessagesList />}
         <div ref={messagesTopRef} className={classes.top} />
         {isLoadingMore && (
           <Box display="flex" alignItems="center" justifyContent="center" p={1}>
@@ -90,7 +91,9 @@ export default function Chat() {
           </Box>
         )}
       </div>
-      {currentRoom && <InputToolbar onSubmit={postMessage} />}
+      {isReady && <InputToolbar />}
     </>
   );
-}
+};
+
+export default Room;

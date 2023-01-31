@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { Message } from './interfaces';
+
+import { Message } from '../interfaces';
 
 enum Severity {
   Info = 'info',
@@ -110,8 +111,8 @@ export const NotificationsProvider: React.FC<{
 
   const triggerDesktopNotification = React.useCallback((message: Message) => {
     if (localStorage.getItem('notifications') === 'on') {
-      new window.Notification(message.user ? message.user.name : '', {
-        body: message.text,
+      new window.Notification(message.user.name, {
+        body: message.type === 'image' ? '(sent an image)' : message.text,
         silent: false,
       });
     }

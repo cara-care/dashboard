@@ -1,13 +1,18 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Resizable, ResizeCallback } from 're-resizable';
 import React from 'react';
+import { useParams } from 'react-router-dom';
+
 import NutriNavigation from '../../components/NutriNavigation';
 import { CHAT_WRAPPER } from '../../utils/test-helpers';
-import ChatDetails from '../components/cards/ChatDetails';
-import Chat from '../components/chat/Chat';
-import ChatHeader from '../components/chatHeader/ChatHeader';
-import ChatRooms from '../components/chatRooms/ChatRooms';
+
 import InboxSidebar from '../components/inboxSidebar/InboxSidebar';
+import Inbox from '../components/Inbox';
+import RoomDetails from '../components/RoomDetails';
+import RoomHeader from '../components/RoomHeader';
+import Room from '../components/Room';
+import { InboxProvider } from '../contexts/InboxContext';
+import { RoomProvider } from '../contexts/RoomContext';
 import useKabelwerk from '../hooks/useKabelwerk';
 import useNotification from '../hooks/useNotification';
 
@@ -44,8 +49,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Inbox = () => {
+const Chat = () => {
   const classes = useStyles();
+
+  // which room is currently open is determined by the URL
+  const { inboxSlug, roomId } = useParams();
+  const roomIdInt = roomId ? parseInt(roomId) : null;
 
   const { connected } = useKabelwerk();
   const { showInfo, showSuccess } = useNotification();
@@ -83,16 +92,24 @@ const Inbox = () => {
               maxWidth={400}
               onResizeStop={handleResizeStop}
             >
-              <ChatRooms />
+              {inboxSlug && (
+                <InboxProvider slug={inboxSlug}>
+                  <Inbox />
+                </InboxProvider>
+              )}
             </Resizable>
 
-            <div className={classes.main} data-testid={CHAT_WRAPPER}>
-              <ChatHeader />
-              <Chat />
-            </div>
-            <div className={classes.details}>
-              <ChatDetails />
-            </div>
+            {roomIdInt && (
+              <RoomProvider id={roomIdInt}>
+                <div className={classes.main} data-testid={CHAT_WRAPPER}>
+                  <RoomHeader />
+                  <Room />
+                </div>
+                <div className={classes.details}>
+                  <RoomDetails />
+                </div>
+              </RoomProvider>
+            )}
           </>
         ) : null}
       </div>
@@ -100,4 +117,4 @@ const Inbox = () => {
   );
 };
 
-export default Inbox;
+export default Chat;

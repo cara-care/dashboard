@@ -190,12 +190,18 @@ export const deleteNote = (userId: number, noteId: number) => {
 export const revokeAccess = (codes: string, deactivation_type: string) => {
   return api.post(`/dashboard/revoke-users-access/`, {
     codes,
-    deactivation_type
+    deactivation_type,
   });
 };
 
 export const getUserQrCode = () => {
   return api.get(`/dashboard/user-qr-code/`);
+};
+
+export const searchUser = (search_term: string) => {
+  return api.post(`/dashboard/search-user/`, {
+    search_term,
+  });
 };
 
 export default api;

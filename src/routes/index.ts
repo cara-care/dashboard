@@ -8,17 +8,22 @@ import {
 } from '../auth';
 import NotFound from './NotFound';
 
+const AnalyticsHome = React.lazy(() => import('../analytics/AnalyticsHome'));
+const Chat = React.lazy(() => import('../chat/pages/Chat'));
 const Dashboard = React.lazy(() => import('../dashboard/Dashboard'));
-const RevokeAccess = React.lazy(() => import('../users/RevokeAccess'));
-const UserQrCode = React.lazy(() => import('../users/UserQrCode'));
+const HomeDashboard = React.lazy(() => import('../home/HomeDashboard'));
+const Programs = React.lazy(() => import('../programs/pages/Programs'));
+const ProfileSettings = React.lazy(() =>
+  import('../components/ProfileSettings')
+);
 const Questionnaires = React.lazy(() =>
   import('../questionnaires/pages/Questionnaires')
 );
 const Questionnaire = React.lazy(() =>
   import('../questionnaires/pages/Questionnaire')
 );
-const Programs = React.lazy(() => import('../programs/pages/Programs'));
-const Inbox = React.lazy(() => import('../chat/pages/Inbox'));
+const RevokeAccess = React.lazy(() => import('../users/RevokeAccess'));
+const UserQrCode = React.lazy(() => import('../users/UserQrCode'));
 
 const routes = [
   {
@@ -30,6 +35,12 @@ const routes = [
   {
     path: '/nutri',
     component: Login,
+    exact: true,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/analytics',
+    component: AnalyticsHome,
     exact: true,
     authRequired: true,
   },
@@ -52,10 +63,16 @@ const routes = [
     authRequired: false,
   },
   {
+    path: '/nutri/profile-settings',
+    component: ProfileSettings,
+    exact: true,
+    authRequired: true,
+  },
+  {
     path: '/nutri/change-password',
     component: ChangePassword,
-    exact: false,
-    authRequired: false,
+    exact: true,
+    authRequired: true,
   },
   {
     path: '/nutri/select-patient',
@@ -88,6 +105,12 @@ const routes = [
     authRequired: true,
   },
   {
+    path: '/nutri/home',
+    component: HomeDashboard,
+    exact: false,
+    authRequired: true,
+  },
+  {
     path: '/nutri/revoke-access',
     component: RevokeAccess,
     exact: false,
@@ -100,8 +123,8 @@ const routes = [
     authRequired: true,
   },
   {
-    path: '/nutri/inbox/:userId?/:username?',
-    component: Inbox,
+    path: '/nutri/inbox/:inboxSlug/:roomId?',
+    component: Chat,
     exact: false,
     authRequired: true,
   },

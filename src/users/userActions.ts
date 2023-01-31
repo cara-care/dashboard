@@ -7,16 +7,17 @@ export enum UsersActionTypes {
 
 export interface RevokeUsersAccessSuccessAction {
   type: UsersActionTypes.REVOKE_USERS_ACCESS_SUCCESS;
-  message: string
+  message: string;
 }
 
-export const RevokeUsersAccessSuccess = ({message}: {
+export const RevokeUsersAccessSuccess = ({
+  message,
+}: {
   message: string;
 }): RevokeUsersAccessSuccessAction => ({
   type: UsersActionTypes.REVOKE_USERS_ACCESS_SUCCESS,
   message,
 });
-
 
 export interface RevokeUsersAccessFailedAction {
   type: UsersActionTypes.REVOKE_USERS_ACCESS_FAILED;
@@ -32,10 +33,12 @@ export const RevokeUsersAccessFailed = (
 
 export interface FetchUsersQrCodeSuccessAction {
   type: UsersActionTypes.FETCH_USER_QR_CODE_SUCCESS;
-  url: string
+  url: string;
 }
 
-export const FetchUsersQrCodeSuccess = ({url}: {
+export const FetchUsersQrCodeSuccess = ({
+  url,
+}: {
   url: string;
 }): FetchUsersQrCodeSuccessAction => ({
   type: UsersActionTypes.FETCH_USER_QR_CODE_SUCCESS,

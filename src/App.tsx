@@ -1,15 +1,15 @@
-// import { ReactQueryDevtools } from 'react-query-devtools';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { v1 } from 'uuid';
-import { KabelwerkProvider } from './chat/KabelwerkContext';
+
+import { KabelwerkProvider } from './chat/contexts/KabelwerkContext';
+import { NotificationsProvider } from './chat/contexts/NotificationsContext';
 import Layout from './components/Layout';
 import Placeholder from './components/Placeholder';
 import withProviders from './components/withProviders';
 import routes from './routes';
 import PrivateRoute from './routes/PrivateRoute';
-import { NotificationsProvider } from './chat/NotificationsContext';
 
 export const App = () => (
   <>
@@ -41,9 +41,6 @@ export const App = () => (
         </KabelwerkProvider>
       </NotificationsProvider>
     </Layout>
-    {/* <ReactQueryDevtools
-      initialIsOpen={process.env.NODE_ENV === 'development'}
-    /> */}
   </>
 );
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KabelwerkContext } from '../KabelwerkContext';
+import { KabelwerkContext } from '../contexts/KabelwerkContext';
 
 const useKabelwerk = () => {
   const context = React.useContext(KabelwerkContext);

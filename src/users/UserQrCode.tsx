@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {Redirect, RouteComponentProps, useHistory} from 'react-router-dom';
 import {FormattedMessage} from "react-intl";
@@ -18,7 +18,6 @@ import {
 } from "./userActions";
 import useNotification from "../chat/hooks/useNotification";
 import Link from "@material-ui/core/Link";
-
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -51,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const UserQrCode: React.FC<RouteComponentProps<{
   token?: string;
 }>> = () => {
@@ -60,22 +58,22 @@ const UserQrCode: React.FC<RouteComponentProps<{
   const history = useHistory();
 
   const isAuthenticated = useSelector(isAuthenticatedSelector);
-  const [url, setUrl] = useState('')
-  const goBack = useCallback(() => { history.go(-1);}, [history]);
+  const [url, setUrl] = useState('');
+  const goBack = useCallback(() => {
+    history.go(-1);
+  }, [history]);
   const { showError } = useNotification();
 
   useEffect(() => {
-
     getUserQrCode()
       .then((res: any) => {
         dispatch(FetchUsersQrCodeSuccess(res.data));
-        setUrl(res.data.url)
+        setUrl(res.data.url);
       })
       .catch((error: Error) => {
         dispatch(FetchUsersQrCodeFailed(error));
         showError(error.message);
       });
-
   }, [dispatch, showError]);
 
   if (!isAuthenticated) {
@@ -83,7 +81,6 @@ const UserQrCode: React.FC<RouteComponentProps<{
   }
 
   return (
-
     <div className={classes.wrapper}>
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -94,14 +91,17 @@ const UserQrCode: React.FC<RouteComponentProps<{
             id="users.userQrCode"
             defaultMessage="User QR Code"
           />
-
         </Typography>
-        <p>Install <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">
-          Google Authenticator</a> and use the URL below or scan QR Code:</p>
+        <p>
+          Install{' '}
+          <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2">
+            Google Authenticator
+          </a>{' '}
+          and use the URL below or scan QR Code:
+        </p>
         <p>{url}</p>
         {url ? <QRCode value={url} /> : null}
-        <br/>
-
+        <br />
         <Link
           component="button"
           type="button"
@@ -109,10 +109,7 @@ const UserQrCode: React.FC<RouteComponentProps<{
           className={classes.link}
           onClick={goBack}
         >
-          <FormattedMessage
-            id="userQrCode.goBack"
-            defaultMessage="Go back"
-          />
+          <FormattedMessage id="userQrCode.goBack" defaultMessage="Go back" />
         </Link>
       </Paper>
     </div>

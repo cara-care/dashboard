@@ -53,11 +53,6 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
             text="Cara Care Premium"
             count={6}
             active={selectedIndex === 0}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 0);
-            }}
           />
           <ConversationsItem
             type="secondary"
@@ -65,11 +60,6 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
             text="Cara Care Free"
             count={6}
             active={selectedIndex === 1}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 1);
-            }}
           />
           <ConversationsItem
             type="secondary"
@@ -77,11 +67,6 @@ export default function SidebarPrograms({ title }: SidebarProgramsProps) {
             text="Technical Support"
             count={999}
             active={selectedIndex === 2}
-            handleSelected={(
-              e: React.MouseEvent<HTMLDivElement, MouseEvent>
-            ) => {
-              handleListItemClick(e, 2);
-            }}
           />
         </AccordionDetails>
       </Accordion>

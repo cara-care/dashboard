@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import truncate from 'lodash/truncate';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import useKabelwerk from '../../hooks/useKabelwerk';
-import { InboxItem } from '../../interfaces';
+import { NavLink, useParams } from 'react-router-dom';
+
+import * as interfaces from '../interfaces';
 
 const toISODate = (dateTime: Date) => {
   return dateTime.toISOString().substring(0, 10);
@@ -90,6 +90,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 5,
     width: 10,
   },
+  image: {
+    height: 'auto',
+    maxHeight: 32,
+    maxWidth: '100%',
+    verticalAlign: 'middle',
+  },
   timestamp: {
     position: 'absolute',
     right: 8,
@@ -98,22 +104,19 @@ const useStyles = makeStyles((theme) => ({
   divder: { backgroundColor: '#d8eceb' },
 }));
 
-interface ChatRoomItemProps {
-  inboxItem: InboxItem;
+interface InboxItemProps {
+  inboxItem: interfaces.InboxItem;
 }
 
-export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
+const InboxItem = function ({ inboxItem }: InboxItemProps) {
   const classes = useStyles();
-  const { openRoom } = useKabelwerk();
+  const { inboxSlug } = useParams();
 
   return (
     <NavLink
-      to={`/nutri/inbox/${inboxItem.room.id}`}
+      to={`/nutri/inbox/${inboxSlug}/${inboxItem.room.id}`}
       className={classes.link}
       activeClassName={classes.active}
-      onClick={() => {
-        openRoom(inboxItem.room.id);
-      }}
     >
       <div className={classes.root}>
         <div className={classes.container}>
@@ -126,9 +129,22 @@ export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
               variant="body2"
               className={inboxItem.isNew ? classes.unread : ''}
             >
-              {inboxItem.message
-                ? truncate(inboxItem.message.text, { length: 60 })
-                : ''}
+              {inboxItem.message ? (
+                <>
+                  {inboxItem.message.type === 'image' &&
+                  inboxItem.message.upload !== null ? (
+                    <img
+                      src={inboxItem.message.upload.preview.url}
+                      alt={inboxItem.message.upload.preview.url}
+                      className={classes.image}
+                    />
+                  ) : (
+                    truncate(inboxItem.message.text, { length: 60 })
+                  )}
+                </>
+              ) : (
+                '—'
+              )}
             </Typography>
           </div>
         </div>
@@ -141,4 +157,6 @@ export default function ChatRoomItem({ inboxItem }: ChatRoomItemProps) {
       <Divider className={classes.divder} />
     </NavLink>
   );
-}
+};
+
+export default InboxItem;

@@ -7,7 +7,7 @@ import {
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
-// import logger from 'redux-logger';
+
 import {
   ChartOverviewState,
   chartOverview,
@@ -44,7 +44,6 @@ import {
   chatReducer,
   ChatState,
 } from '../chat/redux';
-
 import {
   revokeAccessInitialState,
   revokeAccessReducer,
@@ -53,7 +52,7 @@ import {
   userQrCodeInitialState,
   userQrCodeReducer,
   UserQrCodeState,
-} from "../users";
+} from '../users';
 
 export interface RootState {
   locale: LocaleState;
@@ -118,10 +117,6 @@ export default function configureStore({
   const sagaMiddleware = createSagaMiddleware();
 
   const middlewares: Middleware[] = [sagaMiddleware];
-
-  // if (process.env.NODE_ENV === 'development') {
-  //   middlewares.push(logger);
-  // }
 
   const store = createStore<RootState, RootActions, {}, {}>(
     rootReducer,
