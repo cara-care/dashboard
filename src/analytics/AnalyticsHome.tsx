@@ -15,9 +15,8 @@ import { searchUser } from '../utils/api';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    // paddingTop: theme.spacing(8),
     width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    display: 'block',
     [theme.breakpoints.up(400 + theme.spacing(6))]: {
       width: 800,
       marginLeft: 'auto',
@@ -51,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
   error: {
     color: 'red',
   },
+  listItem: {
+    paddingTop: '10px',
+  },
 }));
 
 const AnalyticsHome = () => {
@@ -66,6 +68,8 @@ const AnalyticsHome = () => {
 
     if (searchTerm === '') {
       setError('Please provide search term.');
+      setUserFound(false);
+      setUserData({});
       return;
     }
 
@@ -92,13 +96,12 @@ const AnalyticsHome = () => {
   }
 
   return (
-    <Paper className={classes.paper} elevation={0}>
+    <form className={classes.paper} onSubmit={handleSubmit}>
       <Avatar className={classes.avatar}>
         <AssessmentIcon />
       </Avatar>
-
       <h1>Analytics Dashboard</h1>
-      <Paper component="form" className={classes.searchBarPaper}>
+      <Paper className={classes.searchBarPaper}>
         <InputBase
           className={classes.inputBase}
           placeholder="Search User"
@@ -218,22 +221,30 @@ const AnalyticsHome = () => {
           {userData['t0_answers'] !== undefined && (
             <div>
               <strong>T0 Answers: </strong>
-              {userData['t0_answers'].map(
-                (
-                  key: {} | null | undefined,
-                  i: string | number | undefined
-                ) => (
-                  <div key={i}>
-                    <span>Slug: {userData['t0_answers'][key]['slug']}</span>
-                    <span>Data: {userData['t0_answers'][key]['data']}</span>
-                  </div>
-                )
-              )}
+              <ul>
+                {userData['t0_answers'].map(
+                  (answer: { [x: string]: React.ReactNode }, index: any) => {
+                    return (
+                      <li key={index} className={classes.listItem}>
+                        <span>
+                          <strong>Slug: </strong>
+                          {answer.slug}
+                        </span>
+                        <br />
+                        <span>
+                          <strong>Answer: </strong>
+                          {answer.data ? JSON.stringify(answer.data) : 'None'}
+                        </span>
+                      </li>
+                    );
+                  }
+                )}
+              </ul>
             </div>
           )}
         </div>
       )}
-    </Paper>
+    </form>
   );
 };
 
