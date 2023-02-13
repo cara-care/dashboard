@@ -86,7 +86,9 @@ const AnalyticsHome = () => {
         if (error.response.status === 403) {
           setError(error.response.data.detail);
         } else {
-          setError('No user found with similar username, email address or code.');
+          setError(
+            'No user found with similar username, email address or code.'
+          );
         }
       });
   };
@@ -140,7 +142,11 @@ const AnalyticsHome = () => {
           </p>
           <p>
             <strong>Code Activated: </strong>
-            {userData['code_activated'] ? userData['code_activated'] : 'False'}
+            {userData['code_activated'] === true
+              ? 'True'
+              : userData['code_activated'] === false
+              ? 'False'
+              : userData['code_activated']}
           </p>
           <p>
             <strong>Onboarding Done On Date: </strong>
