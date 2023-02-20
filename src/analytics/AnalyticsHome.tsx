@@ -222,7 +222,19 @@ const AnalyticsHome = () => {
           </p>
           <p>
             <strong>Modules: </strong>
-            {userData['programme_modules']}
+            <ul>
+              {userData['programme_modules'] &&
+                userData['programme_modules'].map(
+                  (
+                    module: {} | null | undefined,
+                    i: string | number | undefined
+                  ) => (
+                    <li key={i}>
+                      <span>{module}</span>
+                    </li>
+                  )
+                )}
+            </ul>
           </p>
           {userData['t0_answers'] !== undefined && (
             <div>
