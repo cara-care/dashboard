@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { EPostFormData } from '../epost/PrescriptionEpostService';
 
 // In production the requests made to `/api/` are proxied to production backend -> `public/_redirects`:
 // https://www.netlify.com/docs/redirects/#proxying
@@ -201,6 +202,26 @@ export const getUserQrCode = () => {
 export const searchUser = (search_term: string) => {
   return api.post(`/dashboard/search-user/`, {
     search_term,
+  });
+};
+
+export const sendPrescription = (ePostData: EPostFormData) => {
+  const formData = new FormData();
+  formData.append('pdf_file', ePostData.pdfFile);
+  formData.append('address_line_one', ePostData.addressLineOne);
+  formData.append('address_line_two', ePostData.addressLineTwo);
+  formData.append('post_code', ePostData.postCode);
+  formData.append('city', ePostData.city);
+  formData.append('sender_address_line_one', ePostData.senderAddressLineOne);
+  formData.append('sender_street', ePostData.senderAddressLineTwo);
+  formData.append('sender_zip_code', ePostData.senderPostCode);
+  formData.append('sender_city', ePostData.senderCity);
+
+  return api.post(`/dashboard/post-letter/`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    transformRequest: (formData) => formData,
   });
 };
 
