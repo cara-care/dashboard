@@ -126,7 +126,6 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
         .then((res: any) => {
           setShowSuccessMessage(true);
           setError('');
-          setShowSuccessMessage(true);
         })
         .catch((error) => {
           setError(
