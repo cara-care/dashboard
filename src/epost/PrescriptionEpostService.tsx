@@ -97,7 +97,6 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
   const [formData, setFormData] = useState<InitialFormData>(blankForm);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [error, setError] = useState('');
-  const [pdfName, setPdfName] = React.useState('');
 
   const handleFileInputChange = useCallback(() => {
     if (
@@ -106,8 +105,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
       fileInput.current.files.length
     ) {
       setError('');
-      setFormData({ ...formData, pdfFile: fileInput.current.files[0] });
-      return setPdfName(fileInput.current.files[0].name);
+      return setFormData({ ...formData, pdfFile: fileInput.current.files[0] });
     }
     return;
   }, [formData, fileInput]);
@@ -138,7 +136,6 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
 
   const handleModalClose = useCallback(() => {
     setFormData((formData) => blankForm);
-    setPdfName('');
     setShowSuccessMessage(false);
   }, [blankForm]);
 
@@ -299,10 +296,10 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
               ref={fileInput}
               onChange={handleFileInputChange}
             />
-            {!!pdfName ? (
+            {!!formData.pdfFile?.name ? (
               <div className={styles.row}>
                 <Typography className={styles.fileName} variant="body1">
-                  {pdfName}
+                  {formData.pdfFile?.name}
                 </Typography>
                 <CheckCircleIcon color="primary" />
               </div>
@@ -326,7 +323,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           {error}
         </Typography>
         <Button
-          disabled={!pdfName}
+          disabled={!formData.pdfFile?.name}
           className={styles.submit}
           type="submit"
           fullWidth
@@ -355,7 +352,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
               <br />
               {`Sender Address: ${formData.senderAddressLineOne}, ${formData.senderAddressLineTwo}, ${formData.senderCity}, ${formData.senderPostCode}`}
               <br />
-              {`PDF file name: ${pdfName}`}
+              {`PDF file name: ${formData.pdfFile?.name}`}
             </Typography>
             <Button className={styles.modalButton} onClick={handleModalClose}>
               <Typography variant="subtitle2">Close</Typography>
