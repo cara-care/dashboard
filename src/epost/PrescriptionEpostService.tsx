@@ -8,6 +8,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { sendPrescription } from '../utils/api';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '../components/Modal';
+import { formatFormData } from './epostUtils';
 
 interface FormData {
   addressLineOne: string;
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: '10px 0 50px',
   },
   fileInput: {
     display: 'none',
@@ -117,7 +118,11 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
       if (formData.pdfFile === null) {
         return;
       }
-      sendPrescription({ ...formData, pdfFile: formData.pdfFile })
+      const ePostFormData = formatFormData({
+        ...formData,
+        pdfFile: formData.pdfFile,
+      });
+      sendPrescription(ePostFormData)
         .then((res: any) => {
           setShowSuccessMessage(true);
           setError('');

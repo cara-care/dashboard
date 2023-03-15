@@ -205,23 +205,11 @@ export const searchUser = (search_term: string) => {
   });
 };
 
-export const sendPrescription = (ePostData: EPostFormData) => {
-  const formData = new FormData();
-  formData.append('pdf_file', ePostData.pdfFile);
-  formData.append('address_line_one', ePostData.addressLineOne);
-  formData.append('address_line_two', ePostData.addressLineTwo);
-  formData.append('post_code', ePostData.postCode);
-  formData.append('city', ePostData.city);
-  formData.append('sender_address_line_one', ePostData.senderAddressLineOne);
-  formData.append('sender_street', ePostData.senderAddressLineTwo);
-  formData.append('sender_zip_code', ePostData.senderPostCode);
-  formData.append('sender_city', ePostData.senderCity);
-
+export const sendPrescription = (formData: FormData) => {
   return api.post(`/dashboard/post-letter/`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    transformRequest: (formData) => formData,
   });
 };
 
