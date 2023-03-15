@@ -79,8 +79,6 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
 }>> = () => {
   const fileInput = React.useRef<HTMLInputElement>(null);
 
-  const styles = useStyles();
-  const intl = useIntl();
   const blankForm = {
     pdfFile: null,
     addressLineOne: '',
@@ -93,6 +91,8 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
     senderCity: '',
   };
 
+  const styles = useStyles();
+  const intl = useIntl();
   const [formData, setFormData] = useState<InitialFormData>(blankForm);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [error, setError] = useState('');
@@ -109,7 +109,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
       return setPdfName(fileInput.current.files[0].name);
     }
     return;
-  }, [formData]);
+  }, [formData, fileInput]);
 
   const handleSubmit = useCallback(
     (event: { preventDefault: () => void }) => {
@@ -117,9 +117,9 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
       if (formData.pdfFile === null) {
         return;
       }
-      setShowSuccessMessage(true);
       sendPrescription({ ...formData, pdfFile: formData.pdfFile })
         .then((res: any) => {
+          setShowSuccessMessage(true);
           setError('');
           setShowSuccessMessage(true);
         })
