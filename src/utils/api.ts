@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { EPostFormData } from '../epost/PrescriptionEpostService';
 
 // In production the requests made to `/api/` are proxied to production backend -> `public/_redirects`:
 // https://www.netlify.com/docs/redirects/#proxying
