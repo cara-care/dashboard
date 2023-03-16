@@ -6,6 +6,7 @@ import {
   ResetPassword,
   ChangePassword,
 } from '../auth';
+import PrescriptionEpostService from '../epost/PrescriptionEpostService';
 import NotFound from './NotFound';
 
 const AnalyticsHome = React.lazy(() => import('../analytics/AnalyticsHome'));
@@ -119,6 +120,12 @@ const routes = [
   {
     path: '/nutri/user-qr-code',
     component: UserQrCode,
+    exact: false,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/epost-prescription',
+    component: PrescriptionEpostService,
     exact: false,
     authRequired: true,
   },

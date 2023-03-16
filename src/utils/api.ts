@@ -204,4 +204,12 @@ export const searchUser = (search_term: string) => {
   });
 };
 
+export const sendPrescription = (formData: FormData) => {
+  return api.post(`/dashboard/post-letter/`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
 export default api;

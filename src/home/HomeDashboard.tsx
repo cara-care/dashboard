@@ -102,6 +102,15 @@ const HomeDashboard = () => {
             </Link>
           </div>
         </div>
+        <div className={classes.gridArticle}>
+          <div className={classes.text}>
+            <h3>ePost Prescription Service</h3>
+            <p>Send a prescription via the ePost service.</p>
+            <Link className={classes.link} to="/nutri/epost-prescription">
+              <button className={classes.textButton}>More details</button>
+            </Link>
+          </div>
+        </div>
       </div>
     </Paper>
   );
