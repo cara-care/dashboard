@@ -10,6 +10,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Modal from '../components/Modal';
 import { formatFormData } from './epostUtils';
 
+interface Success {
+  letterId: string;
+  time: string;
+}
 interface FormData {
   addressLineOne: string;
   addressLineTwo: string;
@@ -96,6 +100,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
   const intl = useIntl();
   const [formData, setFormData] = useState<InitialFormData>(blankForm);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [success, setSuccess] = useState<Success | null>(null);
   const [error, setError] = useState('');
 
   const handleFileInputChange = useCallback(() => {
@@ -122,6 +127,10 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
       });
       sendPrescription(ePostFormData)
         .then((res: any) => {
+          setSuccess({
+            letterId: res.data.letterID,
+            time: new Date().toUTCString(),
+          });
           setShowSuccessMessage(true);
           setError('');
         })
@@ -145,6 +154,18 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
       <Typography className={styles.subtitle} variant="subtitle1">
         Post a prescription to an insurance provider using the form below.
       </Typography>
+      {success && (
+        <Typography
+          color="primary"
+          className={styles.subtitle}
+          variant="subtitle1"
+        >
+          <em>
+            Previously posted a prescription <b>{success.time}</b>, reference
+            letterId: <b>{success.letterId}</b>
+          </em>
+        </Typography>
+      )}
       <form id="ePostForm" className={styles.form} onSubmit={handleSubmit}>
         <div>
           <Typography className={styles.subHeader} variant="h6">
@@ -348,11 +369,26 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
               The prescription is on its way!
             </Typography>
             <Typography className={styles.subtitle} variant="body1">
-              {`Address: ${formData.addressLineOne}, ${formData.addressLineTwo}, ${formData.city}, ${formData.postCode}`}
+              <b>Address: </b>
+              {formData.addressLineOne},{formData.addressLineTwo},{' '}
+              {formData.city}, {formData.postCode}
               <br />
-              {`Sender Address: ${formData.senderAddressLineOne}, ${formData.senderAddressLineTwo}, ${formData.senderCity}, ${formData.senderPostCode}`}
+              <b>Sender Address: </b>
+              {formData.senderAddressLineOne}, {formData.senderAddressLineTwo},
+              ,{formData.senderPostCode},{formData.senderCity}
               <br />
-              {`PDF file name: ${formData.pdfFile?.name}`}
+              <b>PDF file name: </b>
+              {formData.pdfFile?.name}
+            </Typography>
+            <Typography
+              className={styles.subtitle}
+              variant="subtitle1"
+              color="primary"
+            >
+              <b>Reference letterID: {success?.letterId}</b>
+            </Typography>
+            <Typography className={styles.subtitle} variant="subtitle1">
+              ^ Please note down the reference letterID for follow-up inquiries.
             </Typography>
             <Button className={styles.modalButton} onClick={handleModalClose}>
               <Typography variant="subtitle2">Close</Typography>
