@@ -370,11 +370,11 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
             </Typography>
             <Typography className={styles.subtitle} variant="body1">
               <b>Address: </b>
-              {formData.addressLineOne}, {formData.addressLineTwo},
+              {formData.addressLineOne}, {formData.addressLineTwo},{' '}
               {formData.city}, {formData.postCode}
               <br />
               <b>Sender Address: </b>
-              {formData.senderAddressLineOne}, {formData.senderAddressLineTwo},
+              {formData.senderAddressLineOne}, {formData.senderAddressLineTwo},{' '}
               {formData.senderPostCode}, {formData.senderCity}
               <br />
               <b>PDF file name: </b>
