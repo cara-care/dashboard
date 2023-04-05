@@ -74,6 +74,21 @@ const useStyles = makeStyles((theme) => ({
   italicText: {
     fontStyle: 'italic',
   },
+  rowItem: { display: 'flex', flex: 1 },
+  expandRowSymbol: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+  collapsibleRow: {
+    cursor: 'pointer',
+    backgroundColor: '#f1f1f1',
+    padding: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 30,
+  },
   row: { display: 'flex', justifyContent: 'space-between' },
   modal: { padding: '20px' },
   modalButton: { marginTop: '20px', width: '100%', display: 'block' },
@@ -90,18 +105,23 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
     addressLineTwo: '',
     postCode: '',
     city: '',
-    senderAddressLineOne: '',
-    senderAddressLineTwo: '',
-    senderPostCode: '',
-    senderCity: '',
+    senderAddressLineOne: 'HiDoc Technologies GmbH',
+    senderAddressLineTwo: 'Hohe Bleichen 22',
+    senderPostCode: '20354',
+    senderCity: 'Hamburg',
   };
 
   const styles = useStyles();
   const intl = useIntl();
   const [formData, setFormData] = useState<InitialFormData>(blankForm);
+  const [formHidden, setFormHidden] = useState<boolean>(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [success, setSuccess] = useState<Success | null>(null);
   const [error, setError] = useState('');
+
+  const toggleSenderDetails = useCallback(() => {
+    setFormHidden(!formHidden);
+  }, [formHidden]);
 
   const handleFileInputChange = useCallback(() => {
     if (
@@ -147,6 +167,8 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
     setFormData((formData) => blankForm);
     setShowSuccessMessage(false);
   }, [blankForm]);
+
+  const toggleSymbol = formHidden ? '+' : '-';
 
   return (
     <div className={styles.wrapper}>
@@ -232,66 +254,76 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           />
         </div>
         <div>
-          <Typography className={styles.subHeader} variant="h6">
-            Sender details
-          </Typography>
-          <Typography variant="subtitle1" className={styles.italicText}>
-            The address of the patient who got the prescription
-          </Typography>
-          <TextField
-            id="senderAddressLineOne"
-            name="senderAddressOne"
-            label={'Sender Address Line 1'}
-            value={formData.senderAddressLineOne}
-            margin="normal"
-            required
-            fullWidth
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                senderAddressLineOne: e.target.value,
-              })
-            }
-          />
-          <TextField
-            id="addressTwo"
-            name="addressTwo"
-            label={'Address Line 2'}
-            value={formData.senderAddressLineTwo}
-            margin="normal"
-            required
-            fullWidth
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                senderAddressLineTwo: e.target.value,
-              })
-            }
-          />
-          <TextField
-            id="city"
-            name="city"
-            label={'City'}
-            value={formData.senderCity}
-            margin="normal"
-            required
-            fullWidth
-            onChange={(e) =>
-              setFormData({ ...formData, senderCity: e.target.value })
-            }
-          />
-          <TextField
-            id="postcode"
-            name="postcode"
-            label={'Postcode'}
-            value={formData.senderPostCode}
-            margin="normal"
-            required
-            fullWidth
-            onChange={(e) =>
-              setFormData({ ...formData, senderPostCode: e.target.value })
-            }
-          />
+          <div className={styles.collapsibleRow} onClick={toggleSenderDetails}>
+            <div className={styles.rowItem}>
+              <Typography variant="h6">Sender details</Typography>
+            </div>
+
+            <div className={styles.expandRowSymbol}>
+              <Typography variant="h6">{toggleSymbol}</Typography>
+            </div>
+          </div>
+          {!formHidden && (
+            <div>
+              <Typography variant="subtitle1" className={styles.italicText}>
+                The address of the person with the prescription
+              </Typography>
+              <TextField
+                id="senderAddressLineOne"
+                name="senderAddressOne"
+                label={'Sender Address Line 1'}
+                value={formData.senderAddressLineOne}
+                margin="normal"
+                required
+                fullWidth
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    senderAddressLineOne: e.target.value,
+                  })
+                }
+              />
+              <TextField
+                id="addressTwo"
+                name="addressTwo"
+                label={'Address Line 2'}
+                value={formData.senderAddressLineTwo}
+                margin="normal"
+                required
+                fullWidth
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    senderAddressLineTwo: e.target.value,
+                  })
+                }
+              />
+              <TextField
+                id="city"
+                name="city"
+                label={'City'}
+                value={formData.senderCity}
+                margin="normal"
+                required
+                fullWidth
+                onChange={(e) =>
+                  setFormData({ ...formData, senderCity: e.target.value })
+                }
+              />
+              <TextField
+                id="postcode"
+                name="postcode"
+                label={'Postcode'}
+                value={formData.senderPostCode}
+                margin="normal"
+                required
+                fullWidth
+                onChange={(e) =>
+                  setFormData({ ...formData, senderPostCode: e.target.value })
+                }
+              />
+            </div>
+          )}
         </div>
         <div>
           <Typography className={styles.subHeader} variant="h6">
