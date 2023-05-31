@@ -8,7 +8,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { sendPrescription } from '../utils/api';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '../components/Modal';
-import { formatFormData } from './epostUtils';
 
 interface Success {
   letterId: string;
@@ -47,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(),
+  },
+  formHidden: {
+    display: 'none',
   },
   inputBase: {
     marginLeft: '10px',
@@ -138,13 +140,12 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
   const handleSubmit = useCallback(
     (event: { preventDefault: () => void }) => {
       event.preventDefault();
-      if (formData.pdfFile === null) {
+      const ePostForm = document.getElementById('ePostForm');
+      if (formData.pdfFile === null || ePostForm === null) {
         return;
       }
-      const ePostFormData = formatFormData({
-        ...formData,
-        pdfFile: formData.pdfFile,
-      });
+
+      const ePostFormData = new FormData(ePostForm as HTMLFormElement);
       sendPrescription(ePostFormData)
         .then((res: any) => {
           setSuccess({
@@ -155,8 +156,9 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           setError('');
         })
         .catch((error) => {
+          const errorMessage = JSON.stringify(error.response.data);
           setError(
-            `There was an error sending the prescription to the backend: ${error.response.data.detail}. Please try again.`
+            `There was an error sending the prescription to the backend: ${errorMessage}. Please try again.`
           );
         });
     },
@@ -164,7 +166,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
   );
 
   const handleModalClose = useCallback(() => {
-    setFormData((formData) => blankForm);
+    setFormData(() => blankForm);
     setShowSuccessMessage(false);
   }, [blankForm]);
 
@@ -202,7 +204,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           </Typography>
           <TextField
             id="addressOne"
-            name="addressOne"
+            name="addressLineOne"
             label={'Address Line 1'}
             value={formData.addressLineOne}
             margin="normal"
@@ -217,7 +219,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           />
           <TextField
             id="addressTwo"
-            name="addressTwo"
+            name="addressLineTwo"
             label={'Address Line 2'}
             value={formData.addressLineTwo}
             margin="normal"
@@ -242,11 +244,10 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           />
           <TextField
             id="postcode"
-            name="postcode"
+            name="postCode"
             label={'Postcode'}
             value={formData.postCode}
             margin="normal"
-            required
             fullWidth
             onChange={(e) =>
               setFormData({ ...formData, postCode: e.target.value })
@@ -263,67 +264,65 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
               <Typography variant="h6">{toggleSymbol}</Typography>
             </div>
           </div>
-          {!formHidden && (
-            <div>
-              <Typography variant="subtitle1" className={styles.italicText}>
-                The address of the person with the prescription
-              </Typography>
-              <TextField
-                id="senderAddressLineOne"
-                name="senderAddressOne"
-                label={'Sender Address Line 1'}
-                value={formData.senderAddressLineOne}
-                margin="normal"
-                required
-                fullWidth
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    senderAddressLineOne: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                id="addressTwo"
-                name="addressTwo"
-                label={'Address Line 2'}
-                value={formData.senderAddressLineTwo}
-                margin="normal"
-                required
-                fullWidth
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    senderAddressLineTwo: e.target.value,
-                  })
-                }
-              />
-              <TextField
-                id="city"
-                name="city"
-                label={'City'}
-                value={formData.senderCity}
-                margin="normal"
-                required
-                fullWidth
-                onChange={(e) =>
-                  setFormData({ ...formData, senderCity: e.target.value })
-                }
-              />
-              <TextField
-                id="postcode"
-                name="postcode"
-                label={'Postcode'}
-                value={formData.senderPostCode}
-                margin="normal"
-                required
-                fullWidth
-                onChange={(e) =>
-                  setFormData({ ...formData, senderPostCode: e.target.value })
-                }
-              />
-            </div>
-          )}
+          <div className={formHidden ? styles.formHidden : undefined}>
+            <Typography variant="subtitle1" className={styles.italicText}>
+              The address of the person with the prescription
+            </Typography>
+            <TextField
+              id="senderAddressLineOne"
+              name="senderAddressLineOne"
+              label={'Sender Address Line 1'}
+              value={formData.senderAddressLineOne}
+              margin="normal"
+              required
+              fullWidth
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  senderAddressLineOne: e.target.value,
+                })
+              }
+            />
+            <TextField
+              id="addressTwo"
+              name="senderAddressLineTwo"
+              label={'Address Line 2'}
+              value={formData.senderAddressLineTwo}
+              margin="normal"
+              required
+              fullWidth
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  senderAddressLineTwo: e.target.value,
+                })
+              }
+            />
+            <TextField
+              id="city"
+              name="senderCity"
+              label={'City'}
+              value={formData.senderCity}
+              margin="normal"
+              required
+              fullWidth
+              onChange={(e) =>
+                setFormData({ ...formData, senderCity: e.target.value })
+              }
+            />
+            <TextField
+              id="postcode"
+              name="senderPostCode"
+              label={'Postcode'}
+              value={formData.senderPostCode}
+              margin="normal"
+              required
+              fullWidth
+              onChange={(e) =>
+                setFormData({ ...formData, senderPostCode: e.target.value })
+              }
+            />
+          </div>
         </div>
         <div>
           <Typography className={styles.subHeader} variant="h6">
@@ -343,7 +342,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
             </Typography>
             <input
               type="file"
-              name="upload"
+              name="pdfFile"
               accept=".pdf"
               className={styles.fileInput}
               ref={fileInput}
