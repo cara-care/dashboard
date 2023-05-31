@@ -156,8 +156,9 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           setError('');
         })
         .catch((error) => {
+          const errorMessage = error.response.data.__all__[0].message;
           setError(
-            `There was an error sending the prescription to the backend: ${error.response.data.detail}. Please try again.`
+            `There was an error sending the prescription to the backend: ${errorMessage}. Please try again.`
           );
         });
     },
