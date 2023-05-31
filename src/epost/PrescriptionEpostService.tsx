@@ -140,12 +140,12 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
   const handleSubmit = useCallback(
     (event: { preventDefault: () => void }) => {
       event.preventDefault();
-      const formElement = document.querySelector('form');
-      if (formData.pdfFile === null || formElement === null) {
+      const ePostForm = document.getElementById('ePostForm');
+      if (formData.pdfFile === null || ePostForm === null) {
         return;
       }
 
-      const ePostFormData = new FormData(formElement);
+      const ePostFormData = new FormData(ePostForm as HTMLFormElement);
       sendPrescription(ePostFormData)
         .then((res: any) => {
           setSuccess({
@@ -156,7 +156,7 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
           setError('');
         })
         .catch((error) => {
-          const errorMessage = error.response.data.__all__[0].message;
+          const errorMessage = JSON.stringify(error.response.data);
           setError(
             `There was an error sending the prescription to the backend: ${errorMessage}. Please try again.`
           );
@@ -248,7 +248,6 @@ const PrescriptionEpostService: React.FC<RouteComponentProps<{
             label={'Postcode'}
             value={formData.postCode}
             margin="normal"
-            required
             fullWidth
             onChange={(e) =>
               setFormData({ ...formData, postCode: e.target.value })
