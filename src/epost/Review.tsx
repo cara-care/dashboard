@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Button, Checkbox, makeStyles, Typography } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
-import Modal from '../components/Modal';
 import { EpostStatus, Prescription, ReviewType } from './types';
 import {
   deleteDraftPrescription,
@@ -12,9 +11,9 @@ import {
 import { RouterLinkWithPropForwarding as Link } from '../components/Link';
 import useSearchPrescriptions from './useSearchPrescriptions';
 import { PRIMARY_COLOR } from '../theme';
+import ReviewModal from './ReviewModal';
 
 const useStyles = makeStyles((theme) => ({
-  flex: { flex: 1 },
   wrapper: {
     paddingTop: theme.spacing(8),
     width: 'auto',
@@ -45,22 +44,11 @@ const useStyles = makeStyles((theme) => ({
   redText: {
     color: '#FA5544',
   },
+  placeholder: {
+    marginBottom: '20px',
+  },
   subtitle: {
     paddingTop: '20px',
-  },
-  checkboxContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    border: '1px solid black',
-    backgroundColor: '#e6e4ea',
-    marginTop: '20px',
-  },
-  checkboxText: {
-    padding: '10px',
-    fontWeight: 'bold',
-  },
-  checkbox: {
-    alignSelf: 'center',
   },
   buttonContainer: {
     flex: 1,
@@ -72,12 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: '10px',
-  },
-  deleteButton: {
-    marginTop: '20px',
-    backgroundColor: '#FA5544',
-    color: 'white',
-    width: '50%',
   },
   warningButton: {
     margin: '10px',
@@ -101,25 +83,6 @@ const useStyles = makeStyles((theme) => ({
     border: 'none',
     padding: '5px',
     marginRight: '5px',
-  },
-  modal: { padding: '20px' },
-  modalButtonContainer: {
-    flexDirection: 'column',
-    display: 'flex',
-    flex: 1,
-    alignItems: 'center',
-    marginTop: '20px',
-  },
-  modalButton: { marginTop: '20px', width: '50%' },
-  pdfContainer: {
-    marginTop: '20px',
-    marginBottom: '30px',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  placeholder: {
-    marginBottom: '20px',
   },
 }));
 
@@ -289,123 +252,31 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
             : 'No results'}
         </Typography>
       </div>
-      <Modal
-        open={showPostModal}
-        actions={
-          <div className={styles.modal}>
-            <Typography variant="h4" color="primary">
-              Review letter
-            </Typography>
-            <Typography variant="subtitle1">
-              Please review the details below before posting.
-            </Typography>
-            <Typography className={styles.subtitle} variant="body1">
-              <b>ID: </b>
-              {content?.id}
-              <br />
-              <b>Address: </b>
-              {content?.letterReceiver}
-              <br />
-              <b>Sender Address: </b>
-              {content?.letterSender}
-              <br />
-              <div className={styles.pdfContainer}>
-                <a href={`/api/${content?.pdfFile}`} download>
-                  <p>View PDF</p>
-                </a>
-              </div>
-            </Typography>
-            <div className={styles.checkboxContainer}>
-              <div className={styles.flex}>
-                <Typography variant="subtitle1" className={styles.checkboxText}>
-                  I approve this letter to be posted via the ePost service
-                </Typography>
-              </div>
-              <div className={styles.checkbox}>
-                <Checkbox
-                  color="primary"
-                  checked={actionConfirmed}
-                  style={{ padding: 10 }}
-                  onChange={(e) => setActionConfirmed(e.target.checked)}
-                />
-              </div>
-            </div>
-            <div className={styles.modalButtonContainer}>
-              <Button
-                color="primary"
-                type="button"
-                variant="contained"
-                disabled={!actionConfirmed}
-                className={styles.modalButton}
-                onClick={() => handleReview(ReviewType.POST)}
-              >
-                Post prescription
-              </Button>
-              <Button className={styles.modalButton} onClick={closeReviewModal}>
-                <Typography variant="subtitle2">Cancel</Typography>
-              </Button>
-            </div>
-          </div>
-        }
+      <ReviewModal
+        isOpen={showPostModal}
+        title={'Review letter'}
+        subtitle={'Please review the details below before posting.'}
+        confirmText={'I approve this letter to be posted via the ePost service'}
+        content={content}
+        reviewConfirmed={actionConfirmed}
+        theme={'primary'}
+        onClose={closeReviewModal}
+        onConfirm={setActionConfirmed}
+        onSubmit={() => handleReview(ReviewType.POST)}
       />
-      <Modal
-        open={showDeleteModal}
-        actions={
-          <div className={styles.modal}>
-            <Typography className={styles.redText} variant="h4" color="primary">
-              Delete draft
-            </Typography>
-            <Typography variant="subtitle1">
-              Please confirm that you want to permanently delete this draft.
-            </Typography>
-            <Typography className={styles.subtitle} variant="body1">
-              <b>ID: </b>
-              {content?.id}
-              <br />
-              <b>Address: </b>
-              {content?.letterReceiver}
-              <br />
-              <b>Sender Address: </b>
-              {content?.letterSender}
-              <br />
-              <div className={styles.pdfContainer}>
-                <a href={`/api/${content?.pdfFile}`} download>
-                  <p>View PDF</p>
-                </a>
-              </div>
-            </Typography>
-            <div className={styles.checkboxContainer}>
-              <div className={styles.flex}>
-                <Typography variant="subtitle1" className={styles.checkboxText}>
-                  I confirm that I want to delete this draft
-                </Typography>
-              </div>
-              <div className={styles.checkbox}>
-                <Checkbox
-                  color="primary"
-                  checked={actionConfirmed}
-                  style={{ padding: 10 }}
-                  onChange={(e) => setActionConfirmed(e.target.checked)}
-                />
-              </div>
-            </div>
-
-            <div className={styles.modalButtonContainer}>
-              <Button
-                disabled={!actionConfirmed}
-                className={styles.deleteButton}
-                type="button"
-                variant="contained"
-                onClick={() => handleReview(ReviewType.DELETE)}
-              >
-                <Typography variant="subtitle2">Delete</Typography>
-              </Button>
-              <Button className={styles.modalButton} onClick={closeReviewModal}>
-                <Typography variant="subtitle2">Cancel</Typography>
-              </Button>
-            </div>
-          </div>
+      <ReviewModal
+        isOpen={showDeleteModal}
+        title={'Delete draft'}
+        subtitle={
+          'Please confirm that you want to permanently delete this draft.'
         }
+        confirmText={'I confirm that I want to delete this draft'}
+        content={content}
+        reviewConfirmed={actionConfirmed}
+        theme={'warning'}
+        onClose={closeReviewModal}
+        onConfirm={setActionConfirmed}
+        onSubmit={() => handleReview(ReviewType.DELETE)}
       />
     </div>
   );
