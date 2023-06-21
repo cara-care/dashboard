@@ -123,6 +123,7 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
       page: currentPage,
       status: EpostStatus.PENDING_APPROVAL,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const handleReviewItem = (id: number, action: ReviewType) => {

@@ -124,6 +124,7 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
 
   useEffect(() => {
     fetchPrescriptions({ page: currentPage });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const handleSubmit = useCallback(
