@@ -58,8 +58,6 @@ const HomeDashboard = () => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const userGroups = useSelector(getUserGroups);
 
-  console.log(userGroups);
-
   if (!isAuthenticated) {
     return <Redirect to="/nutri/login" />;
   }
