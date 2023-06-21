@@ -124,7 +124,7 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
 
   useEffect(() => {
     fetchPrescriptions({ page: currentPage });
-  }, [currentPage, fetchPrescriptions]);
+  }, [currentPage]);
 
   const handleSubmit = useCallback(
     (event: { preventDefault: () => void }) => {

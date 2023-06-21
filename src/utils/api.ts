@@ -221,20 +221,18 @@ export const getPrescriptions = ({
 }) => {
   const offset = page * RESULTS_PER_PAGE;
   let url = `/dashboard/prescriptions/?limit=${RESULTS_PER_PAGE}&offset=${offset}`;
-  let options = [];
   if (status) {
-    options.push(`status=${status}`);
+    url += `&status=${status}`;
   }
   if (beforeDate) {
-    options.push(`before=${beforeDate}`);
+    url += `&before=${beforeDate}`;
   }
   if (afterDate) {
-    options.push(`after=${afterDate}`);
+    url += `&after=${afterDate}`;
   }
   if (query) {
-    options.push(`search=${query}`);
+    url += `&search=${query}`;
   }
-  url = options.length > 0 ? `${url}&${options.join('&')}` : url;
   return api.get(url);
 };
 

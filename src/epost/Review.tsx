@@ -123,7 +123,7 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
       page: currentPage,
       status: EpostStatus.PENDING_APPROVAL,
     });
-  }, [currentPage, fetchPrescriptions]);
+  }, [currentPage]);
 
   const handleReviewItem = (id: number, action: ReviewType) => {
     const item = prescriptions?.results.find((item) => item.id === id);

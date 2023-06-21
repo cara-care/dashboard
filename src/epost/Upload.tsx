@@ -139,6 +139,7 @@ const Upload: React.FC<RouteComponentProps<{
   const handleSubmit = useCallback(
     (event: { preventDefault: () => void }) => {
       event.preventDefault();
+      setError('');
       const ePostForm = document.getElementById('ePostForm');
       if (formData.pdfFile === null || ePostForm === null) {
         return;
@@ -152,7 +153,6 @@ const Upload: React.FC<RouteComponentProps<{
             time: new Date().toUTCString(),
           });
           setShowSuccessMessage(true);
-          setError('');
         })
         .catch((error) => {
           const errorMessage = JSON.stringify(error.response.data);
