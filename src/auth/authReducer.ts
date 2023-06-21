@@ -13,11 +13,13 @@ export enum AuthStatus {
 export interface MePayload {
   firstName: string;
   lastName: string;
+  groups: any | null;
 }
 
 export interface AuthState {
   status: AuthStatus;
   nutriName: string;
+  groups: any | null;
   error: any | null;
   patientId: number | null;
   isSelectingPatient: boolean;
@@ -41,6 +43,7 @@ export interface EnrolledProgram {
 export const authInitialState = {
   status: AuthStatus.IDLE,
   nutriName: '',
+  groups: [],
   isSelectingPatient: false,
   patientId: null,
   patientNickname: null,
@@ -71,6 +74,7 @@ export const authReducer: Reducer<AuthState, AuthActions> = (
         ...state,
         status: AuthStatus.AUTHENTICATED,
         nutriName: `${action.payload.firstName} ${action.payload.lastName}`,
+        groups: action.payload.groups,
       };
     case AuthActionTypes.LOGIN_FAILED:
     case AuthActionTypes.LOGOUT_FAILED:
@@ -128,6 +132,7 @@ export const isAuthenticated = (state: RootState) =>
   state.auth.status === AuthStatus.AUTHENTICATED;
 
 export const getNutriName = (state: RootState) => state.auth.nutriName;
+export const getUserGroups = (state: RootState) => state.auth.groups;
 
 export const getPatientId = (state: RootState) => state.auth.patientId;
 
