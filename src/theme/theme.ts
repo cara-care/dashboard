@@ -1,7 +1,7 @@
 import { createMuiTheme, useTheme } from '@material-ui/core/styles';
 import { TypographyStyleOptions } from '@material-ui/core/styles/createTypography';
 
-const PRIMARY_COLOR = '#489f9d';
+export const PRIMARY_COLOR = '#489f9d';
 
 const button: TypographyStyleOptions = {
   fontFamily: `"Source Sans Pro", "Roboto", "Helvetica", "Arial", sans-serif`,
