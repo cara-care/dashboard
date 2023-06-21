@@ -10,6 +10,7 @@ describe('authSagas', () => {
   const mePayload = {
     firstName: 'Test',
     lastName: 'User',
+    groups: [],
   };
   const successResponse = {
     data: mePayload,

@@ -7,7 +7,10 @@ import Avatar from '@material-ui/core/Avatar';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Paper from '@material-ui/core/Paper';
 
-import { isAuthenticated as isAuthenticatedSelector } from '../auth';
+import {
+  getUserGroups,
+  isAuthenticated as isAuthenticatedSelector,
+} from '../auth';
 import { RouterLinkWithPropForwarding as Link } from '../components/Link';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
 const HomeDashboard = () => {
   const classes = useStyles();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const userGroups = useSelector(getUserGroups);
+
+  console.log(userGroups);
 
   if (!isAuthenticated) {
     return <Redirect to="/nutri/login" />;
@@ -75,24 +81,44 @@ const HomeDashboard = () => {
             </Link>
           </div>
         </div>
-        <div className={classes.gridArticle}>
-          <div className={classes.text}>
-            <h3>Analytics</h3>
-            <p>User related analytics and data queries.</p>
-            <Link className={classes.link} to="/nutri/analytics">
-              <button className={classes.textButton}>More details</button>
-            </Link>
+        {(userGroups.includes('care_panel_user_analytics') ||
+          userGroups.includes('user_analytics') ||
+          userGroups.includes('admin_user_analytics') ||
+          userGroups.includes('care_panel_admin_analytics')) && (
+          <div className={classes.gridArticle}>
+            <div className={classes.text}>
+              <h3>Analytics</h3>
+              <p>User related analytics and data queries.</p>
+              <Link className={classes.link} to="/nutri/analytics">
+                <button className={classes.textButton}>More details</button>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className={classes.gridArticle}>
-          <div className={classes.text}>
-            <h3>Revoke Access</h3>
-            <p>Revoke user's access to cara care app.</p>
-            <Link className={classes.link} to="/nutri/revoke-access">
-              <button className={classes.textButton}>More details</button>
-            </Link>
-          </div>
-        </div>
+        )}
+        {process.env.REACT_APP_LOCATION === 'EU' &&
+          userGroups.includes('care_panel_user_revoke_access') && (
+            <div className={classes.gridArticle}>
+              <div className={classes.text}>
+                <h3>Revoke Access</h3>
+                <p>Revoke user's access to cara care app.</p>
+                <Link className={classes.link} to="/nutri/revoke-access">
+                  <button className={classes.textButton}>More details</button>
+                </Link>
+              </div>
+            </div>
+          )}
+        {process.env.REACT_APP_LOCATION === 'EU' &&
+          userGroups.includes('care_panel_prescription_service') && (
+            <div className={classes.gridArticle}>
+              <div className={classes.text}>
+                <h3>ePost Prescription Service</h3>
+                <p>Send a prescription via the ePost service.</p>
+                <Link className={classes.link} to="/nutri/epost-prescription">
+                  <button className={classes.textButton}>More details</button>
+                </Link>
+              </div>
+            </div>
+          )}
         <div className={classes.gridArticle}>
           <div className={classes.text}>
             <h3>Get QR Code</h3>
@@ -102,17 +128,6 @@ const HomeDashboard = () => {
             </Link>
           </div>
         </div>
-        {process.env.REACT_APP_LOCATION === 'EU' && (
-          <div className={classes.gridArticle}>
-            <div className={classes.text}>
-              <h3>ePost Prescription Service</h3>
-              <p>Send a prescription via the ePost service.</p>
-              <Link className={classes.link} to="/nutri/epost-prescription">
-                <button className={classes.textButton}>More details</button>
-              </Link>
-            </div>
-          </div>
-        )}
       </div>
     </Paper>
   );

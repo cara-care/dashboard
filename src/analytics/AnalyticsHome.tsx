@@ -10,7 +10,10 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 
-import { isAuthenticated as isAuthenticatedSelector } from '../auth';
+import {
+  getUserGroups,
+  isAuthenticated as isAuthenticatedSelector,
+} from '../auth';
 import { searchUser } from '../utils/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 const AnalyticsHome = () => {
   const classes = useStyles();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const userGroups = useSelector(getUserGroups);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState('');
   const [userFound, setUserFound] = useState(false);
@@ -93,7 +97,15 @@ const AnalyticsHome = () => {
       });
   };
 
-  if (!isAuthenticated) {
+  if (
+    !isAuthenticated ||
+    !(
+      userGroups.includes('care_panel_user_analytics') ||
+      userGroups.includes('user_analytics') ||
+      userGroups.includes('admin_user_analytics') ||
+      userGroups.includes('care_panel_admin_analytics')
+    )
+  ) {
     return <Redirect to="/nutri/login" />;
   }
 
