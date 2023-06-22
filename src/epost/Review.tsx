@@ -112,6 +112,14 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
     itemInReview && itemInReview.action === ReviewType.POST ? true : false;
   const content = itemInReview?.item;
 
+  const trimText = (text: string) => {
+    if (text.length <= 30) {
+      return text;
+    } else {
+      return text.substring(0, 30) + '...';
+    }
+  };
+
   useEffect(() => {
     if (prescriptions) {
       setPageTotal(Math.ceil(prescriptions.count / RESULTS_PER_PAGE));
@@ -195,6 +203,9 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
             <div className={styles.row} key={draft.id}>
               <div className={styles.detailsContainer}>
                 <Typography variant="body1">Id: {draft.id}</Typography>
+                <Typography variant="body1">
+                  To: {trimText(draft.letterReceiver)}
+                </Typography>
                 <Typography variant="body1">
                   Date uploaded: {new Date(draft.uploaded).toUTCString()}
                 </Typography>

@@ -8,6 +8,7 @@ import { postDraftPrescription } from '../utils/api';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '../components/Modal';
 import { RouterLinkWithPropForwarding as Link } from '../components/Link';
+import InsurerAddressList from './InsurerAddressList.json';
 
 interface Success {
   letterId: string;
@@ -91,6 +92,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     marginTop: 30,
   },
+  selectDropdown: {
+    marginLeft: '10px',
+  },
+  dropdownContainer: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '20px',
+  },
+  dropdownTextContainer: {
+    alignSelf: 'center',
+  },
   row: { display: 'flex', justifyContent: 'space-between' },
   modal: { padding: '20px' },
   modalButton: { marginTop: '20px', width: '100%', display: 'block' },
@@ -99,6 +112,7 @@ const useStyles = makeStyles((theme) => ({
 const Upload: React.FC<RouteComponentProps<{
   token?: string;
 }>> = () => {
+  const insurerNames = Object.keys(InsurerAddressList);
   const fileInput = React.useRef<HTMLInputElement>(null);
 
   const blankForm = {
@@ -123,6 +137,19 @@ const Upload: React.FC<RouteComponentProps<{
   const toggleSenderDetails = useCallback(() => {
     setFormHidden(!formHidden);
   }, [formHidden]);
+
+  const handleInsurerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedInsurer = event.target.value;
+    const selectedInsurerDetails = InsurerAddressList[selectedInsurer];
+
+    setFormData({
+      ...formData,
+      addressLineOne: selectedInsurer,
+      addressLineTwo: selectedInsurerDetails.address,
+      postCode: selectedInsurerDetails.postCode,
+      city: selectedInsurerDetails.city,
+    });
+  };
 
   const handleFileInputChange = useCallback(() => {
     if (
@@ -191,6 +218,30 @@ const Upload: React.FC<RouteComponentProps<{
           </em>
         </Typography>
       )}
+      <div className={styles.dropdownContainer}>
+        <div className={styles.dropdownTextContainer}>
+          <Typography variant="body1">
+            Select an insurer to auto-fill the address below:
+          </Typography>
+        </div>
+        <div>
+          <select
+            className={styles.selectDropdown}
+            onChange={handleInsurerChange}
+            value={formData.addressLineOne}
+          >
+            <option value="" disabled>
+              Select an Insurer
+            </option>
+            {insurerNames.map((insurerName, index) => (
+              <option key={index} value={insurerName}>
+                {insurerName}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <form id="ePostForm" className={styles.form} onSubmit={handleSubmit}>
         <div>
           <Typography className={styles.subHeader} variant="h6">
