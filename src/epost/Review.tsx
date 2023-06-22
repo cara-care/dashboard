@@ -116,7 +116,7 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
     if (text.length <= 30) {
       return text;
     } else {
-      return text.substring(0, 30) + '...';
+      return `${text.substring(0, 30)}...`;
     }
   };
 
@@ -153,7 +153,10 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
         return;
       }
       setActionConfirmed(false);
-      const updateBackend = deleteDraftPrescription || postFinalPrescription;
+      const updateBackend =
+        action === ReviewType.DELETE
+          ? deleteDraftPrescription
+          : postFinalPrescription;
       updateBackend(itemInReview?.item.id)
         .then((res: any) => {
           setItemInReview(undefined);
