@@ -237,6 +237,7 @@ export const getPrescriptions = ({
 };
 
 export const postDraftPrescription = (formData: FormData) => {
+  console.log('postDraftPrescription', formData)
   return api.post(`/dashboard/prescriptions/`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
