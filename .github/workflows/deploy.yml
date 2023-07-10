@@ -1,0 +1,30 @@
+name: deploy
+
+on:
+  pull_request:
+    branches: [develop]
+    types: [closed]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    # do not deploy when the PR is closed without being merged
+    if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Deploy the staging dashboard
+        uses: appleboy/ssh-action@master
+        with:
+          host: eu-staging-dashboard.cara.care
+          username: cara
+          key: ${{ secrets.SSH_KEY }}
+          script: scripts/deployments/deploy_dashboard.fish
+
+      - name: Deploy the production dashboard
+        uses: appleboy/ssh-action@master
+        with:
+          host: eu-dashboard.cara.care
+          username: cara
+          key: ${{ secrets.SSH_KEY }}
+          script: scripts/deployments/deploy_dashboard.fish
