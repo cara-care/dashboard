@@ -169,6 +169,10 @@ const Upload: React.FC<RouteComponentProps<{
       setError('');
       const ePostForm = document.getElementById('ePostForm');
       if (formData.pdfFile === null || ePostForm === null) {
+        setError(
+          `There was an error submitting the data. 
+          PDF: ${formData.pdfFile} Form data: ${ePostForm}`
+        );
         return;
       }
 
