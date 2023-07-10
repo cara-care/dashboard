@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Modal from '../components/Modal';
 import { RouterLinkWithPropForwarding as Link } from '../components/Link';
 import InsurerAddressList from './InsurerAddressList.json';
+import { germanFormattedDate } from './utils';
 
 interface Success {
   letterId: string;
@@ -164,33 +165,32 @@ const Upload: React.FC<RouteComponentProps<{
   }, [formData, fileInput]);
 
   const handleSubmit = useCallback(
-    (event: { preventDefault: () => void }) => {
+    async (event: { preventDefault: () => void }) => {
       event.preventDefault();
       setError('');
       const ePostForm = document.getElementById('ePostForm');
       if (formData.pdfFile === null || ePostForm === null) {
         setError(
-          `There was an error submitting the data. 
-          PDF: ${formData.pdfFile} Form data: ${ePostForm}`
+          'There was an error submitting the data. PDF or form data is missing.'
         );
         return;
       }
 
       const ePostFormData = new FormData(ePostForm as HTMLFormElement);
-      postDraftPrescription(ePostFormData)
-        .then((res: any) => {
-          setSuccess({
-            letterId: res.data.id,
-            time: new Date().toUTCString(),
-          });
-          setShowSuccessMessage(true);
-        })
-        .catch((error) => {
-          const errorMessage = JSON.stringify(error.response.data);
-          setError(
-            `There was an error sending the prescription to the backend: ${errorMessage}. Please try again.`
-          );
+
+      try {
+        const response = await postDraftPrescription(ePostFormData);
+        setSuccess({
+          letterId: response.data.id,
+          time: germanFormattedDate(),
         });
+        setShowSuccessMessage(true);
+      } catch (error) {
+        const errorMessage = JSON.stringify(error.response?.data);
+        setError(
+          `There was an error sending the prescription to the backend: ${errorMessage}. Please try again.`
+        );
+      }
     },
     [formData]
   );

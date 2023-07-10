@@ -12,6 +12,7 @@ import { RouterLinkWithPropForwarding as Link } from '../components/Link';
 import useSearchPrescriptions from './useSearchPrescriptions';
 import { PRIMARY_COLOR } from '../theme';
 import ReviewModal from './ReviewModal';
+import { germanFormattedDate } from './utils';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -210,7 +211,7 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
                   To: {trimText(draft.letterReceiver)}
                 </Typography>
                 <Typography variant="body1">
-                  Date uploaded: {new Date(draft.uploaded).toUTCString()}
+                  Date uploaded: {germanFormattedDate(draft.uploaded)}
                 </Typography>
                 <Typography variant="body1">
                   Uploaded by: {draft.uploader.name}
