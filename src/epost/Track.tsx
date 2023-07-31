@@ -248,7 +248,16 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
                 <Typography variant="body1">{item.letterReceiver}</Typography>
               </div>
               <div className={styles.column}>
-                <Typography variant="body1" className={item.status === 'EPOST_ERROR' ? styles.warningText : undefined}>{item.status}</Typography>
+                <Typography
+                  variant="body1"
+                  className={
+                    item.status === 'EPOST_ERROR'
+                      ? styles.warningText
+                      : undefined
+                  }
+                >
+                  {item.status}
+                </Typography>
               </div>
               <div className={styles.column}>
                 <Typography variant="body1">
