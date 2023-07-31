@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#f1f1f1',
     marginBottom: '20px',
   },
+  warningText: {
+    color: '#FA5544',
+  },
   smallColumn: {
     flex: 1,
   },
@@ -245,7 +248,7 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
                 <Typography variant="body1">{item.letterReceiver}</Typography>
               </div>
               <div className={styles.column}>
-                <Typography variant="body1">{item.status}</Typography>
+                <Typography variant="body1" className={item.status === 'EPOST_ERROR' ? styles.warningText : undefined}>{item.status}</Typography>
               </div>
               <div className={styles.column}>
                 <Typography variant="body1">
@@ -313,6 +316,13 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
                   {reviewItem.approved
                     ? new Date(reviewItem.uploaded).toUTCString()
                     : 'Pending approval'}
+                  {reviewItem.errorMessage && (
+                    <>
+                      <br />
+                      <b className={styles.warningText}>Error message: </b>
+                      {reviewItem.errorMessage}
+                    </>
+                  )}
                   <div className={styles.pdfContainer}>
                     <a href={`/api/${reviewItem?.pdfFile}`} download>
                       <p>View PDF</p>

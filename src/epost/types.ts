@@ -36,4 +36,5 @@ export interface Prescription {
     id: number;
     name: string;
   };
+  errorMessage: string;
 }
