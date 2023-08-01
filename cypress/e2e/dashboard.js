@@ -12,7 +12,7 @@ describe('dashboard', () => {
     cy.visit(`/export/${EXPORT_TOKEN}`);
     cy.openTrackingOverviewDatePicker();
     cy.setDatePickerDateTo({ year: 2020, month: 6, day: 12 });
-    cy.contains('.MuiChip-label', 'Beer', { timeout: 10000 }).should(
+    cy.contains('.MuiTypography-root', 'Beer', { timeout: 10000 }).should(
       'be.visible'
     );
   });
