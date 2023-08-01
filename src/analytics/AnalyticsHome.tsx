@@ -15,6 +15,7 @@ import {
   isAuthenticated as isAuthenticatedSelector,
 } from '../auth';
 import { searchUser } from '../utils/api';
+import UserInfo from './UserInfo';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -138,142 +139,7 @@ const AnalyticsHome = () => {
           <i>{error}</i>
         </p>
       )}
-      {userFound && (
-        <div className={classes.wrapper}>
-          <p>
-            <strong>Username: </strong>
-            {userData['username']}
-          </p>
-          <p>
-            <strong>Email Confirmed: </strong>
-            {userData['email_confirmed'] ? 'True' : 'False'}
-          </p>
-          <p>
-            <strong>Timezone: </strong>
-            {userData['timezone']}
-          </p>
-          <p>
-            <strong>Code Activated: </strong>
-            {userData['code_activated'] === true
-              ? 'True'
-              : userData['code_activated'] === false
-              ? 'False'
-              : userData['code_activated']}
-          </p>
-          <p>
-            <strong>Onboarding Done On Date: </strong>
-            {userData['onboarding_date']}
-          </p>
-          <p>
-            <strong>Account Created On: </strong>
-            {userData['date_joined']}
-          </p>
-          <p>
-            <strong>Last Seen In App: </strong>
-            {userData['last_seen']}
-          </p>
-          <div>
-            <strong>User Groups: </strong>
-            <ul>
-              {userData['groups'] &&
-                userData['groups'].map(
-                  (
-                    group: {} | null | undefined,
-                    i: string | number | undefined
-                  ) => (
-                    <li key={i}>
-                      <span>{group}</span>
-                    </li>
-                  )
-                )}
-            </ul>
-          </div>
-          <p>
-            <strong>Disease: </strong>
-            {userData['diseases']}
-          </p>
-          <p>
-            <strong>Allergies: </strong>
-            {userData['allergies']}
-          </p>
-          <p>
-            <strong>App Version: </strong>
-            {userData['app_version']}
-          </p>
-          <p>
-            <strong>Platform: </strong>
-            {userData['platform']}
-          </p>
-          <p>
-            <strong>T0 Completed: </strong>
-            {userData['t0_completed']}
-          </p>
-          <p>
-            <strong>T1 Completed: </strong>
-            {userData['t1_completed']}
-          </p>
-          <p>
-            <strong>T2 Completed: </strong>
-            {userData['t2_completed']}
-          </p>
-          <p>
-            <strong>T3 Completed: </strong>
-            {userData['t3_completed']}
-          </p>
-          <p>
-            <strong>Programme: </strong>
-            {userData['programme']}
-          </p>
-          <p>
-            <strong>Programme Started: </strong>
-            {userData['programme_started']}
-          </p>
-          <p>
-            <strong>Current Week: </strong>
-            {userData['programme_week']}
-          </p>
-          <p>
-            <strong>Modules: </strong>
-            <ul>
-              {userData['programme_modules'] &&
-                userData['programme_modules'].map(
-                  (
-                    module: {} | null | undefined,
-                    i: string | number | undefined
-                  ) => (
-                    <li key={i}>
-                      <span>{module}</span>
-                    </li>
-                  )
-                )}
-            </ul>
-          </p>
-          {userData['t0_answers'] !== undefined && (
-            <div>
-              <strong>T0 Answers: </strong>
-              <ul>
-                {userData['t0_answers'].map(
-                  (answer: { [x: string]: React.ReactNode }, index: any) => {
-                    return (
-                      <li key={index} className={classes.listItem}>
-                        <span>
-                          <strong>Slug: </strong>
-                          {answer.slug}
-                        </span>
-                        <br />
-                        <span>
-                          <strong>Answer: </strong>
-                          {answer.data ? JSON.stringify(answer.data) : 'None'}
-                        </span>
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
-            </div>
-          )}
-        </div>
-      )}
+      {userFound && <UserInfo userData={userData} />}
     </form>
   );
 };
