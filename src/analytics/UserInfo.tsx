@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -47,6 +47,10 @@ interface UserInfoProps {
 const UserInfo = function ({ userData }: UserInfoProps) {
   const classes = useStyles();
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState('');
+
+  useEffect(() => {
+    setSelectedQuestionnaire('');
+  }, [userData]);
 
   const handleQuestionnaire = (e: {
     preventDefault: () => void;
