@@ -126,13 +126,12 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
   }, [prescriptions]);
 
   useEffect(() => {
-    fetchPrescriptions({ page: currentPage });
+    handleFetchPrescriptions({ page: currentPage });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
-  const handleSubmit = useCallback(
-    (event: { preventDefault: () => void }) => {
-      event.preventDefault();
+  const handleFetchPrescriptions = useCallback(
+    ({ page }: { page: number }) => {
       const status = (document.getElementById('status') as HTMLInputElement)
         .value;
       const query = (document.getElementById('search') as HTMLInputElement)
@@ -148,9 +147,18 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
         afterDate,
         beforeDate,
         status: status === 'All' ? undefined : status,
+        page: page,
       });
     },
     [fetchPrescriptions]
+  );
+
+  const handleSubmit = useCallback(
+    (event: { preventDefault: () => void }) => {
+      event.preventDefault();
+      handleFetchPrescriptions({ page: 0 });
+    },
+    [handleFetchPrescriptions]
   );
 
   const clearInput = () => {
