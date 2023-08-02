@@ -27,11 +27,11 @@ interface FormData {
 }
 
 interface InitialFormData extends FormData {
-  pdfFile: File | null;
+  imageFile: File | null;
 }
 
 export interface EPostFormData extends FormData {
-  pdfFile: File;
+  imageFile: File;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -117,7 +117,7 @@ const Upload: React.FC<RouteComponentProps<{
   const fileInput = React.useRef<HTMLInputElement>(null);
 
   const blankForm = {
-    pdfFile: null,
+    imageFile: null,
     addressLineOne: '',
     addressLineTwo: '',
     postCode: '',
@@ -159,7 +159,10 @@ const Upload: React.FC<RouteComponentProps<{
       fileInput.current.files.length
     ) {
       setError('');
-      return setFormData({ ...formData, pdfFile: fileInput.current.files[0] });
+      return setFormData({
+        ...formData,
+        imageFile: fileInput.current.files[0],
+      });
     }
     return;
   }, [formData, fileInput]);
@@ -169,9 +172,9 @@ const Upload: React.FC<RouteComponentProps<{
       event.preventDefault();
       setError('');
       const ePostForm = document.getElementById('ePostForm');
-      if (formData.pdfFile === null || ePostForm === null) {
+      if (formData.imageFile === null || ePostForm === null) {
         setError(
-          'There was an error submitting the data. PDF or form data is missing.'
+          'There was an error submitting the data. Image or form data is missing.'
         );
         return;
       }
@@ -383,11 +386,11 @@ const Upload: React.FC<RouteComponentProps<{
         </div>
         <div>
           <Typography className={styles.subHeader} variant="h6">
-            PDF Upload
+            Prescription Upload
           </Typography>
           <div className={styles.uploadBox}>
             <Typography component="h4" variant="body1">
-              Choose a file to upload
+              Choose a .png or .jpg image of the prescription to upload
               <IconButton
                 onClick={() => {
                   // @ts-ignore
@@ -399,16 +402,16 @@ const Upload: React.FC<RouteComponentProps<{
             </Typography>
             <input
               type="file"
-              name="pdfFile"
-              accept=".pdf"
+              name="imageFile"
+              accept=".png, .jpg, .jpeg"
               className={styles.fileInput}
               ref={fileInput}
               onChange={handleFileInputChange}
             />
-            {!!formData.pdfFile?.name ? (
+            {!!formData.imageFile?.name ? (
               <div className={styles.row}>
                 <Typography className={styles.fileName} variant="body1">
-                  {formData.pdfFile?.name}
+                  {formData.imageFile?.name}
                 </Typography>
                 <CheckCircleIcon color="primary" />
               </div>
@@ -420,9 +423,9 @@ const Upload: React.FC<RouteComponentProps<{
           </div>
         </div>
         <Typography className={styles.subtitle} variant="subtitle1">
-          <b>Note:</b> It is only possible to post one document, so the
-          prescription and accompanying documents must be combined into a single
-          PDF.
+          <b>Note:</b> Once the draft has been saved, a pdf will be generated{' '}
+          and will be available for review in the{' '}
+          <Link to="/nutri/epost-prescription/review">Review</Link> section.
         </Typography>
         <Typography
           className={styles.subtitle}
@@ -432,7 +435,7 @@ const Upload: React.FC<RouteComponentProps<{
           {error}
         </Typography>
         <Button
-          disabled={!formData.pdfFile?.name}
+          disabled={!formData.imageFile?.name}
           className={styles.submit}
           type="submit"
           fullWidth
@@ -463,8 +466,8 @@ const Upload: React.FC<RouteComponentProps<{
               {formData.senderAddressLineOne}, {formData.senderAddressLineTwo},{' '}
               {formData.senderPostCode}, {formData.senderCity}
               <br />
-              <b>PDF file name: </b>
-              {formData.pdfFile?.name}
+              <b>Image file name: </b>
+              {formData.imageFile?.name}
             </Typography>
             <Typography
               className={styles.subtitle}

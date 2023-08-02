@@ -112,7 +112,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             <br />
             <div className={styles.pdfContainer}>
               <a href={`/api/${content?.pdfFile}`} download>
-                <p>View PDF</p>
+                <p>View auto-generated PDF</p>
               </a>
             </div>
           </Typography>
