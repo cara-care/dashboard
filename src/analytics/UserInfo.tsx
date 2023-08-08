@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '10px',
   },
   select: {
-    width: '50%',
+    width: '30%',
     height: '40px',
     border: '1px solid #ccc',
     borderRadius: '40px',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '14px',
     fontFamily: 'Open Sans',
     color: '#555',
-    backgroundColorolor: 'rgb(255, 255, 255)',
+    backgroundColor: 'rgb(255, 255, 255)',
   },
   selectOption: {
     fontFamily: 'Open Sans',
@@ -67,12 +67,24 @@ const UserInfo = function ({ userData }: UserInfoProps) {
         {userData['username']}
       </div>
       <div className={classes.infoItem}>
-        <strong>Email Confirmed: </strong>
-        {userData['email_confirmed'] ? 'True' : 'False'}
+        <strong>Programme: </strong>
+        {userData['programme']}
       </div>
       <div className={classes.infoItem}>
         <strong>Timezone: </strong>
         {userData['timezone']}
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Programme Started: </strong>
+        {userData['programme_started']}
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Email Confirmed: </strong>
+        {userData['email_confirmed'] ? 'True' : 'False'}
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Current Week: </strong>
+        {userData['programme_week']}
       </div>
       <div className={classes.infoItem}>
         <strong>Code Activated: </strong>
@@ -83,60 +95,12 @@ const UserInfo = function ({ userData }: UserInfoProps) {
           : userData['code_activated']}
       </div>
       <div className={classes.infoItem}>
-        <strong>Onboarding Done Date: </strong>
-        {userData['onboarding_date']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Account Created On: </strong>
-        {userData['date_joined']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Last Seen In App: </strong>
-        {userData['last_seen']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>App Version: </strong>
-        {userData['app_version']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Disease: </strong>
-        {userData['diseases']}
-      </div>
-      <div className={classes.infoItem}>
         <strong>Allergies: </strong>
         {userData['allergies']}
       </div>
       <div className={classes.infoItem}>
-        <strong>Platform: </strong>
-        {userData['platform']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Programme: </strong>
-        {userData['programme']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Programme Started: </strong>
-        {userData['programme_started']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Current Week: </strong>
-        {userData['programme_week']}
-      </div>
-      <div className={classes.infoItem}>
-        <strong>User Groups: </strong>
-        <ul>
-          {userData['groups'] &&
-            userData['groups'].map(
-              (
-                group: {} | null | undefined,
-                i: string | number | undefined
-              ) => (
-                <li key={i}>
-                  <span>{group}</span>
-                </li>
-              )
-            )}
-        </ul>
+        <strong>Account Created On: </strong>
+        {userData['date_joined']}
       </div>
       <div className={classes.infoItem}>
         <strong>Modules: </strong>
@@ -155,73 +119,80 @@ const UserInfo = function ({ userData }: UserInfoProps) {
         </ul>
       </div>
       <div className={classes.infoItem}>
-        <strong>T0 Completed: </strong>
-        {userData['t0_completed']}
+        <strong>Onboarding Done Date: </strong>
+        {userData['onboarding_date']}
       </div>
       <div className={classes.infoItem}>
-        <strong>T1 Completed: </strong>
-        {userData['t1_completed']}
+        <strong>Last Seen In App: </strong>
+        {userData['last_seen']}
       </div>
       <div className={classes.infoItem}>
-        <strong>T2 Completed: </strong>
-        {userData['t2_completed']}
+        <strong>App Version: </strong>
+        {userData['app_version']}
       </div>
       <div className={classes.infoItem}>
-        <strong>T3 Completed: </strong>
-        {userData['t3_completed']}
+        <strong>Disease: </strong>
+        {userData['diseases']}
       </div>
       <div className={classes.infoItem}>
-        <strong>T4 Completed: </strong>
-        {userData['t4_completed']}
+        <strong>Platform: </strong>
+        {userData['platform']}
       </div>
       <div className={classes.infoItem}>
-        <strong>T5 Completed: </strong>
-        {userData['t5_completed']}
+        <strong>User Groups: </strong>
+        <ul>
+          {userData['groups'] &&
+            userData['groups'].map(
+              (
+                group: {} | null | undefined,
+                i: string | number | undefined
+              ) => (
+                <li key={i}>
+                  <span>{group}</span>
+                </li>
+              )
+            )}
+        </ul>
       </div>
-      <div className={classes.infoItem}>
-        <strong>T6 Completed: </strong>
-        {userData['t6_completed']}
-      </div>
+      {userData['questionnaires'] && (
+        <div>
+          <strong>Questionnaires: </strong>
+          <ul>
+            {Object.entries(userData['questionnaires']).map(([slug]) => (
+              <li key={slug}>
+                <strong>{slug}: </strong>
+                <span>
+                  {userData['questionnaires'][slug]['completion_status']}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <br />
-      <div className={classes.infoItem}>
-        <strong>User Answers: </strong>
-        <select
-          onChange={handleQuestionnaire}
-          value={selectedQuestionnaire}
-          className={classes.select}
-        >
-          <option value="" className={classes.selectOption}>
-            Select Questionnaire
-          </option>
-          <option value="t0_answers" className={classes.selectOption}>
-            T0 Answers
-          </option>
-          <option value="t1_answers" className={classes.selectOption}>
-            T1 Answers
-          </option>
-          <option value="t2_answers" className={classes.selectOption}>
-            T2 Answers
-          </option>
-          <option value="t3_answers" className={classes.selectOption}>
-            T3 Answers
-          </option>
-          <option value="t4_answers" className={classes.selectOption}>
-            T4 Answers
-          </option>
-          <option value="t5_answers" className={classes.selectOption}>
-            T5 Answers
-          </option>
-          <option value="t6_answers" className={classes.selectOption}>
-            T6 Answers
-          </option>
-        </select>
-      </div>
+      {userData['user_answers'] && (
+        <div>
+          <strong>User Answers: </strong>
+          <select
+            onChange={handleQuestionnaire}
+            value={selectedQuestionnaire}
+            className={classes.select}
+          >
+            <option value="" className={classes.selectOption}>
+              Select Questionnaire
+            </option>
+            {Object.entries(userData['questionnaires']).map(([slug]) => (
+              <option key={slug} value={slug} className={classes.selectOption}>
+                {slug}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       {selectedQuestionnaire && (
         <div>
-          <strong>Answers: </strong>
           <ul>
-            {}
-            {userData[selectedQuestionnaire].map(
+            {userData['user_answers'][selectedQuestionnaire].map(
               (answer: { [x: string]: React.ReactNode }, index: any) => {
                 return (
                   <li key={index} className={classes.listItem}>
