@@ -241,6 +241,7 @@ export const postDraftPrescription = (formData: FormData) => {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    timeout: 10000,
   });
 };
 

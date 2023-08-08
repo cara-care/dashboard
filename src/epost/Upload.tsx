@@ -1,6 +1,12 @@
 import React, { useCallback, useState } from 'react';
 
-import { Button, makeStyles, TextField, Typography } from '@material-ui/core';
+import {
+  Button,
+  makeStyles,
+  TextField,
+  Typography,
+  CircularProgress,
+} from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
 import AttachIcon from '@material-ui/icons/AttachFile';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -107,6 +113,12 @@ const useStyles = makeStyles((theme) => ({
   },
   row: { display: 'flex', justifyContent: 'space-between' },
   modal: { padding: '20px' },
+  loadingModal: {
+    padding: '20px',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
   modalButton: { marginTop: '20px', width: '100%', display: 'block' },
 }));
 
@@ -131,6 +143,7 @@ const Upload: React.FC<RouteComponentProps<{
   const styles = useStyles();
   const [formData, setFormData] = useState<InitialFormData>(blankForm);
   const [formHidden, setFormHidden] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [success, setSuccess] = useState<Success | null>(null);
   const [error, setError] = useState('');
@@ -171,6 +184,7 @@ const Upload: React.FC<RouteComponentProps<{
     async (event: { preventDefault: () => void }) => {
       event.preventDefault();
       setError('');
+
       const ePostForm = document.getElementById('ePostForm');
       if (formData.imageFile === null || ePostForm === null) {
         setError(
@@ -179,20 +193,27 @@ const Upload: React.FC<RouteComponentProps<{
         return;
       }
 
+      setLoading(true);
+
       const ePostFormData = new FormData(ePostForm as HTMLFormElement);
 
       try {
         const response = await postDraftPrescription(ePostFormData);
+        setLoading(false);
         setSuccess({
           letterId: response.data.id,
           time: germanFormattedDate(),
         });
         setShowSuccessMessage(true);
       } catch (error) {
-        const errorMessage = JSON.stringify(error.response?.data);
-        setError(
-          `There was an error sending the prescription to the backend: ${errorMessage}. Please try again.`
-        );
+        setLoading(false);
+        if (error.response) {
+          setError(`Error: ${error.response.data.message}`);
+        } else if (error.request) {
+          setError('Request to the server failed. Please try again later.');
+        } else {
+          setError('An error occurred. Please try again later.');
+        }
       }
     },
     [formData]
@@ -445,6 +466,12 @@ const Upload: React.FC<RouteComponentProps<{
           Save draft
         </Button>
       </form>
+      <Modal open={loading} actions={null}>
+        <div className={styles.loadingModal}>
+          <Typography variant="h6">Loading...</Typography>
+          <CircularProgress />
+        </div>
+      </Modal>
       <Modal
         open={showSuccessMessage}
         onClose={() => setShowSuccessMessage(false)}
