@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsibleRow: {
     cursor: 'pointer',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: theme.palette.background.paper,
     padding: 10,
     display: 'flex',
     flexDirection: 'row',
@@ -120,6 +120,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   modalButton: { marginTop: '20px', width: '100%', display: 'block' },
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+  },
 }));
 
 const Upload: React.FC<RouteComponentProps<{
@@ -232,7 +236,10 @@ const Upload: React.FC<RouteComponentProps<{
       <Typography className={styles.subtitle} variant="subtitle1">
         Draft an ePost letter using the form below. <br />
         Drafts can be reviewed and approved for final posting in the{' '}
-        <Link to="/nutri/epost-prescription/review">Review</Link> section.
+        <Link className={styles.link} to="/nutri/epost-prescription/review">
+          Review
+        </Link>{' '}
+        section.
       </Typography>
       {success && (
         <Typography

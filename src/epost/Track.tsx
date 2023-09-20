@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   row: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: theme.palette.background.paper,
     marginBottom: '20px',
   },
   warningText: {
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   filterContainer: {
     marginTop: '20px',
     marginBottom: '20px',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: theme.palette.background.paper,
     border: `1px solid ${PRIMARY_COLOR}`,
     padding: '20px',
   },

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     marginBottom: '20px',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: theme.palette.background.paper,
     display: 'flex',
     flexDirection: 'row',
   },
@@ -84,6 +84,10 @@ const useStyles = makeStyles((theme) => ({
     border: 'none',
     padding: '5px',
     marginRight: '5px',
+  },
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
   },
 }));
 
@@ -178,12 +182,18 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
         <Typography variant="h4">Review</Typography>
         <Typography className={styles.subtitle} variant="subtitle1">
           Below is a list of draft letters that were uploaded using{' '}
-          <Link to="/nutri/epost-prescription/upload">this form</Link>. <br />
+          <Link className={styles.link} to="/nutri/epost-prescription/upload">
+            this form
+          </Link>
+          . <br />
           You can approve or delete pending drafts. <br />
           Once approved, the letter will be sent to the specified address via
           the ePost service. <br />
           Track the status of posted letters{' '}
-          <Link to="/nutri/epost-prescription/track">here</Link>.
+          <Link className={styles.link} to="/nutri/epost-prescription/track">
+            here
+          </Link>
+          .
         </Typography>
         <Typography
           className={styles.subtitle}
