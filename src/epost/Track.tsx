@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   filterContainer: {
     marginTop: '20px',
     marginBottom: '20px',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
     border: `1px solid ${PRIMARY_COLOR}`,
     padding: '20px',
   },
