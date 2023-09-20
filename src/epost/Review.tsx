@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     marginBottom: '20px',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
     display: 'flex',
     flexDirection: 'row',
   },

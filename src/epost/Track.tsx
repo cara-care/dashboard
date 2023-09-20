@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   row: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
     marginBottom: '20px',
   },
   warningText: {
