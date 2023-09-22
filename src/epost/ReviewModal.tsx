@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     border: '1px solid black',
-    backgroundColor: '#e6e4ea',
+    backgroundColor: theme.palette.secondary.main,
     marginTop: '20px',
   },
   checkboxText: {
@@ -24,18 +24,18 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
   },
   buttonContainer: {
-    flex: 1,
-    alignSelf: 'center',
+    textAlign: 'center',
+  },
+  buttonDiv: {
+    padding: '10px 20px',
+    margin: '5px',
+    marginTop: '20px',
+    backgroundColor: theme.palette.secondary.main,
+    color: PRIMARY_COLOR,
+    border: 'none',
+    cursor: 'pointer',
   },
   modal: { padding: '20px' },
-  modalButtonContainer: {
-    flexDirection: 'column',
-    display: 'flex',
-    flex: 1,
-    alignItems: 'center',
-    marginTop: '20px',
-  },
-  modalButton: { marginTop: '20px', width: '50%' },
   pdfContainer: {
     marginTop: '20px',
     marginBottom: '30px',
@@ -53,10 +53,13 @@ const useStyles = makeStyles((theme) => ({
     color: PRIMARY_COLOR,
   },
   deleteButton: {
+    padding: '10px 20px',
+    margin: '5px',
     marginTop: '20px',
-    backgroundColor: '#FA5544',
-    color: 'white',
-    width: '50%',
+    backgroundColor: theme.palette.secondary.main,
+    color: '#FA5544',
+    border: 'none',
+    cursor: 'pointer',
   },
 }));
 
@@ -64,6 +67,7 @@ interface ReviewModalProps {
   isOpen: boolean;
   title: string;
   subtitle: string;
+  action: string;
   confirmText: string;
   reviewConfirmed: boolean;
   content: Prescription | undefined;
@@ -77,6 +81,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
   isOpen,
   title,
   subtitle,
+  action,
   confirmText,
   content,
   reviewConfirmed,
@@ -111,7 +116,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             {content?.letterSender}
             <br />
             <div className={styles.pdfContainer}>
-              <a href={`/api/${content?.pdfFile}`} download>
+              <a href={`/api${content?.pdfFile}`} download>
                 <p>View auto-generated PDF</p>
               </a>
             </div>
@@ -131,20 +136,35 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               />
             </div>
           </div>
-          <div className={styles.modalButtonContainer}>
+          <div className={styles.buttonContainer}>
+            {action === 'review' ? (
+              <Button
+                color="primary"
+                type="button"
+                variant="contained"
+                disabled={!reviewConfirmed}
+                className={
+                  theme === 'primary' ? styles.buttonDiv : styles.deleteButton
+                }
+                onClick={() => onSubmit(ReviewType.QUEUE)}
+              >
+                Queue for Later
+              </Button>
+            ) : (
+              ''
+            )}
+
             <Button
               color="primary"
               type="button"
               variant="contained"
               disabled={!reviewConfirmed}
-              className={
-                theme === 'primary' ? styles.modalButton : styles.deleteButton
-              }
+              className={styles.buttonDiv}
               onClick={() => onSubmit(ReviewType.POST)}
             >
-              Confirm
+              Send Now
             </Button>
-            <Button className={styles.modalButton} onClick={onClose}>
+            <Button className={styles.deleteButton} onClick={onClose}>
               <Typography variant="subtitle2">Cancel</Typography>
             </Button>
           </div>

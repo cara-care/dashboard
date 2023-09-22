@@ -6,11 +6,13 @@ export enum EpostStatus {
   EPOST_ACCEPTED_FOR_PRINT = 'EPOST_ACCEPTED_FOR_PRINT',
   EPOST_PRINT_AND_DELIVERY = 'EPOST_PRINT_AND_DELIVERY',
   EPOST_ERROR = 'EPOST_ERROR',
+  SUBMISSION_QUEUED = 'SUBMISSION_QUEUED',
 }
 
 export enum ReviewType {
   POST = 'POST',
   DELETE = 'DELETE',
+  QUEUE = 'QUEUE',
 }
 export interface PrescriptionsResponse {
   count: number;

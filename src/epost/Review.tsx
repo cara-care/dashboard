@@ -6,6 +6,7 @@ import { EpostStatus, Prescription, ReviewType } from './types';
 import {
   deleteDraftPrescription,
   postFinalPrescription,
+  queuePrescriptionSubmission,
   RESULTS_PER_PAGE,
 } from '../utils/api';
 import { RouterLinkWithPropForwarding as Link } from '../components/Link';
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   row: {
     marginBottom: '20px',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: theme.palette.secondary.main,
     display: 'flex',
     flexDirection: 'row',
   },
@@ -157,7 +158,10 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
       const updateBackend =
         action === ReviewType.DELETE
           ? deleteDraftPrescription
-          : postFinalPrescription;
+          : action === ReviewType.POST
+          ? postFinalPrescription
+          : queuePrescriptionSubmission;
+
       updateBackend(itemInReview?.item.id)
         .then((res: any) => {
           setItemInReview(undefined);
@@ -272,13 +276,14 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
         isOpen={showPostModal}
         title={'Review letter'}
         subtitle={'Please review the details below before posting.'}
+        action={'review'}
         confirmText={'I approve this letter to be posted via the ePost service'}
         content={content}
         reviewConfirmed={actionConfirmed}
         theme={'primary'}
         onClose={closeReviewModal}
         onConfirm={setActionConfirmed}
-        onSubmit={() => handleReview(ReviewType.POST)}
+        onSubmit={(reviewType) => handleReview(reviewType)}
       />
       <ReviewModal
         isOpen={showDeleteModal}
@@ -286,6 +291,7 @@ const Review: React.FC<RouteComponentProps<{}>> = () => {
         subtitle={
           'Please confirm that you want to permanently delete this draft.'
         }
+        action={'delete'}
         confirmText={'I confirm that I want to delete this draft'}
         content={content}
         reviewConfirmed={actionConfirmed}

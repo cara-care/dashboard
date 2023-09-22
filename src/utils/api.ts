@@ -245,6 +245,10 @@ export const postDraftPrescription = (formData: FormData) => {
   });
 };
 
+export const queuePrescriptionSubmission = (id: number) => {
+  return api.post(`/dashboard/prescriptions/${id}/queue/`);
+};
+
 export const postFinalPrescription = (id: number) => {
   return api.post(`/dashboard/prescriptions/${id}/send/`);
 };

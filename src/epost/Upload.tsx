@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
   collapsibleRow: {
     cursor: 'pointer',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: theme.palette.secondary.main,
     padding: 10,
     display: 'flex',
     flexDirection: 'row',
