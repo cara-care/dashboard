@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     border: '1px solid black',
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.background.default,
     marginTop: '20px',
   },
   checkboxText: {
@@ -60,6 +60,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#FA5544',
     border: 'none',
     cursor: 'pointer',
+  },
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
   },
 }));
 
@@ -116,7 +120,11 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             {content?.letterSender}
             <br />
             <div className={styles.pdfContainer}>
-              <a href={`/api${content?.pdfFile}`} download>
+              <a
+                className={styles.link}
+                href={`/api/${content?.pdfFile}`}
+                download
+              >
                 <p>View auto-generated PDF</p>
               </a>
             </div>
