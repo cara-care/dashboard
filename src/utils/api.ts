@@ -257,4 +257,8 @@ export const deleteDraftPrescription = (id: number) => {
   return api.delete(`/dashboard/prescriptions/${id}/`);
 };
 
+export const fetchInsurances = () => {
+  return api.get(`/dashboard/prescriptions/insurances/`);
+};
+
 export default api;
