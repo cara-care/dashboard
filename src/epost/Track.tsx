@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import useSearchPrescriptions from './useSearchPrescriptions';
 import { PRIMARY_COLOR } from '../theme';
 import { EpostStatus, Prescription } from './types';
-import { RESULTS_PER_PAGE } from '../utils/api';
+import { deleteDraftPrescription, RESULTS_PER_PAGE } from '../utils/api';
 import Modal from '../components/Modal';
 
 const useStyles = makeStyles((theme) => ({
@@ -104,6 +104,21 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  buttonContainer: {
+    paddingTop: '10px',
+    flex: 1,
+    alignSelf: 'center',
+  },
+  button: {
+    margin: '10px',
+    color: theme.palette.primary.main,
+    backgroundColor: 'white',
+  },
+  warningButton: {
+    margin: '10px',
+    backgroundColor: '#FA5544',
+    color: 'white',
+  },
 }));
 
 const Track: React.FC<RouteComponentProps<{}>> = () => {
@@ -111,6 +126,7 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
   const { prescriptions, fetchPrescriptions } = useSearchPrescriptions({});
 
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [error, setError] = useState('');
   const [pageTotal, setPageTotal] = useState<number>(1);
   const [reviewItem, setReviewItem] = useState<Prescription | undefined>(
     undefined
@@ -160,6 +176,19 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
     },
     [handleFetchPrescriptions]
   );
+
+  const handleDraftDeletion = (draft_id: number) => {
+    deleteDraftPrescription(draft_id)
+      .then((res: any) => {
+        setReviewItem(undefined);
+        setError('');
+        handleFetchPrescriptions({ page: 0 });
+      })
+      .catch((error: any) => {
+        const errorMessage = JSON.stringify(error.response.data);
+        setError(`An error occurred: ${errorMessage}. Please try again.`);
+      });
+  };
 
   const clearInput = () => {
     (document.getElementById('search') as HTMLInputElement).value = '';
@@ -213,6 +242,9 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
           </div>
         </form>
       </div>
+      <Typography className={styles.subtitle} variant="subtitle1" color="error">
+        {error}
+      </Typography>
       <div className={styles.results}>
         <div className={styles.headerRow}>
           <div className={styles.smallColumn}>
@@ -340,20 +372,53 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
                       {reviewItem.errorMessage}
                     </>
                   )}
-                  <div className={styles.pdfContainer}>
-                    <a href={`/api${reviewItem?.pdfFile}`} download>
-                      <p>View PDF</p>
-                    </a>
+                  <div className={styles.buttonContainer}>
+                    {reviewItem.status === 'SUBMISSION_QUEUED' ? (
+                      <Button
+                        className={styles.warningButton}
+                        type="submit"
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleDraftDeletion(reviewItem.id)}
+                      >
+                        Delete
+                      </Button>
+                    ) : (
+                      ''
+                    )}
+                    <Button
+                      className={styles.button}
+                      type="submit"
+                      variant="contained"
+                      color="secondary"
+                    >
+                      <a href={`/api${reviewItem?.pdfFile}`} download>
+                        View PDF
+                      </a>
+                    </Button>
+                    <Button
+                      className={styles.button}
+                      type="submit"
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => setReviewItem(undefined)}
+                    >
+                      <Typography variant="subtitle2">Close</Typography>
+                    </Button>
                   </div>
                 </Typography>
               </div>
             )}
-            <Button
-              className={styles.modalButton}
-              onClick={() => setReviewItem(undefined)}
-            >
-              <Typography variant="subtitle2">Close</Typography>
-            </Button>
+            {!reviewItem && (
+              <Button
+                className={styles.button}
+                type="submit"
+                variant="contained"
+                onClick={() => setReviewItem(undefined)}
+              >
+                <Typography variant="subtitle2">Close</Typography>
+              </Button>
+            )}
           </div>
         }
       />
