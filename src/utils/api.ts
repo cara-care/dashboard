@@ -245,12 +245,20 @@ export const postDraftPrescription = (formData: FormData) => {
   });
 };
 
+export const queuePrescriptionSubmission = (id: number) => {
+  return api.post(`/dashboard/prescriptions/${id}/queue/`);
+};
+
 export const postFinalPrescription = (id: number) => {
   return api.post(`/dashboard/prescriptions/${id}/send/`);
 };
 
 export const deleteDraftPrescription = (id: number) => {
   return api.delete(`/dashboard/prescriptions/${id}/`);
+};
+
+export const fetchInsurances = () => {
+  return api.get(`/dashboard/prescriptions/insurances/`);
 };
 
 export default api;

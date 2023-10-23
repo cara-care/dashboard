@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Button,
@@ -10,11 +10,10 @@ import {
 import { RouteComponentProps } from 'react-router-dom';
 import AttachIcon from '@material-ui/icons/AttachFile';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { postDraftPrescription } from '../utils/api';
+import { fetchInsurances, postDraftPrescription } from '../utils/api';
 import IconButton from '@material-ui/core/IconButton';
 import Modal from '../components/Modal';
 import { RouterLinkWithPropForwarding as Link } from '../components/Link';
-import InsurerAddressList from './InsurerAddressList.json';
 import { germanFormattedDate } from './utils';
 
 interface Success {
@@ -129,9 +128,7 @@ const useStyles = makeStyles((theme) => ({
 const Upload: React.FC<RouteComponentProps<{
   token?: string;
 }>> = () => {
-  const insurerNames = Object.keys(InsurerAddressList);
   const fileInput = React.useRef<HTMLInputElement>(null);
-
   const blankForm = {
     imageFile: null,
     addressLineOne: '',
@@ -147,10 +144,28 @@ const Upload: React.FC<RouteComponentProps<{
   const styles = useStyles();
   const [formData, setFormData] = useState<InitialFormData>(blankForm);
   const [formHidden, setFormHidden] = useState<boolean>(true);
+  const [insurances, setInsurances] = useState({});
+  const [insurerNames, setInsurerNames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [success, setSuccess] = useState<Success | null>(null);
   const [error, setError] = useState('');
+
+  const handleFetchInsurances = () => {
+    fetchInsurances().then((response) => {
+      const insurances_data: { [key: string]: any } = {};
+      response.data.forEach((insurance: { name: string | number }) => {
+        insurances_data[insurance.name] = insurance;
+      });
+
+      setInsurances(insurances_data);
+      setInsurerNames(Object.keys(insurances_data));
+    });
+  };
+
+  useEffect(() => {
+    handleFetchInsurances();
+  }, []);
 
   const toggleSenderDetails = useCallback(() => {
     setFormHidden(!formHidden);
@@ -158,13 +173,13 @@ const Upload: React.FC<RouteComponentProps<{
 
   const handleInsurerChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedInsurer = event.target.value;
-    const selectedInsurerDetails = InsurerAddressList[selectedInsurer];
+    const selectedInsurerDetails = insurances[selectedInsurer];
 
     setFormData({
       ...formData,
       addressLineOne: selectedInsurer,
       addressLineTwo: selectedInsurerDetails.address,
-      postCode: selectedInsurerDetails.postCode,
+      postCode: selectedInsurerDetails.post_code,
       city: selectedInsurerDetails.city,
     });
   };
