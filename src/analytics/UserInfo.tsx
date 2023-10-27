@@ -219,15 +219,51 @@ const UserInfo = function ({ userData }: UserInfoProps) {
       </div>
       <div className={classes.infoItem}>
         <strong>Recipe Collection: </strong>
-        {userData['allergens_recipes_filters']}
+        <ul>
+          {userData['recipe_collection'] &&
+            userData['recipe_collection'].map(
+              (
+                collection: {} | null | undefined,
+                i: string | number | undefined
+              ) => (
+                <li key={i}>
+                  <span>{collection}</span>
+                </li>
+              )
+            )}
+        </ul>
       </div>
       <div className={classes.infoItem}>
         <strong>Allergens Filters: </strong>
-        {userData['allergens_recipes_filters']}
+        <ul>
+          {userData['allergens_recipes_filters'] &&
+            userData['allergens_recipes_filters'].map(
+              (
+                allergen_filter: {} | null | undefined,
+                i: string | number | undefined
+              ) => (
+                <li key={i}>
+                  <span>{allergen_filter}</span>
+                </li>
+              )
+            )}
+        </ul>
       </div>
       <div className={classes.infoItem}>
         <strong>Intolerance Filters: </strong>
-        {userData['intolerance_recipes_filters']}
+        <ul>
+          {userData['intolerance_recipes_filters'] &&
+            userData['intolerance_recipes_filters'].map(
+              (
+                intolerance_filter: {} | null | undefined,
+                i: string | number | undefined
+              ) => (
+                <li key={i}>
+                  <span>{intolerance_filter}</span>
+                </li>
+              )
+            )}
+        </ul>
       </div>
       <br />
       <br />
