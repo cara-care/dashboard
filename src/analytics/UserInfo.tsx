@@ -185,12 +185,6 @@ const UserInfo = function ({ userData }: UserInfoProps) {
                         {subscription.end}
                       </span>
                     </div>
-                    <div className={classes.info}>
-                      <span className={classes.infoLabel}>Used:</span>
-                      <span className={classes.infoValue}>
-                        {subscription.is_code_redeemed}
-                      </span>
-                    </div>
                   </div>
                 )
               )}

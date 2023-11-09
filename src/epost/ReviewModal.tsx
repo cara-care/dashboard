@@ -170,7 +170,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
               className={styles.buttonDiv}
               onClick={() => onSubmit(ReviewType.POST)}
             >
-              Send Now
+              {action === 'review' ? 'Send Now' : 'Delete'}
             </Button>
             <Button className={styles.deleteButton} onClick={onClose}>
               <Typography variant="subtitle2">Cancel</Typography>
