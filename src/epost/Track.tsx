@@ -269,6 +269,11 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
               Date uploaded
             </Typography>
           </div>
+          <div className={styles.column}>
+            <Typography className={styles.header} variant="body1">
+              Letter ID
+            </Typography>
+          </div>
         </div>
         {loadingDrafts && <Typography>Loading...</Typography>}
         {noDrafts && <Typography>No results</Typography>}
@@ -305,6 +310,11 @@ const Track: React.FC<RouteComponentProps<{}>> = () => {
                 </Typography>
                 <Typography variant="body1">
                   Uploaded by: {item.uploader.name}
+                </Typography>
+              </div>
+              <div className={styles.column}>
+                <Typography variant="body1">
+                  {item.letterID ? item.letterID : 'N/A'}
                 </Typography>
               </div>
             </div>

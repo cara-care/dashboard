@@ -38,6 +38,26 @@ const useStyles = makeStyles((theme) => ({
     height: '50px',
     border: '1px solid rgb(41, 18, 18)',
   },
+  infoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '10px',
+    width: '335px',
+  },
+  info: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '5px',
+  },
+  infoLabel: {
+    fontWeight: 'bold',
+    width: '100px',
+    textAlign: 'right',
+    paddingRight: '10px',
+  },
+  infoValue: {
+    textAlign: 'left',
+  },
 }));
 
 interface UserInfoProps {
@@ -79,8 +99,8 @@ const UserInfo = function ({ userData }: UserInfoProps) {
         {userData['programme_started']}
       </div>
       <div className={classes.infoItem}>
-        <strong>Email Confirmed: </strong>
-        {userData['email_confirmed'] ? 'True' : 'False'}
+        <strong>Email: </strong>
+        {userData['email']}
       </div>
       <div className={classes.infoItem}>
         <strong>Current Week: </strong>
@@ -135,8 +155,41 @@ const UserInfo = function ({ userData }: UserInfoProps) {
         {userData['diseases']}
       </div>
       <div className={classes.infoItem}>
-        <strong>Platform: </strong>
-        {userData['platform']}
+        <strong>Codes Linked: </strong>
+        {userData['subscriptions'] && (
+          <div>
+            {userData['subscriptions'] &&
+              userData['subscriptions'].map(
+                (subscription: {
+                  code: any;
+                  start: any;
+                  end: any;
+                  is_code_redeemed: any;
+                }) => (
+                  <div className={classes.infoContainer}>
+                    <div className={classes.info}>
+                      <span className={classes.infoLabel}>Code:</span>
+                      <span className={classes.infoValue}>
+                        {subscription.code}
+                      </span>
+                    </div>
+                    <div className={classes.info}>
+                      <span className={classes.infoLabel}>Start:</span>
+                      <span className={classes.infoValue}>
+                        {subscription.start}
+                      </span>
+                    </div>
+                    <div className={classes.info}>
+                      <span className={classes.infoLabel}>End:</span>
+                      <span className={classes.infoValue}>
+                        {subscription.end}
+                      </span>
+                    </div>
+                  </div>
+                )
+              )}
+          </div>
+        )}
       </div>
       <div className={classes.infoItem}>
         <strong>User Groups: </strong>
@@ -154,6 +207,48 @@ const UserInfo = function ({ userData }: UserInfoProps) {
             )}
         </ul>
       </div>
+      <div className={classes.infoItem}>
+        <strong>Platform: </strong>
+        {userData['platform']}
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Recipe Collection: </strong>
+        {userData['recipe_collection']}
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Allergens Filters: </strong>
+        <ul>
+          {userData['allergens_recipes_filters'] &&
+            userData['allergens_recipes_filters'].map(
+              (
+                allergen_filter: {} | null | undefined,
+                i: string | number | undefined
+              ) => (
+                <li key={i}>
+                  <span>{allergen_filter}</span>
+                </li>
+              )
+            )}
+        </ul>
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Intolerance Filters: </strong>
+        <ul>
+          {userData['intolerance_recipes_filters'] &&
+            userData['intolerance_recipes_filters'].map(
+              (
+                intolerance_filter: {} | null | undefined,
+                i: string | number | undefined
+              ) => (
+                <li key={i}>
+                  <span>{intolerance_filter}</span>
+                </li>
+              )
+            )}
+        </ul>
+      </div>
+      <br />
+      <br />
       {userData['questionnaires'] && (
         <div>
           <strong>Questionnaires: </strong>

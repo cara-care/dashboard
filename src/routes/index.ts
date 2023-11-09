@@ -154,7 +154,7 @@ const routes = [
     path: '/nutri/inbox/:inboxSlug/:roomId?',
     component: Chat,
     exact: false,
-    authRequired: true,
+    authRequired: false,
   },
   {
     path: undefined,
