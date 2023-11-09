@@ -213,19 +213,7 @@ const UserInfo = function ({ userData }: UserInfoProps) {
       </div>
       <div className={classes.infoItem}>
         <strong>Recipe Collection: </strong>
-        <ul>
-          {userData['recipe_collection'] &&
-            userData['recipe_collection'].map(
-              (
-                collection: {} | null | undefined,
-                i: string | number | undefined
-              ) => (
-                <li key={i}>
-                  <span>{collection}</span>
-                </li>
-              )
-            )}
-        </ul>
+        {userData['recipe_collection']}
       </div>
       <div className={classes.infoItem}>
         <strong>Allergens Filters: </strong>
