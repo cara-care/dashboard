@@ -91,8 +91,12 @@ const UserInfo = function ({ userData }: UserInfoProps) {
         {userData['programme']}
       </div>
       <div className={classes.infoItem}>
-        <strong>Timezone: </strong>
-        {userData['timezone']}
+        <strong>Account Active: </strong>
+        {userData['status'] === true
+          ? 'True'
+          : userData['status'] === false
+          ? 'False'
+          : userData['status']}
       </div>
       <div className={classes.infoItem}>
         <strong>Programme Started: </strong>
@@ -147,8 +151,16 @@ const UserInfo = function ({ userData }: UserInfoProps) {
         {userData['last_seen']}
       </div>
       <div className={classes.infoItem}>
+        <strong>Timezone: </strong>
+        {userData['timezone']}
+      </div>
+      <div className={classes.infoItem}>
         <strong>App Version: </strong>
         {userData['app_version']}
+      </div>
+      <div className={classes.infoItem}>
+        <strong>Platform: </strong>
+        {userData['platform']}
       </div>
       <div className={classes.infoItem}>
         <strong>Disease: </strong>
@@ -206,10 +218,6 @@ const UserInfo = function ({ userData }: UserInfoProps) {
               )
             )}
         </ul>
-      </div>
-      <div className={classes.infoItem}>
-        <strong>Platform: </strong>
-        {userData['platform']}
       </div>
       <div className={classes.infoItem}>
         <strong>Recipe Collection: </strong>
