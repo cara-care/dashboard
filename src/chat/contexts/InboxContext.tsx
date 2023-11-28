@@ -9,11 +9,13 @@ const InboxContext = React.createContext<{
   loadedSlug: string;
   inboxItems: InboxItem[];
   loadMoreInboxItems: () => Promise<boolean>;
+  searchInboxItems: (search: string) => Promise<boolean>;
 }>({
   isReady: false,
   loadedSlug: '',
   inboxItems: [],
   loadMoreInboxItems: () => Promise.reject(),
+  searchInboxItems: (search) => Promise.reject(),
 });
 
 const InboxProvider = function ({
@@ -95,9 +97,38 @@ const InboxProvider = function ({
     }
   };
 
+  const searchInboxItems = (search: string) => {
+    if (inbox.current) {
+      return inbox
+        .current!.search({ query: search })
+        .then(({ items }: { items: InboxItem[] }) => {
+          items = items.filter((item) => item.message !== null);
+          if (items.length > 0) {
+            setInboxItems(items);
+            return true;
+          } else {
+            setInboxItems([]);
+            return false;
+          }
+        })
+        .catch((error: Error) => {
+          console.error(error);
+          return false;
+        });
+    } else {
+      return Promise.resolve(false);
+    }
+  };
+
   return (
     <InboxContext.Provider
-      value={{ isReady, loadedSlug, inboxItems, loadMoreInboxItems }}
+      value={{
+        isReady,
+        loadedSlug,
+        inboxItems,
+        loadMoreInboxItems,
+        searchInboxItems,
+      }}
     >
       {children}
     </InboxContext.Provider>
