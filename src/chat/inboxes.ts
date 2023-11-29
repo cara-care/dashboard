@@ -6,6 +6,7 @@ export enum InboxType {
   RCT_IBS = 'rct_ibs',
   NO_STUDY = 'no_study',
   ALL = 'all',
+  UNIVERSAL = 'universal',
 }
 
 export const INBOXES = {
@@ -52,7 +53,7 @@ export const INBOXES = {
   },
   all: {
     name: 'All open',
-    icon: '🌍',
+    icon: '💬',
     attributes: {},
     archived: false,
   },
@@ -61,5 +62,11 @@ export const INBOXES = {
     icon: '🗂️',
     attributes: {},
     archived: true,
+  },
+  universal: {
+    name: 'All chats',
+    icon: '🌍',
+    attributes: {},
+    archived: undefined,
   },
 };
