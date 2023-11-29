@@ -67,7 +67,7 @@ const Chat = () => {
   };
 
   React.useEffect(() => {
-    if (connected === false) {
+    if (!connected) {
       showInfo('Connecting to Kabelwerk...');
       return;
     }
