@@ -204,6 +204,18 @@ export const searchUser = (search_term: string) => {
   });
 };
 
+export const userActions = (
+  username: string,
+  action: string,
+  action_content: string
+) => {
+  return api.post(`/dashboard/user-actions/`, {
+    username,
+    action,
+    action_content,
+  });
+};
+
 export const RESULTS_PER_PAGE = 20;
 
 export const getPrescriptions = ({
