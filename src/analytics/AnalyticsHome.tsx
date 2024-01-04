@@ -16,7 +16,9 @@ import {
 } from '../auth';
 import { searchUser, userActions } from '../utils/api';
 import UserInfo from './UserInfo';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
+import Modal from '../components/Modal';
+import { PRIMARY_COLOR } from '../theme';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -79,6 +81,31 @@ const useStyles = makeStyles((theme) => ({
   userActions: {
     width: '53%',
   },
+  deleteButton: {
+    padding: '10px 20px',
+    margin: '5px',
+    marginTop: '20px',
+    backgroundColor: theme.palette.secondary.main,
+    color: '#FA5544',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  buttonDiv: {
+    padding: '10px 20px',
+    margin: '5px',
+    marginTop: '20px',
+    backgroundColor: theme.palette.secondary.main,
+    color: PRIMARY_COLOR,
+    border: 'none',
+    cursor: 'pointer',
+  },
+  buttonContainer: {
+    textAlign: 'center',
+  },
+  modal: { padding: '20px' },
+  primaryText: {
+    color: PRIMARY_COLOR,
+  },
 }));
 
 const AnalyticsHome = () => {
@@ -91,6 +118,7 @@ const AnalyticsHome = () => {
   const [userData, setUserData] = useState({});
 
   const [action, setAction] = useState('');
+  const [actionModalOpen, setActionModalOpen] = useState(false);
   const [collection, setCollection] = useState('');
   const [module, setModule] = useState('');
   const [questionnaire, setQuestionnaire] = useState('');
@@ -102,6 +130,7 @@ const AnalyticsHome = () => {
     setModule('');
     setQuestionnaire('');
     setActionError('');
+    setActionModalOpen(false);
     setError('');
   }, [userData]);
 
@@ -394,12 +423,43 @@ const AnalyticsHome = () => {
             ''
           )}
 
+          <Modal
+            open={actionModalOpen}
+            actions={
+              <div className={classes.modal}>
+                <Typography variant="h4" className={classes.primaryText}>
+                  Review User Action
+                </Typography>
+                <Typography variant="subtitle1">
+                  Are you sure you want to continue with this action.
+                </Typography>
+                <div className={classes.buttonContainer}>
+                  <Button
+                    color="primary"
+                    type="button"
+                    variant="contained"
+                    className={classes.buttonDiv}
+                    onClick={handleUserAction}
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    className={classes.deleteButton}
+                    onClick={() => setActionModalOpen(false)}
+                  >
+                    <Typography variant="subtitle2">Cancel</Typography>
+                  </Button>
+                </div>
+              </div>
+            }
+          />
+
           {action !== '' ? (
             <Button
               color="primary"
               type="button"
               variant="contained"
-              onClick={handleUserAction}
+              onClick={() => setActionModalOpen(true)}
             >
               Submit
             </Button>
