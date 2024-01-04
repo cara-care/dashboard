@@ -215,6 +215,11 @@ const AnalyticsHome = () => {
       });
   };
 
+  const transformTitle = (title: string) => {
+    const titleWithSpaces = title.replace(/_/g, ' ');
+    return titleWithSpaces.replace(/\b\w/g, (match) => match.toUpperCase());
+  };
+
   if (
     !isAuthenticated ||
     !(
@@ -427,8 +432,8 @@ const AnalyticsHome = () => {
             open={actionModalOpen}
             actions={
               <div className={classes.modal}>
-                <Typography variant="h4" className={classes.primaryText}>
-                  Review User Action
+                <Typography variant="h6" className={classes.primaryText}>
+                  User Action: {transformTitle(action)}
                 </Typography>
                 <Typography variant="subtitle1">
                   Are you sure you want to continue with this action.
