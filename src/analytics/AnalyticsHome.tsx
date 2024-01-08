@@ -19,6 +19,7 @@ import UserInfo from './UserInfo';
 import { Button, Typography } from '@material-ui/core';
 import Modal from '../components/Modal';
 import { PRIMARY_COLOR } from '../theme';
+import userActionsList from './userActionsList.json';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -118,6 +119,7 @@ const AnalyticsHome = () => {
   const [userData, setUserData] = useState({});
 
   const [action, setAction] = useState('');
+  const [actionContent, setActionContent] = useState('');
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [collection, setCollection] = useState('');
   const [module, setModule] = useState('');
@@ -129,10 +131,34 @@ const AnalyticsHome = () => {
     setCollection('');
     setModule('');
     setQuestionnaire('');
+    setActionContent('');
     setActionError('');
     setActionModalOpen(false);
     setError('');
   }, [userData]);
+
+  const handleSubmitCheck = (event: { preventDefault: () => void }) => {
+    let username = userData['username'];
+    let action_content = '';
+    if (action === 'add_module' || action === 'remove_module') {
+      if (module !== '') {
+        action_content = userActionsList['modules'][module];
+      }
+    } else if (action === 'complete_questionnaire') {
+      action_content = questionnaire;
+    } else if (action === 'delete_user') {
+      action_content = username;
+    } else if (action === 'update_recipe_collection') {
+      if (collection !== '') {
+        action_content = userActionsList['collections'][collection];
+      }
+    }
+
+    if (action_content !== '') {
+      setActionContent(action_content);
+      setActionModalOpen(true);
+    }
+  };
 
   const handleUserAction = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -182,6 +208,7 @@ const AnalyticsHome = () => {
         });
     } else {
       setActionError('No action item selected');
+      setActionModalOpen(false);
     }
   };
 
@@ -215,7 +242,7 @@ const AnalyticsHome = () => {
       });
   };
 
-  const transformTitle = (title: string) => {
+  const transformActionTitle = (title: string) => {
     const titleWithSpaces = title.replace(/_/g, ' ');
     return titleWithSpaces.replace(/\b\w/g, (match) => match.toUpperCase());
   };
@@ -433,7 +460,7 @@ const AnalyticsHome = () => {
             actions={
               <div className={classes.modal}>
                 <Typography variant="h6" className={classes.primaryText}>
-                  User Action: {transformTitle(action)}
+                  User Action: {transformActionTitle(action)} - {actionContent}
                 </Typography>
                 <Typography variant="subtitle1">
                   Are you sure you want to continue with this action.
@@ -464,7 +491,7 @@ const AnalyticsHome = () => {
               color="primary"
               type="button"
               variant="contained"
-              onClick={() => setActionModalOpen(true)}
+              onClick={handleSubmitCheck}
             >
               Submit
             </Button>
