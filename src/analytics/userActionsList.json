@@ -1,0 +1,27 @@
+{
+  "modules": {
+    "1": "low-fodmap",
+    "2": "hypno",
+    "3": "cbt",
+    "7": "IBD-Low-FODMAP",
+    "8": "IBD-MedDiet",
+    "10": "IBD-CBT",
+    "11": "IBD-Relaxation",
+    "13": "HB-CBT",
+    "14": "HB-Nutrition",
+    "15": "HB-Relaxation",
+    "17": "HB-Hypnosis-GERD",
+    "18": "HB-Hypnosis-FD",
+    "19": "IBD-PE",
+    "21": "HB-weight-loss",
+    "22": "HB-weight-loss-hypnosis"
+  },
+  "collections": {
+    "1": "Gut-Friendly",
+    "2": "HB-Friendly",
+    "3": "Low-FODMAP",
+    "4": "Mediterranean-Diet",
+    "5": "IBD-Flareup",
+    "6": "HB-Weightloss"
+  }
+}
