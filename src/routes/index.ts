@@ -6,7 +6,11 @@ import {
   ResetPassword,
   ChangePassword,
 } from '../auth';
+import PrescriptionEpostService from '../epost/PrescriptionEpostService';
 import NotFound from './NotFound';
+import Upload from '../epost/Upload';
+import Review from '../epost/Review';
+import Track from '../epost/Track';
 
 const AnalyticsHome = React.lazy(() => import('../analytics/AnalyticsHome'));
 const Chat = React.lazy(() => import('../chat/pages/Chat'));
@@ -123,10 +127,34 @@ const routes = [
     authRequired: true,
   },
   {
+    path: '/nutri/epost-prescription',
+    component: PrescriptionEpostService,
+    exact: true,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/epost-prescription/upload',
+    component: Upload,
+    exact: true,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/epost-prescription/review',
+    component: Review,
+    exact: true,
+    authRequired: true,
+  },
+  {
+    path: '/nutri/epost-prescription/track',
+    component: Track,
+    exact: true,
+    authRequired: true,
+  },
+  {
     path: '/nutri/inbox/:inboxSlug/:roomId?',
     component: Chat,
     exact: false,
-    authRequired: true,
+    authRequired: false,
   },
   {
     path: undefined,

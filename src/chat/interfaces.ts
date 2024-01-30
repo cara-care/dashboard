@@ -9,6 +9,7 @@ export interface HubInfo {
 }
 
 export interface Inbox {
+  search: (query: { query: string }) => Promise<{ items: InboxItem[] }>;
   connect: () => void;
   disconnect: () => void;
   loadMore: () => Promise<{ items: InboxItem[] }>;

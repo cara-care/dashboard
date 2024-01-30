@@ -204,4 +204,73 @@ export const searchUser = (search_term: string) => {
   });
 };
 
+export const userActions = (
+  username: string,
+  action: string,
+  action_content: string
+) => {
+  return api.post(`/dashboard/user-actions/`, {
+    username,
+    action,
+    action_content,
+  });
+};
+
+export const RESULTS_PER_PAGE = 20;
+
+export const getPrescriptions = ({
+  beforeDate,
+  afterDate,
+  status,
+  query,
+  page,
+}: {
+  beforeDate?: string;
+  afterDate?: string;
+  status?: string;
+  query?: string;
+  page: number;
+}) => {
+  const offset = page * RESULTS_PER_PAGE;
+  let url = `/dashboard/prescriptions/?limit=${RESULTS_PER_PAGE}&offset=${offset}`;
+  if (status) {
+    url += `&status=${status}`;
+  }
+  if (beforeDate) {
+    url += `&before=${beforeDate}`;
+  }
+  if (afterDate) {
+    url += `&after=${afterDate}`;
+  }
+  if (query) {
+    url += `&search=${query}`;
+  }
+  return api.get(url);
+};
+
+export const postDraftPrescription = (formData: FormData) => {
+  return api.post(`/dashboard/prescriptions/`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    timeout: 10000,
+  });
+};
+
+export const queuePrescriptionSubmission = (id: number) => {
+  return api.post(`/dashboard/prescriptions/${id}/queue/`);
+};
+
+export const postFinalPrescription = (id: number) => {
+  return api.post(`/dashboard/prescriptions/${id}/send/`);
+};
+
+export const deleteDraftPrescription = (id: number) => {
+  return api.delete(`/dashboard/prescriptions/${id}/`);
+};
+
+export const fetchInsurances = () => {
+  return api.get(`/dashboard/prescriptions/insurances/`);
+};
+
 export default api;

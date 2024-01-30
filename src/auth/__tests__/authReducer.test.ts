@@ -24,6 +24,7 @@ const patientDataMock = {
 const mePayload = {
   firstName: 'Test',
   lastName: 'User',
+  groups: [],
 };
 const errorMock = { name: 'Error', message: 'Failed' };
 

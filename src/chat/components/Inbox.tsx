@@ -1,7 +1,7 @@
-import { Divider, Typography } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import Spinner from '../../components/Spinner';
@@ -11,6 +11,10 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import * as interfaces from '../interfaces';
 
 import InboxItem from './InboxItem';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -29,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.primary.main,
   },
+  searchBar: {
+    width: '80%',
+    paddingLeft: '10px',
+  },
 }));
 
 const Inbox = function () {
@@ -41,15 +49,37 @@ const Inbox = function () {
   const { inboxSlug, roomId } = useParams();
 
   // the inbox selected from the sidebar to the very left
-  const { loadedSlug, inboxItems, loadMoreInboxItems } = React.useContext(
-    InboxContext
-  );
+  const {
+    loadedSlug,
+    inboxItems,
+    loadMoreInboxItems,
+    searchInboxItems,
+  } = React.useContext(InboxContext);
 
   // whether we are awaiting Kabelwerk's loadMore() function
   const [isLoadingMore, setIsLoadingMore] = React.useState(false);
 
   // whether we have reached the bottom of the room list
   const [canLoadMore, setCanLoadMore] = React.useState(true);
+  const [search, setSearch] = useState('');
+
+  const handleSearch = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    if (search.length > 0) {
+      searchInboxItems(search)
+        .then((response: any) => {
+          setIsLoadingMore(false);
+          setCanLoadMore(false);
+        })
+        .catch((error: any) => {
+          console.log('Error', error);
+        });
+    } else {
+      setIsLoadingMore(false);
+      setCanLoadMore(true);
+    }
+  };
 
   React.useEffect(() => {
     setIsLoadingMore(false);
@@ -74,7 +104,7 @@ const Inbox = function () {
   });
 
   // open the first room if there is no room ID specified in the URL and the
-  // inbox is not empty
+  // inbox are not empty
   React.useEffect(() => {
     if (loadedSlug === inboxSlug && roomId === undefined && inboxItems.length) {
       const id = inboxItems[0].room.id;
@@ -84,14 +114,26 @@ const Inbox = function () {
 
   return (
     <div ref={rootRef} className={classes.sidebar}>
-      <Box className={classes.headerBox}>
-        {/* <Typography variant="h6">
-          {currentInboxType !== null
-            ? INBOXES[currentInboxType].name
-            : 'Loading…'}
-        </Typography> */}
-        <Typography variant="subtitle1"></Typography>
-      </Box>
+      <div>
+        <form onSubmit={handleSearch}>
+          <Paper>
+            <InputBase
+              placeholder="Search User"
+              className={classes.searchBar}
+              inputProps={{ 'aria-label': 'search user' }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <IconButton
+              type="button"
+              aria-label="search"
+              onClick={handleSearch}
+            >
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+        </form>
+      </div>
       <Divider />
       {inboxItems.length === 0 ? (
         <p className={classes.emptyInboxMessage}>this inbox is empty</p>

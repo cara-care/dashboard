@@ -1,11 +1,8 @@
 import Kabelwerk from 'kabelwerk';
 import React from 'react';
 import { ReactElement } from 'react';
-import { useSelector } from 'react-redux';
 
-import { isAuthenticated as isAuthenticatedSelector } from '../../auth/authReducer';
 import { getChatAuthorizationToken } from '../../utils/api';
-
 import useNotification from '../hooks/useNotification';
 import { HubInfo, Message, User } from '../interfaces';
 
@@ -22,7 +19,6 @@ export const KabelwerkContext = React.createContext<{
 export const KabelwerkProvider: React.FC<{
   children: ReactElement;
 }> = ({ children }) => {
-  const isAuthenticated = useSelector(isAuthenticatedSelector);
   const notification = useNotification();
 
   // whether the websocket connection to the Kabelwerk backend is open
@@ -35,7 +31,7 @@ export const KabelwerkProvider: React.FC<{
   const [hubUsers, setHubUsers] = React.useState<User[]>([]);
 
   React.useEffect(() => {
-    if (isAuthenticated && Kabelwerk.getState() === Kabelwerk.INACTIVE) {
+    if (Kabelwerk.getState() === Kabelwerk.INACTIVE) {
       Kabelwerk.config({
         url: process.env.REACT_APP_KABELWERK_URL,
         refreshToken: () => {
@@ -62,7 +58,7 @@ export const KabelwerkProvider: React.FC<{
 
       Kabelwerk.connect();
     }
-  }, [isAuthenticated, notification]);
+  }, [notification]);
 
   return (
     <KabelwerkContext.Provider

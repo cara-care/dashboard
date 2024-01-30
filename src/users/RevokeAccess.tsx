@@ -20,7 +20,10 @@ import {
   RadioGroup,
 } from '@material-ui/core';
 
-import { isAuthenticated as isAuthenticatedSelector } from '../auth';
+import {
+  getUserGroups,
+  isAuthenticated as isAuthenticatedSelector,
+} from '../auth';
 import { revokeAccess } from '../utils/api';
 import {
   RevokeUsersAccessFailed,
@@ -84,6 +87,7 @@ const RevokeAccess: React.FC<RouteComponentProps<{
   const history = useHistory();
 
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const userGroups = useSelector(getUserGroups);
   const [usersCodes, setUserCodes] = useState('');
   const [message, setMessage] = useState('');
   const [deactivationType, setDeactivationType] = useState('study_completed');
@@ -116,7 +120,10 @@ const RevokeAccess: React.FC<RouteComponentProps<{
       });
   };
 
-  if (!isAuthenticated) {
+  if (
+    !isAuthenticated ||
+    !userGroups.includes('care_panel_user_revoke_access')
+  ) {
     return <Redirect to="/nutri/login" />;
   }
 

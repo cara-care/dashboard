@@ -1,0 +1,492 @@
+{
+  "AOK Baden-Württemberg": {
+    "address": "Presselstr. 19",
+    "postCode": "70191",
+    "city": "Stuttgart"
+  },
+  "AOK Bayern": {
+    "address": "Carl-Wery-Straße 28",
+    "postCode": "81739",
+    "city": "München"
+  },
+  "AOK Bremen/Bremerhaven": {
+    "address": "Bürgermeister-Smidt-Straße 95",
+    "postCode": "28195",
+    "city": "Bremen"
+  },
+  "AOK Hessen": {
+    "address": "Basler Straße 2",
+    "postCode": "61352",
+    "city": "Bad Homburg"
+  },
+  "AOK Niedersachsen": {
+    "address": "Hildesheimer Straße 273",
+    "postCode": "30519",
+    "city": "Hannover"
+  },
+  "AOK Nordost": {
+    "address": "Behlertstr. 33A ( Rechtssitz)",
+    "postCode": "14467",
+    "city": "Potsdam"
+  },
+  "AOK Nordwest": {
+    "address": "Kopenhagener Straße 1",
+    "postCode": "44269",
+    "city": "Dortmund"
+  },
+  "AOK PLUS": {
+    "address": "Sternplatz 7",
+    "postCode": "01067",
+    "city": "Dresden"
+  },
+  "AOK Rheinland-Pfalz/Saarland": {
+    "address": "Virchowstraße 30",
+    "postCode": "67304",
+    "city": "Eisenberg"
+  },
+  "AOK Rheinland/Hamburg": {
+    "address": "Kasernenstraße 61",
+    "postCode": "40213",
+    "city": "Düsseldorf"
+  },
+  "AOK Sachsen-Anhalt": {
+    "address": "Lüneburger Straße 4",
+    "postCode": "39106",
+    "city": "Magdeburg"
+  },
+  "Audi BKK": {
+    "address": "Ferdinand-Braun-Str. 6",
+    "postCode": "85053",
+    "city": "Ingolstadt"
+  },
+  "BAHN-BKK": {
+    "address": "Franklinstraße 54",
+    "postCode": "60486",
+    "city": "Frankfurt"
+  },
+  "BARMER": {
+    "address": "Axel-Springer-Straße 44",
+    "postCode": "10969",
+    "city": "Berlin"
+  },
+  "BERGISCHE Krankenkasse": {
+    "address": "Heresbachstr. 29",
+    "postCode": "42715",
+    "city": "Solingen"
+  },
+  "Bertelsmann BKK": {
+    "address": "Carl-Miele-Straße 214",
+    "postCode": "33311",
+    "city": "Gütersloh"
+  },
+  "BIG direkt gesund": {
+    "address": "Rheinische Straße 1",
+    "postCode": "44137",
+    "city": "Dortmund"
+  },
+  "BKK VIACTIV": {
+    "address": "Siegener Straße 152",
+    "postCode": "57223",
+    "city": "Kreuztal"
+  },
+  "BKK advita - jetzt: BKK24": {
+    "address": "Mainzer Str. 5",
+    "postCode": "55232",
+    "city": "Alzey"
+  },
+  "BKK Akzo Nobel Bayern": {
+    "address": "Glanzstoffstraße 1",
+    "postCode": "63906",
+    "city": "Erlenbach"
+  },
+  "BKK B. Braun Aesculap": {
+    "address": "Grüne Straße 1",
+    "postCode": "34212",
+    "city": "Melsungen"
+  },
+  "BKK BPW Bergische Achsen KG": {
+    "address": "Ohlerhammer",
+    "postCode": "51674",
+    "city": "Wiehl"
+  },
+  "BKK Deutsche Bank AG": {
+    "address": "Königsallee 60c",
+    "postCode": "40212",
+    "city": "Düsseldorf"
+  },
+  "BKK Diakonie": {
+    "address": "Königsweg 8",
+    "postCode": "33617",
+    "city": "Bielefeld"
+  },
+  "BKK DürkoppAdler": {
+    "address": "Stieghorster Str. 66",
+    "postCode": "33605",
+    "city": "Bielefeld"
+  },
+  "BKK EUREGIO": {
+    "address": "Boos-Fremery-Straße 66",
+    "postCode": "52525",
+    "city": "Heinsberg"
+  },
+  "BKK evm": {
+    "address": "Schützenstraße 80-82",
+    "postCode": "56068",
+    "city": "Koblenz"
+  },
+  "BKK EWE": {
+    "address": "Staulinie 16-17",
+    "postCode": "26122",
+    "city": "Oldenburg"
+  },
+  "BKK exklusiv": {
+    "address": "Zum Blauen See 7",
+    "postCode": "31275",
+    "city": "Lehrte"
+  },
+  "BKK Faber-Castell & Partner": {
+    "address": "Bahnhofstraße 45",
+    "postCode": "94209",
+    "city": "Regen"
+  },
+  "BKK firmus": {
+    "address": "Gottlieb-Daimler-Straße 11",
+    "postCode": "28237",
+    "city": "Bremen"
+  },
+  "BKK Freudenberg": {
+    "address": "Höhnerweg 2-4",
+    "postCode": "69469",
+    "city": "Weinheim"
+  },
+  "BKK GILDEMEISTER SEIDENSTICKER": {
+    "address": "Winterstraße 49",
+    "postCode": "33649",
+    "city": "Bielefeld"
+  },
+  "BKK Groz-Beckert": {
+    "address": "Parkweg 2",
+    "postCode": "72458",
+    "city": "Albstadt"
+  },
+  "BKK HERKULES": {
+    "address": "Jordanstr. 6",
+    "postCode": "34117",
+    "city": "Kassel"
+  },
+  "BKK KARL MAYER": {
+    "address": "Industriestraße 3",
+    "postCode": "63179",
+    "city": "Obertshausen"
+  },
+  "BKK Linde": {
+    "address": "Konrad-Adenauer-Ring 33",
+    "postCode": "65187",
+    "city": "Wiesbaden"
+  },
+  "BKK MAHLE": {
+    "address": "Pragstraße 26-46",
+    "postCode": "70376",
+    "city": "Stuttgart"
+  },
+  "bkk melitta hmr": {
+    "address": "Marienstr. 122",
+    "postCode": "32425",
+    "city": "Minden"
+  },
+  "BKK Merck": {
+    "address": "Frankfurter Straße 133",
+    "postCode": "64293",
+    "city": "Darmstadt"
+  },
+  "BKK Miele": {
+    "address": "Carl-Miele-Straße 29",
+    "postCode": "33332",
+    "city": "Gütersloh"
+  },
+  "BKK MTU": {
+    "address": "Hochstraße 40",
+    "postCode": "88045",
+    "city": "Friedrichshafen"
+  },
+  "BKK PFAFF": {
+    "address": "Pirmasenser Straße 132",
+    "postCode": "67655",
+    "city": "Kaiserslautern"
+  },
+  "BKK Pfalz": {
+    "address": "Lichtenbergerstraße 16",
+    "postCode": "67059",
+    "city": "Ludwigshafen"
+  },
+  "BKK ProVita": {
+    "address": "Münchner Weg 5",
+    "postCode": "85232",
+    "city": "Bergkirchen"
+  },
+  "BKK Public": {
+    "address": "Thiestraße 15",
+    "postCode": "38226",
+    "city": "Salzgitter"
+  },
+  "BKK PwC": {
+    "address": "Rotenburger Straße 15",
+    "postCode": "34212",
+    "city": "Melsungen"
+  },
+  "BKK Rieker.Ricosta.Weisser": {
+    "address": "Gänsäcker 3",
+    "postCode": "78532",
+    "city": "Tuttlingen"
+  },
+  "BKK Salzgitter": {
+    "address": "Thiestraße 15",
+    "postCode": "38226",
+    "city": "Salzgitter"
+  },
+  "BKK SBH": {
+    "address": "Löhrstr. 45",
+    "postCode": "78647",
+    "city": "Trossingen"
+  },
+  "BKK Scheufelen": {
+    "address": "Schöllkopfstr. 65",
+    "postCode": "73230",
+    "city": "Kirchheim / Teck"
+  },
+  "BKK Technoform": {
+    "address": "August-Spindler-Straße 1",
+    "postCode": "37079",
+    "city": "Göttingen"
+  },
+  "BKK Textilgruppe Hof": {
+    "address": "Fabrikzeile 21",
+    "postCode": "95028",
+    "city": "Hof"
+  },
+  "BKK VBU": {
+    "address": "Lindenstraße 67",
+    "postCode": "10969",
+    "city": "Berlin"
+  },
+  "BKK VDN": {
+    "address": "Rosenweg 15",
+    "postCode": "58239",
+    "city": "Schwerte"
+  },
+  "BKK VerbundPlus": {
+    "address": "Zeppelinring 13",
+    "postCode": "88400",
+    "city": "Biberach"
+  },
+  "BKK Voralb HELLER*INDEX*LEUZE": {
+    "address": "Neuffener Straße 54",
+    "postCode": "72622",
+    "city": "Nürtingen"
+  },
+  "BKK Werra-Meissner": {
+    "address": "Sudetenlandstraße 2a",
+    "postCode": "37269",
+    "city": "Eschwege"
+  },
+  "BKK WIRTSCHAFT & FINANZEN": {
+    "address": "Bahnhofstraße 19",
+    "postCode": "34212",
+    "city": "Melsungen"
+  },
+  "BKK Würth": {
+    "address": "Gartenstraße 11",
+    "postCode": "74653",
+    "city": "Künzelsau"
+  },
+  "BKK ZF & Partner": {
+    "address": "Casinostraße 47",
+    "postCode": "56068",
+    "city": "Koblenz"
+  },
+  "BKK24": {
+    "address": "Sülbecker Brand 1",
+    "postCode": "31683",
+    "city": "Obernkirchen"
+  },
+  "BMW BKK": {
+    "address": "Mengkofener Straße 6",
+    "postCode": "84130",
+    "city": "Dingolfing"
+  },
+  "Bosch BKK": {
+    "address": "Kruppstraße 19",
+    "postCode": "70469",
+    "city": "Stuttgart"
+  },
+  "Continentale BKK": {
+    "address": "Sengelmannstraße 120",
+    "postCode": "22335",
+    "city": "Hamburg"
+  },
+  "DAK Gesundheit": {
+    "address": "Nagelsweg 27-31",
+    "postCode": "20097",
+    "city": "Hamburg"
+  },
+  "Debeka BKK": {
+    "address": "Im Metternicher Feld 50",
+    "postCode": "56072",
+    "city": "Koblenz"
+  },
+  "energie-BKK": {
+    "address": "Oldenburger Alllee 24",
+    "postCode": "30659",
+    "city": "Hannover"
+  },
+  "Ernst & Young BKK": {
+    "address": "Rotenburger Straße 16",
+    "postCode": "34212",
+    "city": "Melsungen"
+  },
+  "Heimat Krankenkasse": {
+    "address": "Herforder Straße 23",
+    "postCode": "33602",
+    "city": "Bielefeld"
+  },
+  "HEK - Hanseatische Krankenkasse": {
+    "address": "Wandsbeker Zollstraße 86-90",
+    "postCode": "22041",
+    "city": "Hamburg"
+  },
+  "HKK- Handelskrankenkasse": {
+    "address": "Martinistraße 26",
+    "postCode": "28195",
+    "city": "Bremen"
+  },
+  "IKK - Die Innovationskasse": {
+    "address": "Lachswehrallee 1",
+    "postCode": "23558",
+    "city": "Lübeck"
+  },
+  "IKK Brandenburg und Berlin": {
+    "address": "Ziolkowskistraße 6",
+    "postCode": "14480",
+    "city": "Potsdam"
+  },
+  "IKK classic": {
+    "address": "Tannenstr. 4b",
+    "postCode": "01099",
+    "city": "Dresden"
+  },
+  "IKK gesund plus": {
+    "address": "Umfassungsstraße 85",
+    "postCode": "39124",
+    "city": "Magdeburg"
+  },
+  "IKK Südwest": {
+    "address": "Europaallee 3 – 4",
+    "postCode": "66113",
+    "city": "Saarbrücken"
+  },
+  "KKH Kaufmännische Krankenkasse": {
+    "address": "Karl-Wiechert-Allee 61",
+    "postCode": "30625",
+    "city": "Hannover"
+  },
+  "KNAPPSCHAFT": {
+    "address": "Dezernat für Kundenservice",
+    "postCode": "44781",
+    "city": "Bochum"
+  },
+  "Koenig & Bauer BKK": {
+    "address": "Friedrich-Koenig-Straße 4",
+    "postCode": "97080",
+    "city": "Würzburg"
+  },
+  "Krones BKK": {
+    "address": "Bayerwaldstr. 2L",
+    "postCode": "93073",
+    "city": "Neutraubling"
+  },
+  "Landwirtschaftliche Krankenkasse - LKK": {
+    "address": "Weißensteinstraße 70 - 72",
+    "postCode": "34131",
+    "city": "Kassel"
+  },
+  "Mercedes-Benz BKK": {
+    "address": "Mercedesstraße 1",
+    "postCode": "28309",
+    "city": "Bremen"
+  },
+  "mhplus Krankenkasse": {
+    "address": "Franckstraße 8",
+    "postCode": "71636",
+    "city": "Ludwigsburg"
+  },
+  "Mobil Krankenkasse": {
+    "address": "Friedenheimer Brücke 29",
+    "postCode": "80639",
+    "city": "München"
+  },
+  "Novitas BKK": {
+    "address": "Schifferstraße 92-100",
+    "postCode": "47059",
+    "city": "Duisburg"
+  },
+  "Pronova BKK": {
+    "address": "Rheinallee 13",
+    "postCode": "67061",
+    "city": "Ludwigshafen"
+  },
+  "R+V Betriebskrankenkasse": {
+    "address": "Kreuzberger Ring 21",
+    "postCode": "65205",
+    "city": "Wiesbaden"
+  },
+  "Salus BKK": {
+    "address": "Siemensstr. 5 a",
+    "postCode": "63263",
+    "city": "Neu-Isenburg"
+  },
+  "SBK- Siemens Betriebskrankenkasse": {
+    "address": "Heimeranstr. 31",
+    "postCode": "80339",
+    "city": "München"
+  },
+  "SECURVITA BKK": {
+    "address": "Lübeckertordamm 1-3",
+    "postCode": "20099",
+    "city": "Hamburg"
+  },
+  "SKD BKK": {
+    "address": "Schultesstraße 19 A",
+    "postCode": "97421",
+    "city": "Schweinfurt"
+  },
+  "Südzucker-BKK": {
+    "address": "Joseph-Meyer-Str. 13-15",
+    "postCode": "68167",
+    "city": "Mannheim"
+  },
+  "Techniker Krankenkasse (TK)": {
+    "address": "Bramfelder Straße 140",
+    "postCode": "22305",
+    "city": "Hamburg"
+  },
+  "TUI BKK": {
+    "address": "Karl-Wiechert-Allee 23",
+    "postCode": "30625",
+    "city": "Hannover"
+  },
+  "VIACTIV Krankenkasse": {
+    "address": "Universitätsstraße 43",
+    "postCode": "44789",
+    "city": "Bochum"
+  },
+  "vivida bkk": {
+    "address": "Spittelstraße 50",
+    "postCode": "78056",
+    "city": "Villingen-Schwenningen"
+  },
+  "WMF BKK": {
+    "address": "Fabrikstraße 48",
+    "postCode": "73312",
+    "city": "Geislingen an der Steige"
+  }
+}
